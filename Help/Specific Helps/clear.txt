@@ -1,0 +1,6 @@
+**Description**
+ Clears an specified amount of messages from the channel it is used on *(not counting the command message)*.
+
+**Usage**
+`{prefix}clear <amount>`
+E.G.: `{prefix}clear 10`

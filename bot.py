@@ -1,0 +1,150 @@
+import difflib
+import discord
+import json
+import os
+import prefix
+import random
+import wikipedia
+from discord.ext import commands, tasks
+from googlesearch import search
+
+
+def is_bot_owner(ctx):
+	return ctx.author.id == 498606108836102164 or ctx.author.id == 503657339258273812
+
+
+parser = prefix.PrefixParser(default="g!")
+
+client = commands.Bot(command_prefix=parser)
+client.remove_command("help")
+
+owner = None
+status_list = ['Default prefix is "g!"', "If something's wrong with the bot, contact Gølder06#7041", "End my suffering."]
+command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban"]
+
+@client.event
+async def on_ready():
+	global owner
+	owner = client.get_user(498606108836102164)
+
+
+@client.event
+async def on_member_join(member):
+	print(f'{member} has joined a server.')
+
+
+@client.event
+async def on_member_remove(member):
+	print(f'{member} has been removed from a server.')
+
+
+@tasks.loop(hours=1)
+async def change_status_task():
+	activity = random.choice(status_list)
+	await client.change_presence(activity=activity)
+	print(f'Status changed to "{activity}"')
+
+
+@client.command("help")
+async def _help(ctx, command=None):
+	title = ""
+	i = None
+	value = random.randint(0, 0xffffff)
+	help_text = ""
+	if command is None:
+		with open("Help/General Help.txt", "r") as f:
+			help_ = f.read()
+		with open("Help/Mod Help.txt", "r") as f:
+			mod_text = f.read()
+		with open("Help/Owner Help.txt", "r") as f:
+			owner_text = f.read()
+		title = "Commands"
+		help_text += help_
+		if ctx.author.guild_permissions.administrator == True:
+			help_text += mod_text
+		else:
+			help_text += f"`{ctx.prefix}prefix`"
+		if is_bot_owner(ctx) == True:
+			help_text += owner_text
+	else:
+		for com in command_list:
+			if com == command:
+				i = True
+				break
+		if i == True:
+			title = command.capitalize()
+			if command != "prefix":
+				with open(f"Help/Specific Helps/{command}.txt") as f:
+					help_text = f.read()
+			else:
+				if ctx.author.guild_permissions.administrator == True:
+					with open("Help/Specific Helps/prefix_admin.txt") as f:
+						help_text = f.read()
+		else:
+			title = "Error"
+			help_text = "Command not found"
+	embed = discord.Embed(description=help_text.format(prefix=ctx.prefix))
+	embed.set_author(name=title)
+	embed.set_footer(text=f"\n<>=Necessary, []=optional.\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
+	embed.colour = value
+	await ctx.send(embed=embed)
+
+
+@client.command()
+@commands.check(is_bot_owner)
+async def load(ctx, extension):
+	print(f"Loading {extension}...")
+	client.load_extension(f'cogs.{extension}')
+	print(f"{extension} loaded!")
+	await ctx.send(f'Cog "{extension}" loaded!')
+
+
+@client.command()
+@commands.check(is_bot_owner)
+async def unload(ctx, extension="commands"):
+	print(f"Unloading {extension}...")
+	client.unload_extension(f'cogs.{extension}')
+	print(f"{extension.capitalize()} unloaded!")
+	await ctx.send(f'{extension.capitalize} unloaded!')
+
+
+@client.command()
+@commands.check(is_bot_owner)
+async def reload(ctx, extension="commands"):
+	print(f"Reloading {extension}...")
+	client.unload_extension(f'cogs.{extension}')
+	client.load_extension(f'cogs.{extension}')
+	print(f"{extension.capitalize()} reloaded!")
+	await ctx.send(f'{extension.capitalize()} reloaded!')
+
+
+@load.error
+@unload.error
+@reload.error
+async def load_errors(ctx, error):
+	if isinstance(error, commands.ExtensionNotLoaded):
+		await ctx.send(f'Specified extension not found.')
+
+
+@client.command()
+async def prefix(ctx, new_prefix=None):
+	perm = ctx.author.guild_permissions.administrator
+	if perm == True:
+		if new_prefix is not None:
+			sv = str(ctx.guild.id)
+			parser.update(sv, new_prefix)
+			await ctx.send(f"Prefix changed to {new_prefix}!")
+		else:
+			await ctx.send(f"Server's prefix currently set to {ctx.prefix}")
+	else:
+		if new_prefix is not None:
+			await ctx.send(f"You don't have permissions to change the server's prefix!")
+		else:
+			await ctx.send(f"Server's prefix currently set to {ctx.prefix}")
+
+
+for filename in os.listdir('./cogs'):
+	if filename.endswith('.py'):
+		client.load_extension(f'cogs.{filename[:-3]}')
+
+client.run('NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.piy6GEpt8_BQJP5lr'+"WaUcMCqngE")

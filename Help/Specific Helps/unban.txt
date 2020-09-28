@@ -1,0 +1,6 @@
+**Description**
+Unbans an specified user.
+
+**Usage**
+`{prefix}unban <user#1234>`
+E.G.: `{prefix}unban KoganeSirnight#9389`

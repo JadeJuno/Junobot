@@ -1,0 +1,5 @@
+**Description**
+Flip a coin in the air, which will land randomly on heads or on tails.
+
+**Usage**
+`{prefix}flip`

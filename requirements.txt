@@ -1,0 +1,12 @@
+git+https://github.com/Rapptz/discord.py
+PyNaCl==1.4.0
+pandas
+dnspython==2.0.0
+requests
+google
+wikipedia~=1.4.0
+discord~=1.0.1
+Wikipedia-API~=0.5.4
+googletrans~=3.0.0
+hyper~=0.7.0
+hyperframe~=5.2.0

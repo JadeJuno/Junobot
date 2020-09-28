@@ -1,0 +1,5 @@
+**Flip:** "flip", "coinflip", "flipcoin"
+**Roll:** "roll" "rolldie", "dieroll"
+**Google:** "google" "googleit", "googlesearch"
+**Language:** "language", "detect"
+**Morse:** "morse", "morsecode"

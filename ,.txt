@@ -1,0 +1,23 @@
+**For fun commands:**
+`g!8ball <question>:` You can ask a question to the omniscient ***8ball***, and it will answer it.
+`g!choose <option1|option2|option3|...>:` Give the bot some options (More than 1) and it will randomly choose between them.
+`g!flip:` Flip a coin. Will it land on heads or tails?
+`g!roll [amount of faces]:` Roll a die.
+`g!say <message>:` Says whatever you wrote after the command and deletes your message to make it look like the bot said it.
+
+**Utility commands:**
+`g!google <search>:` Make a quick Google Search from Discord because you're too lazy to open your browser.
+`g!language <sentence>:` Detects in which language is a given sentence written in.
+`g!ping:` sends "Pong!" and the latency of the bot.
+`g!translate <"sentence"> [destination language] [source language]:` Translate a sentence surrounded by quotation marks.
+`g!wikipedia <search>:` *WIP\*
+
+**Moderation commands:**
+`g!ban <@user#1234> [reason]:` Bans a mentioned user.
+`g!clear <amount of messages>:` Clears an specified amount of messages from the channel it is used on (not counting the command message).
+`g!kick <@user#1234> [reason]:` Kicks a mentioned user.
+`g!prefix [prefix]:` Sets the server's prefix to the specified prefix (if blank, it will send the current prefix).
+`g!unban <user#1234>:` Unbans an specified user.
+
+
+**For fun commands:**\n`{ctx.prefix}8ball <question>:` You can ask a question to the omniscient ***8ball***, and it will answer it.\n`{ctx.prefix}choose <option1|option2|option3|...>:` Give the bot some options (More than 1) and it will randomly choose between them.\n`{ctx.prefix}flip:` Flip a coin. Will it land on heads or tails?`\n{ctx.prefix}roll [amount of faces]:` Roll a die.\n`{ctx.prefix}say <message>:` Says whatever you wrote after the command and deletes your message to make it look like the bot said it.\n\n**Utility commands:**\n`{ctx.prefix}google <search>:` Make a quick Google Search from Discord because you're too lazy to open your browser.\n`{ctx.prefix}language <sentence>:` Detects in which language is a given sentence written in.\n`{ctx.prefix}ping:` sends "Pong!" and the latency of the bot.\n`{ctx.prefix}translate <"sentence"> [destination language] [source language]:` Translate a sentence surrounded by quotation marks.\n`{ctx.prefix}wikipedia <search>:` *WIP\*\n\n**Moderation commands:**\n`{ctx.prefix}ban <@user#1234> [reason]:` Bans a mentioned user.\n`{ctx.prefix}clear <amount of messages>:` Clears an specified amount of messages from the channel it is used on (not counting the command message).\n`{ctx.prefix}kick <@user#1234> [reason]:` Kicks a mentioned user.\n`{ctx.prefix}prefix [prefix]:` Sets the server's prefix to the specified prefix (if blank, it will send the current prefix).\n`{ctx.prefix}unban <user#1234>:` Unbans an specified user.

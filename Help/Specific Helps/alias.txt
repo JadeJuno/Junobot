@@ -1,0 +1,6 @@
+**Description**
+Shows every command aliases or the aliases of an specified command.
+
+**Usage**
+`{prefix}alias [command]`
+E.G.: `{prefix}alias google` *(google, googleit, googlesearch)*

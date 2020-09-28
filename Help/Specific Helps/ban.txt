@@ -1,0 +1,6 @@
+**Description**
+Bans a mentioned user.
+
+**Usage**
+`{prefix}ban <@user#1234> [reason]`
+E.G.: `{prefix}ban @KoganeSirnight#9389 Identity Theft`

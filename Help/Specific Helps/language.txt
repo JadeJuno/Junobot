@@ -1,0 +1,6 @@
+**Description**
+Detects the language of a quoted sentence.
+
+**Usage**
+`{prefix}language <sentence>`
+E.G.: `{prefix}language Hola, mi nombre es G{ø}ldbot y soy español`

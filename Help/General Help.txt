@@ -1,0 +1,16 @@
+**For Fun Commands:**
+`{prefix}8ball <question>`
+`{prefix}choose <option1|option2|option3|...>`
+`{prefix}flip`
+`{prefix}roll [number of sides]`
+`{prefix}say <message>`
+
+**Utility commands:**
+`{prefix}alias [command]`
+`{prefix}google <search>`
+`{prefix}help [command]`
+`{prefix}language <sentence>`
+`{prefix}morse <encrypt/decrypt> <sentence>`
+`{prefix}ping`
+`{prefix}translate "<sentence>" [dest. language] [source language]`
+~~`{prefix}wikipedia`~~ **\**WIP****

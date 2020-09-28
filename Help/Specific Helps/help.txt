@@ -1,0 +1,6 @@
+**Description**
+Shows a list of all the commands of the bot or the details of said commands.
+
+**Usage**
+`You're using it right now I don't need to explain it.`
+E.G.: `^^^`
