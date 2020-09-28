@@ -18,24 +18,12 @@ parser = prefix.PrefixParser(default="g!")
 client = commands.Bot(command_prefix=parser)
 client.remove_command("help")
 
-owner = None
 status_list = ['Default prefix is "g!"', "If something's wrong with the bot, contact Gølder06#7041", "End my suffering."]
 command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban"]
 
 @client.event
 async def on_ready():
-	global owner
 	owner = client.get_user(498606108836102164)
-
-
-@client.event
-async def on_member_join(member):
-	print(f'{member} has joined a server.')
-
-
-@client.event
-async def on_member_remove(member):
-	print(f'{member} has been removed from a server.')
 
 
 @tasks.loop(hours=1)
@@ -129,22 +117,19 @@ async def load_errors(ctx, error):
 @client.command()
 async def prefix(ctx, new_prefix=None):
 	perm = ctx.author.guild_permissions.administrator
-	if perm == True:
-		if new_prefix is not None:
+	if new_prefix is None:
+		await ctx.send(f"Server's prefix currently set to {ctx.prefix}")
+	else:
+		if perm == True:
 			sv = str(ctx.guild.id)
 			parser.update(sv, new_prefix)
 			await ctx.send(f"Prefix changed to {new_prefix}!")
 		else:
-			await ctx.send(f"Server's prefix currently set to {ctx.prefix}")
-	else:
-		if new_prefix is not None:
-			await ctx.send(f"You don't have permissions to change the server's prefix!")
-		else:
-			await ctx.send(f"Server's prefix currently set to {ctx.prefix}")
+			raise commands.CheckFailure
 
 
 for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
 		client.load_extension(f'cogs.{filename[:-3]}')
 
-client.run('NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.piy6GEpt8_BQJP5lr'+"WaUcMCqngE")
+client.run("NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.VykDGh7uwrij-bglsJorDBe7GHs")

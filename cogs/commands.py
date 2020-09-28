@@ -80,11 +80,11 @@ class Commands(commands.Cog):
 			for com in command_list:
 				similarity = difflib.SequenceMatcher(None, command, com).ratio()
 				if similarity >= 0.6:
-					await ctx.send(f"That command doesn't exist. Did you mean `{ctx.prefix}{com}`?")
+					await ctx.send(f"Error: That command doesn't exist. Did you mean `{ctx.prefix}{com}`?")
 		elif isinstance(error, commands.CheckFailure):
-			await ctx.send("You don't have permissions to use that command.")
+			await ctx.send("Error: You don't have permissions to use that command.")
 		elif isinstance(error, commands.MissingRequiredArgument):
-			await ctx.send(f"Missing argument! `{error.param.name}`")
+			await ctx.send(f"Error: Missing argument `{error.param.name}`")
 
 	@commands.command(aliases=['8ball'])
 	async def _8ball(self, ctx, *, question):
@@ -108,6 +108,12 @@ class Commands(commands.Cog):
 
 	@commands.command(aliases=["rolldie", "dieroll"])
 	async def roll(self, ctx, faces=6):
+		if faces <=6:
+			emoji == None # Change when possible
+		else:
+			emoji == None
+		if type(faces) is float and faces != int(faces):
+			await ctx.send(f"Error: You can't roll a die with a non-integer amout of faces, you {faces} dimensional being!")
 		if faces > 2:
 			try:
 				faces = int(faces)
@@ -115,7 +121,7 @@ class Commands(commands.Cog):
 				await ctx.send("Error: You can't roll a die with a non-number amount of faces...")
 			await ctx.send(f"Rolled a d{faces}.\nIt landed on `{random.randint(1, faces)}`!")
 		elif faces == 2:
-			await ctx.send(f"... A 2 sided die is a coin... Use the {ctx.prefix}flip command.")
+			await ctx.send(f"... A 2 sided die is a coin... Use the `{ctx.prefix}`flip command.")
 		elif faces <= 1:
 			await ctx.send("... You serious?")
 
@@ -161,11 +167,8 @@ class Commands(commands.Cog):
 		i = 1
 		for url in search(search_request, stop=10):
 			output_str = ""
-			if i == 10:
-				output_str += f"`{i}.` {url}"
-			else:
-				output_str += f"`{i}.` {url}\n"
-			i += 1
+			output_str += f"`{i}.` {url}\n"
+			output_str = output_str[0:-2]
 		value = random.randint(0, 0xffffff)
 		embed = discord.Embed(description=output_str, color=value)
 		embed.set_author(name="Google", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
@@ -175,7 +178,7 @@ class Commands(commands.Cog):
 
 	@commands.command(aliases=["detect", "language"])
 	async def lang_detect(self, ctx, *, user_message):
-		await ctx.send(f'`{user_message}` is in {lang_dict[self.translator.detect(user_message).lang].capitalize()} (certainty: `{int(self.translator.detect(user_message).confidence*100)}%`)')
+		await ctx.send(f'"{user_message}" is in {lang_dict[self.translator.detect(user_message).lang].capitalize()} (certainty: `{int(self.translator.detect(user_message).confidence*100)}%`)')
 	
 	@commands.command(aliases=["langlist", "languagelist"])
 	async def language_list(self, ctx):
@@ -235,7 +238,7 @@ class Commands(commands.Cog):
 			try:
 				await ctx.send(f'Translated from {lang_dict[source_language]} to {lang_dict[destination_language]}\n`{translated_text}`.')
 			except ValueError:
-				await ctx.send(f"Invalid language. You can use the full English name of the language or it's abbreviation *(type `{ctx.prefix}languagelist` for more information)*.")
+				await ctx.send(f"Error: Invalid language. *(You can use the full English name of the language or it's abbreviation)*.")
 		except Exception as e:
 			await ctx.send(f"An exception has ocurred: {e}")
 
@@ -257,7 +260,7 @@ class Commands(commands.Cog):
 			elapsed_time = elapsed_time/100
 			await message.edit(content=f'"{translated_message}" (Translated {translate_times} times in {elapsed_time} seconds).')
 		except Exception as e:
-			await message.edit(content=f"ERROR: `{e}`")
+			await message.edit(content=f"Error: `{e}`")
 	
 	@commands.command()
 	async def wikipedia(self, ctx):
