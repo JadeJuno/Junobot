@@ -11,11 +11,11 @@ from googletrans import Translator
 from morsecode import MorseCode
 
 
-status_list = ['Default prefix is "g!"', "If something's wrong with the bot, contact Gølder06#7041", 'To see my commands, type "g!help"'] # ["End my suffering.", 'Hekoru killed me.']
+status_list = ['Default prefix is "g!"', "If something's wrong with the bot, contact Gølder06#7041", 'To see my commands, type "g!help"']  # ["End my suffering.", 'Hekoru killed me.']
 
 lang_dict = {'af': 'afrikaans', 'sq': 'albanian', 'am': 'amharic', 'ar': 'arabic', 'hy': 'armenian', 'az': 'azerbaijani', 'eu': 'basque', 'be': 'belarusian', 'bn': 'bengali', 'bs': 'bosnian', 'bg': 'bulgarian', 'ca': 'catalan', 'ceb': 'cebuano', 'ny': 'chichewa', 'zh-cn': 'chinese (simplified)', 'zh-tw': 'chinese (traditional)', 'co': 'corsican', 'hr': 'croatian', 'cs': 'czech', 'da': 'danish', 'nl': 'dutch', 'en': 'english', 'eo': 'esperanto', 'et': 'estonian', 'tl': 'filipino', 'fi': 'finnish', 'fr': 'french', 'fy': 'frisian', 'gl': 'galician', 'ka': 'georgian', 'de': 'german', 'el': 'greek', 'gu': 'gujarati', 'ht': 'haitian creole', 'ha': 'hausa', 'haw': 'hawaiian', 'iw': 'hebrew', 'hi': 'hindi', 'hmn': 'hmong', 'hu': 'hungarian', 'is': 'icelandic', 'ig': 'igbo', 'id': 'indonesian', 'ga': 'irish', 'it': 'italian', 'ja': 'japanese', 'jw': 'javanese', 'kn': 'kannada', 'kk': 'kazakh', 'km': 'khmer', 'ko': 'korean', 'ku': 'kurdish (kurmanji)', 'ky': 'kyrgyz', 'lo': 'lao', 'la': 'latin', 'lv': 'latvian', 'lt': 'lithuanian', 'lb': 'luxembourgish', 'mk': 'macedonian', 'mg': 'malagasy', 'ms': 'malay', 'ml': 'malayalam', 'mt': 'maltese', 'mi': 'maori', 'mr': 'marathi', 'mn': 'mongolian', 'my': 'myanmar (burmese)', 'ne': 'nepali', 'no': 'norwegian', 'ps': 'pashto', 'fa': 'persian', 'pl': 'polish', 'pt': 'portuguese', 'pa': 'punjabi', 'ro': 'romanian', 'ru': 'russian', 'sm': 'samoan', 'gd': 'scots gaelic', 'sr': 'serbian', 'st': 'sesotho', 'sn': 'shona', 'sd': 'sindhi', 'si': 'sinhala', 'sk': 'slovak', 'sl': 'slovenian', 'so': 'somali', 'es': 'spanish', 'su': 'sundanese', 'sw': 'swahili', 'sv': 'swedish', 'tg': 'tajik', 'ta': 'tamil', 'te': 'telugu', 'th': 'thai', 'tr': 'turkish', 'uk': 'ukrainian', 'ur': 'urdu', 'uz': 'uzbek', 'vi': 'vietnamese', 'cy': 'welsh', 'xh': 'xhosa', 'yi': 'yiddish', 'yo': 'yoruba', 'zu': 'zulu', 'he': 'Hebrew'}
 
-command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", ""]
+command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "alias"]
 
 change_loop_interval = random.randint(1, 60)
 
@@ -30,6 +30,14 @@ def get_dict_key(dictionary, value):
 			return key_list[value_list.index(value)]
 	return value
 
+def get_emoji_list(emojis):
+	return_list = list(emojis)
+	for i in range(len(return_list)):
+		for j in range(i + 1, len(return_list)):
+			if return_list[i].name > return_list[j].name:
+				return_list[i], return_list[j] = return_list[j], return_list[i]
+	return return_list
+
 
 def is_bot_owner(ctx):
 	return ctx.author.id == 498606108836102164 or ctx.author == 503657339258273812
@@ -42,8 +50,10 @@ class Commands(commands.Cog):
 		self.log = None
 		self.loop_interval = None
 		self.morse = MorseCode()
+		self.my_guild = None
 		self.owner = None
 		self.translator = Translator()
+		self.emoji_list = None
 
 	@tasks.loop(minutes=change_loop_interval)
 	async def change_status_task(self):
@@ -58,6 +68,8 @@ class Commands(commands.Cog):
 	async def on_ready(self):
 		self.log = self.client.get_channel(751555878385221705)
 		self.owner = self.client.get_user(498606108836102164)
+		self.my_guild = self.client.get_guild(574480926189420555)
+		self.emoji_list = get_emoji_list(self.my_guild.emojis)
 		await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
 		print(f'Bot is ready with status "{self.activity}"')
 		print(f"bot created by {self.owner.name}")
@@ -67,8 +79,7 @@ class Commands(commands.Cog):
 	
 	@commands.Cog.listener()
 	async def on_command(self, ctx):
-		my_guild = self.client.get_guild(574480926189420555)
-		if ctx.message.channel.guild != my_guild:
+		if ctx.message.channel.guild != self.my_guild:
 			await self.log.send(f"{ctx.message.channel.guild.name}:\n{ctx.message.author}: {ctx.message.content}")
 			print(f"{ctx.message.channel.guild.name}:\n{ctx.message.author}: {ctx.message.content}")
 
@@ -108,10 +119,6 @@ class Commands(commands.Cog):
 
 	@commands.command(aliases=["rolldie", "dieroll"])
 	async def roll(self, ctx, faces=6):
-		if faces <=6:
-			emoji == None # Change when possible
-		else:
-			emoji == None
 		if type(faces) is float and faces != int(faces):
 			await ctx.send(f"Error: You can't roll a die with a non-integer amout of faces, you {faces} dimensional being!")
 		if faces > 2:
@@ -119,7 +126,12 @@ class Commands(commands.Cog):
 				faces = int(faces)
 			except ValueError:
 				await ctx.send("Error: You can't roll a die with a non-number amount of faces...")
-			await ctx.send(f"Rolled a d{faces}.\nIt landed on `{random.randint(1, faces)}`!")
+			result = random.randint(1, faces)
+			if faces <= 6:
+				emoji = self.emoji_list[result-1]
+			else:
+				emoji = result
+			await ctx.send(f"Rolled a d{faces}.\nIt landed on **{emoji}**!")
 		elif faces == 2:
 			await ctx.send(f"... A 2 sided die is a coin... Use the `{ctx.prefix}`flip command.")
 		elif faces <= 1:
@@ -243,7 +255,7 @@ class Commands(commands.Cog):
 			await ctx.send(f"An exception has ocurred: {e}")
 
 	@commands.command(aliases=["translatemess"])
-	async def translate_mess(self, ctx, translate_message, translate_times:int =5):
+	async def translate_mess(self, ctx, translate_message, translate_times: int = 5):
 		first_time = time.time()
 		message = await ctx.send(f"Translating the message {translate_times} times. This might take a while...")
 		try:
@@ -314,10 +326,8 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 2", value="value 2")
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
-		if ctx.author.guild_permissions.administrator == True:
-			await ctx.send("You have administrator permissions.")
 		try:
-			await ctx.send(f"{0/0}")
+			await ctx.send(f"{int('A')}")
 		except Exception as e:
 			error = e
 			await ctx.send(f"An exception has ocurred: {e}")
