@@ -11,7 +11,7 @@ from googletrans import Translator
 from morsecode import MorseCode
 
 
-status_list = ['Default prefix is "g!"', "If something's wrong with the bot, contact Gølder06#7041", 'To see my commands, type "g!help"']  # ["End my suffering.", 'Hekoru killed me.']
+status_list = ['My default prefix is "g!".', "If I break, contact Gølder06#7041.", 'To see my commands, type "g!help".']  # ["End my suffering.", 'Hekoru killed me.']
 
 lang_dict = {'af': 'afrikaans', 'sq': 'albanian', 'am': 'amharic', 'ar': 'arabic', 'hy': 'armenian', 'az': 'azerbaijani', 'eu': 'basque', 'be': 'belarusian', 'bn': 'bengali', 'bs': 'bosnian', 'bg': 'bulgarian', 'ca': 'catalan', 'ceb': 'cebuano', 'ny': 'chichewa', 'zh-cn': 'chinese (simplified)', 'zh-tw': 'chinese (traditional)', 'co': 'corsican', 'hr': 'croatian', 'cs': 'czech', 'da': 'danish', 'nl': 'dutch', 'en': 'english', 'eo': 'esperanto', 'et': 'estonian', 'tl': 'filipino', 'fi': 'finnish', 'fr': 'french', 'fy': 'frisian', 'gl': 'galician', 'ka': 'georgian', 'de': 'german', 'el': 'greek', 'gu': 'gujarati', 'ht': 'haitian creole', 'ha': 'hausa', 'haw': 'hawaiian', 'iw': 'hebrew', 'hi': 'hindi', 'hmn': 'hmong', 'hu': 'hungarian', 'is': 'icelandic', 'ig': 'igbo', 'id': 'indonesian', 'ga': 'irish', 'it': 'italian', 'ja': 'japanese', 'jw': 'javanese', 'kn': 'kannada', 'kk': 'kazakh', 'km': 'khmer', 'ko': 'korean', 'ku': 'kurdish (kurmanji)', 'ky': 'kyrgyz', 'lo': 'lao', 'la': 'latin', 'lv': 'latvian', 'lt': 'lithuanian', 'lb': 'luxembourgish', 'mk': 'macedonian', 'mg': 'malagasy', 'ms': 'malay', 'ml': 'malayalam', 'mt': 'maltese', 'mi': 'maori', 'mr': 'marathi', 'mn': 'mongolian', 'my': 'myanmar (burmese)', 'ne': 'nepali', 'no': 'norwegian', 'ps': 'pashto', 'fa': 'persian', 'pl': 'polish', 'pt': 'portuguese', 'pa': 'punjabi', 'ro': 'romanian', 'ru': 'russian', 'sm': 'samoan', 'gd': 'scots gaelic', 'sr': 'serbian', 'st': 'sesotho', 'sn': 'shona', 'sd': 'sindhi', 'si': 'sinhala', 'sk': 'slovak', 'sl': 'slovenian', 'so': 'somali', 'es': 'spanish', 'su': 'sundanese', 'sw': 'swahili', 'sv': 'swedish', 'tg': 'tajik', 'ta': 'tamil', 'te': 'telugu', 'th': 'thai', 'tr': 'turkish', 'uk': 'ukrainian', 'ur': 'urdu', 'uz': 'uzbek', 'vi': 'vietnamese', 'cy': 'welsh', 'xh': 'xhosa', 'yi': 'yiddish', 'yo': 'yoruba', 'zu': 'zulu', 'he': 'Hebrew'}
 
@@ -60,7 +60,7 @@ class Commands(commands.Cog):
 		global change_loop_interval
 		self.activity = random.choice(status_list)
 		await self.client.change_presence(activity=discord.Game(self.activity))
-		print(f'Status changed to "{self.activity}"')
+		print(f'Status changed to "{self.activity}."')
 		change_loop_interval = random.randint(15, 60)
 		print(f"Next status change in {change_loop_interval} minutes.")
 
@@ -71,8 +71,8 @@ class Commands(commands.Cog):
 		self.my_guild = self.client.get_guild(574480926189420555)
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
 		await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
-		print(f'Bot is ready with status "{self.activity}"')
-		print(f"bot created by {self.owner.name}")
+		print(f'Bot is ready.')
+		print(f"bot created by {self.owner.name}.")
 		self.log = self.client.get_channel(751555878385221705)
 		self.change_status_task.start()
 		await self.log.send("Bot Started.")
@@ -95,12 +95,12 @@ class Commands(commands.Cog):
 		elif isinstance(error, commands.CheckFailure):
 			await ctx.send("Error: You don't have permissions to use that command.")
 		elif isinstance(error, commands.MissingRequiredArgument):
-			await ctx.send(f"Error: Missing argument `{error.param.name}`")
+			await ctx.send(f"Error: Missing argument `{error.param.name}`.")
 
 	@commands.command(aliases=['8ball'])
 	async def _8ball(self, ctx, *, question):
 		ball_responses = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "All signs point to yes.", "Reply hazy, try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."]
-		await ctx.send(f'Question: {question}\n:8ball: Answer: {random.choice(ball_responses)}')
+		await ctx.send(f'Question: {question}\n:8ball: Answer: {random.choice(ball_responses)}.')
 
 	@commands.command()
 	async def choose(self, ctx, *, options):
@@ -109,9 +109,9 @@ class Commands(commands.Cog):
 			for option in divided_options:
 				if option == False:
 					divided_options.pop(option)
-			await ctx.send(f'Gøldbot chooses: `{random.choice(divided_options).strip()}`')
+			await ctx.send(f'Gøldbot chooses: `{random.choice(divided_options).strip()}`.')
 		else:
-			await ctx.send('I can\'t just choose between one choice. *(to divide the choices you can put a comma between them)*')
+			await ctx.send('I can\'t just choose between one choice. *(to divide the choices you can put a comma between them)*.')
 
 	@commands.command(aliases=["coinflip", "flipcoin"])
 	async def flip(self, ctx):
@@ -145,7 +145,6 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def alias(self, ctx, command=None):
 		alias_command_list = ["language", "morse", "morsecode", "detect", "google", "googleit", "googlesearch", "dieroll", "roll", "rolldie", "coinflip", "flip", "flipcoin"]
-		title = ""
 		i = None
 		value = random.randint(0, 0xffffff)
 		
@@ -164,7 +163,7 @@ class Commands(commands.Cog):
 					alias_text = f.read()
 			else:
 				title = "Error"
-				alias_text = "Command alias not found"
+				alias_text = f'Command "{command}" doesn\'t have an alias or doesn\'t exist.'
 
 		embed = discord.Embed(description=alias_text)
 		embed.set_author(name=title)
@@ -174,24 +173,24 @@ class Commands(commands.Cog):
 	
 	@commands.command(aliases=["googleit", "googlesearch"])
 	async def google(self, ctx, *, search_request):
-		message = await ctx.send(f"Searching for `{search_request}`")
+		message = await ctx.send(f"Searching for `{search_request}`...")
 		output_str = "**No results found.**"
 		i = 1
+		output_str = ""
 		for url in search(search_request, stop=10):
-			output_str = ""
 			output_str += f"`{i}.` {url}\n"
-			output_str = output_str[0:-2]
 		value = random.randint(0, 0xffffff)
-		embed = discord.Embed(description=output_str, color=value)
+		embed = discord.Embed(description=output_str[0:-2], color=value)
 		embed.set_author(name="Google", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
-		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}", icon_url="https://i.imgur.com/ZgG8oJn.png")
+		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
 		await message.edit(content=None, embed=embed)
 
 	@commands.command(aliases=["detect", "language"])
 	async def lang_detect(self, ctx, *, user_message):
-		await ctx.send(f'"{user_message}" is in {lang_dict[self.translator.detect(user_message).lang].capitalize()} (certainty: `{int(self.translator.detect(user_message).confidence*100)}%`)')
+		await ctx.send(f'"{user_message}" is in {lang_dict[self.translator.detect(user_message).lang].capitalize()} (certainty: `{int(self.translator.detect(user_message).confidence*100)}%`).')
 	
+	"""
 	@commands.command(aliases=["langlist", "languagelist"])
 	async def language_list(self, ctx):
 		message = await ctx.send("The language list is quite long, so proceed with caution.")
@@ -202,8 +201,9 @@ class Commands(commands.Cog):
 		value = random.randint(0, 0xffffff)
 		embed = discord.Embed(description=output, color=value)
 		embed.set_author(name="Language List:")
-		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}", icon_url="https://i.imgur.com/ZgG8oJn.png")
+		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
 		await message.edit(content=None, embed=embed)
+	"""
 	
 	@commands.command(aliases=["morsecode", "morse"])
 	async def morse_code(self, ctx, encrypt_decrypt, *, sentence):
@@ -223,6 +223,7 @@ class Commands(commands.Cog):
 				output = error_message
 			except Exception as e:
 				print(e)
+				return
 		elif disc == "decrypt":
 			try:
 				output = self.morse.decrypt(code).lower()
@@ -250,9 +251,9 @@ class Commands(commands.Cog):
 			try:
 				await ctx.send(f'Translated from {lang_dict[source_language]} to {lang_dict[destination_language]}\n`{translated_text}`.')
 			except ValueError:
-				await ctx.send(f"Error: Invalid language. *(You can use the full English name of the language or it's abbreviation)*.")
+				await ctx.send(f"Error: Invalid language. *(You can use the full English name of the language or it's abbreviation).*")
 		except Exception as e:
-			await ctx.send(f"An exception has ocurred: {e}")
+			await ctx.send(f"An exception has ocurred: {e}.")
 
 	@commands.command(aliases=["translatemess"])
 	async def translate_mess(self, ctx, translate_message, translate_times: int = 5):
@@ -291,13 +292,13 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def kick(self, ctx, member: discord.Member, *, reason=None):
 		await member.kick(reason=reason)
-		await ctx.send(f'{member} kicked via {ctx.prefix}kick. Reason: {reason}')
+		await ctx.send(f'{member} kicked via {ctx.prefix}kick. Reason: {reason}.')
 
 	@commands.has_permissions(ban_members=True)
 	@commands.command()
 	async def ban(self, ctx, member: discord.Member, *, reason=None):
 		await member.ban(reason=reason)
-		await ctx.send(f'{member} banned via {ctx.prefix}ban command. Reason: {reason}')
+		await ctx.send(f'{member} banned via {ctx.prefix}ban command. Reason: {reason}.')
 	
 	@commands.has_permissions(ban_members=True)
 	@commands.command()
@@ -310,7 +311,7 @@ class Commands(commands.Cog):
 				await ctx.guild.unban(user)
 				await ctx.send(f'Unbanned {user.mention}.')
 				return
-			await ctx.send(f'{user.mention} is not banned')
+			await ctx.send(f'{user.mention} is not banned.')
 
 	@commands.command()
 	async def test(self, ctx):
@@ -319,7 +320,7 @@ class Commands(commands.Cog):
 		value = random.randint(0, 0xffffff)
 		embed = discord.Embed(title="Title", description=f"{gold_emoji}[Test Link](https://www.youtube.com)", color=value, url="https://www.google.com/")
 		embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
-		embed.set_footer(text=f"*Requested by {ctx.author.name}*", icon_url=ctx.author.avatar_url)
+		embed.set_footer(text=f"*Requested by {ctx.author.name}.*", icon_url=ctx.author.avatar_url)
 		embed.set_image(url="https://discordpy.readthedocs.io/en/latest/_images/snake.png")
 		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 		embed.add_field(name="Field 1", value="value 1")
@@ -330,7 +331,7 @@ class Commands(commands.Cog):
 			int('A')
 		except Exception as e:
 			error = e
-			await ctx.send(f"An exception has ocurred: {e}")
+			await ctx.send(f"An exception has ocurred: {e}.")
 
 	@commands.command()
 	async def trans_test(self, ctx):

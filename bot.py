@@ -18,36 +18,24 @@ parser = prefix.PrefixParser(default="g!")
 client = commands.Bot(command_prefix=parser)
 client.remove_command("help")
 
-status_list = ['Default prefix is "g!"', "If something's wrong with the bot, contact Gølder06#7041", "End my suffering."]
-command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban"]
+command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "alias"]
 
 @client.event
 async def on_ready():
 	owner = client.get_user(498606108836102164)
 
 
-@tasks.loop(hours=1)
-async def change_status_task():
-	activity = random.choice(status_list)
-	await client.change_presence(activity=activity)
-	print(f'Status changed to "{activity}"')
-
-
 @client.command("help")
 async def _help(ctx, command=None):
-	title = ""
-	i = None
 	value = random.randint(0, 0xffffff)
-	help_text = ""
 	if command is None:
 		with open("Help/General Help.txt", "r") as f:
-			help_ = f.read()
+			help_text = f.read()
 		with open("Help/Mod Help.txt", "r") as f:
 			mod_text = f.read()
 		with open("Help/Owner Help.txt", "r") as f:
 			owner_text = f.read()
 		title = "Commands"
-		help_text += help_
 		if ctx.author.guild_permissions.administrator == True:
 			help_text += mod_text
 		else:
@@ -55,6 +43,7 @@ async def _help(ctx, command=None):
 		if is_bot_owner(ctx) == True:
 			help_text += owner_text
 	else:
+		i = None
 		for com in command_list:
 			if com == command:
 				i = True
@@ -69,8 +58,8 @@ async def _help(ctx, command=None):
 					with open("Help/Specific Helps/prefix_admin.txt") as f:
 						help_text = f.read()
 		else:
-			title = "Error"
-			help_text = "Command not found"
+			title = "Error!"
+			help_text = "Command not found."
 	embed = discord.Embed(description=help_text.format(prefix=ctx.prefix))
 	embed.set_author(name=title)
 	embed.set_footer(text=f"\n<>=Necessary, []=optional.\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
@@ -118,7 +107,7 @@ async def load_errors(ctx, error):
 async def prefix(ctx, new_prefix=None):
 	perm = ctx.author.guild_permissions.administrator
 	if new_prefix is None:
-		await ctx.send(f"Server's prefix currently set to {ctx.prefix}")
+		await ctx.send(f"Server's prefix currently set to {ctx.prefix}.")
 	else:
 		if perm == True:
 			sv = str(ctx.guild.id)
