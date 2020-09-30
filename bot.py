@@ -70,19 +70,19 @@ async def _help(ctx, command=None):
 @client.command()
 @commands.check(is_bot_owner)
 async def load(ctx, extension):
-	print(f"Loading {extension}...")
+	print(f"Loading {extension.capitalize()}...")
 	client.load_extension(f'cogs.{extension}')
-	print(f"{extension} loaded!")
-	await ctx.send(f'Cog "{extension}" loaded!')
+	print(f"{extension.capitalize()} loaded!")
+	await ctx.send(f'Cog "{extension.capitalize()}" loaded!')
 
 
 @client.command()
 @commands.check(is_bot_owner)
 async def unload(ctx, extension="commands"):
-	print(f"Unloading {extension}...")
+	print(f"Unloading {extension.capitalize()}...")
 	client.unload_extension(f'cogs.{extension}')
 	print(f"{extension.capitalize()} unloaded!")
-	await ctx.send(f'{extension.capitalize} unloaded!')
+	await ctx.send(f'{extension.capitalize()} unloaded!')
 
 
 @client.command()
@@ -100,7 +100,7 @@ async def reload(ctx, extension="commands"):
 @reload.error
 async def load_errors(ctx, error):
 	if isinstance(error, commands.ExtensionNotLoaded):
-		await ctx.send(f'Specified extension not found.')
+		await ctx.send(f'Error: Specified extension not found.')
 
 
 @client.command()
