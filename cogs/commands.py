@@ -327,7 +327,7 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
 		try:
-			await ctx.send(f"{int('A')}")
+			int('A')
 		except Exception as e:
 			error = e
 			await ctx.send(f"An exception has ocurred: {e}")
