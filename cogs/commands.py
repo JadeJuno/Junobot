@@ -272,27 +272,6 @@ class Commands(commands.Cog):
 			await ctx.send(f"An exception has ocurred: {e}.")
 
 
-	@commands.command(aliases=["translatemess"])
-	async def translate_mess(self, ctx, translate_message, translate_times: int = 5):
-		first_time = time.time()
-		message = await ctx.send(f"Translating the message {translate_times} times. This might take a while...")
-		try:
-			translated_message = translate_message
-			initial_lang = self.translator.detect(translated_message).lang
-			old_rand_lang = initial_lang
-			for i in range(translate_times):
-				rand_lang = random.choice(abbrev_lang_list)
-				translated_message = self.translator.translate(translated_message, src=self.translator.detect(translated_message).lang, dest=rand_lang).text
-				# print(f'{i+1}: "{translated_message}" from {old_rand_lang} to {rand_lang}')
-				old_rand_lang = rand_lang
-			translated_message = self.translator.translate(translated_message, dest=initial_lang).text
-			elapsed_time = int((time.time()-first_time)*100)
-			elapsed_time = elapsed_time/100
-			await message.edit(content=f'"{translated_message}" (Translated {translate_times} times in {elapsed_time} seconds).')
-		except Exception as e:
-			await message.edit(content=f"Error: `{e}`")
-
-
 	@commands.command()
 	async def wikipedia(self, ctx):
 		await ctx.send("**\**WIP****")
