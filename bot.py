@@ -27,7 +27,6 @@ async def on_ready():
 
 @client.command("help")
 async def _help(ctx, command=None):
-	value = random.randint(0, 0xffffff)
 	if command is None:
 		with open("Help/General Help.txt", "r") as f:
 			help_text = f.read()
@@ -60,10 +59,9 @@ async def _help(ctx, command=None):
 		else:
 			title = "Error!"
 			help_text = "Command not found."
-	embed = discord.Embed(description=help_text.format(prefix=ctx.prefix))
+	embed = discord.Embed(description=help_text.format(prefix=ctx.prefix), color=random.randint(0, 0xffffff))
 	embed.set_author(name=title)
 	embed.set_footer(text=f"\n<>=Necessary, []=optional.\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
-	embed.colour = value
 	await ctx.send(embed=embed)
 
 

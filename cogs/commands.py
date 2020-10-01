@@ -313,8 +313,9 @@ class Commands(commands.Cog):
 				await ctx.send(f'Unbanned {user.mention}.')
 				return
 			await ctx.send(f'{user.mention} is not banned.')
+	
 
-
+	@commands.check(is_bot_owner)
 	@commands.command()
 	async def test(self, ctx):
 		gold_emoji = self.client.get_emoji(751859382349856838)
@@ -334,22 +335,19 @@ class Commands(commands.Cog):
 		except Exception as e:
 			error = e
 			await ctx.send(f"An exception has ocurred: {e}.")
-
-
+	
+	
+	@commands.check(is_bot_owner)
 	@commands.command()
-	async def trans_test(self, ctx):
-		trans_str = "The World is the strongest Stand!"
-		length = len(abbrev_lang_list)
-		proof = ""
-		i = 0
-		for lang in abbrev_lang_list:
-			try:
-				i += 1
-				proof += f"{self.translator.translate(trans_str, dest=lang).text}\n"
-				print(f"{self.translator.translate(trans_str, dest=lang).text} {lang} ({i}/{length})")
-			except exception as e:
-				print(f"Error: {e}")
-		await ctx.send(f"{i}/{length}")
+	async def embed_test(self, ctx):
+		embed = discord.Embed(description="Insert Text Here", color=random.randint(0, 0xffffff))
+		embed.set_author(name="Insert Title Here", icon_url=None)  # Make a placeholder image for this.
+		embed.set_footer(text=f"Insert Text Here (not needed)\nGøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
+		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")  # Make a placeholder image for this one too
+		await ctx.send(embed=embed)
+		
+	
+	
 
 
 def setup(client):
