@@ -119,4 +119,7 @@ for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
 		client.load_extension(f'cogs.{filename[:-3]}')
 
-client.run("NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.VykDGh7uwrij-bglsJorDBe7GHs")
+with open("Goldbot_Token.txt", "r") as f:
+	TOKEN = f.read()
+
+client.run(TOKEN)
