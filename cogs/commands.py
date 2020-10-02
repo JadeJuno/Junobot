@@ -61,8 +61,11 @@ class Commands(commands.Cog):
 	@tasks.loop(minutes=change_loop_interval)
 	async def change_status_task(self):
 		global change_loop_interval
-		self.activity = random.choice(status_list)
-		await self.client.change_presence(activity=discord.Game(self.activity))
+		if random.randint(0, 100000000) != 69420:  # I'm the embodiment of humor.
+			self.activity = random.choice(status_list)
+		else:
+			self.activity = "YO STEVE'S IN SMASH LET'S GO!"
+		await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
 		print(f'Status changed to "{self.activity}"')
 		change_loop_interval = random.randint(1, 90)
 		print(f"Next status change in {change_loop_interval} minutes.")
@@ -74,9 +77,6 @@ class Commands(commands.Cog):
 		self.owner = self.client.get_user(498606108836102164)
 		self.my_guild = self.client.get_guild(574480926189420555)
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
-		status_list.append(f"YO STEVE IS IN SMASH LET'S GO!")
-		self.activity = random.choices(status_list, weights=[333333, 333333, 333333, 1])
-		await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
 		self.log = self.client.get_channel(751555878385221705)
 		print(f'Bot is ready.')
 		print(f"bot created by {self.owner.name}.")
