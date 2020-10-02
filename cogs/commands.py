@@ -11,13 +11,13 @@ from googletrans import Translator
 from morsecode import MorseCode
 
 
-status_list = ['My default prefix is "g!".', "If I break, contact Gølder06#7041.", 'To see my commands, type "g!help".']  # ["End my suffering.", 'Hekoru killed me.']
+status_list = ['My default prefix is g!.', "If I break, contact Gølder06#7041.", 'To see my commands, type g!help.']  # ["End my suffering.", 'Hekoru killed me.']
 
 lang_dict = {'af': 'afrikaans', 'sq': 'albanian', 'am': 'amharic', 'ar': 'arabic', 'hy': 'armenian', 'az': 'azerbaijani', 'eu': 'basque', 'be': 'belarusian', 'bn': 'bengali', 'bs': 'bosnian', 'bg': 'bulgarian', 'ca': 'catalan', 'ceb': 'cebuano', 'ny': 'chichewa', 'zh-cn': 'chinese (simplified)', 'zh-tw': 'chinese (traditional)', 'co': 'corsican', 'hr': 'croatian', 'cs': 'czech', 'da': 'danish', 'nl': 'dutch', 'en': 'english', 'eo': 'esperanto', 'et': 'estonian', 'tl': 'filipino', 'fi': 'finnish', 'fr': 'french', 'fy': 'frisian', 'gl': 'galician', 'ka': 'georgian', 'de': 'german', 'el': 'greek', 'gu': 'gujarati', 'ht': 'haitian creole', 'ha': 'hausa', 'haw': 'hawaiian', 'iw': 'hebrew', 'hi': 'hindi', 'hmn': 'hmong', 'hu': 'hungarian', 'is': 'icelandic', 'ig': 'igbo', 'id': 'indonesian', 'ga': 'irish', 'it': 'italian', 'ja': 'japanese', 'jw': 'javanese', 'kn': 'kannada', 'kk': 'kazakh', 'km': 'khmer', 'ko': 'korean', 'ku': 'kurdish (kurmanji)', 'ky': 'kyrgyz', 'lo': 'lao', 'la': 'latin', 'lv': 'latvian', 'lt': 'lithuanian', 'lb': 'luxembourgish', 'mk': 'macedonian', 'mg': 'malagasy', 'ms': 'malay', 'ml': 'malayalam', 'mt': 'maltese', 'mi': 'maori', 'mr': 'marathi', 'mn': 'mongolian', 'my': 'myanmar (burmese)', 'ne': 'nepali', 'no': 'norwegian', 'ps': 'pashto', 'fa': 'persian', 'pl': 'polish', 'pt': 'portuguese', 'pa': 'punjabi', 'ro': 'romanian', 'ru': 'russian', 'sm': 'samoan', 'gd': 'scots gaelic', 'sr': 'serbian', 'st': 'sesotho', 'sn': 'shona', 'sd': 'sindhi', 'si': 'sinhala', 'sk': 'slovak', 'sl': 'slovenian', 'so': 'somali', 'es': 'spanish', 'su': 'sundanese', 'sw': 'swahili', 'sv': 'swedish', 'tg': 'tajik', 'ta': 'tamil', 'te': 'telugu', 'th': 'thai', 'tr': 'turkish', 'uk': 'ukrainian', 'ur': 'urdu', 'uz': 'uzbek', 'vi': 'vietnamese', 'cy': 'welsh', 'xh': 'xhosa', 'yi': 'yiddish', 'yo': 'yoruba', 'zu': 'zulu', 'he': 'Hebrew'}
 
 command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "alias"]
 
-change_loop_interval = random.randint(1, 60)
+change_loop_interval = random.randint(1, 90)
 
 abbrev_lang_list = list(lang_dict.keys())
 full_lang_list = list(lang_dict.values())
@@ -47,7 +47,7 @@ def is_bot_owner(ctx):
 class Commands(commands.Cog):
 
 	def __init__(self, client):
-		self.activity = random.choice(status_list)
+		self.activity = None
 		self.client = client
 		self.log = None
 		self.loop_interval = None
@@ -63,8 +63,8 @@ class Commands(commands.Cog):
 		global change_loop_interval
 		self.activity = random.choice(status_list)
 		await self.client.change_presence(activity=discord.Game(self.activity))
-		print(f'Status changed to "{self.activity}."')
-		change_loop_interval = random.randint(15, 60)
+		print(f'Status changed to "{self.activity}"')
+		change_loop_interval = random.randint(1, 90)
 		print(f"Next status change in {change_loop_interval} minutes.")
 
 
@@ -74,12 +74,14 @@ class Commands(commands.Cog):
 		self.owner = self.client.get_user(498606108836102164)
 		self.my_guild = self.client.get_guild(574480926189420555)
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
+		status_list.append(f"YO STEVE IS IN SMASH LET'S GO!")
+		self.activity = random.choices(status_list, weights=[333333, 333333, 333333, 1])
 		await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
+		self.log = self.client.get_channel(751555878385221705)
 		print(f'Bot is ready.')
 		print(f"bot created by {self.owner.name}.")
-		self.log = self.client.get_channel(751555878385221705)
-		self.change_status_task.start()
 		await self.log.send("Bot Started.")
+		self.change_status_task.start()
 
 
 	@commands.Cog.listener()
@@ -190,8 +192,7 @@ class Commands(commands.Cog):
 		output_str = ""
 		for url in search(search_request, stop=10):
 			output_str += f"`{i}.` {url}\n"
-		value = random.randint(0, 0xffffff)
-		embed = discord.Embed(description=output_str[0:-2], color=value)
+		embed = discord.Embed(description=output_str[0:-2], color=random.randint(0, 0xffffff))
 		embed.set_author(name="Google", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
@@ -291,7 +292,7 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def kick(self, ctx, member: discord.Member, *, reason=None):
 		await member.kick(reason=reason)
-		await ctx.send(f'{member} kicked via {ctx.prefix}kick. Reason: {reason}.')
+		await ctx.send(f'{member} kicked via {ctx.prefix}kick command. Reason: {reason}.')
 
 
 	@commands.has_permissions(ban_members=True)
@@ -341,9 +342,9 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def embed_test(self, ctx):
 		embed = discord.Embed(description="Insert Text Here", color=random.randint(0, 0xffffff))
-		embed.set_author(name="Insert Title Here", icon_url=None)  # Make a placeholder image for this.
+		embed.set_author(name="Insert Title Here", icon_url="https://i.imgur.com/8bOl5gU.png")
 		embed.set_footer(text=f"Insert Text Here (not needed)\nGøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
-		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")  # Make a placeholder image for this one too
+		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 		await ctx.send(embed=embed)
 		
 	
