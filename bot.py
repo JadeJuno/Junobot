@@ -49,13 +49,8 @@ async def _help(ctx, command=None):
 				break
 		if i == True:
 			title = command.capitalize()
-			if command != "prefix":
-				with open(f"Help/Specific Helps/{command}.txt") as file:
-					help_text = file.read()
-			else:
-				if ctx.author.guild_permissions.administrator == True:
-					with open("Help/Specific Helps/prefix_admin.txt") as file:
-						help_text = file.read()
+			with open(f"Help/Specific Helps/{command}.txt") as file:
+				help_text = file.read()
 		else:
 			title = "Error!"
 			help_text = "Command not found."

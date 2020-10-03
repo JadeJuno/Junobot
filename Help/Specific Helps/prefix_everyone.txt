@@ -1,5 +1,0 @@
-**Description**
-Shows the server's current prefix *(even though you'd need to use the bot's prefix to see this message...)*.
-
-**Usage**
-`{prefix}prefix`

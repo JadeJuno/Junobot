@@ -1,6 +1,9 @@
 **Description**
  Clears an specified amount of messages from the channel it is used on *(not counting the command message)*.
 
+**Permissions**
+*You need to have the `Manage Messages` permission to use this command.*
+
 **Usage**
 `{prefix}clear <amount>`
 E.G.: `{prefix}clear 10`

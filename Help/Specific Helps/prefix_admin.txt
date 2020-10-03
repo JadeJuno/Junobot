@@ -1,6 +1,0 @@
-**Description**
-Sets the server's prefix to the specified prefix *(if blank, it will send the current prefix)*.
-
-**Usage**
-`{prefix}prefix [prefix]`
-E.G.: `{prefix}prefix gg`
