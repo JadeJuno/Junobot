@@ -189,6 +189,7 @@ class Commands(commands.Cog):
 		output_str = ""
 		for url in googlesearch.search(search_request, stop=10):
 			output_str += f"`{i}.` [{url.title}]({url.link})\n"
+			i += 1
 		embed = discord.Embed(description=output_str[0:-1], color=random.randint(0, 0xffffff))
 		embed.set_author(name="Google", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
