@@ -1,5 +1,5 @@
 **Description**
-Pins the message that's right above the command.
+Pins the message right above the command.
 
 **Permissions**
 You need to have the `Manage Messages` permission to use this command.
