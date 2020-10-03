@@ -4,5 +4,6 @@
 `{prefix}ban <@user#1234> [reason]`
 `{prefix}clear <amount>`
 `{prefix}kick <@user#1234> [reason]`
+`{prefix}pin`
 `{prefix}prefix [prefix]`
 `{prefix}unban <user#1234>`
