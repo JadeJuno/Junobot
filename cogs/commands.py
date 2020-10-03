@@ -61,10 +61,7 @@ class Commands(commands.Cog):
 	@tasks.loop(minutes=change_loop_interval)
 	async def change_status_task(self):
 		global change_loop_interval
-		if random.randint(0, 100000000) != 69420:  # I'm the embodiment of humor.
-			self.activity = random.choice(status_list)
-		else:
-			self.activity = "YO STEVE'S IN SMASH LET'S GO!"
+		self.activity = random.choice(status_list)
 		await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
 		print(f'Status changed to "{self.activity}"')
 		change_loop_interval = random.randint(1, 90)
