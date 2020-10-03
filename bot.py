@@ -1,12 +1,12 @@
 import difflib
 import discord
+import googlesearch
 import json
 import os
 import prefix
 import random
 import wikipedia
 from discord.ext import commands, tasks
-from googlesearch import search
 
 
 def is_bot_owner(ctx):
@@ -28,12 +28,12 @@ async def on_ready():
 @client.command("help")
 async def _help(ctx, command=None):
 	if command is None:
-		with open("Help/General Help.txt", "r") as f:
-			help_text = f.read()
-		with open("Help/Mod Help.txt", "r") as f:
-			mod_text = f.read()
-		with open("Help/Owner Help.txt", "r") as f:
-			owner_text = f.read()
+		with open("Help/General Help.txt", "r") as file:
+			help_text = file.read()
+		with open("Help/Mod Help.txt", "r") as file:
+			mod_text = file.read()
+		with open("Help/Owner Help.txt", "r") as file:
+			owner_text = file.read()
 		title = "Commands"
 		if ctx.author.guild_permissions.administrator == True:
 			help_text += mod_text
@@ -50,12 +50,12 @@ async def _help(ctx, command=None):
 		if i == True:
 			title = command.capitalize()
 			if command != "prefix":
-				with open(f"Help/Specific Helps/{command}.txt") as f:
-					help_text = f.read()
+				with open(f"Help/Specific Helps/{command}.txt") as file:
+					help_text = file.read()
 			else:
 				if ctx.author.guild_permissions.administrator == True:
-					with open("Help/Specific Helps/prefix_admin.txt") as f:
-						help_text = f.read()
+					with open("Help/Specific Helps/prefix_admin.txt") as file:
+						help_text = file.read()
 		else:
 			title = "Error!"
 			help_text = "Command not found."
