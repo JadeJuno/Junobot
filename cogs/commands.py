@@ -1,12 +1,12 @@
 import difflib
 import discord
+import googlesearch
 import json
 import prefix
 import random
 import time
 import wikipedia
 from discord.ext import commands, tasks
-from googlesearch import search
 from googletrans import Translator
 from morsecode import MorseCode
 
@@ -187,9 +187,9 @@ class Commands(commands.Cog):
 		output_str = "**No results found.**"
 		i = 1
 		output_str = ""
-		for url in search(search_request, stop=10):
-			output_str += f"`{i}.` {url}\n"
-		embed = discord.Embed(description=output_str[0:-2], color=random.randint(0, 0xffffff))
+		for url in googlesearch.search(search_request, stop=10):
+			output_str += f"`{i}.` [{url.title}]({url.link})\n"
+		embed = discord.Embed(description=output_str[0:-1], color=random.randint(0, 0xffffff))
 		embed.set_author(name="Google", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
