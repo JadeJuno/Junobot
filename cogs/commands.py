@@ -286,6 +286,13 @@ class Commands(commands.Cog):
 		await clear_message.delete()
 
 
+	@commands.has_permissions(ban_members=True)
+	@commands.command()
+	async def ban(self, ctx, member: discord.Member, *, reason=None):
+		await member.ban(reason=reason)
+		await ctx.send(f'{member} banned via {ctx.prefix}ban command. Reason: {reason}.')
+
+
 	@commands.has_permissions(kick_members=True)
 	@commands.command()
 	async def kick(self, ctx, member: discord.Member, *, reason=None):
@@ -293,11 +300,11 @@ class Commands(commands.Cog):
 		await ctx.send(f'{member} kicked via {ctx.prefix}kick command. Reason: {reason}.')
 
 
-	@commands.has_permissions(ban_members=True)
+	@commands.has_permissions(manage_messages=True)
 	@commands.command()
-	async def ban(self, ctx, member: discord.Member, *, reason=None):
-		await member.ban(reason=reason)
-		await ctx.send(f'{member} banned via {ctx.prefix}ban command. Reason: {reason}.')
+	async def pin(self, ctx):
+		messages = await ctx.history(limit=2).flatten()
+		await messages[1].pin()
 
 
 	@commands.has_permissions(ban_members=True)
