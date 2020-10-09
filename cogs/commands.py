@@ -166,7 +166,7 @@ class Commands(commands.Cog):
 			with open("Help/Aliases/General.txt") as f:
 				alias_text = f.read()
 		else:
-			for com in alias_command_list:
+			for com in command_list:
 				if com == command:
 					i = True
 					break
