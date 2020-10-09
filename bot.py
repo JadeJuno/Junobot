@@ -18,7 +18,7 @@ parser = prefix.PrefixParser(default="g!")
 client = commands.Bot(command_prefix=parser, case_insensitive=True)
 client.remove_command("help")
 
-command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "alias"]
+command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "pin", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "alias"]
 
 @client.event
 async def on_ready():
@@ -114,7 +114,8 @@ for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
 		client.load_extension(f'cogs.{filename[:-3]}')
 
-with open("Goldbot_Token.txt", "r") as f:
-	TOKEN = f.read()
+# with open("Goldbot_Token.txt", "r") as f:
+# 	TOKEN = f.read()
+TOKEN = "NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.ywRBVp3AnGQjCiRwjYJsk3Oryk4"
 
 client.run(TOKEN)

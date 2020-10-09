@@ -15,7 +15,7 @@ status_list = ['My default prefix is g!.', "If I break, contact Gølder06#7041."
 
 lang_dict = {'af': 'afrikaans', 'sq': 'albanian', 'am': 'amharic', 'ar': 'arabic', 'hy': 'armenian', 'az': 'azerbaijani', 'eu': 'basque', 'be': 'belarusian', 'bn': 'bengali', 'bs': 'bosnian', 'bg': 'bulgarian', 'ca': 'catalan', 'ceb': 'cebuano', 'ny': 'chichewa', 'zh-cn': 'chinese (simplified)', 'zh-tw': 'chinese (traditional)', 'co': 'corsican', 'hr': 'croatian', 'cs': 'czech', 'da': 'danish', 'nl': 'dutch', 'en': 'english', 'eo': 'esperanto', 'et': 'estonian', 'tl': 'filipino', 'fi': 'finnish', 'fr': 'french', 'fy': 'frisian', 'gl': 'galician', 'ka': 'georgian', 'de': 'german', 'el': 'greek', 'gu': 'gujarati', 'ht': 'haitian creole', 'ha': 'hausa', 'haw': 'hawaiian', 'iw': 'hebrew', 'hi': 'hindi', 'hmn': 'hmong', 'hu': 'hungarian', 'is': 'icelandic', 'ig': 'igbo', 'id': 'indonesian', 'ga': 'irish', 'it': 'italian', 'ja': 'japanese', 'jw': 'javanese', 'kn': 'kannada', 'kk': 'kazakh', 'km': 'khmer', 'ko': 'korean', 'ku': 'kurdish (kurmanji)', 'ky': 'kyrgyz', 'lo': 'lao', 'la': 'latin', 'lv': 'latvian', 'lt': 'lithuanian', 'lb': 'luxembourgish', 'mk': 'macedonian', 'mg': 'malagasy', 'ms': 'malay', 'ml': 'malayalam', 'mt': 'maltese', 'mi': 'maori', 'mr': 'marathi', 'mn': 'mongolian', 'my': 'myanmar (burmese)', 'ne': 'nepali', 'no': 'norwegian', 'ps': 'pashto', 'fa': 'persian', 'pl': 'polish', 'pt': 'portuguese', 'pa': 'punjabi', 'ro': 'romanian', 'ru': 'russian', 'sm': 'samoan', 'gd': 'scots gaelic', 'sr': 'serbian', 'st': 'sesotho', 'sn': 'shona', 'sd': 'sindhi', 'si': 'sinhala', 'sk': 'slovak', 'sl': 'slovenian', 'so': 'somali', 'es': 'spanish', 'su': 'sundanese', 'sw': 'swahili', 'sv': 'swedish', 'tg': 'tajik', 'ta': 'tamil', 'te': 'telugu', 'th': 'thai', 'tr': 'turkish', 'uk': 'ukrainian', 'ur': 'urdu', 'uz': 'uzbek', 'vi': 'vietnamese', 'cy': 'welsh', 'xh': 'xhosa', 'yi': 'yiddish', 'yo': 'yoruba', 'zu': 'zulu', 'he': 'Hebrew'}
 
-command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "alias"]
+command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "pin", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "alias"]
 
 change_loop_interval = random.randint(1, 90)
 
@@ -101,6 +101,9 @@ class Commands(commands.Cog):
 			await ctx.send("Error: You don't have permissions to use that command.")
 		elif isinstance(error, commands.MissingRequiredArgument):
 			await ctx.send(f"Error: Missing argument `{error.param.name}`.")
+		else:
+			await ctx.send(f"Unknown Error: `{error}`")
+			await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": `{error}`')
 
 
 	@commands.command(aliases=['8ball'])
@@ -169,11 +172,14 @@ class Commands(commands.Cog):
 					break
 			if i == True:
 				title = command.capitalize()
-				with open(f"Help/Aliases/{command}.txt") as f:
-					alias_text = f.read()
+				try:
+					with open(f"Help/Aliases/{command}.txt") as f:
+						alias_text = f.read()
+				except FileNotFoundError:
+					alias_text = f'Command "{command}" doesn\'t have any aliases.'
 			else:
 				title = "Error"
-				alias_text = f'Command "{command}" doesn\'t have an alias or doesn\'t exist.'
+				alias_text = f'Command "{command}" doesn\'t exist.'
 		embed = discord.Embed(description=alias_text)
 		embed.set_author(name=title)
 		embed.set_footer(text=f"\nGøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
@@ -189,9 +195,9 @@ class Commands(commands.Cog):
 		output_str = ""
 		for url in googlesearch.search(search_request, stop=10):
 			if i < 10:
-				output_str += f"`{i}.`  [{url.title}]({url.link})\n"
+				output_str += f"`{i}.`   **[{url.title}](<{url.link}>)**\n"
 			else:
-				output_str += f"`{i}.` [{url.title}]({url.link})\n"
+				output_str += f"`{i}.` **[{url.title}](<{url.link}>)**\n"
 			i += 1
 		embed = discord.Embed(description=output_str[0:-1], color=random.randint(0, 0xffffff))
 		embed.set_author(name="Google", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
@@ -265,7 +271,7 @@ class Commands(commands.Cog):
 				source_language = get_dict_key(lang_dict, source_language)
 			else:
 				source_language = self.translator.detect(translate_message).lang
-			translated_text = self.translator.translate(translate_message, src=source_language, dest=destination_language).text
+			translated_text = self.translator.translate(translate_message, src=source_language, dest=destination_language).text.replace("`", "\`")
 			try:
 				await ctx.send(f'Translated from {lang_dict[source_language]} to {lang_dict[destination_language]}\n`{translated_text}`.')
 			except ValueError:
