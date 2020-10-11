@@ -6,6 +6,7 @@ import prefix
 import random
 import time
 import wikipedia
+from datetime import datetime
 from discord.ext import commands, tasks
 from googletrans import Translator
 from morsecode import MorseCode
@@ -63,7 +64,8 @@ class Commands(commands.Cog):
 		global change_loop_interval
 		self.activity = random.choice(status_list)
 		await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
-		print(f'Status changed to "{self.activity}"')
+		time_now = datetime.now()
+		print(f'Status changed to "{self.activity}" ({time_now.hour}:{time_now.minute})')
 		change_loop_interval = random.randint(1, 90)
 		print(f"Next status change in {change_loop_interval} minutes.")
 
@@ -108,8 +110,13 @@ class Commands(commands.Cog):
 
 	@commands.command(aliases=['8ball'])
 	async def _8ball(self, ctx, *, question):
-		ball_responses = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "All signs point to yes.", "Reply hazy, try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."]
-		await ctx.send(f'Question: {question}\n:8ball: Answer: {random.choice(ball_responses)}.')
+		ball_predicts = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "All signs point to yes.", "Reply hazy, try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again."]
+		love_only_predicts = ["Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."]
+		if "love" in question.lower():
+			prediction = random.choice(love_only_predicts)
+		else:
+			prediction = random.choice(ball_predicts)
+		await ctx.send(f'Question: {question}\n:8ball: Answer: {prediction}.')
 
 
 	@commands.command()
