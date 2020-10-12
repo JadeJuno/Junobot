@@ -28,6 +28,7 @@ async def on_ready():
 
 @client.command("help")
 async def _help(ctx, command=None):
+	footer = ""
 	if command is None:
 		with open("Help/General Help.txt", "r") as file:
 			help_text = file.read()
@@ -43,6 +44,7 @@ async def _help(ctx, command=None):
 		if is_bot_owner(ctx) == True:
 			help_text += owner_text
 	else:
+		footer += "\n<>=Necessary, []=optional."
 		i = None
 		for com in command_list:
 			if com == command:
@@ -57,7 +59,7 @@ async def _help(ctx, command=None):
 			help_text = "Command not found."
 	embed = discord.Embed(description=help_text.format(prefix=ctx.prefix), color=random.randint(0, 0xffffff))
 	embed.set_author(name=title)
-	embed.set_footer(text=f"\n<>=Necessary, []=optional.\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
+	embed.set_footer(text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
 	await ctx.send(embed=embed)
 
 
@@ -113,6 +115,11 @@ async def prefix(ctx, new_prefix=None):
 
 for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
-		client.load_extension(f'cogs.{filename[:-3]}'
-	
-client.run(os.environ["TOKEN"])
+		client.load_extension(f'cogs.{filename[:-3]}')
+		
+try:
+	with open("Goldbot_Token.txt", "r") as f:
+		client.run(f.read())
+except Exception as e:
+	print(e)
+	client.run(os.environ["TOKEN"])
