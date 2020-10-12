@@ -113,9 +113,6 @@ async def prefix(ctx, new_prefix=None):
 
 for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
-		client.load_extension(f'cogs.{filename[:-3]}')
-
-with open("Goldbot_Token.txt", "r") as f:
-	TOKEN = f.read()
+		client.load_extension(f'cogs.{filename[:-3]}'
 	
-client.run(TOKEN)
+client.run(os.environ["TOKEN"])
