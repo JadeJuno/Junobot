@@ -117,9 +117,8 @@ for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
 		client.load_extension(f'cogs.{filename[:-3]}')
 		
-try:
-	with open("Goldbot_Token.txt", "r") as f:
-		client.run(f.read())
-except Exception as e:
-	print(e)
-	client.run(os.environ["TOKEN"])
+with open("Goldbot_Token.txt", "r") as f:
+	client.run(f.read())
+# except Exception as e:
+# 	print(e)
+# 	client.run(os.environ["TOKEN"])

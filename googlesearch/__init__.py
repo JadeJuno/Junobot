@@ -202,7 +202,6 @@ def filter_result(link):
 
         # Valid results are absolute URLs not pointing to a Google domain,
         # like images.google.com or googleusercontent.com for example.
-        # TODO this could be improved!
         o = urlparse(link, 'http')
         if o.netloc and 'google' not in o.netloc:
             return link
