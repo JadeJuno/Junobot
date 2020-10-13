@@ -31,7 +31,6 @@ google-api-core==1.22.0
 google-api-python-client==1.10.0
 google-auth==1.20.1
 google-auth-httplib2==0.0.4
-google-search==1.0.2
 Google-Search-API==1.1.14
 googleapis-common-protos==1.52.0
 googletrans==3.0.0
@@ -94,7 +93,6 @@ PySocks==1.7.1
 python-dateutil==2.8.1
 PyTweening==1.0.3
 pytz==2020.1
-pywin32==227
 pywin32-ctypes==0.2.0
 pywinauto==0.6.8
 PyYAML==5.3.1
