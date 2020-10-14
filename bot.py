@@ -5,8 +5,12 @@ import json
 import os
 import prefix
 import random
+import time
 import wikipedia
+from datetime import datetime
 from discord.ext import commands, tasks
+from googletrans import Translator
+from morsecode import MorseCode
 
 
 def is_bot_owner(ctx):
@@ -116,9 +120,9 @@ async def prefix(ctx, new_prefix=None):
 for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
 		client.load_extension(f'cogs.{filename[:-3]}')
-		
-with open("Goldbot_Token.txt", "r") as f:
-	client.run(f.read())
-# except Exception as e:
-# 	print(e)
-# 	client.run(os.environ["TOKEN"])
+try:
+	with open("Goldbot_Token.txt", "r") as f:
+		client.run(f.read())
+except discord.LoginFailure as e:
+	print(e)
+	client.run(os.environ["TOKEN"])
