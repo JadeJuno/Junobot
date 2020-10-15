@@ -124,7 +124,7 @@ for filename in os.listdir('./cogs'):
 try:
 	with open("Goldbot_Token.txt", "r") as f:
 		TOKEN = f.read()
-except dicord.HTTPException: 
+except discord.HTTPException: 
 	print(os.environ["TOKEN"]) 
 	TOKEN = os.environ["TOKEN"]
 
