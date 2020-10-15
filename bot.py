@@ -124,7 +124,8 @@ for filename in os.listdir('./cogs'):
 try:
 	with open("Goldbot_Token.txt", "r") as f:
 		TOKEN = f.read()
-except Exception as e:  # I need to get a way to check that exception
+except dicord.LoginFailure: 
+	print(os.environ["TOKEN"]) 
 	TOKEN = os.environ["TOKEN"]
 
 client.run(TOKEN)
