@@ -27,6 +27,7 @@ command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "roll
 @client.event
 async def on_ready():
 	owner = client.get_user(498606108836102164)
+	print("a", owner)
 
 
 @client.command("help")
