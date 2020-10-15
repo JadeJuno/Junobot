@@ -24,8 +24,11 @@ client.remove_command("help")
 
 command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "pin", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "alias"]
 
+owner = None
+
 @client.event
 async def on_ready():
+	global owner
 	owner = client.get_user(498606108836102164)
 	print("a", owner)
 
