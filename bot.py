@@ -121,11 +121,5 @@ for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
 		client.load_extension(f'cogs.{filename[:-3]}')
 
-try:
-	with open("Goldbot_Token.txt", "r") as f:
-		TOKEN = f.read()
-except discord.HTTPException: 
-	print(os.environ["TOKEN"]) 
-	TOKEN = os.environ["TOKEN"]
-
+TOKEN = "NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.ywRBVp3AnGQjCiRwjYJsk3Oryk4"
 client.run(TOKEN)
