@@ -120,9 +120,11 @@ async def prefix(ctx, new_prefix=None):
 for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
 		client.load_extension(f'cogs.{filename[:-3]}')
+
 try:
 	with open("Goldbot_Token.txt", "r") as f:
-		client.run(f.read())
-except discord.LoginFailure as e:
-	print(e)
-	client.run(os.environ["TOKEN"])
+		TOKEN = f.read()
+except Exception as e:  # I need to get a way to check that exception
+	TOKEN = os.environ["TOKEN"]
+
+client.run(TOKEN)
