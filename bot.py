@@ -51,10 +51,9 @@ async def _help(ctx, command=None):
 	else:
 		footer += "\n<>=Necessary, []=optional."
 		try:
-			if i == True:
-				title = command.capitalize()
-				with open(f"Help/Specific Helps/{command}.txt") as file:
-					help_text = file.read()
+			title = command.capitalize()
+			with open(f"Help/Specific Helps/{command}.txt") as file:
+				help_text = file.read()
 		except FileNotFoundError:
 			title = "Error!"
 			help_text = "Command not found."
