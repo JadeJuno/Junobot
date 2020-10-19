@@ -30,11 +30,11 @@ owner = None
 async def on_ready():
 	global owner
 	owner = client.get_user(498606108836102164)
-	print("a", owner)
 
 
 @client.command("help")
 async def _help(ctx, command=None):
+	title = ""
 	footer = ""
 	if command is None:
 		with open("Help/General Help.txt", "r") as file:
@@ -46,22 +46,16 @@ async def _help(ctx, command=None):
 		title = "Commands"
 		if ctx.author.guild_permissions.administrator == True:
 			help_text += mod_text
-		else:
-			help_text += f"`{ctx.prefix}prefix`"
 		if is_bot_owner(ctx) == True:
 			help_text += owner_text
 	else:
 		footer += "\n<>=Necessary, []=optional."
-		i = None
-		for com in command_list:
-			if com == command:
-				i = True
-				break
-		if i == True:
-			title = command.capitalize()
-			with open(f"Help/Specific Helps/{command}.txt") as file:
-				help_text = file.read()
-		else:
+		try:
+			if i == True:
+				title = command.capitalize()
+				with open(f"Help/Specific Helps/{command}.txt") as file:
+					help_text = file.read()
+		except FileNotFoundError:
 			title = "Error!"
 			help_text = "Command not found."
 	embed = discord.Embed(description=help_text.format(prefix=ctx.prefix), color=random.randint(0, 0xffffff))

@@ -47,7 +47,6 @@ def is_bot_owner(ctx):
 	return ctx.author.id == 498606108836102164 or ctx.author == 503657339258273812
 
 class Commands(commands.Cog):
-
 	def __init__(self, client):
 		self.activity = None
 		self.client = client
@@ -112,7 +111,7 @@ class Commands(commands.Cog):
 	@commands.command(aliases=['8ball'])
 	async def _8ball(self, ctx, *, question):
 		ball_predicts = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "All signs point to yes.", "Reply hazy, try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again."]
-		love_only_predicts = ["Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."]
+		love_predicts = ["Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."]
 		if "love" in question.lower():
 			prediction = random.choice(love_only_predicts)
 		else:
