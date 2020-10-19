@@ -73,7 +73,7 @@ class Commands(commands.Cog):
 	@commands.Cog.listener()
 	async def on_ready(self):
 		self.log = self.client.get_channel(751555878385221705)
-		self.owner = self.client.get_user(498606108836102164)
+		self.owner = await self.client.fetch_user(498606108836102164)
 		self.my_guild = self.client.get_guild(574480926189420555)
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
 		self.log = self.client.get_channel(751555878385221705)
