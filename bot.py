@@ -22,7 +22,7 @@ parser = prefix.PrefixParser(default="g!")
 client = commands.Bot(command_prefix=parser, case_insensitive=True)
 client.remove_command("help")
 
-command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "pin", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "alias"]
+command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "pin", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban"]
 
 owner = None
 
@@ -61,7 +61,6 @@ async def _help(ctx, command=None):
 	embed.set_author(name=title)
 	embed.set_footer(text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
 	await ctx.send(embed=embed)
-
 
 @client.command()
 @commands.check(is_bot_owner)
