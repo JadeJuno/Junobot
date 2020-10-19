@@ -163,37 +163,6 @@ class Commands(commands.Cog):
 		await ctx.send(user_message)
 
 
-	@commands.command()
-	async def alias(self, ctx, command=None):
-		alias_command_list = ["language", "morse", "morsecode", "detect", "google", "googleit", "googlesearch", "dieroll", "roll", "rolldie", "coinflip", "flip", "flipcoin"]
-		i = None
-		value = random.randint(0, 0xffffff)
-		if command is None:
-			title = "Commands"
-			with open("Help/Aliases/General.txt") as f:
-				alias_text = f.read()
-		else:
-			for com in command_list:
-				if com == command:
-					i = True
-					break
-			if i == True:
-				title = command.capitalize()
-				try:
-					with open(f"Help/Aliases/{command}.txt") as f:
-						alias_text = f.read()
-				except FileNotFoundError:
-					alias_text = f'Command "{command}" doesn\'t have any aliases.'
-			else:
-				title = "Error"
-				alias_text = f'Command "{command}" doesn\'t exist.'
-		embed = discord.Embed(description=alias_text)
-		embed.set_author(name=title)
-		embed.set_footer(text=f"\nGøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
-		embed.colour = value
-		await ctx.send(embed=embed)
-
-
 	@commands.command(aliases=["googleit", "googlesearch"])
 	async def google(self, ctx, *, search_request):
 		message = await ctx.send(f"Searching for `{search_request}`...")
@@ -225,7 +194,7 @@ class Commands(commands.Cog):
 		time.sleep(2)
 		output = ""
 		for lang in lang_dict:
-			output += f"**{lang_dict[lang]}** *({lang})*\n"
+			output += f"{lang_dict[lang]} = ({lang}),  "
 		value = random.randint(0, 0xffffff)
 		embed = discord.Embed(description=output, color=value)
 		embed.set_author(name="Language List:")

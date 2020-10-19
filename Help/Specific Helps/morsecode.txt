@@ -1,6 +1,9 @@
 **Description**
 Encrypts a sentence to morse code or decrypts it to English.
 
+**Aliases**
+`{prefix}morse`, `{prefix}morsecode`
+
 **Usage**
 `{prefix}morsecode <encrypt/decrypt> <sentence>`
 E.G.: `{prefix}morsecode ".... . .-.. .-.. --- --..-- / - .... .. ... / .. ... / -- --- .-. ... . / -.-. --- -.. ." decrypt`

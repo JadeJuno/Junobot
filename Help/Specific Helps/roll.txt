@@ -1,6 +1,9 @@
 **Description**
 Roll a 6 sided die *(unless you specify a number of sides)*.
 
+**Aliases**
+`{prefix}roll`, `{prefix}dieroll`, `{prefix}rolldie`
+
 **Usage**
 `{prefix}roll [number of sides]`
 E.G.: `{prefix}roll 20`
