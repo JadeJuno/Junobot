@@ -1,3 +1,4 @@
+import asyncio
 import difflib
 import discord
 import googlesearch
@@ -49,7 +50,7 @@ async def _help(ctx, command=None):
 		if is_bot_owner(ctx) == True:
 			help_text += owner_text
 	else:
-		footer += "\n<>=Necessary, []=optional."
+		footer = "\n<>=Necessary, []=optional."
 		try:
 			title = command.capitalize()
 			with open(f"Help/Specific Helps/{command}.txt") as file:
@@ -57,7 +58,7 @@ async def _help(ctx, command=None):
 		except FileNotFoundError:
 			title = "Error!"
 			help_text = "Command not found."
-	embed = discord.Embed(description=help_text.format(prefix=ctx.prefix), color=random.randint(0, 0xffffff))
+	embed = discord.Embed(description=help_text.format(prefix=ctx.prefix, o="ø"), color=random.randint(0, 0xffffff))
 	embed.set_author(name=title)
 	embed.set_footer(text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
 	await ctx.send(embed=embed)

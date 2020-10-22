@@ -1,0 +1,12 @@
+8ball: separa "yes or no" con espacios en vez de guiones | reemplaza el 8 por el emoji de la 8ball | quita una coma innecesaria | en el ejemplo, has el género de la persona más ambiguo o por el contrario más concreto
+flip: reemplaza toda la descripción por "Flip a coin and see if it lands on heads or tails."
+roll: reemplaza toda la descripción por "Roll a die with X number of faces *(6 by default)*."
+rolldie: el usage no tiene el comando correcto
+dieroll: el usage no tiene el comando correcto
+say: descripción="Send a message with the text you wrote and deletes your message" | en vez de "my name's", debería ser "my name is"
+help: pon el usage real del comando en vez de ese chiste
+googlesearch: falta un enter entre la descripción y el aliases | el usage no tiene el comando correcto
+morse: el usage no tiene el comando correcto
+translate: falta una tilde en "estas" | añadir "spanish" después de "japanese"
+clear: reemplaza toda la descripción por "Delete a certain amount of messages on the channel it's used on."
+unban: reemplaza el "an" por "a"

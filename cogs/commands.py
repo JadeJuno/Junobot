@@ -1,3 +1,4 @@
+import asyncio
 import difflib
 import discord
 import googlesearch
@@ -67,7 +68,9 @@ class Commands(commands.Cog):
 		time_now = datetime.now()
 		print(f'Status changed to "{self.activity}" ({time_now.hour}:{time_now.minute})')
 		change_loop_interval = random.randint(1, 90)
-		print(f"Next status change in {change_loop_interval} minutes.")
+		unix_now = time.time()+change_loop_interval*60
+		time_now = datetime.fromtimestamp(unix_now)
+		print(f"Next status change in {change_loop_interval} minutes ({time_now.hour}:{time_now.minute}).")
 
 
 	@commands.Cog.listener()
@@ -102,18 +105,25 @@ class Commands(commands.Cog):
 		elif isinstance(error, commands.CheckFailure):
 			await ctx.send("Error: You don't have permissions to use that command.")
 		elif isinstance(error, commands.MissingRequiredArgument):
-			await ctx.send(f"Error: Missing argument `{error.param.name}`.")
+			missing_param = error.param.name.replace("_", " ").capitalize()
+			await ctx.send(f"Error: Missing argument `{missing_param}`.")
 		else:
 			await ctx.send(f"Unknown Error: `{error}`")
 			await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": `{error}`')
+			print(f'Unknown Error in "{ctx.message.channel.guild.name}": `{error}`')
+			self.activity = f"{@ctx.author.name} broke me."
+			await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
+			await asyncio.sleep(5)
+			self.activity = random.choice(status_list)
+			await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
+		
 
 
 	@commands.command(aliases=['8ball'])
 	async def _8ball(self, ctx, *, question):
-		ball_predicts = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "All signs point to yes.", "Reply hazy, try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again."]
-		love_predicts = ["Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."]
+		ball_predicts = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "Signs point to yes.", "Reply hazy, try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."]
 		if "love" in question.lower():
-			prediction = random.choice(love_only_predicts)
+			prediction = random.choice(ball_predicts[-5:])
 		else:
 			prediction = random.choice(ball_predicts)
 		await ctx.send(f'Question: {question}\n:8ball: Answer: {prediction}.')
@@ -187,20 +197,18 @@ class Commands(commands.Cog):
 		await ctx.send(f'"{user_message}" is in {lang_dict[self.translator.detect(user_message).lang].capitalize()} (certainty: `{int(self.translator.detect(user_message).confidence*100)}%`).')
 
 
-	"""
 	@commands.command()
 	async def language_list(self, ctx):
-		message = await ctx.send("The language list is quite long, so proceed with caution.")
-		time.sleep(2)
+		await ctx.send(f"The list of languages supported by my command `{ctx.prefix}translate` is long, so I'm gonna have to DM it to you.")
 		output = ""
 		for lang in lang_dict:
-			output += f"{lang_dict[lang]} = ({lang}),  "
+			output += f"{lang_dict[lang]} = ({lang})\n"
 		value = random.randint(0, 0xffffff)
 		embed = discord.Embed(description=output, color=value)
 		embed.set_author(name="Language List:")
 		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
-		await message.edit(content=None, embed=embed)
-	"""
+		dm_channel = await ctx.author.create_dm
+		await dm_channel.send(embed=embed)
 
 
 	@commands.command(aliases=["morsecode", "morse"])
@@ -267,7 +275,7 @@ class Commands(commands.Cog):
 		await ctx.message.delete()
 		await ctx.channel.purge(limit=amount)
 		clear_message = await ctx.send(f'Cleared {amount} messages.')
-		time.sleep(2)
+		await asyncio.sleep(2)
 		await clear_message.delete()
 
 

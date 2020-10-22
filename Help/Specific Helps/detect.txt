@@ -6,4 +6,4 @@ Detects the language of a quoted sentence.
 
 **Usage**
 `{prefix}detect <sentence>`
-E.G.: `{prefix}detect Hola, mi nombre es G{ø}ldbot y soy español`
+E.G.: `{prefix}detect Hola, mi nombre es G{o}ldbot y soy español`
