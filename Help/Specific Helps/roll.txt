@@ -1,5 +1,5 @@
 **Description**
-Roll a 6 sided die *(unless you specify a number of sides)*.
+Roll a die with X number of faces *(6 by default)*.
 
 **Aliases**
 `{prefix}roll`, `{prefix}dieroll`, `{prefix}rolldie`

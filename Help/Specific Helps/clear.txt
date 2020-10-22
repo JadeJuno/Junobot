@@ -1,5 +1,5 @@
 **Description**
- Clears an specified amount of messages from the channel it is used on *(not counting the command message)*.
+Delete a certain amount of messages on the channel it's used on.
 
 **Permissions**
 *You need to have the `Manage Messages` permission to use this command.*

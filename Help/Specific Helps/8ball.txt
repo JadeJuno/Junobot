@@ -1,6 +1,6 @@
 **Description:**
-You can ask a yes-or-no question to the omniscient :8ball: 8 ball, and it will answer it.
+You can ask a yes or no question to the omniscient  Magic :8ball: Ball and it will answer it.
 
 **Usage:**
 `{prefix}8ball <question>`
-E.G.: `{prefix}8ball Does she love me?`
+E.G.: `{prefix}8ball Do they love me?`

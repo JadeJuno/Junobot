@@ -1,6 +1,6 @@
 **Description**
-Says whatever you wrote after the command and deletes your message to make it look like the bot said it.
+Send a message with the text you wrote and deletes your message
 
 **Usage**
 `{prefix}say <Text>`
-E.G.: `{prefix}say Hi, my name's Gøldbot and I'm sentient.`
+E.G.: `{prefix}say Hi, my name is Gøldbot and I'm sentient.`

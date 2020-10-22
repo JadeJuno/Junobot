@@ -5,5 +5,5 @@ Encrypts a sentence to morse code or decrypts it to English.
 `{prefix}morse`, `{prefix}morsecode`
 
 **Usage**
-`{prefix}morsecode <encrypt/decrypt> <sentence>`
-E.G.: `{prefix}morsecode ".... . .-.. .-.. --- --..-- / - .... .. ... / .. ... / -- --- .-. ... . / -.-. --- -.. ." decrypt`
+`{prefix}morse <encrypt/decrypt> <sentence>`
+E.G.: `{prefix}morse ".... . .-.. .-.. --- --..-- / - .... .. ... / .. ... / -- --- .-. ... . / -.-. --- -.. ." decrypt`
