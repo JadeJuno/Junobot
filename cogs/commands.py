@@ -111,9 +111,9 @@ class Commands(commands.Cog):
 			await ctx.send(f"Unknown Error: `{error}`")
 			await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": `{error}`')
 			print(f'Unknown Error in "{ctx.message.channel.guild.name}": `{error}`')
-			self.activity = f"{@ctx.author.name} broke me."
+			self.activity = f"{ctx.author.name} broke me."
 			await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
-			await asyncio.sleep(5)
+			await asyncio.sleep(3)
 			self.activity = random.choice(status_list)
 			await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
 		
@@ -265,8 +265,31 @@ class Commands(commands.Cog):
 
 
 	@commands.command()
-	async def wikipedia(self, ctx):
-		await ctx.send("**\**WIP****")
+	async def wikipedia(self, ctx, search_request):
+		title = "Wikipedia"
+		description = ""
+		image = ""
+		try:
+			result = wikipedia.page(search_request)
+			description = f"[{result.title}]({result.url})\n{result.summary}"
+			image = result.images[0]
+		except wikipedia.exceptions.DisambiguationError as e:
+			i = 1
+			for option in e.options[:9]:
+				i += 1
+				disamb_result = wikipedia.page(option)
+				if disamb_result.url != "":
+					result_2 = f"[{disamb_result.title}]({disamb_result.url})"
+				else:
+					result_2 = "**URL Not Found**"
+				description += f"`{i}`: {result_2}\n"
+				image = "https://i.imgur.com/7kT1Ydo.png"
+		embed = discord.Embed(description=description ,color=random.randint(0,0xffffff))
+		embed.set_author(name=title, icon_url="https://i.imgur.com/FD1pauH.png")
+		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
+		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
+		embed.set_image(url=image)
+		await ctx.send(embed=embed)
 
 
 	@commands.has_permissions(manage_messages=True)
@@ -319,8 +342,7 @@ class Commands(commands.Cog):
 	async def test(self, ctx):
 		gold_emoji = self.emoji_list[0]
 		print("TEST")
-		value = random.randint(0, 0xffffff)
-		embed = discord.Embed(title="Title", description=f"{gold_emoji}[Test Link](https://www.youtube.com)", color=value, url="https://www.google.com/")
+		embed = discord.Embed(title="Title", description=f"{gold_emoji}[Test Link](https://www.youtube.com)", color=random.randint(0, 0xffffff), url="https://www.google.com/")
 		embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
 		embed.set_footer(text=f"*Requested by {ctx.author.name}.*", icon_url=ctx.author.avatar_url)
 		embed.set_image(url="https://discordpy.readthedocs.io/en/latest/_images/snake.png")
