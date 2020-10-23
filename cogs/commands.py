@@ -284,7 +284,7 @@ class Commands(commands.Cog):
 					result_2 = "**URL Not Found**"
 				description += f"`{i}`: {result_2}\n"
 				image = "https://i.imgur.com/7kT1Ydo.png"
-		embed = discord.Embed(description=description ,color=random.randint(0,0xffffff))
+		embed = discord.Embed(description=description, color=random.randint(0, 0xffffff))
 		embed.set_author(name=title, icon_url="https://i.imgur.com/FD1pauH.png")
 		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
 		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
