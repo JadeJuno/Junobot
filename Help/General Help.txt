@@ -14,4 +14,4 @@
 `{prefix}ping`
 `{prefix}prefix`
 `{prefix}translate "<sentence>" [dest. language] [source language]`
-~~`{prefix}wikipedia`~~ ***WIP***
+`{prefix}wikipedia <search request>`
