@@ -1,7 +1,7 @@
 import wikipedia
 
 # search = input(">")
-search = "Mercury (planet)"
+search = "ljjgvkjsjerjb,erbgmrebg"
 
 try:
 	result = wikipedia.page(search)
