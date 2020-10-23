@@ -265,7 +265,7 @@ class Commands(commands.Cog):
 
 
 	@commands.command()
-	async def wikipedia(self, ctx, search_request):
+	async def wikipedia(self, ctx, *, search_request):
 		title = "Wikipedia"
 		description = ""
 		image = ""
@@ -281,9 +281,12 @@ class Commands(commands.Cog):
 				if disamb_result.url != "":
 					result_2 = f"[{disamb_result.title}]({disamb_result.url})"
 				else:
-					result_2 = "**URL Not Found**"
+					result_2 = f"{disamb_result} **URL Not Found**"
 				description += f"`{i}`: {result_2}\n"
 				image = "https://i.imgur.com/7kT1Ydo.png"
+		except wikipedia.exceptions.PageError:
+			description = "No page found."
+			image = "https://i.imgur.com/7kT1Ydo.png"
 		embed = discord.Embed(description=description, color=random.randint(0, 0xffffff))
 		embed.set_author(name=title, icon_url="https://i.imgur.com/FD1pauH.png")
 		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
