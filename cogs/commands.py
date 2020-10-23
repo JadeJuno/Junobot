@@ -277,7 +277,7 @@ class Commands(commands.Cog):
 			i = 1
 			for option in e.options[:9]:
 				i += 1
-				disamb_result = wikipedia.page(option)
+				disamb_result = wikipedia.page(option, auto_suggest=False)
 				if disamb_result.url != "":
 					result_2 = f"[{disamb_result.title}]({disamb_result.url})"
 				else:
