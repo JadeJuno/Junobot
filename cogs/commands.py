@@ -88,9 +88,12 @@ class Commands(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_command(self, ctx):
+		# funcion only used for testing purposes
+		"""
 		if ctx.message.channel.guild != self.my_guild:
 			await self.log.send(f"{ctx.message.channel.guild.name}:\n{ctx.message.author}: {ctx.message.content}")
 			print(f"{ctx.message.channel.guild.name}:\n{ctx.message.author}: {ctx.message.content}")
+		"""
 
 
 	@commands.Cog.listener()
