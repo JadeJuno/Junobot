@@ -23,7 +23,7 @@ parser = prefix.PrefixParser(default="g!")
 client = commands.Bot(command_prefix=parser, case_insensitive=True)
 client.remove_command("help")
 
-command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "pin", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban"]
+command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "ping", "pin", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "languagelist", "langlist"]
 
 owner = None
 

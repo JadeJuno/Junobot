@@ -18,7 +18,7 @@ status_list = ['My default prefix is g!.', "If I break, contact Gølder06#7041."
 
 lang_dict = {'af': 'afrikaans', 'sq': 'albanian', 'am': 'amharic', 'ar': 'arabic', 'hy': 'armenian', 'az': 'azerbaijani', 'eu': 'basque', 'be': 'belarusian', 'bn': 'bengali', 'bs': 'bosnian', 'bg': 'bulgarian', 'ca': 'catalan', 'ceb': 'cebuano', 'ny': 'chichewa', 'zh-cn': 'chinese (simplified)', 'zh-tw': 'chinese (traditional)', 'co': 'corsican', 'hr': 'croatian', 'cs': 'czech', 'da': 'danish', 'nl': 'dutch', 'en': 'english', 'eo': 'esperanto', 'et': 'estonian', 'tl': 'filipino', 'fi': 'finnish', 'fr': 'french', 'fy': 'frisian', 'gl': 'galician', 'ka': 'georgian', 'de': 'german', 'el': 'greek', 'gu': 'gujarati', 'ht': 'haitian creole', 'ha': 'hausa', 'haw': 'hawaiian', 'iw': 'hebrew', 'hi': 'hindi', 'hmn': 'hmong', 'hu': 'hungarian', 'is': 'icelandic', 'ig': 'igbo', 'id': 'indonesian', 'ga': 'irish', 'it': 'italian', 'ja': 'japanese', 'jw': 'javanese', 'kn': 'kannada', 'kk': 'kazakh', 'km': 'khmer', 'ko': 'korean', 'ku': 'kurdish (kurmanji)', 'ky': 'kyrgyz', 'lo': 'lao', 'la': 'latin', 'lv': 'latvian', 'lt': 'lithuanian', 'lb': 'luxembourgish', 'mk': 'macedonian', 'mg': 'malagasy', 'ms': 'malay', 'ml': 'malayalam', 'mt': 'maltese', 'mi': 'maori', 'mr': 'marathi', 'mn': 'mongolian', 'my': 'myanmar (burmese)', 'ne': 'nepali', 'no': 'norwegian', 'ps': 'pashto', 'fa': 'persian', 'pl': 'polish', 'pt': 'portuguese', 'pa': 'punjabi', 'ro': 'romanian', 'ru': 'russian', 'sm': 'samoan', 'gd': 'scots gaelic', 'sr': 'serbian', 'st': 'sesotho', 'sn': 'shona', 'sd': 'sindhi', 'si': 'sinhala', 'sk': 'slovak', 'sl': 'slovenian', 'so': 'somali', 'es': 'spanish', 'su': 'sundanese', 'sw': 'swahili', 'sv': 'swedish', 'tg': 'tajik', 'ta': 'tamil', 'te': 'telugu', 'th': 'thai', 'tr': 'turkish', 'uk': 'ukrainian', 'ur': 'urdu', 'uz': 'uzbek', 'vi': 'vietnamese', 'cy': 'welsh', 'xh': 'xhosa', 'yi': 'yiddish', 'yo': 'yoruba', 'zu': 'zulu', 'he': 'Hebrew'}
 
-command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "pin", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban"]
+command_list = ["8ball", "choose", "flip", "coinflip", "flipcoin", "roll", "rolldie", "dieroll", "say", "help", "google", "googleit", "googlesearch", "language", "detect", "morsecode", "morse", "pin", "ping", "translate", "wikipedia", "ban", "clear", "kick", "prefix", "unban", "languagelist", "langlist"]
 
 change_loop_interval = random.randint(1, 90)
 
@@ -116,7 +116,6 @@ class Commands(commands.Cog):
 			await asyncio.sleep(3)
 			self.activity = random.choice(status_list)
 			await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
-		
 
 
 	@commands.command(aliases=['8ball'])
@@ -197,18 +196,18 @@ class Commands(commands.Cog):
 		await ctx.send(f'"{user_message}" is in {lang_dict[self.translator.detect(user_message).lang].capitalize()} (certainty: `{int(self.translator.detect(user_message).confidence*100)}%`).')
 
 
-	@commands.command()
+	@commands.command(aliases=["langlist", "languagelist"])
 	async def language_list(self, ctx):
-		await ctx.send(f"The list of languages supported by my command `{ctx.prefix}translate` is long, so I'm gonna have to DM it to you.")
+		await ctx.send(f"The list of languages supported by the command `{ctx.prefix}translate` is long, so, for the sake of space here in `{ctx.channel}`, I'm going to DM it to you.")
 		output = ""
 		for lang in lang_dict:
-			output += f"{lang_dict[lang]} = ({lang})\n"
+			output += f"{lang_dict[lang]} = {lang}\n"
 		value = random.randint(0, 0xffffff)
-		embed = discord.Embed(description=output, color=value)
+		embed = discord.Embed(description=output[:-2], color=value)
 		embed.set_author(name="Language List:")
 		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
-		dm_channel = await ctx.author.create_dm
-		await dm_channel.send(embed=embed)
+		await ctx.author.send(embed=embed)
+		await ctx.send("Message sent!")
 
 
 	@commands.command(aliases=["morsecode", "morse"])
