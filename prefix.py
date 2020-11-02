@@ -7,7 +7,7 @@ class PrefixParser:
     def __init__(self, default: str = "g!"):
         self.db = Database()
         self.default = default
-
+        print(self.default)
         self.prefixes = self.db.get_all()
 
     def __getitem__(self, i):
