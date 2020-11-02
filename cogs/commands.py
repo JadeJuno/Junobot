@@ -171,7 +171,7 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def say(self, ctx, *, user_message):
-		if user_message.lower().startswith("I am") or user_message.lower().startswith("I'm"):
+		if user_message.lower().startswith("i am") or user_message.lower().startswith("i'm"):
 			if "stupid" in user_message.lower():
 				user_message = f"{ctx.author.name()} is stupid"
 			elif "dumb" in user_message.lower():
