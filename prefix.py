@@ -20,7 +20,10 @@ class PrefixParser:
             raise NoSuchServerError
 
     async def __call__(self, bot, msg):
-        return self[str(msg.guild.id)]
+        try:
+            return self[str(msg.guild.id)]
+        except KeyError:
+            return None
 
     def add(self, server, prefix):
         self.db.add(server, prefix)
