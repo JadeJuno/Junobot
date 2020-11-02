@@ -171,6 +171,11 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def say(self, ctx, *, user_message):
+		if user_message.lower().startswith("I am") or user_message.lower().startswith("I'm"):
+			if "stupid" in user_message.lower():
+				user_message = f"{ctx.author.name()} is stupid"
+			elif "dumb" in user_message.lower():
+				user_message = f"{ctx.author.name()} is dumb"
 		await discord.Message.delete(ctx.message, delay=0)
 		await ctx.send(user_message)
 
