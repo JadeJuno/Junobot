@@ -1,4 +1,4 @@
-![Gøldbot Logo](https://i.imgur.com/8bOl5gU.png)
+![GÃ¸ldbot Logo](https://i.imgur.com/8bOl5gU.png)
 
 # Goldbot
 
@@ -6,4 +6,4 @@
 
 - [x] Add emojis to g!roll (faces of a 6-sided die)
 - [x] Make an embed template
-- [ ] Come up with more things to do
+- [x] Come up with more things to do
