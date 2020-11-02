@@ -22,7 +22,7 @@ class PrefixParser:
     async def __call__(self, bot, msg):
         try:
             return self[str(msg.guild.id)]
-        except KeyError:
+        except AttributeError:
             return None
 
     def add(self, server, prefix):
