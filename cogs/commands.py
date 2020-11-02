@@ -174,9 +174,9 @@ class Commands(commands.Cog):
 		s = user_message
 		if s.lower().startswith("i am") or s.lower().startswith("i'm"):
 			if "stupid" in s.lower():
-				s = f"{ctx.author.name} is stupid"
+				s = f"{ctx.author.mention} is stupid"
 			elif "dumb" in s.lower():
-				s = f"{ctx.author.name} is dumb"
+				s = f"{ctx.author.mention} is dumb"
 		await discord.Message.delete(ctx.message, delay=0)
 		await ctx.send(s)
 
