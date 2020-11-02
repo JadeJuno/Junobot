@@ -4,7 +4,7 @@ import sqlite3
 class PrefixParser:
     prefixes = {}
 
-    def __init__(self, default: str = None):
+    def __init__(self, default: str = "g!"):
         self.db = Database()
         self.default = default
 
