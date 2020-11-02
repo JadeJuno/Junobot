@@ -23,7 +23,7 @@ class PrefixParser:
         try:
             return self[str(msg.guild.id)]
         except AttributeError:
-            return None
+            return 0
 
     def add(self, server, prefix):
         self.db.add(server, prefix)
