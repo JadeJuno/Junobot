@@ -1,9 +1,8 @@
-import discord
 import os
-import prefix
 import random
+import discord
 from discord.ext import commands
-
+import prefix
 
 
 def is_bot_owner(ctx):
@@ -16,6 +15,7 @@ client = commands.Bot(command_prefix=parser, case_insensitive=True)
 client.remove_command("help")
 
 owner = None
+
 
 @client.event
 async def on_ready():
@@ -49,43 +49,10 @@ async def _help(ctx, command=None):
 			help_text = "Command not found."
 	embed = discord.Embed(description=help_text.format(prefix=ctx.prefix, o="ø"), color=random.randint(0, 0xffffff))
 	embed.set_author(name=title)
-	embed.set_footer(text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
+	embed.set_footer(
+		text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.",
+		icon_url="https://i.imgur.com/ZgG8oJn.png")
 	await ctx.send(embed=embed)
-
-@client.command()
-@commands.check(is_bot_owner)
-async def load(ctx, extension):
-	print(f"Loading {extension.capitalize()}...")
-	client.load_extension(f'cogs.{extension}')
-	print(f"{extension.capitalize()} loaded!")
-	await ctx.send(f'Cog "{extension.capitalize()}" loaded!')
-
-
-@client.command()
-@commands.check(is_bot_owner)
-async def unload(ctx, extension="commands"):
-	print(f"Unloading {extension.capitalize()}...")
-	client.unload_extension(f'cogs.{extension}')
-	print(f"{extension.capitalize()} unloaded!")
-	await ctx.send(f'{extension.capitalize()} unloaded!')
-
-
-@client.command()
-@commands.check(is_bot_owner)
-async def reload(ctx, extension="commands"):
-	print(f"Reloading {extension}...")
-	client.unload_extension(f'cogs.{extension}')
-	client.load_extension(f'cogs.{extension}')
-	print(f"{extension.capitalize()} reloaded!")
-	await ctx.send(f'{extension.capitalize()} reloaded!')
-
-
-@load.error
-@unload.error
-@reload.error
-async def load_errors(ctx, error):
-	if isinstance(error, commands.ExtensionNotLoaded):
-		await ctx.send(f'Error: Specified extension not found.')
 
 
 @client.command()
