@@ -1,17 +1,9 @@
-import asyncio
-import difflib
 import discord
-import googlesearch
-import json
 import os
 import prefix
 import random
-import time
-import wikipedia
-from datetime import datetime
-from discord.ext import commands, tasks
-from googletrans import Translator
-from morsecode import MorseCode
+from discord.ext import commands
+
 
 
 def is_bot_owner(ctx):
@@ -23,31 +15,28 @@ parser = prefix.PrefixParser(default="g!")
 client = commands.Bot(command_prefix=parser, case_insensitive=True)
 client.remove_command("help")
 
-command_list = ['8ball', 'ban', 'choose', 'clear', 'coinflip', 'detect', 'dieroll', 'flip', 'flipcoin', 'google', 'googleit', 'googlesearch', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse', 'morsecode', 'pin', 'ping', 'prefix', 'roll', 'rolldie', 'say', 'translate', 'unban', 'wikipedia']
-
 owner = None
 
 @client.event
 async def on_ready():
 	global owner
-	owner = await client.fetch_user(498606108836102164)
+	owner = await client.get_user(498606108836102164)
 
 
 @client.command("help")
 async def _help(ctx, command=None):
-	title = ""
-	footer = ""
 	if command is None:
-		with open("Help/General Help.txt", "r") as file:
+		footer = ""
+		with open("Help/general_help.txt", "r") as file:
 			help_text = file.read()
-		with open("Help/Mod Help.txt", "r") as file:
+		with open("Help/mod_help.txt", "r") as file:
 			mod_text = file.read()
-		with open("Help/Owner Help.txt", "r") as file:
+		with open("Help/owner_help.txt", "r") as file:
 			owner_text = file.read()
 		title = "Commands"
-		if ctx.author.guild_permissions.administrator == True:
+		if ctx.author.guild_permissions.administrator:
 			help_text += mod_text
-		if is_bot_owner(ctx) == True:
+		if is_bot_owner(ctx):
 			help_text += owner_text
 	else:
 		footer = "\n<>=Necessary, []=optional."
@@ -105,7 +94,7 @@ async def prefix(ctx, new_prefix=None):
 	if new_prefix is None:
 		await ctx.send(f"Server's prefix currently set to {ctx.prefix}.")
 	else:
-		if perm == True:
+		if perm:
 			sv = str(ctx.guild.id)
 			parser.update(sv, new_prefix)
 			await ctx.send(f"Prefix changed to {new_prefix}!")

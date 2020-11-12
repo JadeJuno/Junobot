@@ -2,9 +2,6 @@ import asyncio
 import difflib
 import discord
 import googlesearch
-import json
-import os
-import prefix
 import random
 import time
 import wikipedia
@@ -136,7 +133,7 @@ class Commands(commands.Cog):
 		divided_options = options.split(",")
 		if len(divided_options) >= 2:
 			for option in divided_options:
-				if option == False:
+				if not option:
 					divided_options.pop(option)
 			await ctx.send(f'Gøldbot chooses: `{random.choice(divided_options).strip()}`.')
 		else:
@@ -184,7 +181,6 @@ class Commands(commands.Cog):
 	@commands.command(aliases=["googleit", "googlesearch"])
 	async def google(self, ctx, *, search_request):
 		message = await ctx.send(f"Searching for `{search_request}`...")
-		output_str = "**No results found.**"
 		i = 1
 		output_str = ""
 		for url in googlesearch.search(search_request, stop=10):
@@ -193,6 +189,8 @@ class Commands(commands.Cog):
 			else:
 				output_str += f"`{i}.` **[{url.title}](<{url.link}>)**\n"
 			i += 1
+		if i == 1:
+			output_str = "**No results found.**"
 		embed = discord.Embed(description=output_str[0:-1], color=random.randint(0, 0xffffff))
 		embed.set_author(name="Google", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
@@ -223,11 +221,10 @@ class Commands(commands.Cog):
 	async def morse_code(self, ctx, encrypt_decrypt, *, sentence):
 		disc = encrypt_decrypt
 		var = self.morse.check_letter(sentence.upper())
-		if var == False:
+		if not var:
 			await ctx.send("Error: Invalid character detected.")
 			return
 		code = f"{sentence} "
-		output = ""
 		error_message = f"Error: You tried to {disc} an already {disc}ed message or you entered an invalid character."
 		if disc == "encrypt":
 			try:
@@ -365,7 +362,6 @@ class Commands(commands.Cog):
 		try:
 			int('A')
 		except Exception as e:
-			error = e
 			await ctx.send(f"An exception has ocurred: {e}.")
 	
 	
