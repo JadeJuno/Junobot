@@ -4,10 +4,10 @@ import sqlite3
 class PrefixParser:
     prefixes = {}
 
-    def __init__(self, default: str = None):
+    def __init__(self, default: str = "g!"):
         self.db = Database()
         self.default = default
-
+        print(self.default)
         self.prefixes = self.db.get_all()
 
     def __getitem__(self, i):
@@ -20,7 +20,10 @@ class PrefixParser:
             raise NoSuchServerError
 
     async def __call__(self, bot, msg):
-        return self[str(msg.guild.id)]
+        try:
+            return self[str(msg.guild.id)]
+        except AttributeError:
+            return 0
 
     def add(self, server, prefix):
         self.db.add(server, prefix)
