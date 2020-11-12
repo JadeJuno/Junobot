@@ -4,10 +4,9 @@ import sqlite3
 class PrefixParser:
     prefixes = {}
 
-    def __init__(self, default: str = "g!"):
+    def __init__(self, default: str):
         self.db = Database()
         self.default = default
-        print(self.default)
         self.prefixes = self.db.get_all()
 
     def __getitem__(self, i):

@@ -20,7 +20,7 @@ owner = None
 @client.event
 async def on_ready():
 	global owner
-	owner = await client.get_user(498606108836102164)
+	owner = client.get_user(498606108836102164)
 
 
 @client.command("help")

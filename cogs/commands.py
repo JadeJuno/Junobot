@@ -58,7 +58,7 @@ def get_emoji_list(emojis):
 	for i in range(len(return_list)):
 		for j in range(i + 1, len(return_list)):
 			if return_list[i].name > return_list[j].name:
-			return_list[i], return_list[j] = return_list[j], return_list[i]
+				return_list[i], return_list[j] = return_list[j], return_list[i]
 	return return_list
 
 
