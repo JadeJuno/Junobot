@@ -2,45 +2,25 @@ import asyncio
 import difflib
 import random
 import time
+from datetime import datetime
+
 import discord
 import wikipedia
-import googlesearch
-from datetime import datetime
 from discord.ext import commands, tasks
 from googletrans import Translator
+from iso639 import languages
+
+import googlesearch
+from bot import config, embed_template, is_bot_owner
 from morsecode import MorseCode
-from bot import embed_template, config, is_bot_owner
 
 status_list = ['My default prefix is g!.', "If I break, contact Gølder06#7041.", 'To see my commands, type g!help.']
-
-lang_dict = {'af': 'afrikaans', 'sq': 'albanian', 'am': 'amharic', 'ar': 'arabic', 'hy': 'armenian',
-			 'az': 'azerbaijani', 'eu': 'basque', 'be': 'belarusian', 'bn': 'bengali', 'bs': 'bosnian',
-			 'bg': 'bulgarian', 'ca': 'catalan', 'ceb': 'cebuano', 'ny': 'chichewa', 'zh-cn': 'chinese (simplified)',
-			 'zh-tw': 'chinese (traditional)', 'co': 'corsican', 'hr': 'croatian', 'cs': 'czech', 'da': 'danish',
-			 'nl': 'dutch', 'en': 'english', 'eo': 'esperanto', 'et': 'estonian', 'tl': 'filipino', 'fi': 'finnish',
-			 'fr': 'french', 'fy': 'frisian', 'gl': 'galician', 'ka': 'georgian', 'de': 'german', 'el': 'greek',
-			 'gu': 'gujarati', 'ht': 'haitian creole', 'ha': 'hausa', 'haw': 'hawaiian', 'iw': 'hebrew', 'hi': 'hindi',
-			 'hmn': 'hmong', 'hu': 'hungarian', 'is': 'icelandic', 'ig': 'igbo', 'id': 'indonesian', 'ga': 'irish',
-			 'it': 'italian', 'ja': 'japanese', 'jw': 'javanese', 'kn': 'kannada', 'kk': 'kazakh', 'km': 'khmer',
-			 'ko': 'korean', 'ku': 'kurdish (kurmanji)', 'ky': 'kyrgyz', 'lo': 'lao', 'la': 'latin', 'lv': 'latvian',
-			 'lt': 'lithuanian', 'lb': 'luxembourgish', 'mk': 'macedonian', 'mg': 'malagasy', 'ms': 'malay',
-			 'ml': 'malayalam', 'mt': 'maltese', 'mi': 'maori', 'mr': 'marathi', 'mn': 'mongolian',
-			 'my': 'myanmar (burmese)', 'ne': 'nepali', 'no': 'norwegian', 'ps': 'pashto', 'fa': 'persian',
-			 'pl': 'polish', 'pt': 'portuguese', 'pa': 'punjabi', 'ro': 'romanian', 'ru': 'russian', 'sm': 'samoan',
-			 'gd': 'scots gaelic', 'sr': 'serbian', 'st': 'sesotho', 'sn': 'shona', 'sd': 'sindhi', 'si': 'sinhala',
-			 'sk': 'slovak', 'sl': 'slovenian', 'so': 'somali', 'es': 'spanish', 'su': 'sundanese', 'sw': 'swahili',
-			 'sv': 'swedish', 'tg': 'tajik', 'ta': 'tamil', 'te': 'telugu', 'th': 'thai', 'tr': 'turkish',
-			 'uk': 'ukrainian', 'ur': 'urdu', 'uz': 'uzbek', 'vi': 'vietnamese', 'cy': 'welsh', 'xh': 'xhosa',
-			 'yi': 'yiddish', 'yo': 'yoruba', 'zu': 'zulu', 'he': 'Hebrew'}
 
 command_list = ['8ball', 'ban', 'choose', 'clear', 'coinflip', 'detect', 'dieroll', 'flip', 'flipcoin', 'google',
 				'googleit', 'googlesearch', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
 				'morsecode', 'pin', 'ping', 'prefix', 'roll', 'rolldie', 'say', 'translate', 'unban', 'wikipedia']
 
 change_loop_interval = random.randint(1, 90)
-
-abbrev_lang_list = list(lang_dict.keys())
-full_lang_list = list(lang_dict.values())
 
 
 def get_dict_key(dictionary, value):
@@ -88,7 +68,7 @@ class Commands(commands.Cog):
 	@commands.Cog.listener()
 	async def on_ready(self):
 		self.log = self.client.get_channel(config["log_channel"])
-		self.owner = await self.client.fetch_user(config["onwers_id"][0])
+		self.owner = await self.client.fetch_user(config["owners_id"][0])
 		self.my_guild = self.client.get_guild(config["guild_id"])
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
 		print(f'Bot is ready.')
@@ -208,24 +188,14 @@ class Commands(commands.Cog):
 			i += 1
 		if i == 1:
 			output_str = "**No results found.**"
-		embed = embed_template(ctx, "Google", output_str[0:-2], icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
+		embed = embed_template(ctx, "Google", output_str[0:-2],
+							   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
 	
 	@commands.command(aliases=["detect", "language"])
 	async def lang_detect(self, ctx, *, user_message):
 		await ctx.send(
-			f'"{user_message}" is in {lang_dict[self.translator.detect(user_message).lang].capitalize()} (certainty: `{int(self.translator.detect(user_message).confidence * 100)}%`).')
-	
-	@commands.command(aliases=["langlist", "languagelist"])
-	async def language_list(self, ctx):
-		await ctx.send(
-			f"The list of languages supported by the command `{ctx.prefix}translate` is long, so, for the sake of space here in `{ctx.channel}`, I'm going to DM it to you.")
-		output = ""
-		for lang in lang_dict:
-			output += f"{lang_dict[lang]} = {lang}\n"
-		embed = embed_template(ctx, "Language List:", output[:-2])
-		await ctx.author.send(embed=embed)
-		await ctx.send("Message sent!")
+			f'"{user_message}" is in {languages.get(alpha2=self.translator.detect(user_message).lang).name} (certainty: `{int(self.translator.detect(user_message).confidence * 100)}%`).')
 	
 	@commands.command(aliases=["morsecode", "morse"])
 	async def morse_code(self, ctx, encrypt_decrypt, *, sentence):
@@ -260,30 +230,32 @@ class Commands(commands.Cog):
 	
 	@commands.command()
 	async def translate(self, ctx, translate_message, destination_language='en', source_language=None):
+		destination_language = destination_language.lower()
 		try:
-			destination_language = destination_language.lower()
-			destination_language = get_dict_key(lang_dict, destination_language)
-			if source_language is not None:
-				source_language = source_language.lower()
-				source_language = get_dict_key(lang_dict, source_language)
-			else:
-				source_language = self.translator.detect(translate_message).lang
-			translated_text = self.translator.translate(translate_message, src=source_language,
-														dest=destination_language).text.replace("`", "\`")
+			destination_language = languages.get(alpha2=destination_language)
+		except KeyError:
+			destination_language = languages.get(name=destination_language.capitalize())
+		if source_language is not None:
 			try:
-				await ctx.send(
-					f'Translated from {lang_dict[source_language]} to {lang_dict[destination_language]}\n`{translated_text}`.')
-			except ValueError:
-				await ctx.send(
-					f"Error: Invalid language. *(You can use the full English name of the language or it's abbreviation).*")
-		except Exception as e:
-			await ctx.send(f"An exception has ocurred: {e}.")
+				source_language = languages.get(alpha2=source_language)
+			except KeyError:
+				source_language = languages.get(name=source_language.capitalize())
+		else:
+			source_language = self.translator.detect(translate_message).lang
+		translated_text = self.translator.translate(translate_message, src=source_language.alpha2,
+													dest=destination_language.alpha2).text.replace("`", "\`")
+		try:
+			await ctx.send(
+				f'Translated from {source_language.name} to {destination_language.name}\n`{translated_text}`.')
+		except ValueError:
+			await ctx.send(
+				f"Error: Invalid language.")
 	
 	@commands.command()
 	async def wikipedia(self, ctx, *, search_request):
 		title = "Wikipedia"
 		description = ""
-		image = ""
+		image = "https://i.imgur.com/7kT1Ydo.png"
 		try:
 			result = wikipedia.page(search_request)
 			description = f"[{result.title}]({result.url})\n{result.summary}"
@@ -298,10 +270,8 @@ class Commands(commands.Cog):
 				else:
 					result_2 = f"{disamb_result} **URL Not Found**"
 				description += f"`{i}`: {result_2}\n"
-				image = "https://i.imgur.com/7kT1Ydo.png"
 		except wikipedia.exceptions.PageError:
-			description = "No page found."
-			image = "https://i.imgur.com/7kT1Ydo.png"
+			description = "Page not found."
 		embed = embed_template(ctx, title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
 		await ctx.send(embed=embed)
 	
@@ -329,8 +299,8 @@ class Commands(commands.Cog):
 	@commands.has_permissions(manage_messages=True)
 	@commands.command()
 	async def pin(self, ctx):
-		messages = await ctx.history(limit=2).flatten()
-		await messages[1].pin()
+		messages = await ctx.history(limit=2).flatten().remove(ctx.message)
+		await messages[0].pin()
 	
 	@commands.has_permissions(ban_members=True)
 	@commands.command()

@@ -1,14 +1,13 @@
-import discord
-from discord.ext import commands
-
 import os
 import random
 
-from config import parse_config
+import discord
+from discord.ext import commands
+
 import prefix
+from config import parse_config
 
-
-config = parse_config(".\config.py")
+config = parse_config("./config.toml")
 
 
 def is_bot_owner(ctx):
@@ -17,25 +16,29 @@ def is_bot_owner(ctx):
 
 parser = prefix.PrefixParser(default="g!")
 
-
 client = commands.Bot(command_prefix=parser, case_insensitive=True)
 
 client.remove_command("help")
 owner = None
+
 
 @client.event
 async def on_ready():
 	global owner
 	owner = await client.fetch_user(config["owners_id"][0])
 
-def embed_template(ctx, title=None, description=None, footer=None, image: str = None, icon: str = None):
+
+def embed_template(ctx, title=None, description=None, footer=None, image: str = "", icon: str = ""):
 	embed = discord.Embed(description=description, color=random.randint(0, 0xffffff))
-	embed.set_author(name=title, icon_url=icon)
+	if icon != "":
+		embed.set_author(name=title, icon_url=icon)
+	else:
+		embed.set_author(name=title)
 	embed.set_footer(
 		text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.",
 		icon_url="https://i.imgur.com/ZgG8oJn.png")
 	embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
-	if image is not None:
+	if image != "":
 		embed.set_image(url=image)
 	return embed
 
