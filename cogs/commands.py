@@ -2,15 +2,14 @@ import asyncio
 import difflib
 import random
 import time
-from datetime import datetime
-
 import discord
 import wikipedia
+import googlesearch
+from datetime import datetime
 from discord.ext import commands, tasks
 from googletrans import Translator
-
-import googlesearch
 from morsecode import MorseCode
+from bot import embed_template, config, is_bot_owner
 
 status_list = ['My default prefix is g!.', "If I break, contact Gølder06#7041.", 'To see my commands, type g!help.']
 
@@ -62,10 +61,6 @@ def get_emoji_list(emojis):
 	return return_list
 
 
-def is_bot_owner(ctx):
-	return ctx.author.id == 498606108836102164 or ctx.author == 503657339258273812
-
-
 class Commands(commands.Cog):
 	def __init__(self, client):
 		self.activity = None
@@ -92,11 +87,10 @@ class Commands(commands.Cog):
 	
 	@commands.Cog.listener()
 	async def on_ready(self):
-		self.log = self.client.get_channel(751555878385221705)
-		self.owner = await self.client.fetch_user(498606108836102164)
-		self.my_guild = self.client.get_guild(574480926189420555)
+		self.log = self.client.get_channel(config["log_channel"])
+		self.owner = await self.client.fetch_user(config["onwers_id"][0])
+		self.my_guild = self.client.get_guild(config["guild_id"])
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
-		self.log = self.client.get_channel(751555878385221705)
 		print(f'Bot is ready.')
 		print(f"bot created by {self.owner.name}.")
 		await self.log.send("Bot Started.")
@@ -104,7 +98,8 @@ class Commands(commands.Cog):
 	
 	@commands.Cog.listener()
 	async def on_command(self, ctx):
-		# Function only used for testing purposes. DO NOT USE! (I'd delete it, but I feel like I'll need it one time or the other...)
+		# Function only used for testing purposes. DO NOT USE!
+		# (I'd delete it, but I feel like I'll need it one time or the other...)
 		"""
 		if ctx.message.channel.guild != self.my_guild:
 			await self.log.send(f"{ctx.message.channel.guild.name}:\n{ctx.message.author}: {ctx.message.content}")
@@ -143,11 +138,14 @@ class Commands(commands.Cog):
 						 "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.",
 						 "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.",
 						 "Very doubtful."]
-		if "love" in question.lower():
-			prediction = random.choice(ball_predicts[-5:])
+		if "?" in question:
+			if "love" in question.lower():
+				prediction = random.choice(ball_predicts[-5:])
+			else:
+				prediction = random.choice(ball_predicts)
+			await ctx.send(f'Question: {question}\n:8ball: Answer: {prediction}.')
 		else:
-			prediction = random.choice(ball_predicts)
-		await ctx.send(f'Question: {question}\n:8ball: Answer: {prediction}.')
+			await ctx.send(":8ball: That's not a question...")
 	
 	@commands.command()
 	async def choose(self, ctx, *, options):
@@ -210,11 +208,7 @@ class Commands(commands.Cog):
 			i += 1
 		if i == 1:
 			output_str = "**No results found.**"
-		embed = discord.Embed(description=output_str[0:-1], color=random.randint(0, 0xffffff))
-		embed.set_author(name="Google",
-						 icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
-		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
-		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
+		embed = embed_template(ctx, "Google", output_str[0:-2], icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
 	
 	@commands.command(aliases=["detect", "language"])
@@ -229,10 +223,7 @@ class Commands(commands.Cog):
 		output = ""
 		for lang in lang_dict:
 			output += f"{lang_dict[lang]} = {lang}\n"
-		value = random.randint(0, 0xffffff)
-		embed = discord.Embed(description=output[:-2], color=value)
-		embed.set_author(name="Language List:")
-		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
+		embed = embed_template(ctx, "Language List:", output[:-2])
 		await ctx.author.send(embed=embed)
 		await ctx.send("Message sent!")
 	
@@ -311,11 +302,7 @@ class Commands(commands.Cog):
 		except wikipedia.exceptions.PageError:
 			description = "No page found."
 			image = "https://i.imgur.com/7kT1Ydo.png"
-		embed = discord.Embed(description=description, color=random.randint(0, 0xffffff))
-		embed.set_author(name=title, icon_url="https://i.imgur.com/FD1pauH.png")
-		embed.set_footer(text=f"Gøldbot was created by {self.owner.name}.", icon_url="https://i.imgur.com/ZgG8oJn.png")
-		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
-		embed.set_image(url=image)
+		embed = embed_template(ctx, title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
 		await ctx.send(embed=embed)
 	
 	@commands.has_permissions(manage_messages=True)
@@ -377,16 +364,6 @@ class Commands(commands.Cog):
 			int('A')
 		except Exception as e:
 			await ctx.send(f"An exception has ocurred: {e}.")
-	
-	@commands.check(is_bot_owner)
-	@commands.command()
-	async def embed_test(self, ctx):
-		embed = discord.Embed(description="Insert Text Here", color=random.randint(0, 0xffffff))
-		embed.set_author(name="Insert Title Here", icon_url="https://i.imgur.com/8bOl5gU.png")
-		embed.set_footer(text=f"Insert Text Here (not needed)\nGøldbot was created by {self.owner.name}.",
-						 icon_url="https://i.imgur.com/ZgG8oJn.png")
-		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
-		await ctx.send(embed=embed)
 
 
 def setup(client):
