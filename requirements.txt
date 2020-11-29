@@ -1,7 +1,8 @@
-googletrans
+iso_639==0.4.5
+toml==0.10.2
 discord.py==1.5.1
-wikipedia
-beautifulsoup4
-discord
-toml
-iso-639~=0.4.5
+googletrans==3.0.0
+wikipedia==1.4.0
+beautifulsoup4==4.9.3
+discord==1.0.1
+iso639==0.1.4
