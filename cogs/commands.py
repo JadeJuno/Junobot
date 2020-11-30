@@ -1,7 +1,7 @@
 import asyncio
 import difflib
 import random
-import traceback
+# import traceback
 from datetime import datetime, timedelta
 
 import discord
@@ -121,7 +121,7 @@ class Commands(commands.Cog):
 			else:
 				await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track}\n```')
 	
-	@commands.command(aliases=['8ball'])
+	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
 		ball_predicts = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
 						 "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
@@ -134,9 +134,9 @@ class Commands(commands.Cog):
 				prediction = random.choice(ball_predicts[-5:])
 			else:
 				prediction = random.choice(ball_predicts)
-			await ctx.send(f'Question: {question}\n:8ball: Answer: {prediction}.')
 		else:
-			await ctx.send(":8ball: That's not a question...")
+			prediction = "That's not a question..."
+		await ctx.send(f'Question: {question}\nThe ***:8ball:BALL*** says: {prediction}.')
 	
 	@commands.command()
 	async def choose(self, ctx, *, options):
