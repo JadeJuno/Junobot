@@ -109,13 +109,13 @@ class Commands(commands.Cog):
 			
 				reaction, user = await self.client.wait_for('reaction_add', check=check)
 				if str(reaction.emoji) == "\U00002705":
-					await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": `{track}`')
-					print(f'Unknown Error in "{ctx.message.channel.guild.name}": `{track}`')
+					await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track}\n```')
+					print(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track}\n```')
 					return await ctx.send(f"Error details sent to {self.owner.name}.")
 				elif str(reaction.emoji) == "\U0000274c":
 					return await ctx.send("Understood.")
 			else:
-				await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": `{track}`')
+				await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track}\n```')
 	
 	@commands.command(aliases=['8ball'])
 	async def _8ball(self, ctx, *, question):
