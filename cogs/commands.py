@@ -2,7 +2,7 @@ import asyncio
 import difflib
 import random
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import discord
 import wikipedia
@@ -59,11 +59,9 @@ class Commands(commands.Cog):
 		self.activity = random.choice(status_list)
 		await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
 		time_now = datetime.now()
-		print(f'Status changed to "{self.activity}" ({time_now.hour}:{time_now.minute})')
+		print(f'Status changed to "{self.activity}" ({time_now.strftime("%H:%M")}).')
 		change_loop_interval = random.randint(1, 90)
-		unix_now = time.time() + change_loop_interval * 60
-		time_now = datetime.fromtimestamp(unix_now)
-		print(f"Next status change in {change_loop_interval} minutes ({time_now.hour}:{time_now.minute}).")
+		print(f"Next status change in {change_loop_interval} minutes ({(time_now+timedelta(minutes=change_loop_interval)).strftime('%H:%M')}).")
 	
 	@commands.Cog.listener()
 	async def on_ready(self):
