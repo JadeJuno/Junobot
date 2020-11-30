@@ -1,7 +1,6 @@
 import asyncio
 import difflib
 import random
-import time
 from datetime import datetime, timedelta
 
 import discord
