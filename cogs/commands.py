@@ -1,6 +1,7 @@
 import asyncio
 import difflib
 import random
+import traceback
 from datetime import datetime, timedelta
 
 import discord
@@ -98,14 +99,23 @@ class Commands(commands.Cog):
 			missing_param = error.param.name.replace("_", " ").capitalize()
 			await ctx.send(f"Error: Missing argument `{missing_param}`.")
 		else:
-			await ctx.send(f"Unknown Error: `{error}`")
-			await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": `{error}`')
-			print(f'Unknown Error in "{ctx.message.channel.guild.name}": `{error}`')
-			self.activity = f"{ctx.author.name} broke me."
-			await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
-			await asyncio.sleep(3)
-			self.activity = random.choice(status_list)
-			await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
+			track = traceback.format_exc()
+			if ctx.message.channel != self.my_guild:
+				check_message = await ctx.send("There was an unexpected error. Do you want to send the details to the bot owner?")
+			
+				def check(r, u):  # r = discord.Reaction, u = discord.Member or discord.User.
+					user_check = u.id == ctx.author.id or u.guild_permissions.administrator
+					return user_check and r.message == check_message and str(r.emoji) in ["\U00002705", "\U0000274c"]
+			
+				reaction, user = await self.client.wait_for('reaction_add', check=check)
+				if str(reaction.emoji) == "\U00002705":
+					await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": `{track}`')
+					print(f'Unknown Error in "{ctx.message.channel.guild.name}": `{track}`')
+					return await ctx.send(f"Error details sent to {self.owner.name}.")
+				elif str(reaction.emoji) == "\U0000274c":
+					return await ctx.send("Understood.")
+			else:
+				await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": `{track}`')
 	
 	@commands.command(aliases=['8ball'])
 	async def _8ball(self, ctx, *, question):
@@ -134,7 +144,7 @@ class Commands(commands.Cog):
 			await ctx.send(f'Gøldbot chooses: `{random.choice(divided_options).strip()}`.')
 		else:
 			await ctx.send(
-				'I can\'t just choose between one choice. *(to divide the choices you can put a comma between them)*.')
+				f'I can\'t just choose between {len(divided_options)} choice. *(to divide the choices you should put a comma between them)*.')
 	
 	@commands.command(aliases=["coinflip", "flipcoin"])
 	async def flip(self, ctx):
@@ -314,6 +324,11 @@ class Commands(commands.Cog):
 	
 	@commands.check(is_bot_owner)
 	@commands.command()
+	async def error_handling(self, ctx):
+		await ctx.send(0/0)
+		
+	@commands.check(is_bot_owner)
+	@commands.command()
 	async def test(self, ctx):
 		gold_emoji = self.emoji_list[0]
 		print("TEST")
@@ -331,6 +346,8 @@ class Commands(commands.Cog):
 			int('A')
 		except Exception as e:
 			await ctx.send(f"An exception has ocurred: {e}.")
+	
+	
 
 
 def setup(client):
