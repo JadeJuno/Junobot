@@ -5,4 +5,4 @@ googletrans==3.0.0
 wikipedia==1.4.0
 beautifulsoup4==4.9.3
 discord==1.0.1
-iso639==0.1.4
+iso-639==0.4.5
