@@ -104,8 +104,8 @@ class Commands(commands.Cog):
 			track = error  # temporary solution
 			if ctx.message.channel != self.my_guild:
 				check_message = await ctx.send("There was an unexpected error. Do you want to send the details to the bot owner?")
-				await check_message.react("\U00002705")
-				await check_message.react("\U0000274c")
+				await check_message.add_reaction("\U00002705")
+				await check_message.add_reaction("\U0000274c")
 			
 				def check(r, u):  # r = discord.Reaction, u = discord.Member or discord.User.
 					user_check = u.id == ctx.author.id or u.guild_permissions.administrator
