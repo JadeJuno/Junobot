@@ -108,7 +108,7 @@ class Commands(commands.Cog):
 				await check_message.add_reaction("\U0000274c")
 			
 				def check(r, u):  # r = discord.Reaction, u = discord.Member or discord.User.
-					user_check = u.id == ctx.author.id or u.guild_permissions.administrator
+					user_check = u.id == ctx.author.id or u.guild_permissions.administrator and ctx.author.bot
 					return user_check and r.message == check_message and str(r.emoji) in ["\U00002705", "\U0000274c"]
 			
 				reaction, user = await self.client.wait_for('reaction_add', check=check)
