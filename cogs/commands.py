@@ -366,6 +366,11 @@ class Commands(commands.Cog):
 			print(track)
 			await ctx.send(f"An exception has ocurred: {e}.")
 
+	@commands.check(is_bot_owner)
+	@commands.command()
+	async def auto_error(self, ctx):
+		int('A')
+
 
 def setup(client):
 	client.add_cog(Commands(client))
