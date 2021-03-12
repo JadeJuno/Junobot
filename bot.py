@@ -18,7 +18,7 @@ parser = prefix.PrefixParser(default="g!")
 
 client = commands.Bot(command_prefix=parser, case_insensitive=True)
 
-client.remove_command("help_texts")
+client.remove_command("help")
 owner = None
 
 
@@ -35,7 +35,7 @@ def embed_template(ctx, title=None, description=None, footer=None, image: str = 
 	else:
 		embed.set_author(name=title)
 	embed.set_footer(
-		text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help_texts <command>.\nGøldbot was created by {owner.name}.",
+		text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.",
 		icon_url="https://i.imgur.com/ZgG8oJn.png")
 	embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 	if image != "":
@@ -43,7 +43,7 @@ def embed_template(ctx, title=None, description=None, footer=None, image: str = 
 	return embed
 
 
-@client.command("help_texts")
+@client.command("help")
 async def _help(ctx, command=None):
 	if command is None:
 		footer = ""
