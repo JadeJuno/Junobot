@@ -18,7 +18,7 @@ parser = prefix.PrefixParser(default="g!")
 
 client = commands.Bot(command_prefix=parser, case_insensitive=True)
 
-client.remove_command("help")
+client.remove_command("help_texts")
 owner = None
 
 
@@ -35,7 +35,7 @@ def embed_template(ctx, title=None, description=None, footer=None, image: str = 
 	else:
 		embed.set_author(name=title)
 	embed.set_footer(
-		text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.",
+		text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help_texts <command>.\nGøldbot was created by {owner.name}.",
 		icon_url="https://i.imgur.com/ZgG8oJn.png")
 	embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 	if image != "":
@@ -43,15 +43,15 @@ def embed_template(ctx, title=None, description=None, footer=None, image: str = 
 	return embed
 
 
-@client.command("help")
+@client.command("help_texts")
 async def _help(ctx, command=None):
 	if command is None:
 		footer = ""
-		with open("help/general_help.txt", "r", encoding='utf-8') as file:
+		with open("help_texts/general_help.txt", "r", encoding='utf-8') as file:
 			help_text = file.read()
-		with open("help/mod_help.txt", "r", encoding='utf-8') as file:
+		with open("help_texts/mod_help.txt", "r", encoding='utf-8') as file:
 			mod_text = file.read()
-		with open("help/owner_help.txt", "r", encoding='utf-8') as file:
+		with open("help_texts/owner_help.txt", "r", encoding='utf-8') as file:
 			owner_text = file.read()
 		title = "Commands"
 		if ctx.author.guild_permissions.administrator:
@@ -63,7 +63,7 @@ async def _help(ctx, command=None):
 		footer = "\n<>=Necessary, []=optional."
 		try:
 			title = command.capitalize()
-			with open(f"help/specific_help/{command}.txt", encoding='utf-8') as file:
+			with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
 				help_text = file.read()
 		except FileNotFoundError:
 			title = "Error!"
