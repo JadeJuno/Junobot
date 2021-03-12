@@ -47,11 +47,11 @@ def embed_template(ctx, title=None, description=None, footer=None, image: str = 
 async def _help(ctx, command=None):
 	if command is None:
 		footer = ""
-		with open("help/general_help.txt", "r") as file:
+		with open("help/general_help.txt", "r", encoding='utf-8') as file:
 			help_text = file.read()
-		with open("help/mod_help.txt", "r") as file:
+		with open("help/mod_help.txt", "r", encoding='utf-8') as file:
 			mod_text = file.read()
-		with open("help/owner_help.txt", "r") as file:
+		with open("help/owner_help.txt", "r", encoding='utf-8') as file:
 			owner_text = file.read()
 		title = "Commands"
 		if ctx.author.guild_permissions.administrator:
@@ -63,7 +63,7 @@ async def _help(ctx, command=None):
 		footer = "\n<>=Necessary, []=optional."
 		try:
 			title = command.capitalize()
-			with open(f"help/specific_help/{command}.txt") as file:
+			with open(f"help/specific_help/{command}.txt", encoding='utf-8') as file:
 				help_text = file.read()
 		except FileNotFoundError:
 			title = "Error!"
