@@ -1,7 +1,8 @@
 import asyncio
 import difflib
 import random
-# import traceback
+import sys
+import traceback
 from datetime import datetime, timedelta
 
 import discord
@@ -77,7 +78,7 @@ class Commands(commands.Cog):
 	@commands.Cog.listener()
 	async def on_command(self, ctx):
 		# Function only used for testing purposes. DO NOT USE!
-		# (I'd delete it, but I feel like I'll need it one time or the other...)
+		# (I'd delete it, but I feel like I'll need it one day...)
 		"""
 		if ctx.message.channel.guild != self.my_guild:
 			await self.log.send(f"{ctx.message.channel.guild.name}:\n{ctx.message.author}: {ctx.message.content}")
@@ -86,6 +87,10 @@ class Commands(commands.Cog):
 	
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
+		if hasattr(ctx.command, 'on_error'):
+			return
+		error = getattr(error, 'original', error)
+		
 		if isinstance(error, commands.CommandNotFound):
 			command = ctx.message.content.lstrip(ctx.prefix).split(" ")
 			command = command[0]
@@ -99,27 +104,34 @@ class Commands(commands.Cog):
 			missing_param = error.param.name.replace("_", " ").capitalize()
 			await ctx.send(f"Error: Missing argument `{missing_param}`.")
 		else:
-			# track = traceback.format_exc(error)
-			# print(track)
-			track = error  # temporary solution
+			exc_info = sys.exc_info()
+			track = traceback.format_exception(*exc_info)
+			print(track)
+			# track = error  # temporary solution
 			if ctx.message.channel != self.my_guild:
 				check_message = await ctx.send("There was an unexpected error. Do you want to send the details to the bot owner?")
 				await check_message.add_reaction("\U00002705")
 				await check_message.add_reaction("\U0000274c")
 			
-				def check(r, u):  # r = discord.Reaction, u = discord.Member or discord.User.
+				def check(r, u):
 					user_check = u.id == ctx.author.id or u.guild_permissions.administrator and ctx.author.bot
 					return user_check and r.message == check_message and str(r.emoji) in ["\U00002705", "\U0000274c"]
 			
 				reaction, user = await self.client.wait_for('reaction_add', check=check)
 				if str(reaction.emoji) == "\U00002705":
-					await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track}\n```')
-					print(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track}\n```')
+					track_str = ""
+					for line in track:
+						track_str += line
+					await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track_str}\n```')
+					print(f'Unknown Error in "{ctx.message.channel.guild.name}": `{track_str}`')
 					return await ctx.send(f"Error details sent to {self.owner.name}.")
 				elif str(reaction.emoji) == "\U0000274c":
 					return await ctx.send("Understood.")
 			else:
-				await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track}\n```')
+				track_str = ""
+				for line in track:
+					track_str += line
+				await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track_str}\n```')
 	
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
@@ -310,7 +322,8 @@ class Commands(commands.Cog):
 	@commands.has_permissions(manage_messages=True)
 	@commands.command()
 	async def pin(self, ctx):
-		messages = await ctx.history(limit=2).flatten().remove(ctx.message)
+		messages = await ctx.history(limit=2).flatten()
+		messages.remove(ctx.message)
 		await messages[0].pin()
 	
 	@commands.has_permissions(ban_members=True)
@@ -349,6 +362,9 @@ class Commands(commands.Cog):
 		try:
 			int('A')
 		except Exception as e:
+			exc_info = sys.exc_info()
+			track = traceback.format_exception(*exc_info)
+			print(track)
 			await ctx.send(f"An exception has ocurred: {e}.")
 	
 	
