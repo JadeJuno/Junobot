@@ -85,12 +85,12 @@ async def _help(ctx, command=None):
 async def prefix(ctx, new_prefix=None):
 	perm = ctx.author.guild_permissions.administrator
 	if new_prefix is None:
-		await ctx.send(f"Server's prefix currently set to {ctx.prefix}.")
+		await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
 	else:
 		if perm:
 			sv = str(ctx.guild.id)
 			parser.update(sv, new_prefix)
-			await ctx.send(f"Prefix changed to {new_prefix}!")
+			await ctx.send(f"Prefix changed to `{new_prefix}`!")
 		else:
 			raise commands.CheckFailure
 
