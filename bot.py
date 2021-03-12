@@ -22,6 +22,15 @@ client.remove_command("help")
 owner = None
 
 
+def check_if_self_hosted():
+	try:
+		with open(r"C:\Users\cient\OneDrive\Escritorio\Don't delete this text file.txt", "r") as f:
+			str(f.read())
+		return True
+	except FileNotFoundError:
+		return False
+
+
 @client.event
 async def on_ready():
 	global owner
@@ -90,5 +99,9 @@ for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
 		client.load_extension(f'cogs.{filename[:-3]}')
 
-TOKEN = "NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.ywRBVp3AnGQjCiRwjYJsk3Oryk4"
+if check_if_self_hosted():
+	TOKEN = "NzkxMDY2MzQ5MjUzODIwNDc4.X-Jv8g.bEiIuTfej1rshqehrR_v1T5rvsk"
+else:
+	TOKEN = "NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.ywRBVp3AnGQjCiRwjYJsk3Oryk4"
+
 client.run(TOKEN)

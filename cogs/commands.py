@@ -15,10 +15,10 @@ import googlesearch
 from bot import config, embed_template, is_bot_owner
 from morsecode import MorseCode
 
-status_list = ['My default prefix is g!.', "If I break, contact Gølder06#7041.", 'To see my commands, type g!help_texts.']
+status_list = ['My default prefix is g!.', "If I break, contact Gølder06#7041.", 'To see my commands, type g!help.']
 
 command_list = ['8ball', 'ban', 'choose', 'clear', 'coinflip', 'detect', 'dieroll', 'flip', 'flipcoin', 'google',
-				'googleit', 'googlesearch', 'help_texts', 'kick', 'langlist', 'language', 'languagelist', 'morse',
+				'googleit', 'googlesearch', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
 				'morsecode', 'pin', 'ping', 'prefix', 'roll', 'rolldie', 'say', 'translate', 'unban', 'wikipedia']
 
 change_loop_interval = random.randint(1, 90)
