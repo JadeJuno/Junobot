@@ -14,14 +14,6 @@ def is_bot_owner(ctx):
 	return ctx.author.id in config["owners_id"]
 
 
-parser = prefix.PrefixParser(default="g!")
-
-client = commands.Bot(command_prefix=parser, case_insensitive=True)
-
-client.remove_command("help")
-owner = None
-
-
 def check_if_self_hosted():
 	try:
 		with open(r"C:\Users\cient\OneDrive\Escritorio\Don't delete this text file.txt", "r") as f:
@@ -29,6 +21,16 @@ def check_if_self_hosted():
 		return True
 	except FileNotFoundError:
 		return False
+
+if check_if_self_hosted():
+	parser = prefix.PrefixParser(default="g.")
+else:
+	parser = prefix.PrefixParser(default="g!")
+
+client = commands.Bot(command_prefix=parser, case_insensitive=True)
+
+client.remove_command("help")
+owner = None
 
 
 @client.event
