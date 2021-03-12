@@ -127,7 +127,7 @@ class Commands(commands.Cog):
 					for line in track:
 						track_str += line
 					await self.log.send(
-						f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track_str}\n```\n\nMessage that caused the error: `{ctx.message}`')
+						f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track_str}\n```\n\nMessage that caused the error: `{ctx.message.content}`')
 					print(f'Unknown Error in "{ctx.message.channel.guild.name}": `{track_str}`')
 					return await ctx.send(f"Error details sent to {self.owner.name}.")
 				elif str(reaction.emoji) == "\U0000274c":
@@ -136,7 +136,7 @@ class Commands(commands.Cog):
 				track_str = ""
 				for line in track:
 					track_str += line
-				await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track_str}\n```')
+				await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track_str}\n```\n\nMessage that caused the error: `{ctx.message.content}`')
 
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
