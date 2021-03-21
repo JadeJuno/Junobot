@@ -17,9 +17,9 @@ from morsecode import MorseCode
 
 status_list = ['My default prefix is g!.', "If I break, contact Gølder06#7041.", 'To see my commands, type g!help.']
 
-command_list = ['8ball', 'ban', 'choose', 'clear', 'coinflip', 'detect', 'dieroll', 'flip', 'flipcoin', 'google',
+command_list = ['8ball', 'ban', 'choose', 'clear', 'coinflip', 'detect', 'diceroll', 'flip', 'flipcoin', 'google',
 				'googleit', 'googlesearch', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
-				'morsecode', 'pin', 'ping', 'prefix', 'roll', 'rolldie', 'say', 'translate', 'unban', 'wikipedia']
+				'morsecode', 'pin', 'ping', 'prefix', 'roll', 'rolldice', 'say', 'translate', 'unban', 'wikipedia']
 
 change_loop_interval = random.randint(1, 90)
 
@@ -174,17 +174,17 @@ class Commands(commands.Cog):
 		await ctx.send(f"-Flip!-\nIt landed on {random.choice(['heads', 'tails'])}!")
 
 	@commands.command(aliases=["rolldice", "diceroll", "dice"])
-	async def roll(self, ctx, faces=6):
+	async def roll(self, ctx, faces=6.0):
 		print(faces)
 		if type(faces) is float and faces != int(faces):
 			await ctx.send(
-				f"Error: You can't roll a dice with a non-integer amout of faces, you {faces} dimensional being!")
+				f"Error: You can't roll a die with a non-whole amout of faces, you {faces} dimensional being!")
 			return
 		if faces > 2:
 			try:
 				faces = int(faces)
 			except ValueError:
-				await ctx.send("Error: You can't roll a die with a non-number amount of faces...")
+				await ctx.send("Error: You can't roll a die with a non-numeric amount of faces...")
 			result = random.randint(1, faces)
 			if faces <= 6:
 				emoji = self.emoji_list[result - 1]
@@ -195,6 +195,11 @@ class Commands(commands.Cog):
 			await ctx.send(f"... A 2 sided die is a coin... Use the `{ctx.prefix}`flip command.")
 		elif faces <= 1:
 			await ctx.send("... You serious?")
+
+	@roll.error
+	async def roll_error(self, ctx, error):
+		if isinstance(error, commands.BadArgument):
+			await ctx.send("Error: You can't roll a die with a non-numeric amount of faces...")
 
 	@commands.command()
 	async def say(self, ctx, *, user_message):

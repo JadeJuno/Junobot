@@ -1,7 +1,6 @@
 import difflib
 import discord
 import traceback
-import sys
 from discord.ext import commands
 
 from bot import config
@@ -23,12 +22,9 @@ class CommandErrorHandler(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
-
-		# This prevents any commands with local handlers being handled here in on_command_error.
 		if hasattr(ctx.command, 'on_error'):
 			return
 
-		# This prevents any cogs with an overwritten cog_command_error being handled here.
 		cog = ctx.cog
 		if cog:
 			if cog._get_overridden_method(cog.cog_command_error) is not None:
@@ -43,8 +39,6 @@ class CommandErrorHandler(commands.Cog):
 					await ctx.send(f"Error: That command doesn't exist. Did you mean `{ctx.prefix}{com}`?")
 			return
 
-		# Allows us to check for original exceptions raised and sent to CommandInvokeError.
-		# If nothing is found. We keep the exception passed to on_command_error.
 		error = getattr(error, 'original', error)
 
 		if isinstance(error, commands.DisabledCommand):
