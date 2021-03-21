@@ -22,6 +22,7 @@ def check_if_self_hosted():
 	except FileNotFoundError:
 		return False
 
+
 if check_if_self_hosted():
 	parser = prefix.PrefixParser(default="g.")
 else:
@@ -54,7 +55,7 @@ def embed_template(ctx, title=None, description=None, footer=None, image: str = 
 	return embed
 
 
-@client.command("help")
+@client.command(name="help")
 async def _help(ctx, command=None):
 	if command is None:
 		footer = ""

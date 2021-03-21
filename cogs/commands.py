@@ -87,6 +87,7 @@ class Commands(commands.Cog):
 			print(f"{ctx.message.channel.guild.name}:\n{ctx.message.author}: {ctx.message.content}")
 		"""
 
+	"""
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
 		if hasattr(ctx.command, 'on_error'):
@@ -100,7 +101,7 @@ class Commands(commands.Cog):
 				similarity = difflib.SequenceMatcher(None, command, com).ratio()
 				if similarity >= 0.6:
 					await ctx.send(f"Error: That command doesn't exist. Did you mean `{ctx.prefix}{com}`?")
-					return
+			return
 		elif isinstance(error, commands.CheckFailure):
 			await ctx.send("Error: You don't have permissions to use that command.")
 		elif isinstance(error, commands.MissingRequiredArgument):
@@ -137,6 +138,7 @@ class Commands(commands.Cog):
 				for line in track:
 					track_str += line
 				await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track_str}\n```\n\nMessage that caused the error: `{ctx.message.content}`')
+	"""
 
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
@@ -171,11 +173,13 @@ class Commands(commands.Cog):
 	async def flip(self, ctx):
 		await ctx.send(f"-Flip!-\nIt landed on {random.choice(['heads', 'tails'])}!")
 
-	@commands.command(aliases=["rolldie", "dieroll"])
+	@commands.command(aliases=["rolldice", "diceroll", "dice"])
 	async def roll(self, ctx, faces=6):
+		print(faces)
 		if type(faces) is float and faces != int(faces):
 			await ctx.send(
-				f"Error: You can't roll a die with a non-integer amout of faces, you {faces} dimensional being!")
+				f"Error: You can't roll a dice with a non-integer amout of faces, you {faces} dimensional being!")
+			return
 		if faces > 2:
 			try:
 				faces = int(faces)
@@ -254,7 +258,7 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def ping(self, ctx):
-		await ctx.send(f':ping_pong: Pong!{round(self.client.latency * 1000)}ms.')
+		await ctx.send(f':ping_pong: Pong! {round(self.client.latency * 1000)}ms.')
 
 	@commands.command()
 	async def translate(self, ctx, translate_message, destination_language='en', source_language=None):
@@ -359,7 +363,7 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
 		try:
-			int('A')
+			int(1)
 		except Exception as e:
 			exc_info = sys.exc_info()
 			track = traceback.format_exception(*exc_info)
