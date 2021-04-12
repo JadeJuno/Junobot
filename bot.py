@@ -40,7 +40,7 @@ async def on_ready():
 	owner = await client.fetch_user(config["owners_id"][0])
 
 
-def embed_template(ctx, title=None, description=None, footer=None, image: str = "", icon: str = ""):
+def embed_template(ctx, title=None, description=None, footer="", image: str = "", icon: str = ""):
 	embed = discord.Embed(description=description, color=random.randint(0, 0xffffff))
 	if icon != "":
 		embed.set_author(name=title, icon_url=icon)

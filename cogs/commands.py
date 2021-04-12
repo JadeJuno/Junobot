@@ -1,5 +1,4 @@
 import asyncio
-import difflib
 import random
 import sys
 import traceback
@@ -378,7 +377,7 @@ class Commands(commands.Cog):
 	@commands.check(is_bot_owner)
 	@commands.command()
 	async def auto_error(self, ctx):
-		int('A')
+		await ctx.send(f"{int('A')}")
 
 
 def setup(client):
