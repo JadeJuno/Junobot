@@ -86,59 +86,6 @@ class Commands(commands.Cog):
 			print(f"{ctx.message.channel.guild.name}:\n{ctx.message.author}: {ctx.message.content}")
 		"""
 
-	"""
-	@commands.Cog.listener()
-	async def on_command_error(self, ctx, error):
-		if hasattr(ctx.command, 'on_error'):
-			return
-		error = getattr(error, 'original', error)
-
-		if isinstance(error, commands.CommandNotFound):
-			command = ctx.message.content.lstrip(ctx.prefix).split(" ")
-			command = command[0]
-			for com in command_list:
-				similarity = difflib.SequenceMatcher(None, command, com).ratio()
-				if similarity >= 0.6:
-					await ctx.send(f"Error: That command doesn't exist. Did you mean `{ctx.prefix}{com}`?")
-			return
-		elif isinstance(error, commands.CheckFailure):
-			await ctx.send("Error: You don't have permissions to use that command.")
-		elif isinstance(error, commands.MissingRequiredArgument):
-			missing_param = error.param.name.replace("_", " ").capitalize()
-			await ctx.send(f"Error: Missing argument `{missing_param}`.")
-		else:
-			exc_info = sys.exc_info()
-			track = traceback.format_exception(*exc_info)
-			print(track)
-			# track = error  # temporary solution
-			if ctx.message.channel != self.my_guild:
-				check_message = await ctx.send(
-					"There was an unexpected error. Do you want to send the details to the bot owner?")
-				await check_message.add_reaction("\U00002705")
-				await check_message.add_reaction("\U0000274c")
-
-				def check(r, u):
-					user_check = u.id == ctx.author.id or u.guild_permissions.administrator and ctx.author.bot
-					return user_check and r.message == check_message and str(r.emoji) in ["\U00002705", "\U0000274c"]
-
-				reaction, user = await self.client.wait_for('reaction_add', check=check)
-				if str(reaction.emoji) == "\U00002705":
-					track_str = ""
-					for line in track:
-						track_str += line
-					await self.log.send(
-						f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track_str}\n```\n\nMessage that caused the error: `{ctx.message.content}`')
-					print(f'Unknown Error in "{ctx.message.channel.guild.name}": `{track_str}`')
-					return await ctx.send(f"Error details sent to {self.owner.name}.")
-				elif str(reaction.emoji) == "\U0000274c":
-					return await ctx.send("Understood.")
-			else:
-				track_str = ""
-				for line in track:
-					track_str += line
-				await self.log.send(f'Unknown Error in "{ctx.message.channel.guild.name}": ```python\n{track_str}\n```\n\nMessage that caused the error: `{ctx.message.content}`')
-	"""
-
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
 		ball_predicts = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
@@ -224,7 +171,7 @@ class Commands(commands.Cog):
 			i += 1
 		if i == 1:
 			output_str = "**No results found.**"
-		embed = embed_template(ctx, "Google", output_str[0:-2],
+		embed = embed_template(ctx, "Google", output_str[0:-1],
 							   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
 
