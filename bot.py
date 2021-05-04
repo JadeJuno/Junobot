@@ -40,6 +40,13 @@ async def on_ready():
 	owner = await client.fetch_user(config["owners_id"][0])
 
 
+@client.event
+async def on_message(message):
+	if "starborne" in message.content.lower():
+		await message.channel.send("https://i.imgur.com/m0MEjGE.png")
+	await client.process_commands(message)
+
+
 def embed_template(ctx, title=None, description=None, footer="", image: str = "", icon: str = ""):
 	embed = discord.Embed(description=description, color=random.randint(0, 0xffffff))
 	if icon != "":
