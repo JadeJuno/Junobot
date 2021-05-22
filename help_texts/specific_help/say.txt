@@ -1,6 +1,6 @@
 **Description**
-Send a message with the text you wrote and deletes your message
+Send a message with the text you wrote **in quotation marks** and deletes your message. If the channel is defined, it'll send the message to said channel.
 
 **Usage**
-`{prefix}say <Text>`
-E.G.: `{prefix}say Hi, my name is Gøldbot and I'm sentient.`
+`{prefix}say "<message>" [channel]`
+E.G.: `{prefix}say "Hi, my name is Gøldbot and I'm sentient." #general`

@@ -3,7 +3,7 @@
 `{prefix}choose <option1|option2|option3|...>`
 `{prefix}flip`
 `{prefix}roll [number of sides]`
-`{prefix}say <message>`
+`{prefix}say "<message>" [channel]`
 
 **Utility commands:**
 `{prefix}google <search>`
