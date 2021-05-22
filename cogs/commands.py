@@ -148,15 +148,24 @@ class Commands(commands.Cog):
 			await ctx.send("Error: You can't roll a die with a non-numeric amount of faces...")
 
 	@commands.command()
-	async def say(self, ctx, *, user_message):
-		s = user_message
-		if s.lower().startswith("i am") or s.lower().startswith("i'm"):
-			if "stupid" in s.lower():
-				s = f"{ctx.author.mention} is stupid."
-			elif "dumb" in s.lower():
-				s = f"{ctx.author.mention} is dumb."
+	async def say(self, ctx, message, channel=None):
+		if channel is None:
+			channel = ctx.channel
+		else:
+			if channel.startswith("<#"):
+				channel = self.client.get_channel(int(channel.strip("<>")[1:]))
+			else:
+				channel = discord.utils.get(ctx.guild.text_channels, name=channel)
+		if channel is None:
+			await ctx.send("Error: Channel doesn't exist")
+			return
+		if message.lower().startswith("i am") or message.lower().startswith("i'm"):
+			if "stupid" in message.lower():
+				message = f"{ctx.author.mention} is stupid."
+			elif "dumb" in message.lower():
+				message = f"{ctx.author.mention} is dumb."
 		await discord.Message.delete(ctx.message, delay=0)
-		await ctx.send(s)
+		await channel.send(message)
 
 	@commands.command(aliases=["googleit", "googlesearch"])
 	async def google(self, ctx, *, search_request):
