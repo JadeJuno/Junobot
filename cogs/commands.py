@@ -121,26 +121,31 @@ class Commands(commands.Cog):
 
 	@commands.command(aliases=["rolldice", "diceroll", "dice"])
 	async def roll(self, ctx, faces=6.0):
-		print(faces)
-		if type(faces) is float and faces != int(faces):
-			await ctx.send(
-				f"Error: You can't roll a die with a non-whole amout of faces, you {faces} dimensional being!")
-			return
-		if faces > 2:
-			try:
-				faces = int(faces)
-			except ValueError:
-				await ctx.send("Error: You can't roll a die with a non-numeric amount of faces...")
-			result = random.randint(1, faces)
-			if faces <= 6:
-				emoji = self.emoji_list[result - 1]
-			else:
-				emoji = result
-			await ctx.send(f"Rolled a d{faces}.\nIt landed on **{emoji}**!")
-		elif faces == 2:
-			await ctx.send(f"... A 2 sided die is a coin... Use the `{ctx.prefix}`flip command.")
-		elif faces <= 1:
-			await ctx.send("... You serious?")
+		if random.choices([True, False], [100, 1])[0]:
+			if type(faces) is float and faces != int(faces):
+				await ctx.send(
+					f"Error: You can't roll a die with a non-whole amout of faces, you {faces} dimensional being!")
+				return
+			if faces > 2:
+				try:
+					faces = int(faces)
+				except ValueError:
+					await ctx.send("Error: You can't roll a die with a non-numeric amount of faces...")
+				result = random.randint(1, faces)
+				if faces <= 6:
+					emoji = self.emoji_list[result - 1]
+				else:
+					emoji = result
+				await ctx.send(f"Rolled a d{faces}.\nIt landed on **{emoji}**!")
+			elif faces == 2:
+				await ctx.send(f"... A 2 sided die is a coin... Use the `{ctx.prefix}`flip command.")
+			elif faces <= 1:
+				await ctx.send("... You serious?")
+		else:
+			# This right here is why you don't allow me to code while sick =)
+			with open('=).gif', 'rb') as f:
+				img = discord.File(f)
+			await ctx.send("Rick. \n~~haha get it it's a rickroll lmfaooooooo-~~", file=img)
 
 	@roll.error
 	async def roll_error(self, ctx, error):
