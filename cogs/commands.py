@@ -191,8 +191,11 @@ class Commands(commands.Cog):
 
 	@commands.command(aliases=["detect", "language"])
 	async def lang_detect(self, ctx, *, user_message):
+		detected_lang = self.translator.detect(user_message).lang
+		if isinstance(detected_lang, list):
+			detected_lang = detected_lang[self.translator.detect(user_message).confidence.index(max(self.translator.detect(user_message).confidence))]
 		await ctx.send(
-			f'"{user_message}" is in {languages.get(alpha2=self.translator.detect(user_message).lang).name} (Certainty: `{int(self.translator.detect(user_message).confidence * 100)}%`).')
+			f'"{user_message}" is in {languages.get(alpha2=detected_lang).name} (Certainty: `{int(max(self.translator.detect(user_message).confidence) * 100)}%`).')
 
 	@commands.command(aliases=["morsecode", "morse"])
 	async def morse_code(self, ctx, encrypt_decrypt, *, sentence):
