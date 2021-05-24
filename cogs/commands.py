@@ -16,7 +16,7 @@ from morsecode import MorseCode
 
 status_list = ['My default prefix is g!.', "If I break, contact Gølder06#7041.", 'To see my commands, type g!help.']
 
-command_list = ['8ball', 'ban', 'choose', 'clear', 'coinflip', 'detect', 'diceroll', 'flip', 'flipcoin', 'google',
+command_list = ['8ball', 'ban', 'binary', 'choose', 'clear', 'coinflip', 'detect', 'diceroll', 'flip', 'flipcoin', 'google',
 				'googleit', 'googlesearch', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
 				'morsecode', 'pin', 'ping', 'prefix', 'roll', 'rolldice', 'say', 'translate', 'unban', 'wikipedia']
 
@@ -293,6 +293,39 @@ class Commands(commands.Cog):
 		messages = await ctx.history(limit=2).flatten()
 		messages.remove(ctx.message)
 		await messages[0].pin()
+
+	@commands.command()
+	async def binary(self, ctx, encode_decode: str, *, sentence):
+		if encode_decode == "encode":
+			s = ''.join(format(ord(i), '08b') for x, i in enumerate(sentence))
+			bin_list = [s[i:i + 8] for i in range(0, len(s), 8)]
+			output = ''
+			for _bin in bin_list:
+				output += f'{_bin} '
+			output = output[:-1]
+			await ctx.send(f"Here\'s your encoded string: \n`{output}`")
+		elif encode_decode == 'decode':
+			for char in sentence:
+				if char not in ['0', '1', ' ']:
+					with open('only_0s_and_1s_please.mp4', 'rb') as f:
+						img = discord.File(f)
+					await ctx.send("Please only use 1s and 0s or Bender will be sad.", file=img)
+					return
+			try:
+				int(sentence)
+			except ValueError:
+				bin_list = sentence.split()
+			else:
+				bin_list = [sentence[i:i + 8] for i in range(0, len(sentence), 8)]
+
+			output = ''
+			for _bin in bin_list:
+				output += chr(int(_bin, 2))
+			await ctx.send(f"Here\'s your decoded binary code: \n`{output}`")
+			return
+		else:
+			await ctx.send('ERROR: Encode-Decode error (PH)')
+			return
 
 	@commands.has_permissions(ban_members=True)
 	@commands.command()
