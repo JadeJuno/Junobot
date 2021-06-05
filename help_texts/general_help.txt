@@ -9,9 +9,11 @@
 `{prefix}google <search>`
 `{prefix}help [command]`
 `{prefix}language <sentence>`
-`{prefix}morse <encrypt/decrypt> <sentence>`
-`{prefix}binary <encode/decode> <sentence>`
 `{prefix}ping`
 `{prefix}prefix`
 `{prefix}translate "<sentence>" [dest. language] [source language]`
 `{prefix}wikipedia <search request>`
+
+**Ciphering Commands:**
+`{prefix}morse <encrypt/decrypt> <sentence>`
+`{prefix}binary <encode/decode> <sentence>`
