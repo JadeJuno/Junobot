@@ -312,9 +312,7 @@ class Commands(commands.Cog):
 		elif encode_decode == 'decode':
 			for char in sentence:
 				if char not in ['0', '1', ' ']:
-					with open('only_0s_and_1s_please.mp4', 'rb') as f:
-						img = discord.File(f)
-					await ctx.send("Please only use 1s and 0s or Bender will be sad.", file=img)
+					await ctx.send("Please only use 1s and 0s.")
 					return
 			try:
 				int(sentence)
