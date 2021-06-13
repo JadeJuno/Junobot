@@ -1,5 +1,7 @@
 import asyncio
+from collections import deque
 import random
+import string
 import sys
 import traceback
 from datetime import datetime, timedelta
@@ -216,6 +218,7 @@ class Commands(commands.Cog):
 				print(e)
 				return
 		elif disc == "decrypt":
+			code = code.replace('_', '-')
 			try:
 				output = self.morse.decrypt(code).lower()
 			except ValueError:
@@ -300,8 +303,28 @@ class Commands(commands.Cog):
 		await messages[0].pin()
 
 	@commands.command()
+	async def caesar(self, ctx, shift, encrypt_decrypt: str, *, sentence):
+		try:
+			int(shift)
+		except ValueError:
+			await ctx.send('Error: Shift no good (PH)')
+		for char in sentence:
+			if char in string.digits:
+				await ctx.send('Error: no, frick you (PH)')
+				return
+		alphabet_upper = deque(list(string.ascii_uppercase))
+		alphabet_lower = deque(list(string.ascii_lowercase))
+		shift_upper = alphabet_upper
+		shift_upper.rotate(shift)
+		shift_lower = alphabet_lower
+		shift_lower.rotate(shift)
+		if encrypt_decrypt.lower() == 'encrypt':
+			pass
+		await ctx.send()
+
+	@commands.command()
 	async def binary(self, ctx, encode_decode: str, *, sentence):
-		if encode_decode == "encode":
+		if encode_decode.lower() == "encode":
 			s = ''.join(format(ord(i), '08b') for x, i in enumerate(sentence))
 			bin_list = [s[i:i + 8] for i in range(0, len(s), 8)]
 			output = ''
@@ -309,7 +332,7 @@ class Commands(commands.Cog):
 				output += f'{_bin} '
 			output = output[:-1]
 			await ctx.send(f"Here\'s your encoded string: \n`{output}`")
-		elif encode_decode == 'decode':
+		elif encode_decode.lower() == 'decode':
 			for char in sentence:
 				if char not in ['0', '1', ' ']:
 					await ctx.send("Please only use 1s and 0s.")
@@ -327,7 +350,7 @@ class Commands(commands.Cog):
 			await ctx.send(f"Here\'s your decoded binary code: \n`{output}`")
 			return
 		else:
-			await ctx.send('ERROR: Encode-Decode error (PH)')
+			await ctx.send('ERROR: Invalid discriminator.')
 			return
 
 	@commands.has_permissions(ban_members=True)
