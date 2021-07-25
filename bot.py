@@ -55,9 +55,7 @@ async def autodelete(message):
 
 @client.event
 async def on_message(message):
-	if message.author.bot:
-		return
-	elif message.channel.id == 749571272635187342 and not message.author.guild_permissions.administrator:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
+	if message.channel.id == 749571272635187342 and not message.author.guild_permissions.administrator and not message.author.bot:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
 		if len(message.attachments) != 0:
 			if message.attachments[0].content_type == "application/zip":
 				pass
@@ -67,8 +65,13 @@ async def on_message(message):
 			pass
 		else:
 			await autodelete(message)
+	elif message.content == "!<#843834879736283156>":
+		await message.channel.send("Please use your commands in <#843834879736283156>, so the other channels don't get messy! <:serious:845817575875411968>")
 	else:
-		if message.guild.id != 734127708488859831:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
+		if message.guild.id == 734127708488859831:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
+			if message.content.startswith("g!") and message.channel.id != 749571272635187342:
+				await message.reply("Gøldbot commands have been disabled in this server.")
+		else:
 			await client.process_commands(message)
 
 
