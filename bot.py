@@ -50,12 +50,12 @@ async def on_message(message):
 				pass
 			else:
 				await discord.Message.delete(message, delay=0)
-				await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)")
+				await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041")
 		elif len(message.embeds) != 0:
 			pass
 		else:
 			await discord.Message.delete(message, delay=0)
-			await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)")
+			await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041")
 	else:
 		if message.guild.id != 734127708488859831:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
 			await client.process_commands(message)
