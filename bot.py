@@ -42,9 +42,23 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-	if "starborne" in message.content.lower():
-		await message.channel.send("https://i.imgur.com/m0MEjGE.png")
-	await client.process_commands(message)
+	if message.author.bot:
+		return
+	elif message.channel.id == 749571272635187342 and not message.author.guild_permissions.administrator:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
+		if len(message.attachments) != 0:
+			if message.attachments[0].content_type == "application/zip":
+				pass
+			else:
+				await discord.Message.delete(message, delay=0)
+				await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)")
+		elif len(message.embeds) != 0:
+			pass
+		else:
+			await discord.Message.delete(message, delay=0)
+			await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)")
+	else:
+		if message.guild.id != 734127708488859831:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
+			await client.process_commands(message)
 
 
 def embed_template(ctx, title=None, description=None, footer="", image: str = "", icon: str = ""):
@@ -65,21 +79,19 @@ def embed_template(ctx, title=None, description=None, footer="", image: str = ""
 @client.command(name="help")
 async def _help(ctx, command=None):
 	if command is None:
-		footer = ""
+		title = "Commands"
 		with open("help_texts/general_help.txt", "r", encoding='utf-8') as file:
 			help_text = file.read()
 		with open("help_texts/mod_help.txt", "r", encoding='utf-8') as file:
 			mod_text = file.read()
 		with open("help_texts/owner_help.txt", "r", encoding='utf-8') as file:
 			owner_text = file.read()
-		title = "Commands"
 		if ctx.author.guild_permissions.administrator:
 			help_text += mod_text
 		if is_bot_owner(ctx):
 			help_text += owner_text
 	else:
 		command = command.lower()
-		footer = "\n<>=Necessary, []=optional."
 		try:
 			title = command.capitalize()
 			with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
@@ -87,7 +99,7 @@ async def _help(ctx, command=None):
 		except FileNotFoundError:
 			title = "Error!"
 			help_text = "Command not found."
-	embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix), footer)
+	embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix), "\n<>=Necessary, []=optional.")
 	await ctx.send(embed=embed)
 
 
