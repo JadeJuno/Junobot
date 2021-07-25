@@ -32,12 +32,24 @@ client = commands.Bot(command_prefix=parser, case_insensitive=True)
 
 client.remove_command("help")
 owner = None
-
+log = None
+log2 = None
 
 @client.event
 async def on_ready():
 	global owner
+	global log
+	global log2
 	owner = await client.fetch_user(config["owners_id"][0])
+	log = client.get_channel(config["log_channel"])
+	log2 = client.get_channel(838025060983767051)
+
+
+def autodelete(message):
+	await discord.Message.delete(message, delay=0)
+	await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041")
+	await log.send(f"Message by {message.author.name} deleted in #datapacks. \nMessage{message.content}")
+	await log2.send(f"Message by {message.author.name} deleted in #datapacks. \nMessage{message.content}")
 
 
 @client.event
