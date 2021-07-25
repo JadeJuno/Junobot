@@ -35,6 +35,7 @@ owner = None
 log = None
 log2 = None
 
+
 @client.event
 async def on_ready():
 	global owner
@@ -45,7 +46,7 @@ async def on_ready():
 	log2 = client.get_channel(838025060983767051)
 
 
-def autodelete(message):
+async def autodelete(message):
 	await discord.Message.delete(message, delay=0)
 	await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041")
 	await log.send(f"Message by {message.author.name} deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}")
@@ -61,11 +62,11 @@ async def on_message(message):
 			if message.attachments[0].content_type == "application/zip":
 				pass
 			else:
-				autodelete(message)
+				await autodelete(message)
 		elif len(message.embeds) != 0:
 			pass
 		else:
-			autodelete(message)
+			await autodelete(message)
 	else:
 		if message.guild.id != 734127708488859831:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
 			await client.process_commands(message)
