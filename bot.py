@@ -48,7 +48,7 @@ async def on_ready():
 def autodelete(message):
 	await discord.Message.delete(message, delay=0)
 	await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041")
-	await log.send(f"Message by {message.author.name} deleted in #datapacks.\nMessage{message.content}\nAttachment List Length: {len(message.attachments)}")
+	await log.send(f"Message by {message.author.name} deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}")
 	await log2.send(f"Message by {message.author.name} deleted in #datapacks.\nAttachment List Length: {len(message.attachments)}")
 
 
