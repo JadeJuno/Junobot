@@ -55,10 +55,12 @@ async def autodelete(message):
 
 @client.event
 async def on_message(message):
-	if message.channel.id == 749571272635187342 and not message.author.guild_permissions.administrator and not message.author.bot:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
+	if message.channel.id == 749571272635187342:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
 		if message.author.bot:
 			await discord.Message.delete(message, delay=0)
-		if len(message.attachments) != 0:
+		if message.author.guild_permissions.administrator:
+			pass
+		elif len(message.attachments) != 0:
 			if message.attachments[0].content_type == "application/zip":
 				pass
 			else:
@@ -69,7 +71,7 @@ async def on_message(message):
 			await autodelete(message)
 	elif message.content == "!<#843834879736283156>":
 		serious = client.get_emoji(821796259333537813)
-		await message.channel.send(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
+		await message.reference.resolved.reply(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
 	else:
 		if message.guild.id == 734127708488859831:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
 			if message.content.startswith("g!") and message.channel.id != 749571272635187342:
