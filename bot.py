@@ -69,7 +69,7 @@ async def on_message(message):
 			pass
 		else:
 			await autodelete(message)
-	elif message.content == "!<#843834879736283156>":
+	elif message.content.startswith("!<#843834879736283156>"):
 		serious = client.get_emoji(821796259333537813)
 		await message.reference.resolved.reply(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
 	else:
