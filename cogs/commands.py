@@ -16,7 +16,7 @@ import googlesearch
 from bot import config, embed_template, is_bot_owner
 from morsecode import MorseCode
 
-status_list = ['My default prefix is g!.', "If I break, contact Gølder06#7041.", 'To see my commands, type g!help.']
+status_list = ['My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.']
 
 command_list = ['8ball', 'ban', 'binary', 'choose', 'clear', 'coinflip', 'detect', 'diceroll', 'flip', 'flipcoin', 'google',
 				'googleit', 'googlesearch', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
@@ -55,6 +55,21 @@ class Commands(commands.Cog):
 		self.translator = Translator()
 		self.lang_dict = LANGUAGES
 		self.emoji_list = None
+
+	async def reaction_decision(self, ctx, check_str):
+		check_message = await ctx.send(check_str)
+		await check_message.add_reaction("\U00002705")
+		await check_message.add_reaction("\U0000274c")
+
+		def check(reaction_checked, reaction_user):
+			user_check = reaction_user.id == ctx.author.id or reaction_user.guild_permissions.administrator and ctx.author.bot
+			return user_check and reaction_checked.message == check_message and str(reaction_checked.emoji) in ["\U00002705", "\U0000274c"]
+
+		reaction, user = await self.client.wait_for('reaction_add', check=check)
+		if str(reaction.emoji) == "\U00002705":
+			return True
+		elif str(reaction.emoji) == "\U0000274c":
+			return False
 
 	@tasks.loop(minutes=change_loop_interval)
 	async def change_status_task(self):
@@ -305,22 +320,69 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def caesar(self, ctx, shift, encrypt_decrypt: str, *, sentence):
 		try:
-			int(shift)
+			shift = int(shift)
 		except ValueError:
-			await ctx.send('Error: Shift no good (PH)')
+			if shift.lower() != "bruteforce":
+				await ctx.send('Error: The shift is not an integer number.')
+				return
 		for char in sentence:
 			if char in string.digits:
-				await ctx.send('Error: no, frick you (PH)')
+				await ctx.send(f"Error: Due to logical issues, `{ctx.prefix}caesar` does not accept numbers in the `sentence` argument.")
 				return
-		alphabet_upper = deque(list(string.ascii_uppercase))
-		alphabet_lower = deque(list(string.ascii_lowercase))
-		shift_upper = alphabet_upper
-		shift_upper.rotate(shift)
-		shift_lower = alphabet_lower
-		shift_lower.rotate(shift)
-		if encrypt_decrypt.lower() == 'encrypt':
-			pass
-		await ctx.send()
+			elif char not in string.ascii_letters:
+				await ctx.send(f"Error: the sentence you sent has at least one invalid character. ({char})")
+				return
+		if shift.lower() != "bruteforce":
+			shift_upper = deque(list(string.ascii_uppercase))
+			shift_lower = deque(list(string.ascii_lowercase))
+			shift_upper.rotate(shift)
+			shift_lower.rotate(shift)
+			result = ""
+			if encrypt_decrypt.lower() == 'decrypt':
+				for char in sentence:
+					if char in list(string.ascii_lowercase):
+						result += shift_lower[list(string.ascii_lowercase).index(char)]
+					elif char in list(string.ascii_uppercase):
+						result += shift_upper[list(string.ascii_uppercase).index(char)]
+			elif encrypt_decrypt.lower() == 'encrypt':
+				for char in sentence:
+					if char in list(string.ascii_lowercase):
+						result += list(string.ascii_lowercase)[shift_lower.index(char)]
+					elif char in list(string.ascii_uppercase):
+						result += list(string.ascii_uppercase)[shift_upper.index(char)]
+			else:
+				result = "Error: Invalid discriminator."
+			await ctx.send(f"{result}")
+		else:
+			result = ""
+			error = False
+			shift_upper = deque(list(string.ascii_uppercase))
+			shift_lower = deque(list(string.ascii_lowercase))
+			if encrypt_decrypt.lower() == 'decrypt':
+				for shift in range(1, 26):
+					result += f'**{shift}:** "'
+					shift_upper.rotate(1)
+					shift_lower.rotate(1)
+					for char in sentence:
+						if char in list(string.ascii_lowercase):
+							result += shift_lower[list(string.ascii_lowercase).index(char)]
+						elif char in list(string.ascii_uppercase):
+							result += shift_upper[list(string.ascii_uppercase).index(char)]
+					result += '"\n'
+			elif encrypt_decrypt.lower() == 'encrypt':
+				result = f"Error: You can't use the \"{encrypt_decrypt}\" discriminator when bruteforcing."
+				error = True
+			else:
+				result = "Error: Invalid discriminator."
+				error = True
+			decision = await self.reaction_decision(ctx, "Bruteforcing tests every single combination possible, so the result will be pretty long. Do you want to get the result DMed to you?")
+			if not error:
+				if decision:
+					await ctx.author.send(result)
+				else:
+					await ctx.send(result)
+			else:
+				await ctx.send(result)
 
 	@commands.command()
 	async def binary(self, ctx, encode_decode: str, *, sentence):

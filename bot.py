@@ -71,7 +71,10 @@ async def on_message(message):
 			await autodelete(message)
 	elif message.content.startswith("!<#843834879736283156>"):
 		serious = client.get_emoji(821796259333537813)
-		await message.reference.resolved.reply(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
+		try:
+			await message.reference.resolved.reply(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
+		except:
+			message.channel.send(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
 	else:
 		if message.guild.id == 734127708488859831:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
 			if message.content.startswith("g!") and message.channel.id != 749571272635187342:
