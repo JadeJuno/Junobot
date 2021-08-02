@@ -76,6 +76,8 @@ async def on_message(message):
 		if message.guild.id == 734127708488859831:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
 			if message.content.startswith("g!") and message.channel.id == 843834879736283156:
 				await message.reply(f"Gøldbot commands have been disabled in this server. {random.choices(['~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''], [1,10])[0]}")
+			else:
+				message.reply("Gøldbot commands have been disabled in this server.")
 		else:
 			await client.process_commands(message)
 
