@@ -47,33 +47,29 @@ async def on_ready():
 
 
 async def autodelete(message):
+	if len(message.attachments) != 0:
+		content_type = f"\nAttachment type: {message.attachments[0].content_type}"
+	else:
+		content_type = ""
 	await discord.Message.delete(message, delay=0)
 	await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041")
-	await log.send(f"Message by {message.author.name} deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}")
+	await log.send(f"Message by {message.author.name} deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}{content_type}")
 	await log2.send(f"Message by {message.author.name} deleted in #datapacks.\nAttachment List Length: {len(message.attachments)}")
 
 
 @client.event
 async def on_message(message):
-	if message.channel.id == 749571272635187342:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
-		if message.author.bot:
-			await discord.Message.delete(message, delay=0)
-		if message.author.guild_permissions.administrator:
-			pass
-		elif len(message.attachments) != 0:
-			if message.attachments[0].content_type == "application/zip":
-				pass
-			else:
+	if message.channel.id == 749571272635187342 and not message.author.guild_permissions.administrator:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
+		if len(message.attachments) != 0:
+			if message.attachments[0].content_type != "application/zip":
 				await autodelete(message)
-		elif len(message.embeds) != 0:
-			pass
-		else:
+		elif len(message.embeds) == 0:
 			await autodelete(message)
 	elif message.content.startswith("!<#843834879736283156>"):
 		serious = client.get_emoji(821796259333537813)
 		try:
 			await message.reference.resolved.reply(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
-		except:
+		except AttributeError:
 			await message.channel.send(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
 	else:
 		if message.guild.id == 734127708488859831:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
