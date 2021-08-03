@@ -59,8 +59,12 @@ async def autodelete(message):
 
 @client.event
 async def on_message(message):
-	if message.channel.id == 749571272635187342 and not message.author.guild_permissions.administrator:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
-		if len(message.attachments) != 0:
+	if message.channel.id == 749571272635187342:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
+		if message.author.bot:
+			await discord.Message.delete(message, delay=0)
+		if message.author.guild_permissions.administrator:
+			pass
+		elif len(message.attachments) != 0:
 			if message.attachments[0].content_type != "application/zip":
 				await autodelete(message)
 		elif len(message.embeds) == 0:
