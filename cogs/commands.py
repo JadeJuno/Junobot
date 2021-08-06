@@ -8,8 +8,9 @@ from datetime import datetime, timedelta
 
 import discord
 import wikipedia
+import googletrans
 from discord.ext import commands, tasks
-from googletrans import Translator, LANGUAGES
+from googletrans import Translator
 from iso639 import languages
 
 import googlesearch
@@ -53,7 +54,7 @@ class Commands(commands.Cog):
 		self.my_guild = None
 		self.owner = None
 		self.translator = Translator()
-		self.lang_dict = LANGUAGES
+		self.lang_dict = googletrans.LANGUAGES
 		self.emoji_list = None
 
 	async def reaction_decision(self, ctx, check_str):
@@ -306,7 +307,6 @@ class Commands(commands.Cog):
 			await ctx.send(f'{member} banned via {ctx.prefix}ban command. Reason: {reason}.')
 		else:
 			await ctx.send(f"Error: {member} is an admin, and therefore can't be banned")
-
 
 	@commands.has_permissions(kick_members=True)
 	@commands.command()
