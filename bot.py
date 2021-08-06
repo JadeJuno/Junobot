@@ -34,15 +34,6 @@ client.remove_command("help")
 owner = None
 log = client.get_channel(config["log_channel"])
 log2 = client.get_channel(838025060983767051)
-origins_reactions = {740902331788558377: 'Avian', 740902250859200533: 'Arachnid', 740902303636390018: 'Elytrian', 740902375644200980: 'Shulk', 740902222313029682: 'Enderian', 740902394057064541: 'Feline', 740902283335827487: 'Merling', 740902174120345654: 'Blazeborn', 740902357495447592: 'Phantom'}
-
-
-@client.event
-async def on_reaction_add(reaction, user):
-	if reaction.message.id == 740659247871950979:  # Top of #help
-		if reaction.emoji.id in origins_reactions.keys():
-			role = discord.utils.get(user.server.roles, name=origins_reactions[reaction.emoji.id])
-			await user.add_roles(user, role)
 
 
 @client.event
