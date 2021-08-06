@@ -301,8 +301,12 @@ class Commands(commands.Cog):
 	@commands.has_permissions(ban_members=True)
 	@commands.command()
 	async def ban(self, ctx, member: discord.Member, *, reason=None):
-		await member.ban(reason=reason)
-		await ctx.send(f'{member} banned via {ctx.prefix}ban command. Reason: {reason}.')
+		if not member.guild_permissions.administrator:
+			await member.ban(reason=reason)
+			await ctx.send(f'{member} banned via {ctx.prefix}ban command. Reason: {reason}.')
+		else:
+			await ctx.send(f"Error: {member} is an admin, and therefore can't be banned")
+
 
 	@commands.has_permissions(kick_members=True)
 	@commands.command()
@@ -427,11 +431,6 @@ class Commands(commands.Cog):
 				await ctx.send(f'Unbanned {user.mention}.')
 				return
 			await ctx.send(f'{user.mention} is not banned.')
-
-	@commands.check(is_bot_owner)
-	@commands.command()
-	async def error_handling(self, ctx):
-		await ctx.send(0 / 0)
 
 	@commands.check(is_bot_owner)
 	@commands.command()

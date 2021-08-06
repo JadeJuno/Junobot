@@ -11,7 +11,6 @@ command_list = ['8ball', 'ban', 'choose', 'clear', 'coinflip', 'detect', 'dierol
 
 
 class CommandErrorHandler(commands.Cog):
-
 	def __init__(self, client):
 		self.client = client
 		self.log = None
