@@ -321,6 +321,7 @@ class Commands(commands.Cog):
 		messages.remove(ctx.message)
 		await messages[0].pin()
 
+	"""
 	@commands.command()
 	async def caesar(self, ctx, shift, encrypt_decrypt: str, *, sentence):
 		try:
@@ -387,6 +388,7 @@ class Commands(commands.Cog):
 					await ctx.send(result)
 			else:
 				await ctx.send(result)
+	"""
 
 	@commands.command()
 	async def binary(self, ctx, encode_decode: str, *, sentence):
