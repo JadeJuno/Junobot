@@ -55,9 +55,9 @@ async def autodelete(message):
 		content_type = f"\nReferenced Message: {message.reference.jump_url}"
 	await discord.Message.delete(message, delay=0)
 	if message.content.startswith("!"):
-		await message.author.send("Your message in #datapacks was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
+		await message.author.send("Your message in <#749571272635187342> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 	else:
-		await message.author.send("Your message in #datapacks was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041\nPD2: Please remember that the file has to be a `.zip` file.")
+		await message.author.send("Your message in <#749571272635187342> was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041\nPD2: Please remember that the file has to be a `.zip` file.")
 	await log.send(f"Message by {message.author.name}#{message.author.discriminator} deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}{content_type}")
 	await log2.send(f"Message by {message.author.name}#{message.author.discriminator} deleted in #datapacks.\nAttachment List Length: {len(message.attachments)}")
 
