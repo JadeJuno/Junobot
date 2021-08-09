@@ -74,7 +74,9 @@ async def on_message(message):
 			if message.attachments[0].content_type != "application/zip":
 				await autodelete(message)
 				_autodelete = True
-		if len(message.embeds) == 0 and not _autodelete:
+			else:
+				_autodelete = False
+		if len(message.embeds) == 0 and _autodelete == False:
 			await autodelete(message)
 	elif message.content.startswith("!<#843834879736283156>"):
 		serious = client.get_emoji(821796259333537813)
