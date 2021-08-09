@@ -59,12 +59,13 @@ async def autodelete(message):
 	else:
 		await message.author.send("Your message in <#749571272635187342> was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041\nPD2: Please remember that the file has to be a `.zip` file.")
 	await log.send(f"Message by {message.author.name}#{message.author.discriminator} deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}{content_type}")
-	await log2.send(f"Message by {message.author.name}#{message.author.discriminator} deleted in #datapacks.\nAttachment List Length: {len(message.attachments)}")
+	await log2.send(f"Message by {message.author.name}#{message.author.discriminator} deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}{content_type}")
 
 
 @client.event
 async def on_message(message):
 	if message.channel.id == 749571272635187342:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
+		_autodelete = None
 		if message.author.bot:
 			await discord.Message.delete(message, delay=0)
 		if message.author.guild_permissions.administrator:
@@ -72,7 +73,8 @@ async def on_message(message):
 		elif len(message.attachments) != 0:
 			if message.attachments[0].content_type != "application/zip":
 				await autodelete(message)
-		elif len(message.embeds) == 0:
+				_autodelete = True
+		if len(message.embeds) == 0 and not _autodelete:
 			await autodelete(message)
 	elif message.content.startswith("!<#843834879736283156>"):
 		serious = client.get_emoji(821796259333537813)
