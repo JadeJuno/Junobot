@@ -458,7 +458,7 @@ class Commands(commands.Cog):
 			await ctx.send(f"An exception has ocurred: {e}.")
 
 	@commands.check(is_bot_owner)
-	@commands.command()
+	@commands.command(alias='autoerror')
 	async def auto_error(self, ctx):
 		await ctx.send(f"{int('A')}")
 

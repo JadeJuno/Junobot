@@ -31,9 +31,6 @@ else:
 client = commands.Bot(command_prefix=parser, case_insensitive=True)
 
 client.remove_command("help")
-owner = None
-log = client.get_channel(config["log_channel"])
-log2 = client.get_channel(838025060983767051)
 
 
 @client.event
