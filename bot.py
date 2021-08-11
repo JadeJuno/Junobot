@@ -47,19 +47,22 @@ async def on_ready():
 
 
 async def autodelete(message):
+	log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}"
 	if len(message.attachments) != 0:
-		content_type = f"\nAttachment type: {message.attachments[0].content_type}"
-	else:
-		content_type = ""
+		log_message += f"\nAttachment type: {message.attachments[0].content_type}"
 	if message.reference:
-		content_type = f"\nReferenced Message: {message.reference.jump_url}"
+		log_message += f"\nReferenced Message: {message.reference.jump_url}"
+	if len(message.mentions):
+		log_message += f"\nMentions: "
+		for member in message.mentions:
+			log_message += f"\n{member.name}#{member.discriminator} ({member.id})"
 	await discord.Message.delete(message, delay=0)
 	if message.content.startswith("!"):
 		await message.author.send("Your message in <#749571272635187342> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 	else:
 		await message.author.send("Your message in <#749571272635187342> was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041\nPD2: Please remember that the file has to be a `.zip` file.")
-	await log.send(f"Message by {message.author.name}#{message.author.discriminator} deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}{content_type}")
-	await log2.send(f"Message by {message.author.name}#{message.author.discriminator} deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}{content_type}")
+	await log.send(log_message)
+	await log2.send(log_message)
 
 
 @client.event
