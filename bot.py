@@ -52,17 +52,17 @@ async def autodelete(message):
 		log_message += f"\nAttachment type: {message.attachments[0].content_type}"
 	if message.reference:
 		log_message += f"\nReferenced Message: {message.reference.jump_url}"
-	if len(message.mentions):
-		log_message += f"\nMentions: "
-		for member in message.mentions:
-			log_message += f"\n{member.name}#{member.discriminator} ({member.id})"
 	await discord.Message.delete(message, delay=0)
 	if message.content.startswith("!"):
 		await message.author.send("Your message in <#749571272635187342> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 	else:
 		await message.author.send("Your message in <#749571272635187342> was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041\nPD2: Please remember that the file has to be a `.zip` file.")
-	await log.send(log_message)
-	await log2.send(log_message)
+	if len(log_message) <= 2000:
+		await log.send(log_message)
+		await log2.send(log_message)
+	else:
+		await log.send(f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nThe message would make the log exceed the 2000 character limit...")
+		await log.send(f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nThe message would make the log exceed the 2000 character limit...")
 
 
 @client.event
