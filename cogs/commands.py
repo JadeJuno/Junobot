@@ -172,6 +172,9 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def say(self, ctx, message, channel=None):
+		if len(message.strip()) == 0:
+			await ctx.send("Error: You can't send an empty message. ~~(or can you?)~~")
+			return
 		if channel is None:
 			channel = ctx.channel
 		else:
@@ -313,6 +316,11 @@ class Commands(commands.Cog):
 	async def kick(self, ctx, member: discord.Member, *, reason=None):
 		await member.kick(reason=reason)
 		await ctx.send(f'{member} kicked via {ctx.prefix}kick command. Reason: {reason}.')
+
+	@commands.has_permissions(manage_members=True)
+	@commands.command()
+	async def mute(self, member: discord.Member, time, *, reason=None):
+		return
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command()
