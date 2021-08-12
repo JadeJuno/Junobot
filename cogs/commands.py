@@ -317,7 +317,7 @@ class Commands(commands.Cog):
 		await member.kick(reason=reason)
 		await ctx.send(f'{member} kicked via {ctx.prefix}kick command. Reason: {reason}.')
 
-	@commands.has_permissions(manage_members=True)
+	@commands.has_permissions(manage_roles=True)
 	@commands.command()
 	async def mute(self, member: discord.Member, time, *, reason=None):
 		return
