@@ -38,6 +38,7 @@ async def on_ready():
 	global owner
 	global log
 	global log2
+	list(role_list)
 	owner = await client.fetch_user(config["owners_id"][0])
 	log = client.get_channel(config["log_channel"])
 	log2 = client.get_channel(838025060983767051)
@@ -86,7 +87,13 @@ async def on_message(message):
 		except AttributeError:
 			await message.channel.send(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
 	else:
-		if message.guild.id == 734127708488859831 and not message.author.guild_permissions.administrator:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
+		for role in message.author.roles:
+			if role.id == 740905422298546228 or role.id == 847359541871640576:
+				admin = True
+				break
+			else:
+				admin = False
+		if message.guild.id == 734127708488859831 and not admin:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
 			if message.content.startswith("g!"):
 				if message.channel.id == 843834879736283156:
 					await message.reply(f"Gøldbot commands have been disabled in this server. {random.choices(['~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''], [1,10])[0]}")
