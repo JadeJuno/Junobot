@@ -38,7 +38,6 @@ async def on_ready():
 	global owner
 	global log
 	global log2
-	list(role_list)
 	owner = await client.fetch_user(config["owners_id"][0])
 	log = client.get_channel(config["log_channel"])
 	log2 = client.get_channel(838025060983767051)
