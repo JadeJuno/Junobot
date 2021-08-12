@@ -20,7 +20,7 @@ from morsecode import MorseCode
 status_list = ['My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.']
 
 command_list = ['8ball', 'ban', 'binary', 'choose', 'clear', 'coinflip', 'detect', 'diceroll', 'flip', 'flipcoin', 'google',
-				'googleit', 'googlesearch', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
+				'googleit', 'googlesearch', 'search', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
 				'morsecode', 'pin', 'ping', 'prefix', 'roll', 'rolldice', 'say', 'translate', 'unban', 'wikipedia']
 
 change_loop_interval = random.randint(1, 90)
@@ -190,7 +190,7 @@ class Commands(commands.Cog):
 		await discord.Message.delete(ctx.message, delay=0)
 		await channel.send(message)
 
-	@commands.command(aliases=["googleit", "googlesearch"])
+	@commands.command(aliases=["googleit", "googlesearch", "search"])
 	async def google(self, ctx, *, search_request):
 		message = await ctx.send(f"Searching for `{search_request}`...")
 		i = 1

@@ -5,5 +5,5 @@ Make a quick Google Search from Discord because you're too lazy to open your bro
 `{prefix}google`, `{prefix}googleit`, `{prefix}googlesearch`, `{prefix}search`
 
 **Usage**
-`{prefix}googlesearch <search>`
-E.G.: `{prefix}googlesearch How to Google Search from Discord`
+`{prefix}search <search>`
+E.G.: `{prefix}search How to Google Search from Discord`
