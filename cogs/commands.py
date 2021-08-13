@@ -319,7 +319,7 @@ class Commands(commands.Cog):
 
 	@commands.has_permissions(manage_roles=True)
 	@commands.command()
-	async def mute(self, member: discord.Member, time, *, reason=None):
+	async def mute(self, member: discord.Member, time="1m", *, reason=None):
 		return
 
 	@commands.has_permissions(manage_messages=True)

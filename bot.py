@@ -44,7 +44,8 @@ async def on_ready():
 
 
 async def autodelete(message):
-	log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nMessage: \n> {message.content}\nAttachment List Length: {len(message.attachments)}"
+	content = message.content.replace('\n', '\n> ')
+	log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nMessage: \n> {content}\nAttachment List Length: {len(message.attachments)}"
 	if len(message.attachments) != 0:
 		log_message += f"\nAttachment type: {message.attachments[0].content_type}"
 	if message.reference:
@@ -64,6 +65,7 @@ async def autodelete(message):
 
 @client.event
 async def on_message(message):
+	global admin
 	embed = True
 	if message.channel.id == 749571272635187342:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
 		if message.author.bot:
@@ -86,6 +88,7 @@ async def on_message(message):
 		except AttributeError:
 			await message.channel.send(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
 	else:
+		admin = None
 		for role in message.author.roles:
 			if role.id == 740905422298546228 or role.id == 847359541871640576:
 				admin = True
