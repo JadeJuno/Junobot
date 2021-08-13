@@ -44,7 +44,7 @@ async def on_ready():
 
 
 async def autodelete(message):
-	content = message.content.replace('\n', '\n> ')
+	content = message.content
 	log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nMessage: \n> {content}\nAttachment List Length: {len(message.attachments)}"
 	if len(message.attachments) != 0:
 		log_message += f"\nAttachment type: {message.attachments[0].content_type}"
@@ -59,13 +59,22 @@ async def autodelete(message):
 		await log.send(log_message)
 		await log2.send(log_message)
 	else:
-		await log.send(f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nThe message would make the log exceed the 2000 character limit...")
-		await log.send(f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nThe message would make the log exceed the 2000 character limit...")
+		with open('temp.txt', 'w') as f:
+			f.write(content)
+		with open('temp.txt', 'rb') as f:
+			temp = discord.File(f)
+		log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nThe message would make the log exceed the 2000 character limit. Sending as Text Document:"
+		if len(message.attachments) != 0:
+			log_message += f"\nAttachment type: {message.attachments[0].content_type}"
+		if message.reference:
+			log_message += f"\nReferenced Message: {message.reference.jump_url}"
+		await log.send(log_message, file=temp)
+		await log2.send(log_message, file=temp)
+		os.remove('temp.txt')
 
 
 @client.event
 async def on_message(message):
-	global admin
 	embed = True
 	if message.channel.id == 749571272635187342:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
 		if message.author.bot:

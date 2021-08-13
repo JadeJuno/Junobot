@@ -470,6 +470,12 @@ class Commands(commands.Cog):
 	async def auto_error(self, ctx):
 		await ctx.send(f"{int('A')}")
 
+	@commands.check(is_bot_owner)
+	@commands.command()
+	async def format(self, ctx):
+		if ctx.message.reference:
+			await ctx.send(f"```\n{ctx.message.reference.resolved.content.replace('> ', '')}```")
+
 
 def setup(client):
 	client.add_cog(Commands(client))
