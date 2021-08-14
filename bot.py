@@ -1,3 +1,4 @@
+import asyncio
 import os
 import random
 
@@ -70,6 +71,7 @@ async def autodelete(message):
 			log_message += f"\nReferenced Message: {message.reference.jump_url}"
 		await log.send(log_message, file=temp)
 		await log2.send(log_message, file=temp)
+		await asyncio.sleep(1)
 		os.remove('temp.txt')
 
 
