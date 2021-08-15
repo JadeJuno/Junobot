@@ -112,6 +112,8 @@ async def on_message(message):
 					await message.reply(f"Gøldbot commands have been disabled in this server. {random.choices(['~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''], [1,10])[0]}")
 				else:
 					await message.reply("Gøldbot commands have been disabled in this server.")
+		elif message.author.id == 778076679176323112 and message.content.startswith("g!"):
+			await message.channel.send("Huang, please perish.")
 		else:
 			await client.process_commands(message)
 
