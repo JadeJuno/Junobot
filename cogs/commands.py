@@ -119,7 +119,7 @@ class Commands(commands.Cog):
 				prediction = random.choice(ball_predicts)
 		else:
 			prediction = "That's not a question..."
-		await ctx.send(f'Question: {question}\nThe ***:8ball:BALL*** says: {prediction}.')
+		await ctx.send(f'Question: {question}\nThe ***:8ball:BALL*** says: {prediction}')
 
 	@commands.command()
 	async def choose(self, ctx, *, options):
