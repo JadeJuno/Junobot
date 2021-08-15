@@ -11,6 +11,10 @@ from config import parse_config
 config = parse_config("./config.toml")
 
 
+def is_golder(ctx):
+	return ctx.author.id == 498606108836102164
+
+
 def is_bot_owner(ctx):
 	return ctx.author.id in config["owners_id"]
 
@@ -145,7 +149,7 @@ async def _help(ctx, command=None):
 			owner_text = file.read()
 		if ctx.author.guild_permissions.administrator:
 			help_text += mod_text
-		if is_bot_owner(ctx):
+		if is_golder(ctx):
 			help_text += owner_text
 	else:
 		command = command.lower()

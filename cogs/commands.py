@@ -479,6 +479,12 @@ class Commands(commands.Cog):
 		if ctx.message.reference:
 			await ctx.send(f"```\n{ctx.message.reference.resolved.content.replace('> ', '')}```")
 
+	@commands.check(is_bot_owner)
+	@commands.command()
+	async def sleep(self, ctx):
+		serious = self.client.get_emoji(821796259333537813)
+		await ctx.send(f"Golder!! Go to sleep! {serious}")
+
 
 def setup(client):
 	client.add_cog(Commands(client))
