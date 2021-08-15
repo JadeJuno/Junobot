@@ -203,9 +203,9 @@ class Commands(commands.Cog):
 		output_str = ""
 		for url in googlesearch.search(search_request, stop=10):
 			if i < 10:
-				output_str += f"`{i}.`   **[{url.title}](<{url.link}>)**\n"
+				output_str += f"`{i}.`   **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**\n"
 			else:
-				output_str += f"`{i}.` **[{url.title}](<{url.link}>)**\n"
+				output_str += f"`{i}.` **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**\n"
 			i += 1
 		if i == 1:
 			output_str = "**No results found.**"
