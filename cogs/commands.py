@@ -183,7 +183,10 @@ class Commands(commands.Cog):
 			else:
 				channel = discord.utils.get(ctx.guild.text_channels, name=channel)
 		if channel is None:
-			await ctx.send("Error: Channel doesn't exist")
+			await ctx.send("Error: Channel doesn't exist.")
+			return
+		if not channel.permissions_for(ctx.author).send_messages:
+			await ctx.send(f"Error: You don't have permissions to talk in {channel.mention}")
 			return
 		if message.lower().startswith("i am") or message.lower().startswith("i'm"):
 			if "stupid" in message.lower():
