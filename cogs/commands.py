@@ -1,9 +1,10 @@
 import asyncio
-from collections import deque
+import os
 import random
 import string
 import sys
 import traceback
+from collections import deque
 from datetime import datetime, timedelta
 
 import discord
@@ -195,6 +196,10 @@ class Commands(commands.Cog):
 				message = f"{ctx.author.mention} is dumb."
 		await discord.Message.delete(ctx.message, delay=0)
 		await channel.send(message)
+		try:
+			os.remove(".google-cookie")
+		except FileNotFoundError:
+			pass
 
 	@commands.command(aliases=["googleit", "googlesearch", "search"])
 	async def google(self, ctx, *, search_request):
