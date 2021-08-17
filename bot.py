@@ -10,6 +10,8 @@ from config import parse_config
 
 config = parse_config("./config.toml")
 
+origin_commands = ("datapacks", "<#843834879736283156>", "")
+
 
 def is_golder(ctx):
 	return ctx.author.id == 498606108836102164
@@ -97,11 +99,14 @@ async def on_message(message):
 		if not embed:
 			await autodelete(message)
 	elif message.content.startswith("!<#843834879736283156>"):
-		serious = client.get_emoji(821796259333537813)
-		try:
-			await message.reference.resolved.reply(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
-		except AttributeError:
-			await message.channel.send(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
+		if message.channel.id != 843834879736283156:
+			serious = client.get_emoji(821796259333537813)
+			try:
+				await message.reference.resolved.reply(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
+			except AttributeError:
+				await message.channel.send(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
+		else:
+			await message.reply("This message is already in <#843834879736283156>...")
 	else:
 		admin = None
 		for role in message.author.roles:
@@ -112,12 +117,11 @@ async def on_message(message):
 				admin = False
 		if message.guild.id == 734127708488859831 and not admin:  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
 			if message.content.startswith("g!"):
+				# if message.content.lstrip("g!").startswith(origin_commands):
 				if message.channel.id == 843834879736283156:
 					await message.reply(f"Gøldbot commands have been disabled in this server. {random.choices(['~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''], [1,10])[0]}")
 				else:
 					await message.reply("Gøldbot commands have been disabled in this server.")
-		elif message.author.id == 778076679176323112 and message.content.startswith("g!"):
-			await message.channel.send("Huang, please perish.")
 		else:
 			await client.process_commands(message)
 
