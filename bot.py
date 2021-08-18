@@ -76,6 +76,8 @@ async def autodelete(message):
 		if message.reference:
 			log_message += f"\nReferenced Message: {message.reference.jump_url}"
 		await log.send(log_message, file=temp)
+		with open('temp.txt', 'rb') as f:
+			temp = discord.File(f)
 		await log2.send(log_message, file=temp)
 		await asyncio.sleep(1)
 		os.remove('temp.txt')
