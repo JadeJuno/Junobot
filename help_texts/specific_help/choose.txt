@@ -2,5 +2,5 @@
 Give the bot some options *(More than 1)* and it will randomly choose between them.
 
 **Usage**
-`{prefix}choose <option 1|option 2|option 3|...>`
-E.G.: `{prefix}choose Yes|No|Perhaps`
+`{prefix}choose <option 1, option 2, option 3, (...)>`
+E.G.: `{prefix}choose Yes, No, Perhaps`
