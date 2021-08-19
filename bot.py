@@ -12,7 +12,12 @@ config = parse_config("./config.toml")
 
 origin_commands = ("datapacks", "<#843834879736283156>", "")
 
-whitelisted_links = ("https://mediafire.com/", "https://github.com/", "https://www.planetminecraft.com/")
+whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/", "https://docs.google.com/"]
+temp_white = whitelisted_links[:]
+for link in temp_white:
+	whitelisted_links.append(link.replace("://", "://www."))
+temp_white.clear()
+whitelisted_links = tuple(whitelisted_links)
 
 
 def is_bot_owner(ctx):
@@ -93,11 +98,13 @@ async def on_message(message):
 		if message.author.guild_permissions.administrator or message.author.id == 762596422196920351:
 			pass
 		if len(message.attachments) != 0:
-			# if whitelisted_links in message.content:
-			if message.attachments[0].content_type != "application/zip":
+			if any(link in message.content for link in whitelisted_links):
+				return
+			elif message.attachments[0].content_type != "application/zip":
 				await autodelete(message)
 		else:
-			await autodelete(message)
+			if not any(link in message.content for link in whitelisted_links):
+				await autodelete(message)
 	elif message.content.startswith("!<#843834879736283156>"):
 		if message.channel.id != 843834879736283156:
 			serious = client.get_emoji(821796259333537813)
