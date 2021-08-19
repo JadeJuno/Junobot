@@ -18,6 +18,7 @@ whitelisted_links = ("https://mediafire.com/", "https://github.com/", "https://w
 def is_bot_owner(ctx):
 	return ctx.author.id in config["owners_id"]
 
+
 def is_origin_mod(ctx):
 	return ctx.author.id in config["origins_mods"]
 
@@ -95,6 +96,8 @@ async def on_message(message):
 			# if whitelisted_links in message.content:
 			if message.attachments[0].content_type != "application/zip":
 				await autodelete(message)
+		else:
+			await autodelete(message)
 	elif message.content.startswith("!<#843834879736283156>"):
 		if message.channel.id != 843834879736283156:
 			serious = client.get_emoji(821796259333537813)
@@ -105,7 +108,7 @@ async def on_message(message):
 		else:
 			await message.reply("This message is already in <#843834879736283156>...")
 	else:
-		if message.guild.id == 734127708488859831 and not is_origin_mod():  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
+		if message.guild.id == 734127708488859831 and not is_origin_mod(message):  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
 			if message.content.startswith("g!"):
 				# if message.content.lstrip("g!").startswith(origin_commands):
 				if message.channel.id == 843834879736283156:
