@@ -12,13 +12,14 @@ config = parse_config("./config.toml")
 
 origin_commands = ("datapacks", "<#843834879736283156>", "")
 
-
-def is_golder(ctx):
-	return ctx.author.id == 498606108836102164
+whitelisted_links = ("https://mediafire.com/", "https://github.com/", "https://www.planetminecraft.com/")
 
 
 def is_bot_owner(ctx):
 	return ctx.author.id in config["owners_id"]
+
+def is_origin_mod(ctx):
+	return ctx.author.id in config["origins_mods"]
 
 
 def check_if_self_hosted():
@@ -85,21 +86,15 @@ async def autodelete(message):
 
 @client.event
 async def on_message(message):
-	embed = True
 	if message.channel.id == 749571272635187342:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
 		if message.author.bot:
 			await discord.Message.delete(message, delay=0)
-		if message.author.guild_permissions.administrator:
+		if message.author.guild_permissions.administrator or message.author.id == 762596422196920351:
 			pass
-		if len(message.embeds) == 0:
-			embed = False
 		if len(message.attachments) != 0:
-			if message.attachments[0].content_type != "application/zip" and not embed:
+			# if whitelisted_links in message.content:
+			if message.attachments[0].content_type != "application/zip":
 				await autodelete(message)
-			else:
-				embed = True
-		if not embed:
-			await autodelete(message)
 	elif message.content.startswith("!<#843834879736283156>"):
 		if message.channel.id != 843834879736283156:
 			serious = client.get_emoji(821796259333537813)
@@ -155,7 +150,7 @@ async def _help(ctx, command=None):
 			owner_text = file.read()
 		if ctx.author.guild_permissions.administrator:
 			help_text += mod_text
-		if is_golder(ctx):
+		if is_bot_owner(ctx):
 			help_text += owner_text
 	else:
 		command = command.lower()

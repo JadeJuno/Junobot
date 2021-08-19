@@ -15,7 +15,7 @@ from googletrans import Translator
 from iso639 import languages
 
 import googlesearch
-from bot import config, embed_template, is_bot_owner
+from bot import config, embed_template, is_bot_owner, is_origin_mod
 from morsecode import MorseCode
 
 status_list = ['My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.']
@@ -484,7 +484,7 @@ class Commands(commands.Cog):
 		if ctx.message.reference:
 			await ctx.send(f"```\n{ctx.message.reference.resolved.content.replace('> ', '')}```")
 
-	@commands.check(is_bot_owner)
+	@commands.check(is_origin_mod)
 	@commands.command()
 	async def sleep(self, ctx):
 		serious = self.client.get_emoji(821796259333537813)
