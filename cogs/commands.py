@@ -157,7 +157,7 @@ class Commands(commands.Cog):
 					emoji = result
 				await ctx.send(f"Rolled a d{faces}.\nIt landed on **{emoji}**!")
 			elif faces == 2:
-				await ctx.send(f"... A 2 sided die is a coin... Use the `{ctx.prefix}`flip command.")
+				await ctx.send(f"... A 2 sided die is a coin... Use the `{ctx.prefix}flip` command.")
 			elif faces <= 1:
 				await ctx.send("... You serious?")
 		else:
@@ -315,7 +315,7 @@ class Commands(commands.Cog):
 	async def ban(self, ctx, member: discord.Member, *, reason=None):
 		if not member.guild_permissions.administrator:
 			await member.ban(reason=reason)
-			await ctx.send(f'{member} banned via {ctx.prefix}ban command. Reason: {reason}.')
+			await ctx.send(f'{member} banned via `{ctx.prefix}ban` command. Reason: {reason}.')
 		else:
 			await ctx.send(f"Error: {member} is an admin, and therefore can't be banned")
 
@@ -323,7 +323,7 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def kick(self, ctx, member: discord.Member, *, reason=None):
 		await member.kick(reason=reason)
-		await ctx.send(f'{member} kicked via {ctx.prefix}kick command. Reason: {reason}.')
+		await ctx.send(f'{member} kicked via `{ctx.prefix}kick` command. Reason: {reason}.')
 
 	@commands.has_permissions(manage_roles=True)
 	@commands.command()
