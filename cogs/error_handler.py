@@ -60,7 +60,7 @@ class CommandErrorHandler(commands.Cog):
 			await check_message.add_reaction("\U0000274c")
 
 			def check(r, u):
-				user_check = u.id == ctx.author.id or u.guild_permissions.administrator or is_origin_mod(ctx) or is_bot_owner(ctx) and ctx.author.bot
+				user_check = u.id == ctx.author.id or u.guild_permissions.administrator or u.id in config["origins_mods"] or u.id in config["owners_id"] and ctx.author.bot
 				return user_check and r.message == check_message and str(r.emoji) in ["\U00002705", "\U0000274c"]
 
 			reaction, user = await self.client.wait_for('reaction_add', check=check)
