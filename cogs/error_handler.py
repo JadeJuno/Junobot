@@ -3,7 +3,7 @@ import discord
 import traceback
 from discord.ext import commands
 
-from bot import config
+from bot import config, is_bot_owner, is_origin_mod
 
 command_list = ['8ball', 'ban', 'choose', 'clear', 'coinflip', 'detect', 'dieroll', 'flip', 'flipcoin', 'google',
 				'googleit', 'googlesearch', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
@@ -60,7 +60,7 @@ class CommandErrorHandler(commands.Cog):
 			await check_message.add_reaction("\U0000274c")
 
 			def check(r, u):
-				user_check = u.id == ctx.author.id or u.guild_permissions.administrator and ctx.author.bot
+				user_check = u.id == ctx.author.id or u.guild_permissions.administrator or is_origin_mod(ctx) or is_bot_owner(ctx) and ctx.author.bot
 				return user_check and r.message == check_message and str(r.emoji) in ["\U00002705", "\U0000274c"]
 
 			reaction, user = await self.client.wait_for('reaction_add', check=check)

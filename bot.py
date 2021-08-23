@@ -183,14 +183,14 @@ async def prefix(ctx, new_prefix=None):
 		else:
 			raise commands.CheckFailure
 
+if __name__ == "__main__":
+	for filename in os.listdir('./cogs'):
+		if filename.endswith('.py'):
+			client.load_extension(f'cogs.{filename[:-3]}')
 
-for filename in os.listdir('./cogs'):
-	if filename.endswith('.py'):
-		client.load_extension(f'cogs.{filename[:-3]}')
+	if check_if_self_hosted():
+		TOKEN = "NzkxMDY2MzQ5MjUzODIwNDc4.X-Jv8g.bEiIuTfej1rshqehrR_v1T5rvsk"
+	else:
+		TOKEN = "NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.ywRBVp3AnGQjCiRwjYJsk3Oryk4"
 
-if check_if_self_hosted():
-	TOKEN = "NzkxMDY2MzQ5MjUzODIwNDc4.X-Jv8g.bEiIuTfej1rshqehrR_v1T5rvsk"
-else:
-	TOKEN = "NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.ywRBVp3AnGQjCiRwjYJsk3Oryk4"
-
-client.run(TOKEN)
+	client.run(TOKEN)
