@@ -53,7 +53,6 @@ class Commands(commands.Cog):
 		self.loop_interval = None
 		self.morse = MorseCode()
 		self.my_guild = None
-		self.owner = None
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
 		self.emoji_list = None
@@ -87,11 +86,10 @@ class Commands(commands.Cog):
 	@commands.Cog.listener()
 	async def on_ready(self):
 		self.log = self.client.get_channel(config["log_channel"])
-		self.owner = await self.client.fetch_user(config["owners_id"][0])
 		self.my_guild = self.client.get_guild(config["guild_id"])
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
 		print(f'Bot is ready.')
-		print(f"bot created by {self.owner.name}.")
+		print(f"bot created by Golder06#7041.")
 		await self.log.send("Bot Started.")
 		self.change_status_task.start()
 

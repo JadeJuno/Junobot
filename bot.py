@@ -45,17 +45,14 @@ else:
 client = commands.Bot(command_prefix=parser, case_insensitive=True)
 client.remove_command("help")
 
-owner = None
 log = client.get_channel(config["log_channel"])
 log2 = client.get_channel(838025060983767051)
 
 
 @client.event
 async def on_ready():
-	global owner
 	global log
 	global log2
-	owner = await client.fetch_user(config["owners_id"][0])
 	log = client.get_channel(config["log_channel"])
 	log2 = client.get_channel(838025060983767051)
 
@@ -136,7 +133,7 @@ def embed_template(ctx, title=None, description=None, footer="", image: str = ""
 	else:
 		embed.set_author(name=title)
 	embed.set_footer(
-		text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by {owner.name}.",
+		text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by Golder06#7041.",
 		icon_url="https://i.imgur.com/ZgG8oJn.png")
 	embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 	if image != "":
