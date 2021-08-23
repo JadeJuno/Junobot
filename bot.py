@@ -46,6 +46,8 @@ client = commands.Bot(command_prefix=parser, case_insensitive=True)
 
 client.remove_command("help")
 
+log2 = client.get_channel(838025060983767051)
+
 
 @client.event
 async def on_ready():
@@ -57,7 +59,7 @@ async def on_ready():
 	log2 = client.get_channel(838025060983767051)
 
 
-async def autodelete(message):
+async def autodelete(message: discord.Message):
 	content = message.content
 	log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nMessage: \n> {content}\nAttachment List Length: {len(message.attachments)}"
 	if len(message.attachments) != 0:
@@ -91,11 +93,11 @@ async def autodelete(message):
 
 
 @client.event
-async def on_message(message):
+async def on_message(message: discord.Message):
 	if message.channel.id == 749571272635187342:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
 		if message.author.bot:
 			await discord.Message.delete(message, delay=0)
-		if message.author.guild_permissions.administrator or message.author.id == 762596422196920351:
+		if is_origin_mod(message):
 			pass
 		if len(message.attachments) != 0:
 			if any(link in message.content for link in whitelisted_links):
