@@ -45,7 +45,7 @@ else:
 client = commands.Bot(command_prefix=parser, case_insensitive=True)
 client.remove_command("help")
 
-owner = await client.fetch_user(config["owners_id"][0])
+owner = None
 log = client.get_channel(config["log_channel"])
 log2 = client.get_channel(838025060983767051)
 
