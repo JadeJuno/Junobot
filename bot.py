@@ -42,7 +42,8 @@ if check_if_self_hosted():
 else:
 	parser = prefix.PrefixParser(default="g!")
 
-client = commands.Bot(command_prefix=parser, case_insensitive=True)
+intents = discord.Intents.all()
+client = commands.Bot(command_prefix=parser, case_insensitive=True, intents=intents)
 client.remove_command("help")
 
 log = client.get_channel(config["log_channel"])
