@@ -109,7 +109,11 @@ async def on_message(message: discord.Message):
 				await message.channel.send("Your message has been sent to the Origins Server's Mods.")
 
 				def reply_check(msg):
-					return msg.reference.message_id == mail_message.id and msg.channel.id == 814542424793153556
+					try:
+						res = msg.reference.message_id == mail_message.id and msg.channel.id == 814542424793153556
+					except AttributeError:
+						res = False
+					return res
 
 				reply = await client.wait_for('message', check=reply_check)
 				await message.channel.send(f"{reply}")
