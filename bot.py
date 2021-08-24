@@ -102,7 +102,7 @@ async def on_message(message: discord.Message):
 		if modmail:
 			if message.content.startswith("$"):
 				channel = client.get_channel(814542424793153556)
-				embed = discord.Embed(title=message.author.name)
+				embed = discord.Embed(title=f"{message.author.name}#{message.author.discriminator}")
 				embed.set_author(name=message.author.id)
 				embed.add_field(name="Description:", value=message.content.lstrip('$'))
 				mail_message = await channel.send(embed=embed)
@@ -117,6 +117,7 @@ async def on_message(message: discord.Message):
 
 				reply = await client.wait_for('message', check=reply_check)
 				await message.channel.send(f"{reply.content}")
+				await message.add_reaction("\U00002705")
 			else:
 				await message.channel.send("If you want to contact the Origins Server's Modmail, you have to use `$` as a prefix to your message.")
 	elif message.channel.id == 749571272635187342:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
