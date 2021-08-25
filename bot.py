@@ -93,7 +93,7 @@ async def autodelete(message: discord.Message):
 
 @client.event
 async def on_message(message: discord.Message):
-	if message.guild is None:
+	if message.guild is None and not message.author.bot:
 		modmail = False
 		for guild in message.author.mutual_guilds:
 			if guild.id == 734127708488859831:
