@@ -214,6 +214,7 @@ if __name__ == "__main__":
 		if filename.endswith('.py'):
 			client.load_extension(f'cogs.{filename[:-3]}')
 
-	TOKEN = os.getenv('GOLD_TOKEN')
+	with open("Gold_Token.txt", "r") as f:
+		TOKEN = f.read()
 
 	client.run(TOKEN)

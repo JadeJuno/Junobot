@@ -3,7 +3,7 @@ import discord
 import traceback
 from discord.ext import commands
 
-from bot import config, is_bot_owner, is_origin_mod
+from bot import config
 
 command_list = ['8ball', 'ban', 'choose', 'clear', 'coinflip', 'detect', 'dieroll', 'flip', 'flipcoin', 'google',
 				'googleit', 'googlesearch', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
