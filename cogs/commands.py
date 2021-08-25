@@ -15,7 +15,7 @@ from googletrans import Translator
 from iso639 import languages
 
 import googlesearch
-from bot import config, embed_template, is_bot_owner, is_origin_mod
+from bot import config, embed_template, is_bot_owner
 from morsecode import MorseCode
 
 status_list = ['My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.']
@@ -325,7 +325,6 @@ class Commands(commands.Cog):
 		messages.remove(ctx.message)
 		await messages[0].pin()
 
-	"""
 	@commands.command()
 	async def caesar(self, ctx, shift, encrypt_decrypt: str, *, sentence):
 		try:
@@ -379,7 +378,7 @@ class Commands(commands.Cog):
 							result += shift_upper[list(string.ascii_uppercase).index(char)]
 					result += '"\n'
 			elif encrypt_decrypt.lower() == 'encrypt':
-				result = f"Error: You can't use the \"{encrypt_decrypt}\" discriminator when bruteforcing."
+				result = f'Error: You can\'t use the "{encrypt_decrypt}" discriminator when bruteforcing.'
 				error = True
 			else:
 				result = "Error: Invalid discriminator."
@@ -392,7 +391,6 @@ class Commands(commands.Cog):
 					await ctx.send(result)
 			else:
 				await ctx.send(result)
-	"""
 
 	@commands.command()
 	async def binary(self, ctx, encode_decode: str, *, sentence):
@@ -471,12 +469,6 @@ class Commands(commands.Cog):
 	async def format(self, ctx):
 		if ctx.message.reference:
 			await ctx.send(f"```\n{ctx.message.reference.resolved.content.replace('> ', '')}```")
-
-	@commands.check(is_origin_mod)
-	@commands.command()
-	async def sleep(self, ctx):
-		serious = self.client.get_emoji(821796259333537813)
-		await ctx.send(f"Golder!! Go to sleep! {serious}")
 
 
 def setup(client):
