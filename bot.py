@@ -60,7 +60,7 @@ async def on_ready():
 
 async def autodelete(message: discord.Message):
 	content = message.content
-	log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in #datapacks.\nMessage: \n> {content}\nAttachment List Length: {len(message.attachments)}"
+	log_message = f"Message: \n> {content}\nAttachment List Length: {len(message.attachments)}"
 	if len(message.attachments) != 0:
 		log_message += f"\nAttachment type: {message.attachments[0].content_type}"
 	if message.reference:
@@ -70,9 +70,12 @@ async def autodelete(message: discord.Message):
 		await message.author.send("Your message in <#749571272635187342> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 	else:
 		await message.author.send("Your message in <#749571272635187342> was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041\nPD2: Please remember that the file has to be a `.zip` file.")
-	if len(log_message) <= 2000:
-		await log.send(log_message)
-		await log2.send(log_message)
+	if len(log_message) <= 4096:
+		embed = discord.Embed(description=log_message)
+		embed.set_author(name=f"Message by {message.author.name}#{message.author.discriminator} deleted in <#749571272635187342>.", icon_url=str(message.author.avatar_url))
+		embed.set_footer(text=f"{message.author.name}'s ID: {message.author.id}", icon_url="https://i.imgur.com/ZgG8oJn.png")
+		await log.send("", embed=embed)
+		await log2.send("", embed=embed)
 	else:
 		with open('temp.txt', 'w') as f:
 			f.write(content)
@@ -207,7 +210,7 @@ async def prefix(ctx, new_prefix=None):
 			parser.update(sv, new_prefix)
 			await ctx.send(f"Prefix changed to `{new_prefix}`!")
 		else:
-			raise commands.CheckFailure
+			raise commands.MissingPermissions(missing_perms=['administrator'])
 
 if __name__ == "__main__":
 	for filename in os.listdir('./cogs'):

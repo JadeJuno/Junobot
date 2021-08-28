@@ -30,12 +30,14 @@ class CommandErrorHandler(commands.Cog):
 				return
 
 		if isinstance(error, commands.CommandNotFound):
-			command = ctx.message.content.lstrip(ctx.prefix).split(" ")
-			command = command[0]
+			command = ctx.message.content.lstrip(ctx.prefix).split(" ")[0]
+			coms_similarity = {}  # dict of command's similarities
 			for com in command_list:
 				similarity = difflib.SequenceMatcher(None, command, com).ratio()
-				if similarity >= 0.6:
-					await ctx.send(f"Error: That command doesn't exist. Did you mean `{ctx.prefix}{com}`?")
+				coms_similarity[com] = similarity
+			if coms_similarity[max(coms_similarity, key=coms_similarity.get)] >= 0.6:
+				await ctx.send(
+					f"Error: `{ctx.prefix}{command}` is not a real command. Did you mean `{ctx.prefix}{max(coms_similarity, key=coms_similarity.get)}`?")
 			return
 
 		error = getattr(error, 'original', error)
@@ -52,6 +54,10 @@ class CommandErrorHandler(commands.Cog):
 		elif isinstance(error, commands.MissingRequiredArgument):
 			missing_param = error.param.name.replace("_", " ").capitalize()
 			await ctx.send(f"Error: Missing argument `{missing_param}`.")
+
+		elif isinstance(error, commands.MissingPermissions):
+			missing_perm = error.missing_perms[0].title()
+			await ctx.send(f'Error: You are missing the {missing_perm} permission to run this command.')
 
 		else:
 			check_message = await ctx.send(
