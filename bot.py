@@ -12,7 +12,7 @@ config = parse_config("./config.toml")
 
 origin_commands = ("datapacks", "<#843834879736283156>", "")
 
-whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/", "https://docs.google.com/"]
+whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/", "https://docs.google.com/", "https://curseforge.com/"]
 temp_white = whitelisted_links[:]
 for link in temp_white:
 	whitelisted_links.append(link.replace("://", "://www."))
@@ -217,8 +217,7 @@ if __name__ == "__main__":
 		if filename.endswith('.py'):
 			client.load_extension(f'cogs.{filename[:-3]}')
 	if not check_if_self_hosted():
-		with open("Gold_Token.txt", "r") as f:
-			TOKEN = f.read()
+		TOKEN = "NTczNjgwMjQ0MjEzNjc4MDgx.XMuXXA.ywRBVp3AnGQjCiRwjYJsk3Oryk4"
 	else:
 		TOKEN = os.getenv("GOLD_TOKEN")
 
