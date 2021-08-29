@@ -93,16 +93,6 @@ class Commands(commands.Cog):
 		await self.log.send("Bot Started.")
 		self.change_status_task.start()
 
-	@commands.Cog.listener()
-	async def on_command(self, ctx):
-		# Function only used for testing purposes. DO NOT USE!
-		# (I'd delete it, but I feel like I'll need it one day...)
-		"""
-		if ctx.message.channel.guild != self.my_guild:
-			await self.log.send(f"{ctx.message.channel.guild.name}:\n{ctx.message.author}: {ctx.message.content}")
-			print(f"{ctx.message.channel.guild.name}:\n{ctx.message.author}: {ctx.message.content}")
-		"""
-
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
 		ball_predicts = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
@@ -254,7 +244,7 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def ping(self, ctx):
-		await ctx.send(f':ping_pong: Pong! {round(self.client.latency * 1000)}ms.')
+		await ctx.send(f':ping_pong: Pong! {self.client.latency * 1000:.0f}ms.')
 
 	@commands.command()
 	async def translate(self, ctx, translate_message, destination_language='en', source_language=None):
