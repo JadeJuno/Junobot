@@ -14,8 +14,8 @@ origin_commands = ("datapacks", "<#843834879736283156>", "")
 
 whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/", "https://docs.google.com/", "https://curseforge.com/"]
 temp_white = whitelisted_links[:]
-for link in temp_white:
-	whitelisted_links.append(link.replace("://", "://www."))
+for _link in temp_white:
+	whitelisted_links.append(_link.replace("://", "://www."))
 temp_white.clear()
 whitelisted_links = tuple(whitelisted_links)
 
