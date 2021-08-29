@@ -43,11 +43,11 @@ class CommandErrorHandler(commands.Cog):
 		error = getattr(error, 'original', error)
 
 		if isinstance(error, commands.DisabledCommand):
-			await ctx.send(f'{ctx.command} has been disabled.')
+			await ctx.send(f'`{ctx.prefix}{ctx.command}` has been disabled.')
 
 		elif isinstance(error, commands.NoPrivateMessage):
 			try:
-				await ctx.author.send(f'{ctx.command} can not be used in Private Messages.')
+				await ctx.author.send(f'`{ctx.prefix}{ctx.command}` can not be used in Private Messages.')
 			except discord.HTTPException:
 				pass
 
@@ -57,7 +57,7 @@ class CommandErrorHandler(commands.Cog):
 
 		elif isinstance(error, commands.MissingPermissions):
 			missing_perm = error.missing_perms[0].title()
-			await ctx.send(f'Error: You are missing the {missing_perm} permission to run this command.')
+			await ctx.send(f'Error: You are missing the `{missing_perm}` permission to run this command.')
 
 		else:
 			check_message = await ctx.send(
@@ -66,7 +66,7 @@ class CommandErrorHandler(commands.Cog):
 			await check_message.add_reaction("\U0000274c")
 
 			def check(r, u):
-				user_check = (u.id == ctx.author.id or u.guild_permissions.administrator or u.id in config["owners_id"]) and not(u.bot)
+				user_check = (u.id == ctx.author.id or u.guild_permissions.administrator or u.id in config["owners_id"]) and not u.bot
 				return user_check and r.message == check_message and str(r.emoji) in ["\U00002705", "\U0000274c"]
 
 			reaction, user = await self.client.wait_for('reaction_add', check=check)
