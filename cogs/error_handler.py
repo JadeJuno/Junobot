@@ -31,7 +31,7 @@ class CommandErrorHandler(commands.Cog):
 
 		if isinstance(error, commands.CommandNotFound):
 			command = ctx.message.content.lstrip(ctx.prefix).split(" ")[0]
-			coms_similarity = {}  # dict of command's similarities
+			coms_similarity = {}  # dict of command's similarities (i.e.: {'choose': 0.55})
 			for com in command_list:
 				similarity = difflib.SequenceMatcher(None, command, com).ratio()
 				coms_similarity[com] = similarity
