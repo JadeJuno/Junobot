@@ -1,10 +1,8 @@
 import asyncio
 import os
 import random
-import string
 import sys
 import traceback
-from collections import deque
 from datetime import datetime, timedelta
 
 import discord
@@ -324,75 +322,6 @@ class Commands(commands.Cog):
 		messages = await ctx.history(limit=2).flatten()
 		messages.remove(ctx.message)
 		await messages[0].pin()
-
-	"""
-	@commands.command()
-	async def caesar(self, ctx, shift, encrypt_decrypt: str, *, sentence):
-		try:
-			shift = int(shift)
-		except ValueError:
-			if shift.lower() != "bruteforce":
-				await ctx.send('Error: The shift is not an integer number.')
-				return
-		for char in sentence:
-			if char in string.digits:
-				await ctx.send(f"Error: Due to logical issues, `{ctx.prefix}caesar` does not accept numbers in the `sentence` argument.")
-				return
-			elif char not in string.ascii_letters:
-				await ctx.send(f"Error: the sentence you sent has at least one invalid character. ({char})")
-				return
-		if shift.lower() != "bruteforce":
-			shift_upper = deque(list(string.ascii_uppercase))
-			shift_lower = deque(list(string.ascii_lowercase))
-			shift_upper.rotate(shift)
-			shift_lower.rotate(shift)
-			result = ""
-			if encrypt_decrypt.lower() == 'decrypt':
-				for char in sentence:
-					if char in list(string.ascii_lowercase):
-						result += shift_lower[list(string.ascii_lowercase).index(char)]
-					elif char in list(string.ascii_uppercase):
-						result += shift_upper[list(string.ascii_uppercase).index(char)]
-			elif encrypt_decrypt.lower() == 'encrypt':
-				for char in sentence:
-					if char in list(string.ascii_lowercase):
-						result += list(string.ascii_lowercase)[shift_lower.index(char)]
-					elif char in list(string.ascii_uppercase):
-						result += list(string.ascii_uppercase)[shift_upper.index(char)]
-			else:
-				result = "Error: Invalid discriminator."
-			await ctx.send(f"{result}")
-		else:
-			result = ""
-			error = False
-			shift_upper = deque(list(string.ascii_uppercase))
-			shift_lower = deque(list(string.ascii_lowercase))
-			if encrypt_decrypt.lower() == 'decrypt':
-				for shift in range(1, 26):
-					result += f'**{shift}:** "'
-					shift_upper.rotate(1)
-					shift_lower.rotate(1)
-					for char in sentence:
-						if char in list(string.ascii_lowercase):
-							result += shift_lower[list(string.ascii_lowercase).index(char)]
-						elif char in list(string.ascii_uppercase):
-							result += shift_upper[list(string.ascii_uppercase).index(char)]
-					result += '"\n'
-			elif encrypt_decrypt.lower() == 'encrypt':
-				result = f"Error: You can't use the \"{encrypt_decrypt}\" discriminator when bruteforcing."
-				error = True
-			else:
-				result = "Error: Invalid discriminator."
-				error = True
-			decision = await self.reaction_decision(ctx, "Bruteforcing tests every single combination possible, so the result will be pretty long. Do you want to get the result DMed to you?")
-			if not error:
-				if decision:
-					await ctx.author.send(result)
-				else:
-					await ctx.send(result)
-			else:
-				await ctx.send(result)
-	"""
 
 	@commands.command()
 	async def binary(self, ctx, encode_decode: str, *, sentence):
