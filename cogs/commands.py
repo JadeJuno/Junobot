@@ -18,10 +18,6 @@ from morsecode import MorseCode
 
 status_list = ['My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.']
 
-command_list = ['8ball', 'ban', 'binary', 'choose', 'clear', 'coinflip', 'detect', 'diceroll', 'flip', 'flipcoin', 'google',
-				'googleit', 'googlesearch', 'search', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
-				'morsecode', 'pin', 'ping', 'prefix', 'roll', 'rolldice', 'say', 'translate', 'unban', 'wikipedia']
-
 change_loop_interval = random.randint(1, 90)
 
 

@@ -5,15 +5,15 @@ from discord.ext import commands
 
 from bot import config
 
-command_list = ['8ball', 'ban', 'choose', 'clear', 'coinflip', 'detect', 'dieroll', 'flip', 'flipcoin', 'google',
-				'googleit', 'googlesearch', 'help', 'kick', 'langlist', 'language', 'languagelist', 'morse',
-				'morsecode', 'pin', 'ping', 'prefix', 'roll', 'rolldie', 'say', 'translate', 'unban', 'wikipedia']
-
 
 class CommandErrorHandler(commands.Cog):
 	def __init__(self, client):
 		self.client = client
 		self.log = None
+		self.command_lists = []
+		for command in list(self.client.commands):
+			self.command_lists.extend(command.aliases)
+			self.command_lists.append(command.name)
 
 	@commands.Cog.listener()
 	async def on_ready(self):
@@ -32,7 +32,7 @@ class CommandErrorHandler(commands.Cog):
 		if isinstance(error, commands.CommandNotFound):
 			command = ctx.message.content.lstrip(ctx.prefix).split(" ")[0]
 			coms_similarity = {}  # dict of command's similarities (i.e.: {'choose': 0.55})
-			for com in command_list:
+			for com in self.command_lists:
 				similarity = difflib.SequenceMatcher(None, command, com).ratio()
 				coms_similarity[com] = similarity
 			if coms_similarity[max(coms_similarity, key=coms_similarity.get)] >= 0.6:
