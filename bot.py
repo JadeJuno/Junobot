@@ -69,7 +69,7 @@ async def autodelete(message: discord.Message):
 	if message.content.startswith("!"):
 		await message.author.send("Your message in <#749571272635187342> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 	else:
-		await message.author.send("Your message in <#749571272635187342> was automatically removed because it did not contain a file or a link. (From the Origins Mod server)\n\nPD: If your message got deleted yet you had a link or a datapack, please contact Golder06#7041\nPD2: Please remember that the file has to be a `.zip` file.")
+		await message.author.send(f"Your message in <#749571272635187342> was automatically removed because it did not contain a .zip file or a whitelisted link.\n\nPD: If your message got deleted yet you had a link or a datapack, please DM the creator of the bot Golder06#7041\nPD2: If you wanna know what links are whitelisted, here they are: `{str(whitelisted_links).strip('()')}`. If you wanna suggest another link, DM Golder06#7041 about it.")
 	if len(log_message) <= 4096:
 		embed = discord.Embed(description=log_message, color=random.randint(0, 0xffffff))
 		embed.set_author(name=f"Message by {message.author.name}#{message.author.discriminator} deleted in #datapacks.", icon_url=str(message.author.avatar_url))
