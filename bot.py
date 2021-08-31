@@ -150,7 +150,7 @@ async def on_message(message: discord.Message):
 			if message.content.startswith("g!"):
 				# if message.content.lstrip("g!").startswith(origin_commands):
 				if message.channel.id == 843834879736283156:
-					await message.reply(f"Gøldbot commands have been disabled in this server. {random.choices(['~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''], [1,10])[0]}")
+					await message.reply(f"Gøldbot commands have been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1,10))[0]}")
 				else:
 					await message.reply("Gøldbot commands have been disabled in this server.")
 		else:
@@ -218,7 +218,7 @@ async def prefix(ctx, new_prefix=None):
 					parser.update(str(ctx.guild.id), new_prefix)
 					await ctx.send(f"Prefix changed to `{new_prefix}`!")
 			else:
-				raise commands.MissingPermissions(missing_perms=['administrator'])
+				raise commands.MissingPermissions(missing_perms=('administrator',))
 
 if __name__ == "__main__":
 	for filename in os.listdir('./cogs'):

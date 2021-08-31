@@ -14,7 +14,7 @@ import googlesearch
 from bot import config, embed_template, is_bot_owner, is_origin_mod, parser
 from morsecode import MorseCode
 
-status_list = ['My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.']
+status_list = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
 
 change_loop_interval = random.randint(1, 90)
 
@@ -56,7 +56,7 @@ class Commands(commands.Cog):
 
 		def check(reaction_checked, reaction_user):
 			user_check = reaction_user.id == ctx.author.id or reaction_user.guild_permissions.administrator and ctx.author.bot
-			return user_check and reaction_checked.message == check_message and str(reaction_checked.emoji) in ["\U00002705", "\U0000274c"]
+			return user_check and reaction_checked.message == check_message and str(reaction_checked.emoji) in ("\U00002705", "\U0000274c")
 
 		reaction, user = await self.client.wait_for('reaction_add', check=check)
 		if str(reaction.emoji) == "\U00002705":
@@ -87,12 +87,12 @@ class Commands(commands.Cog):
 
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
-		ball_predicts = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
+		ball_predicts = ("It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
 						 "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
 						 "Signs point to yes.", "Reply hazy, try again.", "Ask again later.",
 						 "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.",
 						 "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.",
-						 "Very doubtful."]
+						 "Very doubtful.")
 		if "?" in question:
 			if "love" in question.lower():
 				prediction = random.choice(ball_predicts[-5:])
@@ -114,13 +114,13 @@ class Commands(commands.Cog):
 			await ctx.send(
 				f'I can\'t just choose between {len(divided_options)} choice. *(to divide the choices you should put a comma between them)*.')
 
-	@commands.command(aliases=["coinflip", "flipcoin"])
+	@commands.command(aliases=("coinflip", "flipcoin"))
 	async def flip(self, ctx):
-		await ctx.send(f"-Flip!-\nIt landed on {random.choice(['heads', 'tails'])}!")
+		await ctx.send(f"-Flip!-\nIt landed on {random.choice(('heads', 'tails'))}!")
 
-	@commands.command(aliases=["rolldice", "diceroll", "dice"])
+	@commands.command(aliases=("rolldice", "diceroll", "dice"))
 	async def roll(self, ctx, faces=6.0):
-		if random.choices([True, False], [100, 1])[0]:
+		if random.choices((True, False), (100, 1))[0]:
 			if type(faces) is float and faces != int(faces):
 				await ctx.send(
 					f"Error: You can't roll a die with a non-whole amout of faces, you {faces} dimensional being!")
@@ -181,7 +181,7 @@ class Commands(commands.Cog):
 		except FileNotFoundError:
 			pass
 
-	@commands.command(aliases=["googleit", "googlesearch", "search"])
+	@commands.command(aliases=("googleit", "googlesearch", "search"))
 	async def google(self, ctx, *, search_request):
 		message = await ctx.send(f"Searching for `{search_request}`...")
 		i = 1
@@ -198,7 +198,7 @@ class Commands(commands.Cog):
 							   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
 
-	@commands.command(aliases=["detect", "language"])
+	@commands.command(aliases=("detect", "language"))
 	async def lang_detect(self, ctx, *, user_message):
 		detected_lang = self.translator.detect(user_message).lang
 		if isinstance(detected_lang, list):
@@ -206,7 +206,7 @@ class Commands(commands.Cog):
 		await ctx.send(
 			f'"{user_message}" is in {languages.get(alpha2=detected_lang).name} (Certainty: `{int(max(self.translator.detect(user_message).confidence) * 100)}%`).')
 
-	@commands.command(name="morse", aliases=["morsecode"])
+	@commands.command(name="morse", aliases=("morsecode",))
 	async def morse_code(self, ctx, encrypt_decrypt, *, sentence):
 		disc = encrypt_decrypt
 		var = self.morse.check_letter(sentence.upper())
