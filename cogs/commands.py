@@ -1,8 +1,6 @@
 import asyncio
 import os
 import random
-import sys
-import traceback
 from datetime import datetime, timedelta
 
 import discord
@@ -13,7 +11,7 @@ from googletrans import Translator
 from iso639 import languages
 
 import googlesearch
-from bot import config, embed_template, is_bot_owner, is_origin_mod
+from bot import config, embed_template, is_bot_owner, is_origin_mod, parser
 from morsecode import MorseCode
 
 status_list = ['My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.']
@@ -208,7 +206,7 @@ class Commands(commands.Cog):
 		await ctx.send(
 			f'"{user_message}" is in {languages.get(alpha2=detected_lang).name} (Certainty: `{int(max(self.translator.detect(user_message).confidence) * 100)}%`).')
 
-	@commands.command(aliases=["morsecode", "morse"])
+	@commands.command(name="morse", aliases=["morsecode"])
 	async def morse_code(self, ctx, encrypt_decrypt, *, sentence):
 		disc = encrypt_decrypt
 		var = self.morse.check_letter(sentence.upper())
@@ -299,7 +297,7 @@ class Commands(commands.Cog):
 			await member.ban(reason=reason)
 			await ctx.send(f'{member} banned via `{ctx.prefix}ban` command. Reason: {reason}.')
 		else:
-			await ctx.send(f"Error: {member} is an admin, and therefore can't be banned")
+			await ctx.send(f"Error: {member} is an admin and can't be banned by Goldbot.")
 
 	@commands.has_permissions(kick_members=True)
 	@commands.command()
@@ -315,9 +313,12 @@ class Commands(commands.Cog):
 	@commands.has_permissions(manage_messages=True)
 	@commands.command()
 	async def pin(self, ctx):
-		messages = await ctx.history(limit=2).flatten()
-		messages.remove(ctx.message)
-		await messages[0].pin()
+		if ctx.message.reference:
+			await ctx.message.reference.resolved.pin()
+		else:
+			messages = await ctx.history(limit=2).flatten()
+			messages.remove(ctx.message)
+			await messages[0].pin()
 
 	@commands.command()
 	async def binary(self, ctx, encode_decode: str, *, sentence):
@@ -378,13 +379,7 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 2", value="value 2")
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
-		try:
-			int(1)
-		except Exception as e:
-			exc_info = sys.exc_info()
-			track = traceback.format_exception(*exc_info)
-			print(track)
-			await ctx.send(f"An exception has ocurred: {e}.")
+		await ctx.send(f"`{parser.__getitem__(ctx.guild.id)}`")
 
 	@commands.check(is_bot_owner)
 	@commands.command(aliases=['autoerror'])

@@ -174,18 +174,14 @@ def embed_template(ctx, title=None, description=None, footer="", image: str = ""
 
 @client.command(name="help")
 async def _help(ctx, command=None):
+	mod_commands = ("ban", "clear", "kick", "pin", "unban")
 	if command is None:
 		title = "Commands"
 		with open("help_texts/general_help.txt", "r", encoding='utf-8') as file:
 			help_text = file.read()
-		with open("help_texts/mod_help.txt", "r", encoding='utf-8') as file:
-			mod_text = file.read()
-		with open("help_texts/owner_help.txt", "r", encoding='utf-8') as file:
-			owner_text = file.read()
 		if ctx.author.guild_permissions.administrator:
-			help_text += mod_text
-		if is_bot_owner(ctx):
-			help_text += owner_text
+			with open("help_texts/mod_help.txt", "r", encoding='utf-8') as file:
+				help_text += file.read()
 	else:
 		command = command.lower()
 		try:

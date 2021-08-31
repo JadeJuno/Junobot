@@ -6,4 +6,4 @@ Encrypts a sentence to morse code or decrypts it to English.
 
 **Usage**
 `{prefix}morse <encrypt/decrypt> <sentence>`
-E.G.: `{prefix}morse ".... . .-.. .-.. --- --..-- / - .... .. ... / .. ... / -- --- .-. ... . / -.-. --- -.. ." decrypt`
+E.G.: `{prefix}morse decrypt .... . .-.. .-.. --- --..-- / - .... .. ... / .. ... / -- --- .-. ... . / -.-. --- -.. .`
