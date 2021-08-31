@@ -2,8 +2,4 @@
 
 # Goldbot
 
-## To-do list:
-
-- [x] Add emojis to g!roll (faces of a 6-sided die)
-- [x] Make an embed template
-- [x] Come up with more things to do
+I don't really have to say anything here, this repo is private lol
