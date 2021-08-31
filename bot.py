@@ -184,13 +184,22 @@ async def _help(ctx, command=None):
 				help_text += file.read()
 	else:
 		command = command.lower()
-		try:
-			title = command.capitalize()
-			with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
-				help_text = file.read()
-		except FileNotFoundError:
-			title = "Error!"
-			help_text = "Command not found."
+		if command in mod_commands:
+			if ctx.author.guild_permissions.administrator:
+				title = command.capitalize()
+				with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
+					help_text = file.read()
+			else:
+				title = "Error!"
+				help_text = f"You don't have permissions to use `{command}`"
+		else:
+			try:
+				title = command.capitalize()
+				with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
+					help_text = file.read()
+			except FileNotFoundError:
+				title = "Error!"
+				help_text = "Command not found."
 	embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix), "\n<>=Necessary, []=optional.")
 	await ctx.send(embed=embed)
 
