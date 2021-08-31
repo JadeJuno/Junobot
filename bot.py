@@ -38,7 +38,7 @@ def check_if_self_hosted():
 
 
 if check_if_self_hosted():
-	parser = prefix.PrefixParser(default="g.")
+	parser = "g."
 else:
 	parser = prefix.PrefixParser(default="g!")
 
@@ -206,16 +206,19 @@ async def _help(ctx, command=None):
 
 @client.command()
 async def prefix(ctx, new_prefix=None):
-	perm = ctx.author.guild_permissions.administrator
-	if new_prefix is None:
-		await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
-	else:
-		if perm:
-			sv = str(ctx.guild.id)
-			parser.update(sv, new_prefix)
-			await ctx.send(f"Prefix changed to `{new_prefix}`!")
+	if not check_if_self_hosted():
+		if new_prefix is None:
+			await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
 		else:
-			raise commands.MissingPermissions(missing_perms=['administrator'])
+			if ctx.author.guild_permissions.administrator:
+				if new_prefix.lower() == "reset":
+					parser.update(str(ctx.guild.id), parser.default)
+					await ctx.send(f"Prefix reset back to `{parser.default}`!")
+				else:
+					parser.update(str(ctx.guild.id), new_prefix)
+					await ctx.send(f"Prefix changed to `{new_prefix}`!")
+			else:
+				raise commands.MissingPermissions(missing_perms=['administrator'])
 
 if __name__ == "__main__":
 	for filename in os.listdir('./cogs'):

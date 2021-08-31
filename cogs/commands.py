@@ -379,7 +379,7 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 2", value="value 2")
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
-		await ctx.send(f"`{parser.__getitem__(ctx.guild.id)}`")
+		await ctx.send(f"`{parser.__getitem__(str(ctx.guild.id))}`")
 
 	@commands.check(is_bot_owner)
 	@commands.command(aliases=['autoerror'])
