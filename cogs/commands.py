@@ -154,7 +154,7 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def say(self, ctx, message, channel=None):
 		if len(message.strip()) == 0:
-			await ctx.send("Error: You can't send an empty message. ~~(or can you?)~~")
+			await ctx.send("Error: You can't send an empty message.")
 			return
 		if channel is None:
 			channel = ctx.channel
@@ -392,6 +392,11 @@ class Commands(commands.Cog):
 		if ctx.message.reference:
 			await ctx.send(f"```\n{ctx.message.reference.resolved.content.replace('> ', '')}```")
 
+	@commands.check(bot.is_bot_owner)
+	@commands.command()
+	async def rawsay(self, ctx, message):
+		await ctx.send(message)
+
 	@commands.check(bot.is_origin_mod)
 	@commands.command()
 	async def sleep(self, ctx):
@@ -424,15 +429,17 @@ class Commands(commands.Cog):
 		except IndexError:
 			await ctx.send(f'Error: Rule "{rule_index}" does not exist.')
 			return
-		try:
-			await ctx.message.reference.resolved.reply(rule)
-		except AttributeError:
-			await ctx.send(rule)
+		bot.tryreply(ctx, rule)
 
 	@rule.error
 	async def rule_error(self, ctx, error):
 		if isinstance(error, commands.BadArgument):
 			await ctx.send("Error: the rule's index has to be a whole number.")
+
+	@commands.check(bot.is_in_origin_server)
+	@commands.command(aliases=("avd",))
+	async def addonvsdatapack(self, ctx):
+		bot.tryreply(ctx, "")
 
 
 def setup(client):

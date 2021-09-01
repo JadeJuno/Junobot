@@ -45,6 +45,13 @@ def check_if_self_hosted():
 		return False
 
 
+def tryreply(ctx, message):
+	try:
+		await ctx.message.reference.resolved.reply(message)
+	except AttributeError:
+		await ctx.send(message)
+
+
 if check_if_self_hosted():
 	parser = "g."
 else:
@@ -144,17 +151,8 @@ async def on_message(message: discord.Message):
 		else:
 			if not any(link in message.content for link in whitelisted_links):
 				await autodelete(message)
-	elif message.content.startswith("!<#843834879736283156>"):
-		if message.channel.id != 843834879736283156:
-			serious = client.get_emoji(821796259333537813)
-			try:
-				await message.reference.resolved.reply(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
-			except AttributeError:
-				await message.channel.send(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
-		else:
-			await message.reply("This message is already in <#843834879736283156>...")
 	else:
-		if message.guild.id == 734127708488859831 and not is_origin_mod(message):  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
+		if is_in_origin_server(message) and not is_origin_mod(message):
 			if message.content.startswith("g!"):
 				if message.content.lstrip("g!").startswith(origin_commands):
 					await client.process_commands(message)
