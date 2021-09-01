@@ -2,4 +2,4 @@
 
 # Goldbot
 
-I don't really have to say anything here, this repo is private lol
+This repo is no longer private, *but I still don't know what to say lol-*
