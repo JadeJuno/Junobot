@@ -364,7 +364,6 @@ class Commands(commands.Cog):
 				return
 			await ctx.send(f'{user.mention} is not banned.')
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.check(bot.is_bot_owner)
 	@commands.command()
 	async def test(self, ctx):
