@@ -82,9 +82,9 @@ async def autodelete(message: discord.Message):
 		log_message += f"\nReferenced Message: {message.reference.jump_url}"
 	await discord.Message.delete(message, delay=0)
 	if message.content.startswith("!"):
-		await message.author.send("Your message in <#749571272635187342> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
+		await message.author.send(f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 	else:
-		await message.author.send(f"Your message in <#749571272635187342> was automatically removed because it did not contain a .zip file or a whitelisted link.\n\nPD: If your message got deleted yet you had a link or a datapack, please DM the creator of the bot Golder06#7041\nPD2: If you wanna know what links are whitelisted, here they are: `{str(whitelisted_links).strip('()')}`. If you wanna suggest another link, DM Golder06#7041 about it.")
+		await message.author.send(f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'.zip file or a ' if message.channel.id == 749571272635187342 else ''}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a{' datapack' if message.channel.id == 749571272635187342 else 'n addon'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna know what links are whitelisted, here they are: `{str(whitelisted_links).strip('()')}`. If you wanna suggest another link, DM Golder06#7041 about it.")
 	if len(log_message) <= 4096:
 		embed = discord.Embed(description=log_message, color=random.randint(0, 0xffffff))
 		embed.set_author(name=f"Message by {message.author.name}#{message.author.discriminator} deleted in #datapacks.", icon_url=str(message.author.avatar_url))
@@ -138,7 +138,7 @@ async def on_message(message: discord.Message):
 				await reply.add_reaction("\u2705")
 			else:
 				await message.channel.send("If you want to contact the Origins Server's Modmail, you have to use `$` as a prefix to your message.")
-	elif message.channel.id == 749571272635187342:  # If the message is in the #datapacks channel and isn't made by a user with administrator permissions it'll check if it has a .zip file attached to it or if it has a link. If it doesn't, the message gets deleted
+	elif message.channel.id == 749571272635187342:
 		if message.author.bot:
 			await discord.Message.delete(message, delay=0)
 		if is_origin_mod(message):
@@ -147,6 +147,19 @@ async def on_message(message: discord.Message):
 			if any(link in message.content for link in whitelisted_links):
 				return
 			elif message.attachments[0].content_type != "application/zip":
+				await autodelete(message)
+		else:
+			if not any(link in message.content for link in whitelisted_links):
+				await autodelete(message)
+	elif message.channel.id == 848428304003366912:
+		if message.author.bot:
+			await discord.Message.delete(message, delay=0)
+		if is_origin_mod(message):
+			pass
+		if len(message.attachments) != 0:
+			if any(link in message.content for link in whitelisted_links):
+				return
+			elif message.attachments[0].content_type != "application/jar":
 				await autodelete(message)
 		else:
 			if not any(link in message.content for link in whitelisted_links):
