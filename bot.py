@@ -24,6 +24,10 @@ def is_bot_owner(ctx):
 	return ctx.author.id in config["owners_id"]
 
 
+def is_in_origin_server(ctx):
+	return ctx.guild.id == 734127708488859831
+
+
 def is_origin_mod(ctx):
 	return ctx.author.id in config["origins_mods"]
 

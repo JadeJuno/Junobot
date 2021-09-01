@@ -10,8 +10,8 @@ from discord.ext import commands, tasks
 from googletrans import Translator
 from iso639 import languages
 
+import bot
 import googlesearch
-from bot import config, embed_template, is_bot_owner, is_origin_mod, parser
 from morsecode import MorseCode
 
 status_list = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
@@ -77,8 +77,8 @@ class Commands(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_ready(self):
-		self.log = self.client.get_channel(config["log_channel"])
-		self.my_guild = self.client.get_guild(config["guild_id"])
+		self.log = self.client.get_channel(bot.config["log_channel"])
+		self.my_guild = self.client.get_guild(bot.config["guild_id"])
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
 		print(f'Bot is ready.')
 		print(f"bot created by Golder06#7041.")
@@ -194,7 +194,7 @@ class Commands(commands.Cog):
 			i += 1
 		if i == 1:
 			output_str = "**No results found.**"
-		embed = embed_template(ctx, "Google", output_str[0:-1],
+		embed = bot.embed_template(ctx, "Google", output_str[0:-1],
 							   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
 
@@ -278,7 +278,7 @@ class Commands(commands.Cog):
 				description += f"`{i}`: {result_2}\n"
 		except wikipedia.exceptions.PageError:
 			description = "Page not found."
-		embed = embed_template(ctx, title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
+		embed = bot.embed_template(ctx, title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
 		await ctx.send(embed=embed)
 
 	@commands.has_permissions(manage_messages=True)
@@ -364,7 +364,7 @@ class Commands(commands.Cog):
 				return
 			await ctx.send(f'{user.mention} is not banned.')
 
-	@commands.check(is_bot_owner)
+	@commands.check(bot.is_bot_owner)
 	@commands.command()
 	async def test(self, ctx):
 		gold_emoji = self.emoji_list[0]
@@ -379,24 +379,29 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 2", value="value 2")
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
-		await ctx.send(f"`{parser.__getitem__(str(ctx.guild.id))}`")
+		await ctx.send(f"`{bot.parser.__getitem__(str(ctx.guild.id))}`")
 
-	@commands.check(is_bot_owner)
+	@commands.check(bot.is_bot_owner)
 	@commands.command(aliases=['autoerror'])
 	async def auto_error(self, ctx):
 		await ctx.send(f"{int('A')}")
 
-	@commands.check(is_bot_owner)
+	@commands.check(bot.is_bot_owner)
 	@commands.command()
 	async def format(self, ctx):
 		if ctx.message.reference:
 			await ctx.send(f"```\n{ctx.message.reference.resolved.content.replace('> ', '')}```")
 
-	@commands.check(is_origin_mod)
+	@commands.check(bot.is_origin_mod)
 	@commands.command()
 	async def sleep(self, ctx):
 		serious = self.client.get_emoji(821796259333537813)
 		await ctx.send(f"Golder!! Go to sleep! {serious}")
+
+	@commands.check(bot.is_in_origin_server)
+	@commands.command()
+	async def datapacks(self, ctx):
+		await ctx.send('If you want to find datapacks with custom origins, balance changes, and recipes for the Orb of Origin to use, check out <#749571272635187342>.\n\nTo install a datapack, navigate to your world folder (found in `.minecraft/saves`) and drop the datapack as a ZIP file into the `datapacks` folder. The same process can be used on a server (the world folder would be on the root though), and if you are running a server. the datapack does *not* need to be installed by each user.\n\nWhen creating a single-player world, there is also a "Data Packs" button in the world creation screen. If you click this, you are able to drag datapacks directly into the Minecraft window to add them. Don\'t forget to move them from "available" to "selected" though. This allows you to install datapacks *before+ a world is generated!\n\nIf you are looking for information on how to create datapacks yourself, type `!wiki` or `!tutorial` in <#843834879736283156>.')
 
 
 def setup(client):
