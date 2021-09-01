@@ -28,6 +28,10 @@ def is_in_origin_server(ctx):
 	return ctx.guild.id == 734127708488859831
 
 
+def isnt_in_origin_server(ctx):  # I hate that there's no way to inverse a command check...
+	return ctx.guild.id != 734127708488859831
+
+
 def is_origin_mod(ctx):
 	return ctx.author.id in config["origins_mods"]
 
