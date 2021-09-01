@@ -10,10 +10,6 @@ class CommandErrorHandler(commands.Cog):
 	def __init__(self, client):
 		self.client = client
 		self.log = None
-		self.command_lists = []
-		for command in list(self.client.commands):
-			self.command_lists.extend(command.aliases)
-			self.command_lists.append(command.name)
 
 	@commands.Cog.listener()
 	async def on_ready(self):
@@ -30,14 +26,11 @@ class CommandErrorHandler(commands.Cog):
 				return
 
 		if isinstance(error, commands.CommandNotFound):
-			command = ctx.message.content.lstrip(ctx.prefix).split(" ")[0]
-			coms_similarity = {}  # dict of command's similarities (i.e.: {'choose': 0.55})
-			for com in self.command_lists:
-				similarity = difflib.SequenceMatcher(None, command, com).ratio()
-				coms_similarity[com] = similarity
-			if coms_similarity[max(coms_similarity, key=coms_similarity.get)] >= 0.6:
-				await ctx.send(
-					f"Error: `{ctx.prefix}{command}` is not a real command. Did you mean `{ctx.prefix}{max(coms_similarity, key=coms_similarity.get)}`?")
+			cmd = ctx.invoked_with
+			cmds = [cmd.name for cmd in self.client.commands]
+			matches = difflib.get_close_matches(cmd, cmds, n=1)
+			if len(matches) > 0:
+				await ctx.send(f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
 			return
 
 		error = getattr(error, 'original', error)
