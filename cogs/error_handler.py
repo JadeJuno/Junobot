@@ -40,8 +40,8 @@ class CommandErrorHandler(commands.Cog):
 
 		elif isinstance(error, commands.CheckFailure):
 			cmd = ctx.command
-			for check in ctx.checks:
-				if "is_in_origin_server" in check:
+			for check in cmd.checks:
+				if "is_in_origin_server" in str(check):
 					await ctx.send(f'Error: Command "{cmd.name}" only works in the Origins server.')
 
 		elif isinstance(error, commands.NoPrivateMessage):
