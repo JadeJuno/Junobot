@@ -3,6 +3,7 @@
 `{prefix}rule <rule index>` - Shows the specified rule
 `{prefix}help` - Shows this message (what did you expect?).
 `{prefix}avd` - Short for "addonvsdatapack", it shows the difference between addons and datapacks.
+`{prefix}channelonly` - Shows a description of what you can and can't send on certain channels
 
 
 For anti-spam reasons, all normal Goldbot commands have been disabled on this server{shameless_promotion}.
