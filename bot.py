@@ -232,9 +232,6 @@ if __name__ == "__main__":
 	for filename in os.listdir('./cogs'):
 		if filename.endswith('.py'):
 			client.load_extension(f'cogs.{filename[:-3]}')
-	print(check_if_self_hosted())
 	TOKEN = os.getenv("GOLD_TOKEN")
-
-	print(TOKEN)
 
 	client.run(TOKEN)
