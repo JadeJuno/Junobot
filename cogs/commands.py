@@ -425,7 +425,7 @@ class Commands(commands.Cog):
 			await ctx.send(f'Error: Rule "{rule_index}" does not exist.')
 			return
 		try:
-			await ctx.message.reference.resolved.send(rule)
+			await ctx.message.reference.resolved.reply(rule)
 		except AttributeError:
 			await ctx.send(rule)
 
