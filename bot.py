@@ -238,4 +238,6 @@ if __name__ == "__main__":
 	else:
 		TOKEN = os.getenv("GOLD_TOKEN")
 
+	print(TOKEN)
+
 	client.run(TOKEN)
