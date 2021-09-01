@@ -10,7 +10,7 @@ from config import parse_config
 
 config = parse_config("./config.toml")
 
-origin_commands = ("datapacks", "<#843834879736283156>", "")
+origin_commands = ("datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help")
 
 whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/", "https://docs.google.com/", "https://curseforge.com/"]
 temp_white = whitelisted_links[:]
@@ -156,11 +156,13 @@ async def on_message(message: discord.Message):
 	else:
 		if message.guild.id == 734127708488859831 and not is_origin_mod(message):  # If the message is in the Origins Server, it won't try to process it as a command. (Don't think it'd be a good idea to let people use Gøldbot's commands there.)
 			if message.content.startswith("g!"):
-				# if message.content.lstrip("g!").startswith(origin_commands):
+				if message.content.lstrip("g!").startswith(origin_commands):
+					await client.process_commands(message)
+					return
 				if message.channel.id == 843834879736283156:
-					await message.reply(f"Gøldbot commands have been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1,10))[0]}")
+					await message.reply(f"This Goldbot commands have been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1,10))[0]}")
 				else:
-					await message.reply("Gøldbot commands have been disabled in this server.")
+					await message.reply("This Goldbot command have been disabled in this server.")
 		else:
 			await client.process_commands(message)
 
