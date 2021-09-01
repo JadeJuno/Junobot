@@ -233,10 +233,7 @@ if __name__ == "__main__":
 		if filename.endswith('.py'):
 			client.load_extension(f'cogs.{filename[:-3]}')
 	print(check_if_self_hosted())
-	if not check_if_self_hosted():
-		TOKEN = "xiyiijSNH_2j3K9ngG8x7MgzP8UM0dIP"
-	else:
-		TOKEN = os.getenv("GOLD_TOKEN")
+	TOKEN = os.getenv("GOLD_TOKEN")
 
 	print(TOKEN)
 
