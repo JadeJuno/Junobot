@@ -45,7 +45,7 @@ def check_if_self_hosted():
 		return False
 
 
-def tryreply(ctx, message):
+async def tryreply(ctx, message):
 	try:
 		await ctx.message.reference.resolved.reply(message)
 	except AttributeError:

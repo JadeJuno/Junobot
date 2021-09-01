@@ -429,7 +429,7 @@ class Commands(commands.Cog):
 		except IndexError:
 			await ctx.send(f'Error: Rule "{rule_index}" does not exist.')
 			return
-		bot.tryreply(ctx, rule)
+		await bot.tryreply(ctx, rule)
 
 	@rule.error
 	async def rule_error(self, ctx, error):
@@ -437,9 +437,9 @@ class Commands(commands.Cog):
 			await ctx.send("Error: the rule's index has to be a whole number.")
 
 	@commands.check(bot.is_in_origin_server)
-	@commands.command(aliases=("avd",))
+	@commands.command(aliases=("avd", "addonsvsdatapacks"))
 	async def addonvsdatapack(self, ctx):
-		bot.tryreply(ctx, "")
+		await bot.tryreply(ctx, "When discussing datapacks and addons, it is important, for the sake of specificity, to understand the difference:\n\n**Addons**\nAddons are actual minecraft mods written in Java inside a .jar file\nThese add new features to the game and, in this case, the Origins Mod\nAdditionally, these are put into the `.minecraft/mods` folder\n\n**Datapacks**\nDatapacks are content packs that use existing features within minecraft\nThese are commonly written in JSON and using MCFunction files inside a zip folder\nAdditionally, these are localized to a specific minecraft world in the `.minecraft/saves/{worldname}/datapacks` folder\n\nMost Origins are Datapacks and can be located in #datapacks. Otherwise the origin may be an addon and can be found on curseforge.")
 
 
 def setup(client):
