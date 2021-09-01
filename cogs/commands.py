@@ -394,7 +394,7 @@ class Commands(commands.Cog):
 
 	@commands.check(bot.is_bot_owner)
 	@commands.command()
-	async def rawsay(self, ctx, message):
+	async def rawsay(self, ctx, *, message):
 		await ctx.send(message)
 
 	@commands.check(bot.is_origin_mod)
