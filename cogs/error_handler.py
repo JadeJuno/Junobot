@@ -38,6 +38,12 @@ class CommandErrorHandler(commands.Cog):
 		if isinstance(error, commands.DisabledCommand):
 			await ctx.send(f'`{ctx.prefix}{ctx.command}` has been disabled.')
 
+		elif isinstance(error, commands.CheckFailure):
+			cmd = ctx.command
+			for check in ctx.checks:
+				if "is_in_origin_server" in check:
+					await ctx.send(f'Error: Command "{cmd.name}" only works in the Origins server.')
+
 		elif isinstance(error, commands.NoPrivateMessage):
 			try:
 				await ctx.author.send(f'`{ctx.prefix}{ctx.command}` can not be used in Private Messages.')
