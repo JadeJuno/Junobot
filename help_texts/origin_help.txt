@@ -1,0 +1,7 @@
+`{prefix}datapacks` - Shows a message about datapacks and how to install/use them.
+`{prefix}commands` - Tells someone to use commands in <#843834879736283156>.
+`{prefix}rule <Rule Index>` - Shows the specified rule
+`{prefix}help` - Shows this message (what did you expect?).
+
+
+For anti-spam reasons, all normal Goldbot commands have been disabled on this server{shameless_promotion}.

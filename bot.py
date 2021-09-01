@@ -165,15 +165,19 @@ async def on_message(message: discord.Message):
 			await client.process_commands(message)
 
 
-def embed_template(ctx, title=None, description=None, footer="", image: str = "", icon: str = ""):
+def embed_template(ctx, title=None, description=None, footer="", add_def_footer=True, image: str = "", icon: str = ""):
 	embed = discord.Embed(description=description, color=random.randint(0, 0xffffff))
 	if icon != "":
 		embed.set_author(name=title, icon_url=icon)
 	else:
 		embed.set_author(name=title)
-	embed.set_footer(
-		text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by Golder06#7041.",
-		icon_url="https://i.imgur.com/ZgG8oJn.png")
+	if add_def_footer:
+		embed.set_footer(
+			text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by Golder06#7041.",
+			icon_url="https://i.imgur.com/ZgG8oJn.png")
+	else:
+		embed.set_footer(
+			text=footer, icon_url="https://i.imgur.com/ZgG8oJn.png")
 	embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 	if image != "":
 		embed.set_image(url=image)
@@ -182,33 +186,46 @@ def embed_template(ctx, title=None, description=None, footer="", image: str = ""
 
 @client.command(name="help")
 async def _help(ctx, command=None):
-	mod_commands = ("ban", "clear", "kick", "pin", "unban")
-	if command is None:
-		title = "Commands"
-		with open("help_texts/general_help.txt", "r", encoding='utf-8') as file:
-			help_text = file.read()
-		if ctx.author.guild_permissions.administrator:
-			with open("help_texts/mod_help.txt", "r", encoding='utf-8') as file:
-				help_text += file.read()
-	else:
-		command = command.lower()
-		if command in mod_commands:
+	if isnt_in_origin_server(ctx) or is_origin_mod(ctx):
+		mod_commands = ("ban", "clear", "kick", "pin", "unban")
+		if command is None:
+			title = "Commands"
+			with open("help_texts/general_help.txt", "r", encoding='utf-8') as file:
+				help_text = file.read()
 			if ctx.author.guild_permissions.administrator:
-				title = command.capitalize()
-				with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
-					help_text = file.read()
-			else:
-				title = "Error!"
-				help_text = f"You don't have permissions to use `{command}`"
+				with open("help_texts/mod_help.txt", "r", encoding='utf-8') as file:
+					help_text += file.read()
+			footer = "\n<>=Necessary, []=optional."
 		else:
-			try:
-				title = command.capitalize()
-				with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
-					help_text = file.read()
-			except FileNotFoundError:
-				title = "Error!"
-				help_text = "Command not found."
-	embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix), "\n<>=Necessary, []=optional.")
+			command = command.lower()
+			if command in mod_commands:
+				if ctx.author.guild_permissions.administrator:
+					title = command.capitalize()
+					with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
+						help_text = file.read()
+					footer = "\n<>=Necessary, []=optional."
+				else:
+					title = "Error!"
+					help_text = f"You don't have permissions to use `{command}`"
+					footer = ""
+			else:
+				try:
+					title = command.capitalize()
+					with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
+						help_text = file.read()
+					footer = "\n<>=Necessary, []=optional."
+				except FileNotFoundError:
+					title = "Error!"
+					help_text = "Command not found."
+					footer = ""
+		embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix), footer, add_def_footer=True)
+	else:
+		title = "Commands"
+		with open("help_texts/origin_help.txt", "r", encoding='utf-8') as file:
+			help_text = file.read()
+		footer = "\n<>=Necessary, []=optional.\nGøldbot was created by Golder06#7041."
+		shameless_promotion = random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1, 10))[0]
+		embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix, shameless_promotion=shameless_promotion), footer, add_def_footer=False)
 	await ctx.send(embed=embed)
 
 
