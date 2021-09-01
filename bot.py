@@ -195,6 +195,10 @@ async def _help(ctx, command=None):
 			if ctx.author.guild_permissions.administrator:
 				with open("help_texts/mod_help.txt", "r", encoding='utf-8') as file:
 					help_text += file.read()
+				if is_in_origin_server(ctx):
+					with open("help_texts/origin_help.txt", "r", encoding='utf-8') as file:
+						origin_help = file.read().split('\n\n')[0]
+						help_text += f"\n\n**Origins Commands:**\n{origin_help}"
 			footer = "\n<>=Necessary, []=optional."
 		else:
 			command = command.lower()
