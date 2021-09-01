@@ -1,5 +1,5 @@
 `{prefix}datapacks` - Shows a message about datapacks and how to install/use them.
-`{prefix}commands` - Tells someone to use commands in <#843834879736283156>.
+`{prefix}commands` - Tells someone to use commands in  <#843834879736283156>.
 `{prefix}rule <rule index>` - Shows the specified rule
 `{prefix}help` - Shows this message (what did you expect?).
 `{prefix}avd` - Short for "addonvsdatapack", it shows the difference between addons and datapacks.
