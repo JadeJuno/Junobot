@@ -380,6 +380,9 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
 		await ctx.send(f"`{bot.parser.__getitem__(str(ctx.guild.id))}`")
+		admins = self.client.get_role(740905422298546228)
+		ids = [admin.id for admin in admins]
+		await ctx.send(ids)
 
 	@commands.check(bot.is_bot_owner)
 	@commands.command(aliases=['autoerror'])
