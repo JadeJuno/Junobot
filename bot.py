@@ -58,7 +58,8 @@ else:
 	parser = prefix.PrefixParser(default="g!")
 
 intents = discord.Intents.all()
-client = commands.Bot(command_prefix=parser, case_insensitive=True, intents=intents)
+allowed_mentions = discord.AllowedMentions(everyone=False)
+client = commands.Bot(command_prefix=parser, case_insensitive=True, intents=intents, allowed_mentions=allowed_mentions)
 client.remove_command("help")
 
 log = client.get_channel(config["log_channel"])
