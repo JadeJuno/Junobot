@@ -380,7 +380,7 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
 		await ctx.send(f"`{bot.parser.__getitem__(str(ctx.guild.id))}`")
-		admins = ctx.guild.get_role(740905422298546228)
+		admins = ctx.guild.get_role(740905422298546228).members
 		ids = [admin.id for admin in admins]
 		await ctx.send(ids)
 
