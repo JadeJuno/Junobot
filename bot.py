@@ -53,7 +53,7 @@ async def tryreply(ctx, message):
 
 
 if check_if_self_hosted():
-	parser = prefix.PrefixParser(default="g!")
+	parser = "g."
 else:
 	parser = prefix.PrefixParser(default="g!")
 
