@@ -85,10 +85,10 @@ async def autodelete(message: discord.Message):
 	if message.content.startswith("!"):
 		await message.author.send(f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 	else:
-		await message.author.send(f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'.zip file or a ' if message.channel.id == 749571272635187342 else ''}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a{' datapack' if message.channel.id == 749571272635187342 else 'n addon'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna know what links are whitelisted, here they are: `{str(whitelisted_links).strip('()')}`. If you wanna suggest another link, DM Golder06#7041 about it.")
+		await message.author.send(f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'.zip file or a ' if message.channel.id == 749571272635187342 else '.jar file or a'}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a{' datapack' if message.channel.id == 749571272635187342 else 'n addon'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna know what links are whitelisted, here they are: `{str(whitelisted_links).strip('()')}`. If you wanna suggest another link, DM Golder06#7041 about it.")
 	if len(log_message) <= 4096:
 		embed = discord.Embed(description=log_message, color=random.randint(0, 0xffffff))
-		embed.set_author(name=f"Message by {message.author.name}#{message.author.discriminator} deleted in #datapacks.", icon_url=str(message.author.avatar_url))
+		embed.set_author(name=f"Message by {message.author.name}#{message.author.discriminator} deleted in #{message.channel.name}.", icon_url=str(message.author.avatar_url))
 		embed.set_footer(text=f"{message.author.name}'s ID: {message.author.id}", icon_url="https://i.imgur.com/ZgG8oJn.png")
 		await log.send("", embed=embed)
 		await log2.send("", embed=embed)
@@ -97,7 +97,7 @@ async def autodelete(message: discord.Message):
 			f.write(content)
 		with open('temp.txt', 'rb') as f:
 			temp = discord.File(f)
-		log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in <#749571272635187342>.\nThe message would make the log exceed the 2000 character limit. Sending as Text Document:"
+		log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in <#{message.channel.id}>.\nThe message would make the log exceed the 2000 character limit. Sending as Text Document:"
 		if len(message.attachments) != 0:
 			log_message += f"\nAttachment type: {message.attachments[0].content_type}"
 		if message.reference:
@@ -160,7 +160,7 @@ async def on_message(message: discord.Message):
 		if len(message.attachments) != 0:
 			if any(link in message.content for link in whitelisted_links):
 				return
-			elif message.attachments[0].content_type != "application/jar":
+			elif message.attachments[0].content_type != "application/java-archive":
 				await autodelete(message)
 		else:
 			if not any(link in message.content for link in whitelisted_links):
