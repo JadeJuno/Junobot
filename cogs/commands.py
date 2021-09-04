@@ -450,6 +450,18 @@ class Commands(commands.Cog):
 		except KeyError:
 			return
 
+	@commands.check(bot.is_in_origin_server)
+	@commands.command(aliases=("whitelisted", "whitelist"))
+	async def whitelistedlinks(self, ctx):
+		s = "\n".join(bot.whitelisted_links)
+		if ctx.channel.id == 843834879736283156:
+			await ctx.reply(f"Here are the whitelisted links: ```{s}```")
+		else:
+			try:
+				await ctx.author.send(f"Here are the whitelisted links: ```{s}```")
+			except discord.Forbidden:
+				await ctx.reply("Error: Due to the length of the list, it should be sent in DMs. So please enable DMs in this server or use this command in <#843834879736283156>.")
+
 
 def setup(client):
 	client.add_cog(Commands(client))

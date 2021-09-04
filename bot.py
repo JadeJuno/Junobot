@@ -85,7 +85,7 @@ async def autodelete(message: discord.Message):
 	if message.content.startswith("!"):
 		await message.author.send(f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 	else:
-		await message.author.send(f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'.zip file or a ' if message.channel.id == 749571272635187342 else '.jar file or a'}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a{' datapack' if message.channel.id == 749571272635187342 else 'n addon'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna know what links are whitelisted, here they are: `{str(whitelisted_links).strip('()')}`. If you wanna suggest another link, DM Golder06#7041 about it.")
+		await message.author.send(f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'.zip file or a ' if message.channel.id == 749571272635187342 else '.jar file or a '}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a{' datapack' if message.channel.id == 749571272635187342 else 'n addon'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `g!whitelisted`")
 	if len(log_message) <= 4096:
 		embed = discord.Embed(description=log_message, color=random.randint(0, 0xffffff))
 		embed.set_author(name=f"Message by {message.author.name}#{message.author.discriminator} deleted in #{message.channel.name}.", icon_url=str(message.author.avatar_url))
@@ -112,10 +112,7 @@ async def autodelete(message: discord.Message):
 
 @client.event
 async def on_message(message: discord.Message):
-	if message.author.id == 534418815027642368:
-		await discord.Message.delete(message, delay=0)
-		await message.author.send("Dear MrBeacon:\nFuck you.")
-	elif message.guild is None and not message.author.bot:
+	if message.guild is None and not message.author.bot:
 		modmail = False
 		for guild in message.author.mutual_guilds:
 			if guild.id == 734127708488859831:
