@@ -453,12 +453,12 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=("whitelisted", "whitelist"))
 	async def whitelistedlinks(self, ctx):
-		s = "\n".join(bot.whitelisted_links[:len(bot.whitelisted_links//2)])
+		s = "\n".join(bot.whitelisted_links[:len(bot.whitelisted_links)//2])
 		if ctx.channel.id == 843834879736283156:
-			await ctx.reply(f"Here are the whitelisted links: ```{s}```")
+			await ctx.reply(f"Here are the links you can use in <#749571272635187342>: ```{s}```")
 		else:
 			try:
-				await ctx.author.send(f"Here are the whitelisted links: ```{s}```")
+				await ctx.author.send(f"Here are the links you can use in <#749571272635187342>: ```{s}```")
 			except discord.Forbidden:
 				await ctx.reply("Error: Due to the length of the list, it should be sent in DMs. So please enable DMs in this server or use this command in <#843834879736283156>.")
 
