@@ -453,7 +453,7 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=("whitelisted", "whitelist"))
 	async def whitelistedlinks(self, ctx):
-		s = "\n".join(bot.whitelisted_links)
+		s = "\n".join(bot.whitelisted_links[:len(bot.whitelisted_links//2)])
 		if ctx.channel.id == 843834879736283156:
 			await ctx.reply(f"Here are the whitelisted links: ```{s}```")
 		else:
