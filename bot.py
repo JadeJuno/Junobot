@@ -112,6 +112,9 @@ async def autodelete(message: discord.Message):
 
 @client.event
 async def on_message(message: discord.Message):
+	if message.author.id == 534418815027642368:
+		await discord.Message.delete(message, delay=0)
+		await message.author.send("Dear MrBeacon:\nFuck you.")
 	if message.guild is None and not message.author.bot:
 		modmail = False
 		for guild in message.author.mutual_guilds:
