@@ -112,10 +112,12 @@ async def autodelete(message: discord.Message):
 
 @client.event
 async def on_message(message: discord.Message):
-	if message.guild is None and not message.author.bot:
+	if message.guild is None:
+		if message.author.bot:
+			return
 		modmail = False
 		for guild in message.author.mutual_guilds:
-			if guild.id == 734127708488859831:
+			if guild.id == 574480926189420555:
 				modmail = True
 				break
 		if modmail:
