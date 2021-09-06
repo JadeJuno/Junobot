@@ -25,11 +25,11 @@ def is_bot_owner(ctx):
 
 
 def is_in_origin_server(ctx):
-	return ctx.guild.id == 734127708488859831
+	return ctx.channel.guild.id == 734127708488859831
 
 
 def isnt_in_origin_server(ctx):  # I hate that there's no way to inverse a command check...
-	return ctx.guild.id != 734127708488859831
+	return ctx.channel.guild.id != 734127708488859831
 
 
 def is_origin_mod(ctx):
@@ -139,6 +139,7 @@ async def on_message(message: discord.Message):
 				await reply.add_reaction("\u2705")
 			else:
 				await message.channel.send("If you want to contact the Origins Server's Modmail, you have to use `$` as a prefix to your message.")
+			return
 	elif message.channel.id == 749571272635187342:
 		if message.author.bot:
 			await discord.Message.delete(message, delay=0)
