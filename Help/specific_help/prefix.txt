@@ -1,0 +1,9 @@
+**Description**
+Changes the server's prefix to the specified prefix *(if blank, it'll show the current server's prefix)*.
+
+**Permissions**
+*You need to have the `Manage Server` permission to change the server's prefix.*
+
+**Usage**
+`{prefix}prefix [prefix]`
+E.G.: `{prefix}prefix gg`

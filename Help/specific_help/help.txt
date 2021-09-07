@@ -1,0 +1,6 @@
+**Description**
+Shows a list of all the commands of the bot or the details of said commands.
+
+**Usage**
+`{prefix}help [command]`
+E.G.: `{preifx}help wikipedia`

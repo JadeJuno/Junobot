@@ -1,0 +1,8 @@
+**Description**
+Flip a coin and see if it lands on heads or tails.
+
+**Aliases**
+`{prefix}flip`, `{prefix}coinflip`, `{prefix}flipcoin`
+
+**Usage**
+`{prefix}flip`

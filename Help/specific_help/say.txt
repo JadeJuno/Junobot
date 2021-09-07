@@ -1,0 +1,6 @@
+**Description**
+Send a message with the text you wrote and deletes your message
+
+**Usage**
+`{prefix}say <Text>`
+E.G.: `{prefix}say Hi, my name is Gøldbot and I'm sentient.`

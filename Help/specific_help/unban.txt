@@ -1,0 +1,9 @@
+**Description**
+Unbans a specified user.
+
+**Permissions**
+*You need to have the `Ban Members` permission to use this command.*
+
+**Usage**
+`{prefix}unban <user#1234>`
+E.G.: `{prefix}unban KoganeSirnight#9389`

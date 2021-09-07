@@ -175,9 +175,9 @@ async def on_message(message: discord.Message):
 					await client.process_commands(message)
 					return
 				if message.channel.id == 843834879736283156:
-					await message.reply(f"This Goldbot commands have been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1,10))[0]}")
+					await message.reply(f"This Goldbot commands has been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1,10))[0]}")
 				else:
-					await message.reply("This Goldbot command have been disabled in this server.")
+					await message.reply("This Goldbot command has been disabled in this server.")
 		else:
 			await client.process_commands(message)
 

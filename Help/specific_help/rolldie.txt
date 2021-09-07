@@ -1,0 +1,9 @@
+**Description**
+Roll a die with X number of faces *(6 by default)*.
+
+**Aliases**
+`{prefix}roll`, `{prefix}dieroll`, `{prefix}rolldie`
+
+**Usage**
+`{prefix}rolldie [number of sides]`
+E.G.: `{prefix}rolldie 20`

@@ -1,0 +1,6 @@
+**Description**
+Searches a Wikipedia page with your search request.
+
+**Usage**
+`{prefix}wikipedia <search request>`
+E.G.: `{prefix}wikipedia gold`

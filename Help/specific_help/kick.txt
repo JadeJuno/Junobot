@@ -1,0 +1,9 @@
+**Description**
+Kicks a mentioned user.
+
+**Permissions**
+*You need to have the `Kick Members` permission to use this command.*
+
+**Usage**
+`{prefix}kick <@user#1234> [reason]`
+E.G.: `{prefix}kick @KoganeSirnight#9389 Identity Theft`
