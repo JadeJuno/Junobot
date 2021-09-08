@@ -95,6 +95,7 @@ async def autodelete(message: discord.Message):
 	except discord.errors.Forbidden:
 		print("forbidden")
 		pass
+	print("Passed")
 	if len(log_message) <= 4096:
 		embed = discord.Embed(description=log_message, color=random.randint(0, 0xffffff))
 		embed.set_author(
