@@ -1,6 +1,8 @@
 import asyncio
+import io
 import os
 import random
+import zipfile
 
 import discord
 from discord.ext import commands
@@ -12,7 +14,8 @@ config = parse_config("./config.toml")
 
 origin_commands = ("datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help")
 
-whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/", "https://docs.google.com/", "https://curseforge.com/"]
+whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/",
+					 "https://docs.google.com/", "https://curseforge.com/"]
 temp_white = whitelisted_links[:]
 for _link in temp_white:
 	whitelisted_links.append(_link.replace("://", "://www."))
@@ -83,13 +86,18 @@ async def autodelete(message: discord.Message):
 		log_message += f"\nReferenced Message: {message.reference.jump_url}"
 	await discord.Message.delete(message, delay=0)
 	if message.content.startswith("!"):
-		await message.author.send(f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
+		await message.author.send(
+			f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 	else:
-		await message.author.send(f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'.zip file or a ' if message.channel.id == 749571272635187342 else '.jar file or a '}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a{' datapack' if message.channel.id == 749571272635187342 else 'n addon'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `g!whitelisted`")
+		await message.author.send(
+			f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'.zip file or a ' if message.channel.id == 749571272635187342 else '.jar file or a '}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a{' datapack' if message.channel.id == 749571272635187342 else 'n addon'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `g!whitelisted`")
 	if len(log_message) <= 4096:
 		embed = discord.Embed(description=log_message, color=random.randint(0, 0xffffff))
-		embed.set_author(name=f"Message by {message.author.name}#{message.author.discriminator} deleted in #{message.channel.name}.", icon_url=str(message.author.avatar_url))
-		embed.set_footer(text=f"{message.author.name}'s ID: {message.author.id}", icon_url="https://i.imgur.com/ZgG8oJn.png")
+		embed.set_author(
+			name=f"Message by {message.author.name}#{message.author.discriminator} deleted in #{message.channel.name}.",
+			icon_url=str(message.author.avatar_url))
+		embed.set_footer(text=f"{message.author.name}'s ID: {message.author.id}",
+						 icon_url="https://i.imgur.com/ZgG8oJn.png")
 		await log.send("", embed=embed)
 		await log2.send("", embed=embed)
 	else:
@@ -140,7 +148,8 @@ async def on_message(message: discord.Message):
 				await message.channel.send(f"{reply.content}")
 				await reply.add_reaction("\u2705")
 			else:
-				await message.channel.send("If you want to contact the Origins Server's Modmail, you have to use `$` as a prefix to your message.")
+				await message.channel.send(
+					"If you want to contact the Origins Server's Modmail, you have to use `$` as a prefix to your message.")
 			return
 	elif message.channel.id == 749571272635187342:
 		if message.author.bot:
@@ -151,7 +160,10 @@ async def on_message(message: discord.Message):
 			if any(link in message.content for link in whitelisted_links):
 				return
 			elif message.attachments[0].content_type != "application/zip":
-				await autodelete(message)
+				url = message.attachments[0].read()
+				zip_from_bytes = zipfile.ZipFile(io.BytesIO(url), "r")
+				if "pack.mcmeta" not in zip_from_bytes.namelist():
+					await autodelete(message)
 		else:
 			if not any(link in message.content for link in whitelisted_links):
 				await autodelete(message)
@@ -175,7 +187,8 @@ async def on_message(message: discord.Message):
 					await client.process_commands(message)
 					return
 				if message.channel.id == 843834879736283156:
-					await message.reply(f"This Goldbot commands has been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1,10))[0]}")
+					await message.reply(
+						f"This Goldbot commands has been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1, 10))[0]}")
 				else:
 					await message.reply("This Goldbot command has been disabled in this server.")
 		else:
@@ -245,8 +258,11 @@ async def _help(ctx, command=None):
 		with open("help_texts/origin_help.txt", "r", encoding='utf-8') as file:
 			help_text = file.read()
 		footer = "\n<>=Necessary, []=optional.\nGøldbot was created by Golder06#7041."
-		shameless_promotion = random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1, 10))[0]
-		embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix, shameless_promotion=shameless_promotion), footer, add_def_footer=False)
+		shameless_promotion = random.choices((
+			'~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~',
+			''), (1, 10))[0]
+		embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix, shameless_promotion=shameless_promotion),
+							   footer, add_def_footer=False)
 	await ctx.send(embed=embed)
 
 
@@ -265,6 +281,7 @@ async def prefix(ctx, new_prefix=None):
 					await ctx.send(f"Prefix changed to `{new_prefix}`!")
 			else:
 				raise commands.MissingPermissions(missing_perms=('administrator',))
+
 
 if __name__ == "__main__":
 	for filename in os.listdir('./cogs'):
