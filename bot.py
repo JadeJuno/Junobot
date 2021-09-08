@@ -164,12 +164,14 @@ async def on_message(message: discord.Message):
 		if len(message.attachments) != 0:
 			if any(link in message.content for link in whitelisted_links):
 				return
-			elif message.attachments[0].content_type != "application/zip":
+			elif message.attachments[0].content_type == 'application/zip':
 				url = message.attachments[0].read()
 				zip_from_bytes = zipfile.ZipFile(io.BytesIO(url), "r")
 				print(zip_from_bytes.namelist())
 				if "pack.mcmeta" not in zip_from_bytes.namelist():
 					await autodelete(message)
+			else:
+				await autodelete(message)
 		else:
 			if not any(link in message.content for link in whitelisted_links):
 				await autodelete(message)
