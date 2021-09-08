@@ -82,12 +82,12 @@ async def autodelete(message: discord.Message):
 	log_message = f"**Message:** \n\n> {content}\n\nAttachment List Length: {len(message.attachments)}"
 	if len(message.attachments) != 0:
 		log_message += f"\nAttachment type: {message.attachments[0].content_type}"
+		if message.attachments[0].content_type == 'application/zip':
+			url = await message.attachments[0].read()
+			zip_from_bytes = zipfile.ZipFile(io.BytesIO(url), "r")
+			log_message += f"\n`pack.mcmeta` in zip: {'pack.mcmeta' in zip_from_bytes.namelist()}"
 	if message.reference:
 		log_message += f"\nReferenced Message: {message.reference.jump_url}"
-	if message.attachments[0].content_type == 'application/zip':
-		url = await message.attachments[0].read()
-		zip_from_bytes = zipfile.ZipFile(io.BytesIO(url), "r")
-		log_message += f"\n`pack.mcmeta` in zip: {'pack.mcmeta' in zip_from_bytes.namelist()}"
 	await discord.Message.delete(message, delay=0)
 	try:
 		if message.content.startswith("!"):
