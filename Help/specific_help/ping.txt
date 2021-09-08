@@ -1,5 +1,0 @@
-**Description**
-Sends "Pong!" and the latency of the bot.
-
-**Usage**
-`{prefix}ping`

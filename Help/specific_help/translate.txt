@@ -1,6 +1,0 @@
-**Description**
-Translates a sentence surrounded by quotation marks.
-
-**Usage**
-`{prefix}translate "<sentence>" [destination language] [source language]`
-E.G.: `{prefix}translate "Hola, ¿como estás?" japanese spanish`

@@ -1,9 +1,0 @@
-**Description**
-Make a quick Google Search from Discord because you're too lazy to open your browser.
-
-**Aliases**
-`{prefix}google`, `{prefix}googleit`, `{prefix}googlesearch`
-
-**Usage**
-`{prefix}googleit <search>`
-E.G.: `{prefix}googleit How to Google Search from Discord`
