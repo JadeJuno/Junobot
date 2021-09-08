@@ -85,12 +85,15 @@ async def autodelete(message: discord.Message):
 	if message.reference:
 		log_message += f"\nReferenced Message: {message.reference.jump_url}"
 	await discord.Message.delete(message, delay=0)
-	if message.content.startswith("!"):
-		await message.author.send(
-			f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
-	else:
-		await message.author.send(
-			f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'.zip file or a ' if message.channel.id == 749571272635187342 else '.jar file or a '}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a{' datapack' if message.channel.id == 749571272635187342 else 'n addon'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `g!whitelisted`")
+	try:
+		if message.content.startswith("!"):
+			await message.author.send(
+				f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
+		else:
+			await message.author.send(
+				f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'.zip file or a ' if message.channel.id == 749571272635187342 else '.jar file or a '}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a{' datapack' if message.channel.id == 749571272635187342 else 'n addon'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `g!whitelisted`")
+	except discord.errors.Forbidden:
+		pass
 	if len(log_message) <= 4096:
 		embed = discord.Embed(description=log_message, color=random.randint(0, 0xffffff))
 		embed.set_author(
