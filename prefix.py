@@ -10,6 +10,7 @@ class PrefixParser:
         self.prefixes = self.db.get_all()
 
     def __getitem__(self, i):
+        i = str(i)
         try:
             return self.prefixes[i]
         except KeyError:
