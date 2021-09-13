@@ -12,7 +12,9 @@ from config import parse_config
 
 config = parse_config("./config.toml")
 
-origin_commands = ("datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help", "whitelisted", "whitelist", "whitelistedlinks")
+origin_commands = (
+	"datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help", "whitelisted", "whitelist",
+	"whitelistedlinks")
 
 whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/",
 					 "https://docs.google.com/", "https://curseforge.com/"]

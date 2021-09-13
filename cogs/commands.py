@@ -56,7 +56,8 @@ class Commands(commands.Cog):
 
 		def check(reaction_checked, reaction_user):
 			user_check = reaction_user.id == ctx.author.id or reaction_user.guild_permissions.administrator and ctx.author.bot
-			return user_check and reaction_checked.message == check_message and str(reaction_checked.emoji) in ("\U00002705", "\U0000274c")
+			return user_check and reaction_checked.message == check_message and str(reaction_checked.emoji) in (
+				"\U00002705", "\U0000274c")
 
 		reaction, user = await self.client.wait_for('reaction_add', check=check)
 		if str(reaction.emoji) == "\U00002705":
@@ -195,14 +196,15 @@ class Commands(commands.Cog):
 		if i == 1:
 			output_str = "**No results found.**"
 		embed = bot.embed_template(ctx, "Google", output_str[0:-1],
-							   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
+								   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
 
 	@commands.command(aliases=("detect", "language"))
 	async def lang_detect(self, ctx, *, user_message):
 		detected_lang = self.translator.detect(user_message).lang
 		if isinstance(detected_lang, list):
-			detected_lang = detected_lang[self.translator.detect(user_message).confidence.index(max(self.translator.detect(user_message).confidence))]
+			detected_lang = detected_lang[self.translator.detect(user_message).confidence.index(
+				max(self.translator.detect(user_message).confidence))]
 		await ctx.send(
 			f'"{user_message}" is in {languages.get(alpha2=detected_lang).name} (Certainty: `{int(max(self.translator.detect(user_message).confidence) * 100)}%`).')
 
@@ -406,7 +408,8 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def datapacks(self, ctx):
-		await bot.tryreply(ctx, 'If you want to find datapacks with custom origins, balance changes, and recipes for the Orb of Origin to use, check out <#749571272635187342>.\n\nTo install a datapack, navigate to your world folder (found in `.minecraft/saves`) and drop the datapack as a ZIP file into the `datapacks` folder. The same process can be used on a server (the world folder would be on the root though), and if you are running a server. the datapack does *not* need to be installed by each user.\n\nWhen creating a single-player world, there is also a "Data Packs" button in the world creation screen. If you click this, you are able to drag datapacks directly into the Minecraft window to add them. Don\'t forget to move them from "available" to "selected" though. This allows you to install datapacks *before* a world is generated!\n\nIf you are looking for information on how to create datapacks yourself, type `!wiki` or `!tutorial` in <#843834879736283156>.')
+		await bot.tryreply(ctx,
+						   'If you want to find datapacks with custom origins, balance changes, and recipes for the Orb of Origin to use, check out <#749571272635187342>.\n\nTo install a datapack, navigate to your world folder (found in `.minecraft/saves`) and drop the datapack as a ZIP file into the `datapacks` folder. The same process can be used on a server (the world folder would be on the root though), and if you are running a server. the datapack does *not* need to be installed by each user.\n\nWhen creating a single-player world, there is also a "Data Packs" button in the world creation screen. If you click this, you are able to drag datapacks directly into the Minecraft window to add them. Don\'t forget to move them from "available" to "selected" though. This allows you to install datapacks *before* a world is generated!\n\nIf you are looking for information on how to create datapacks yourself, type `!wiki` or `!tutorial` in <#843834879736283156>.')
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(name="<#843834879736283156>", aliases=('commands',))
@@ -414,18 +417,32 @@ class Commands(commands.Cog):
 		if ctx.channel.id != 843834879736283156:
 			serious = self.client.get_emoji(821796259333537813)
 			try:
-				await ctx.message.reference.resolved.reply(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
+				await ctx.message.reference.resolved.reply(
+					f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
 			except AttributeError:
-				await ctx.send(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
+				await ctx.send(
+					f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
 		else:
 			await ctx.reply("This message is already in <#843834879736283156>...")
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('rules',))
 	async def rule(self, ctx, rule_index: int):
-		rules = ("**Rule 1: Be nice to each other.**\nWe want this to be a welcoming place for everyone. Keep in mind that not everyone has the same knowledge, background and experience as you.", "**Rule 2: Keep it in English.**\nWe do not want to exclude others. But English is the language we all understand here, and the only language the moderator team can moderate. (This includes using the Latin alphabet as well, please don't use the Standard Galactic Alphabet or any other. :P)", "**Rule 3: Appropriate content.**\nThis is a server about the Origins mod for Fabric. Please keep talk about that. If you want to talk about something else, move to off-topic. However, even in that channel we feel like certain controversial and inappropriate topics are out of place. A non-exhaustive list of topics which do not belong on this server includes: politics, religion, violence, and sexual content. In the end though, it's the call of the moderator that is present to decide what is appropriate and what isn't.", "**Rule 4: Follow the Discord Terms of Service.**.\nDiscord does not allow talking about illegally distributed software, such as cracked Minecraft clients. Therefore we don't help with or want you to talk about cracked (non-premium) Minecraft clients and servers.", "**Rule 5: Check <#740658667161911296> before asking.**\nMany questions have already been answered in the <#740658667161911296> channel. Because of the large amount of new members, it is very time consuming to answer the same questions over and over and again. Therefore we would appreciate it if you could check that channel first and see if you can find a solution to your problem there.", "**Rule 6: Don't spam the advertisement channels.**\nPlease only advertise your server in <#749228091708014635>, and your content in <#809807082895048764>, once every 7 days. Depending on the server activity, this frequency might change in the future.", "**Rule 7: No transactions.**\nPlease do not offer or accept money or other forms of compensation for working on data packs or other content on this Discord. This is not the platform for this kind of transaction, and we won't take responsibility. Thus, we want you to keep that stuff out of this community.", "**Rule 8: Keep stuff that happened in other servers in those servers (or DMs).**\nWe can't confirm whether what you're saying actually happened the way you say it did. We can only moderate what happens in this Discord. Therefore we'd like to ask you to not take arguments or public accusations to this server, if someone for example behaved badly on your own Discord or Minecraft server. Similarly, if someone is misbehaving to you in DMs, report them to the Discord staff. It is not our duty (nor are we able to) to sort out your personal arguments. However, we will reserve the right to remove a server from the advertisement channels if the content of those servers seems inappropriate to us.", "**Rule 9: No Begging**\nDatapacks, addons, etc. are not easy to make, I think that we can all agree on that. So please, do not beg or ask other people to make something for you or anyone else. You can always do your best to learn yourself and then you have the ability to make whatever you may like! All we ask is that you don't beg others to make anything for anyone. (However, giving ideas in channels such as <#798545973554315304> is not the same as this. Spamming your idea in this channel is still breaking this rule.)", "**Rule 10: Keep your profile clean.**\nWhile your profile picture and custom status are part of your online identity and we don't want to restrict that, they are inherently public and visible to all users on this server. Thus we will ask you to change your profile picture or status (or nickname) if they break the Discord ToS or Community Guidelines. If you didn't change it after 24 hours, we will kick you and report your profile to the Discord staff.", "**Rule 11: Don't spam / Respect discussion.**\nThe point of this server is to help people with the Origins mod, talk about and discuss the base mod and datapacks, distribute datapacks so others can enjoy them, discuss the design of Origins, or build a friendly community in off-topic. Please be respectful with regards to other people's ongoing discussions. That does not mean that you are not allowed to talk to others while a discussion is going on - but purposefully interrupting them is not okay, and general spamming behavior is not tolerated.")
+		rules = (
+			"**Rule 1: Be nice to each other.**\nWe want this to be a welcoming place for everyone. Keep in mind that not everyone has the same knowledge, background and experience as you.",
+			"**Rule 2: Keep it in English.**\nWe do not want to exclude others. But English is the language we all understand here, and the only language the moderator team can moderate. (This includes using the Latin alphabet as well, please don't use the Standard Galactic Alphabet or any other. :P)",
+			"**Rule 3: Appropriate content.**\nThis is a server about the Origins mod for Fabric. Please keep talk about that. If you want to talk about something else, move to off-topic. However, even in that channel we feel like certain controversial and inappropriate topics are out of place. A non-exhaustive list of topics which do not belong on this server includes: politics, religion, violence, and sexual content. In the end though, it's the call of the moderator that is present to decide what is appropriate and what isn't.",
+			"**Rule 4: Follow the Discord Terms of Service.**.\nDiscord does not allow talking about illegally distributed software, such as cracked Minecraft clients. Therefore we don't help with or want you to talk about cracked (non-premium) Minecraft clients and servers.",
+			"**Rule 5: Check <#740658667161911296> before asking.**\nMany questions have already been answered in the <#740658667161911296> channel. Because of the large amount of new members, it is very time consuming to answer the same questions over and over and again. Therefore we would appreciate it if you could check that channel first and see if you can find a solution to your problem there.",
+			"**Rule 6: Don't spam the advertisement channels.**\nPlease only advertise your server in <#749228091708014635>, and your content in <#809807082895048764>, once every 7 days. Depending on the server activity, this frequency might change in the future.",
+			"**Rule 7: No transactions.**\nPlease do not offer or accept money or other forms of compensation for working on data packs or other content on this Discord. This is not the platform for this kind of transaction, and we won't take responsibility. Thus, we want you to keep that stuff out of this community.",
+			"**Rule 8: Keep stuff that happened in other servers in those servers (or DMs).**\nWe can't confirm whether what you're saying actually happened the way you say it did. We can only moderate what happens in this Discord. Therefore we'd like to ask you to not take arguments or public accusations to this server, if someone for example behaved badly on your own Discord or Minecraft server. Similarly, if someone is misbehaving to you in DMs, report them to the Discord staff. It is not our duty (nor are we able to) to sort out your personal arguments. However, we will reserve the right to remove a server from the advertisement channels if the content of those servers seems inappropriate to us.",
+			"**Rule 9: No Begging**\nDatapacks, addons, etc. are not easy to make, I think that we can all agree on that. So please, do not beg or ask other people to make something for you or anyone else. You can always do your best to learn yourself and then you have the ability to make whatever you may like! All we ask is that you don't beg others to make anything for anyone. (However, giving ideas in channels such as <#798545973554315304> is not the same as this. Spamming your idea in this channel is still breaking this rule.)",
+			"**Rule 10: Keep your profile clean.**\nWhile your profile picture and custom status are part of your online identity and we don't want to restrict that, they are inherently public and visible to all users on this server. Thus we will ask you to change your profile picture or status (or nickname) if they break the Discord ToS or Community Guidelines. If you didn't change it after 24 hours, we will kick you and report your profile to the Discord staff.",
+			"**Rule 11: Don't spam / Respect discussion.**\nThe point of this server is to help people with the Origins mod, talk about and discuss the base mod and datapacks, distribute datapacks so others can enjoy them, discuss the design of Origins, or build a friendly community in off-topic. Please be respectful with regards to other people's ongoing discussions. That does not mean that you are not allowed to talk to others while a discussion is going on - but purposefully interrupting them is not okay, and general spamming behavior is not tolerated."
+		)
 		try:
-			rule = rules[rule_index-1]
+			rule = rules[rule_index - 1]
 		except IndexError:
 			await ctx.send(f'Error: Rule "{rule_index}" does not exist.')
 			return
@@ -439,12 +456,18 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=("avd", "addonsvsdatapacks"))
 	async def addonvsdatapack(self, ctx):
-		await bot.tryreply(ctx, "When discussing datapacks and addons, it is important, for the sake of specificity, to understand the difference:\n\n**Addons**\nAddons are actual minecraft mods written in Java inside a .jar file\nThese add new features to the game and, in this case, the Origins Mod\nAdditionally, these are put into the `.minecraft/mods` folder\n\n**Datapacks**\nDatapacks are content packs that use existing features within minecraft\nThese are commonly written in JSON and using MCFunction files inside a zip folder\nAdditionally, these are localized to a specific minecraft world in the `.minecraft/saves/{worldname}/datapacks` folder\n\nMost Origins are Datapacks and can be located in #datapacks. Otherwise the origin may be an addon and can be found on curseforge.")
+		await bot.tryreply(ctx,
+						   "When discussing datapacks and addons, it is important, for the sake of specificity, to understand the difference:\n\n**Addons**\nAddons are actual minecraft mods written in Java inside a .jar file\nThese add new features to the game and, in this case, the Origins Mod\nAdditionally, these are put into the `.minecraft/mods` folder\n\n**Datapacks**\nDatapacks are content packs that use existing features within minecraft\nThese are commonly written in JSON and using MCFunction files inside a zip folder\nAdditionally, these are localized to a specific minecraft world in the `.minecraft/saves/{worldname}/datapacks` folder\n\nMost Origins are Datapacks and can be located in #datapacks. Otherwise the origin may be an addon and can be found on curseforge.")
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def channelonly(self, ctx, key=None):
-		replies = {825449766384828476: "This channel is only for posting powers that can be used by other people. For discussion about the powers listed in this channel, please go to <#802622603008409600>. If you need help related to the powers listed in here, please go to <#810587422303584286> or <#839141964519178240>", 798545973554315304: "This channel is only for posting ideas for an origin. For discussion about the origins listed in this channel, please go to <#802622603008409600> or make a thread.", 813795300691017798: "This channel is for posting media of your Origins only! If you wanted to comment on a video you found interesting, then please do so in <#756024207883894814> or <#802622603008409600>.", 734133482757816401: "This channel is only for posting suggestions for the Origins mod. If you want to suggest an idea for an origin, do so in <#798545973554315304>. If you wanna comment about a suggestion, create a thread for that.", 826144339041976321: "This channel is only for posting suggestions for the wiki of the Origins mod. If you want to suggest ideas for the Origins mod, do so in <#734133482757816401>. If you want to suggest an idea for an origin, do so in <#798545973554315304>."}
+		replies = {
+			825449766384828476: "This channel is only for posting powers that can be used by other people. For discussion about the powers listed in this channel, please go to <#802622603008409600>. If you need help related to the powers listed in here, please go to <#810587422303584286> or <#839141964519178240>",
+			798545973554315304: "This channel is only for posting ideas for an origin. For discussion about the origins listed in this channel, please go to <#802622603008409600> or make a thread.",
+			813795300691017798: "This channel is for posting media of your Origins only! If you wanted to comment on a video you found interesting, then please do so in <#756024207883894814> or <#802622603008409600>.",
+			734133482757816401: "This channel is only for posting suggestions for the Origins mod. If you want to suggest an idea for an origin, do so in <#798545973554315304>. If you wanna comment about a suggestion, create a thread for that.",
+			826144339041976321: "This channel is only for posting suggestions for the wiki of the Origins mod. If you want to suggest ideas for the Origins mod, do so in <#734133482757816401>. If you want to suggest an idea for an origin, do so in <#798545973554315304>."}
 		print(key)
 		print(type(key))
 		if key is None:
@@ -463,14 +486,15 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=("whitelisted", "whitelist"))
 	async def whitelistedlinks(self, ctx):
-		s = "\n".join(bot.whitelisted_links[:len(bot.whitelisted_links)//2])
+		s = "\n".join(bot.whitelisted_links[:len(bot.whitelisted_links) // 2])
 		if ctx.channel.id == 843834879736283156:
 			await ctx.reply(f"Here are the links you can use in <#749571272635187342>: ```{s}```")
 		else:
 			try:
 				await ctx.author.send(f"Here are the links you can use in <#749571272635187342>: ```{s}```")
 			except discord.Forbidden:
-				await ctx.reply("Error: Due to the length of the list, it should be sent in DMs. So please enable DMs in this server or use this command in <#843834879736283156>.")
+				await ctx.reply(
+					"Error: Due to the length of the list, it should be sent in DMs. So please enable DMs in this server or use this command in <#843834879736283156>.")
 
 
 def setup(client):
