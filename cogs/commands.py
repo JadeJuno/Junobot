@@ -473,21 +473,19 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=("avd", "addonsvsdatapacks"))
 	async def addonvsdatapack(self, ctx):
-		await bot.tryreply(ctx,
-						   """When discussing datapacks and addons, it is important, for the sake of specificity, to understand the difference:
-											   
-							**Addons**
-							Addons are actual minecraft mods written in Java inside a .jar file
-							These add new features to the game and, in this case, the Origins Mod
-							Additionally, these are put into the `.minecraft/mods` folder
-											   
-							**Datapacks**
-							Datapacks are content packs that use existing features within minecraft
-							These are commonly written in JSON and using MCFunction files inside a zip folder
-							Additionally, these are localized to a specific minecraft world in the `.minecraft/saves/{worldname}/datapacks` folder
-							
-							Most Origins are Datapacks and can be located in #datapacks. Otherwise the origin may be an addon and can be found on curseforge."""
-						   )
+		output = """When discussing datapacks and addons, it is important, for the sake of specificity, to understand the difference:
+**Addons**
+Addons are actual minecraft mods written in Java inside a .jar file
+These add new features to the game and, in this case, the Origins Mod
+Additionally, these are put into the `.minecraft/mods` folder
+
+**Datapacks**
+Datapacks are content packs that use existing features within minecraft
+These are commonly written in JSON and using MCFunction files inside a zip folder
+Additionally, these are localized to a specific minecraft world in the `.minecraft/saves/{worldname}/datapacks` folder
+
+Most Origins are Datapacks and can be located in #datapacks. Otherwise the origin may be an addon and can be found on curseforge."""
+		await bot.tryreply(ctx, output)
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command()
