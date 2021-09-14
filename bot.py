@@ -92,16 +92,15 @@ async def autodelete(message: discord.Message):
 		log_message += f"\nReferenced Message: {message.reference.jump_url}"
 	await discord.Message.delete(message, delay=0)
 	try:
-		if message.content.startswith("!"):
+		if message.content.startswith(("!", "?")):
 			await message.author.send(
 				f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 		else:
 			await message.author.send(
 				f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'''.zip file, the zip file was zipped incorrectly or it didn't include a ''' if message.channel.id == 749571272635187342 else '.jar file or a '}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a {'zip file' if message.channel.id == 749571272635187342 else 'jar file'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `g!whitelisted`")
+		log_message += "\nDM sent: True"
 	except discord.errors.Forbidden:
-		print("forbidden")
-		pass
-	print("Passed")
+		log_message += "\nDM sent: False"
 	if len(log_message) <= 4096:
 		embed = discord.Embed(description=log_message, color=random.randint(0, 0xffffff))
 		embed.set_author(
