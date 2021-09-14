@@ -367,7 +367,7 @@ class Commands(commands.Cog):
 			await ctx.send(f'{user.mention} is not banned.')
 
 	@commands.has_permissions(manage_nicknames=True)
-	@commands.command()
+	@commands.command(aliases=("rename",))
 	async def nickname(self, ctx, *, nickname):
 		await ctx.guild.me.edit(nick=nickname)
 		await ctx.send(f'Successfully changed my nickname to "{nickname}"')
