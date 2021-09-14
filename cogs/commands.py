@@ -435,7 +435,7 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('tias', 'try-it-and-see', 'tryit', 'try-it'))
 	async def tryitandsee(self, ctx):
-		await self.client.tryreply(ctx, "https://tryitands.ee")
+		await bot.tryreply(ctx, "https://tryitands.ee")
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('rules',))
@@ -510,6 +510,14 @@ class Commands(commands.Cog):
 			except discord.Forbidden:
 				await ctx.reply(
 					"Error: Due to the length of the list, it should be sent in DMs. So please enable DMs in this server or use this command in <#843834879736283156>.")
+
+	@commands.check(bot.is_in_origin_server)
+	@commands.command()
+	async def wiki(self, ctx, *, search=None):
+		if search is None:
+			await bot.tryreply(ctx, "The Origins wiki has most of the information you'll need to create your own datapacks: https://origins.readthedocs.io/en/latest/\n\nIt is recommended you'll check out the \"Helpful\" Links at the bottom of the wiki page. Especially the video tutorial by CandyCaneCazoo is likely going to help you out!")
+		else:
+			await bot.tryreply(ctx, f"https://origins.readthedocs.io/en/latest/search.html?q={search.replace(' ', '+')}")
 
 
 def setup(client):
