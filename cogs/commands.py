@@ -433,6 +433,11 @@ class Commands(commands.Cog):
 			await ctx.reply("This message is already in <#843834879736283156>...")
 
 	@commands.check(bot.is_in_origin_server)
+	@commands.command(aliases=('tias', 'try-it-and-see', 'tryit', 'try-it'))
+	async def tryitandsee(self, ctx):
+		await ctx.send("https://tryitands.ee")
+
+	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('rules',))
 	async def rule(self, ctx, rule_index: int):
 		if rule_index <= 0:
