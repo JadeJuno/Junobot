@@ -366,6 +366,12 @@ class Commands(commands.Cog):
 				return
 			await ctx.send(f'{user.mention} is not banned.')
 
+	@commands.has_permissions(manage_nicknames=True)
+	@commands.command()
+	async def nickname(self, ctx, *, nickname):
+		await ctx.guild.me.edit(nick=nickname)
+		await ctx.send(f'Successfully changed my nickname to "{nickname}"')
+
 	@commands.check(bot.is_bot_owner)
 	@commands.command()
 	async def test(self, ctx):
@@ -393,11 +399,6 @@ class Commands(commands.Cog):
 	async def format(self, ctx):
 		if ctx.message.reference:
 			await ctx.send(f"```\n{ctx.message.reference.resolved.content.replace('> ', '')}```")
-
-	@commands.check(bot.is_bot_owner)
-	@commands.command()
-	async def rawsay(self, ctx, *, message):
-		await ctx.send(message)
 
 	@commands.check(bot.is_origin_mod)
 	@commands.command()
