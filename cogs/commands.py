@@ -435,7 +435,7 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('tias', 'try-it-and-see', 'tryit', 'try-it'))
 	async def tryitandsee(self, ctx):
-		await ctx.send("https://tryitands.ee")
+		await self.client.tryreply(ctx, "https://tryitands.ee")
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('rules',))
