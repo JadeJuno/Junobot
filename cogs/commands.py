@@ -434,6 +434,9 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('rules',))
 	async def rule(self, ctx, rule_index: int):
+		if rule_index <= 0:
+			await ctx.send(f'Error: Rule {rule_index} does not exist.')
+			return
 		rules = (
 			"**Rule 1: Be nice to each other.**\nWe want this to be a welcoming place for everyone. Keep in mind that not everyone has the same knowledge, background and experience as you.",
 			"**Rule 2: Keep it in English.**\nWe do not want to exclude others. But English is the language we all understand here, and the only language the moderator team can moderate. (This includes using the Latin alphabet as well, please don't use the Standard Galactic Alphabet or any other. :P)",
