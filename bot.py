@@ -14,7 +14,7 @@ config = parse_config("./config.toml")
 
 origin_commands = (
 	"datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help", "whitelisted", "whitelist",
-	"whitelistedlinks")
+	"whitelistedlinks", 'transbee', 'wiki', 'channelonly', 'avd', "addonsvsdatapacks", 'addonvsdatapack', 'tias', 'try-it-and-see', 'tryit', 'try-it', 'tryitandsee')
 
 whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/",
 					 "https://docs.google.com/", "https://curseforge.com/"]
