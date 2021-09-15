@@ -3,7 +3,9 @@
 `{prefix}rule <rule index>` - Shows the specified rule
 `{prefix}help` - Shows this message (what did you expect?).
 `{prefix}avd` - Short for "addonvsdatapack", it shows the difference between addons and datapacks.
-`{prefix}channelonly` - Shows a description of what you can and can't send on certain channels
+`{prefix}channelonly` - Shows a description of what you can and can't send on certain channels.
+`{prefix}tias` - Short for "try it and see", shows a gif telling people to try things for themselves instead of asking if it'd work.
+`{prefix}wiki [search]` - Sends the link for the wiki or "searches a search" *~~(I have such a way with words)~~* for you.
 
 
 For anti-spam reasons, all normal Goldbot commands have been disabled on this server{shameless_promotion}.
