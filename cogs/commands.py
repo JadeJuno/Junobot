@@ -501,6 +501,7 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def transbee(self, ctx):
+		print("Transbee")
 		await ctx.send("https://images-ext-2.discordapp.net/external/ak_l1cuKUfVU-MUEGo57iF5_ELEZKbHFkdKUmpW1dEE/https/media.discordapp.net/attachments/756024207883894814/887514851356835880/886660055439650897.png")
 
 	@commands.check(bot.is_in_origin_server)
