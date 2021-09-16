@@ -170,6 +170,9 @@ class Commands(commands.Cog):
 		if not channel.permissions_for(ctx.author).send_messages:
 			await ctx.send(f"Error: You don't have permissions to talk in {channel.mention}")
 			return
+		if channel.guild.id != ctx.guild.id:
+			await ctx.send(f"Error: {channel.mention} is not in {ctx.guild.name}")
+			return
 		if message.lower().startswith("i am") or message.lower().startswith("i'm"):
 			if "stupid" in message.lower():
 				message = f"{ctx.author.mention} is stupid."
