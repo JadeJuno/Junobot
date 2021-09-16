@@ -410,13 +410,7 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def datapacks(self, ctx):
 		await bot.tryreply(ctx,
-						   '''If you want to find datapacks with custom origins, balance changes, and recipes for the Orb of Origin to use, check out <#749571272635187342>.
-						   
-						   To install a datapack, navigate to your world folder (found in `.minecraft/saves`) and drop the datapack as a ZIP file into the `datapacks` folder. The same process can be used on a server (the world folder would be on the root though), and if you are running a server. the datapack does *not* need to be installed by each user.
-						   
-						   When creating a single-player world, there is also a "Data Packs" button in the world creation screen. If you click this, you are able to drag datapacks directly into the Minecraft window to add them. Don\'t forget to move them from "available" to "selected" though. This allows you to install datapacks *before* a world is generated!
-						   
-						   If you are looking for information on how to create datapacks yourself, type `!wiki` or `!tutorial` in <#843834879736283156>.''')
+						   'If you want to find datapacks with custom origins, balance changes, and recipes for the Orb of Origin to use, check out <#749571272635187342>.\n\nTo install a datapack, navigate to your world folder (found in `.minecraft/saves`) and drop the datapack as a ZIP file into the `datapacks` folder. The same process can be used on a server (the world folder would be on the root though), and if you are running a server. the datapack does *not* need to be installed by each user.\n\nWhen creating a single-player world, there is also a "Data Packs" button in the world creation screen. If you click this, you are able to drag datapacks directly into the Minecraft window to add them. Don\'t forget to move them from "available" to "selected" though. This allows you to install datapacks *before* a world is generated!\n\nIf you are looking for information on how to create datapacks yourself, type `!wiki` or `!tutorial` in <#843834879736283156>.')
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(name="<#843834879736283156>", aliases=('commands',))
