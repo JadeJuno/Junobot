@@ -194,14 +194,14 @@ async def on_message(message: discord.Message):
 				await autodelete(message)
 	else:
 		if is_in_origin_server(message) and not is_origin_mod(message):
-			prefix = parser.__getitem__(message.channel.guild.id)
-			if message.content.startswith(prefix):
-				if message.content.lstrip(prefix).startswith(origin_commands):
+			g_prefix = parser.__getitem__(message.channel.guild.id)
+			if message.content.startswith(g_prefix):
+				if message.content.lstrip(g_prefix).startswith(origin_commands):
 					await client.process_commands(message)
 					return
 				non_origin_commands = [cmd[:-4] for cmd in os.listdir("help_texts/specific_help")]
 				non_origin_commands.remove("help")
-				if message.content.lstrip(prefix).startswith(tuple(non_origin_commands)):
+				if message.content.lstrip(g_prefix).startswith(tuple(non_origin_commands)):
 					if message.channel.id == 843834879736283156:
 						await message.reply(
 							f"This Goldbot commands has been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1, 10))[0]}")

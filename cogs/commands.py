@@ -401,7 +401,10 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def format(self, ctx):
 		if ctx.message.reference:
-			await ctx.send(f"```\n{ctx.message.reference.resolved.content.replace('> ', '')}```")
+			if len(ctx.message.reference.resolved.embeds) == 0:
+				await ctx.send(f"```\n{ctx.message.reference.resolved.content.replace('> ', '')}```")
+			else:
+				await ctx.send(f"```\n{ctx.message.reference.resolved.embeds[0].description.replace('> ', '')}```")
 
 	@commands.check(bot.is_origin_mod)
 	@commands.command()
