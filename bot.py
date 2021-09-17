@@ -97,7 +97,7 @@ async def autodelete(message: discord.Message):
 				f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 		else:
 			await message.author.send(
-				f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'''.zip file, the zip file was zipped incorrectly or it didn't include a ''' if message.channel.id == 749571272635187342 else '.jar file or a '}whitelisted link.\n\nPD: If your message got deleted yet you had a link or a {'zip file' if message.channel.id == 749571272635187342 else 'jar file'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `g!whitelisted`")
+				f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'''.zip file, the zip file was zipped incorrectly or it didn't include a''' if message.channel.id == 749571272635187342 else '.jar file or a'} whitelisted link.\n\nPD: If your message got deleted yet you had a link or a {'zip file' if message.channel.id == 749571272635187342 else 'jar file'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `?whitelisted`\nPD3: Before you DM me asking why your message got deleted how to zip your file correctly, go use `!zip-pack` on the server.")
 		log_message += "\nDM sent: True"
 	except discord.errors.Forbidden:
 		log_message += "\nDM sent: False"
