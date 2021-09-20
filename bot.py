@@ -161,7 +161,7 @@ async def on_message(message: discord.Message):
 				await message.channel.send(
 					"If you want to contact the Origins Server's Modmail, you have to use `$` as a prefix to your message.")
 			return
-	elif message.channel.id == 749571272635187342:
+	if message.channel.id == 749571272635187342:
 		if message.author.bot:
 			await discord.Message.delete(message, delay=0)
 		if is_origin_mod(message):
@@ -179,6 +179,9 @@ async def on_message(message: discord.Message):
 		else:
 			if not any(link in message.content for link in whitelisted_links):
 				await autodelete(message)
+	if message.guild.id == 734127708488859831 and "@everyone" in message.content:
+		await discord.Message.delete(message, delay=0)
+		await message.author.message("Please don't try to ping everyone. It doesn't work and it's annoying.")
 	elif message.channel.id == 848428304003366912:
 		if message.author.bot:
 			await discord.Message.delete(message, delay=0)
