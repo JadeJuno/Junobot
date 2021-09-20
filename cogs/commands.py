@@ -483,18 +483,14 @@ class Commands(commands.Cog):
 			813795300691017798: "This channel is for posting media of your Origins only! If you wanted to comment on a video you found interesting, then please do so in <#756024207883894814> or <#802622603008409600>.",
 			734133482757816401: "This channel is only for posting suggestions for the Origins mod. If you want to suggest an idea for an origin, do so in <#798545973554315304>. If you wanna comment about a suggestion, create a thread for that.",
 			826144339041976321: "This channel is only for posting suggestions for the wiki of the Origins mod. If you want to suggest ideas for the Origins mod, do so in <#734133482757816401>. If you want to suggest an idea for an origin, do so in <#798545973554315304>."}
-		print(key)
-		print(type(key))
-		if key is None:
+		if key is not None and ctx.channel.id not in replies.keys():
 			try:
-				await bot.tryreply(ctx, replies[ctx.channel.id])
+				await bot.tryreply(ctx, replies[key])
 			except KeyError:
 				return
 		else:
-			key = int(key)
-			print(key)
 			try:
-				await bot.tryreply(ctx, replies[key])
+				await bot.tryreply(ctx, replies[ctx.channel.id])
 			except KeyError:
 				return
 
