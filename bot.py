@@ -181,7 +181,7 @@ async def on_message(message: discord.Message):
 				await autodelete(message)
 	if message.guild.id == 734127708488859831 and ("@everyone" in message.content or "@here" in message.content):
 		await discord.Message.delete(message, delay=0)
-		await message.author.message("Please don't try to ping everyone. It doesn't work and it's annoying.")
+		await message.author.send("Please don't try to ping everyone. It doesn't work and it's annoying.")
 	if message.channel.id == 848428304003366912:
 		if message.author.bot:
 			await discord.Message.delete(message, delay=0)
