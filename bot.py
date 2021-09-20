@@ -182,7 +182,7 @@ async def on_message(message: discord.Message):
 	if message.guild.id == 734127708488859831 and "@everyone" in message.content:
 		await discord.Message.delete(message, delay=0)
 		await message.author.message("Please don't try to ping everyone. It doesn't work and it's annoying.")
-	elif message.channel.id == 848428304003366912:
+	if message.channel.id == 848428304003366912:
 		if message.author.bot:
 			await discord.Message.delete(message, delay=0)
 		if is_origin_mod(message):
