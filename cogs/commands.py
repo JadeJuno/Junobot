@@ -326,6 +326,10 @@ class Commands(commands.Cog):
 			await messages[0].pin()
 
 	@commands.command()
+	async def invite(self, ctx):
+		await ctx.send("Here's the invite link for Goldbot:\nhttps://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot")
+
+	@commands.command()
 	async def binary(self, ctx, encode_decode: str, *, sentence):
 		if encode_decode.lower() == "encode":
 			s = ''.join(format(ord(i), '08b') for x, i in enumerate(sentence))
