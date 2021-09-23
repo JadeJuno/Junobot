@@ -501,6 +501,11 @@ class Commands(commands.Cog):
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command()
+	async def bibee(self, ctx):
+		await ctx.send("https://media.discordapp.net/attachments/756024207883894814/890433750259892254/image0.png?width=556&height=473")
+
+	@commands.check(bot.is_in_origin_server)
+	@commands.command()
 	async def transratkid(self, ctx):
 		await ctx.send("https://images-ext-2.discordapp.net/external/dUqp-ElVCnlnw5w99kvaGmSM1Nc7j_pWBmvSAGC9Jjo/%3Fv%3D1/https/cdn.discordapp.com/emojis/858713027355607072.gif")
 
