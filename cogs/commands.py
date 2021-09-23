@@ -506,7 +506,7 @@ class Commands(commands.Cog):
 	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def bibee(self, ctx):
-		await ctx.send("https://media.discordapp.net/attachments/756024207883894814/890433750259892254/image0.png?width=556&height=473")
+		await ctx.send("https://media.discordapp.net/attachments/756024207883894814/890437677399294022/890437598634455071.png")
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command()
