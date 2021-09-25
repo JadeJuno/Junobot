@@ -57,10 +57,7 @@ async def tryreply(ctx, message):
 		await ctx.send(message)
 
 
-if check_if_self_hosted():
-	parser = "g."
-else:
-	parser = prefix.PrefixParser(default="g!")
+parser = prefix.PrefixParser(default="g!")
 
 intents = discord.Intents.all()
 allowed_mentions = discord.AllowedMentions(everyone=False)
