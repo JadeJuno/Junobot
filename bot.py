@@ -65,18 +65,16 @@ client = commands.Bot(command_prefix=parser, case_insensitive=True, intents=inte
 client.remove_command("help")
 
 log = client.get_channel(config["log_channel"])
-log2 = client.get_channel(838025060983767051)
 
 
 @client.event
 async def on_ready():
 	global log
-	global log2
 	log = client.get_channel(config["log_channel"])
-	log2 = client.get_channel(838025060983767051)
 
 
 async def autodelete(message: discord.Message):
+	origin_log = client.get_channel(838025060983767051)
 	content = message.content
 	log_message = f"**Message:** \n\n> {content}\n\nAttachment List Length: {len(message.attachments)}"
 	if len(message.attachments) != 0:
@@ -106,7 +104,7 @@ async def autodelete(message: discord.Message):
 		embed.set_footer(text=f"{message.author.name}'s ID: {message.author.id}",
 						 icon_url="https://i.imgur.com/ZgG8oJn.png")
 		await log.send("", embed=embed)
-		await log2.send("", embed=embed)
+		await origin_log.send("", embed=embed)
 	else:
 		with open('temp.txt', 'w') as f:
 			f.write(content)
@@ -120,7 +118,7 @@ async def autodelete(message: discord.Message):
 		await log.send(log_message, file=temp)
 		with open('temp.txt', 'rb') as f:
 			temp = discord.File(f)
-		await log2.send(log_message, file=temp)
+		await origin_log.send(log_message, file=temp)
 		await asyncio.sleep(1)
 		os.remove('temp.txt')
 
