@@ -156,57 +156,66 @@ async def on_message(message: discord.Message):
 				await message.channel.send(
 					"If you want to contact the Origins Server's Modmail, you have to use `$` as a prefix to your message.")
 			return
-	if message.channel.id == 749571272635187342:
-		if message.author.bot:
-			await discord.Message.delete(message, delay=0)
-		if is_origin_mod(message):
-			pass
-		if len(message.attachments) != 0:
-			if any(link in message.content for link in whitelisted_links):
-				return
-			elif message.attachments[0].content_type == 'application/zip':
-				url = await message.attachments[0].read()
-				zip_from_bytes = zipfile.ZipFile(io.BytesIO(url), "r")
-				if "pack.mcmeta" not in zip_from_bytes.namelist():
-					await autodelete(message)
-			else:
-				await autodelete(message)
-		else:
-			if not any(link in message.content for link in whitelisted_links):
-				await autodelete(message)
-	if message.guild.id == 734127708488859831 and ("@everyone" in message.content or "@here" in message.content):
-		await discord.Message.delete(message, delay=0)
-		await message.author.send("Please don't try to ping everyone. It doesn't work and it's annoying.")
-	if message.channel.id == 848428304003366912:
-		if message.author.bot:
-			await discord.Message.delete(message, delay=0)
-		if is_origin_mod(message):
-			pass
-		if len(message.attachments) != 0:
-			if any(link in message.content for link in whitelisted_links):
-				return
-			elif message.attachments[0].content_type != "application/java-archive":
-				await autodelete(message)
-		else:
-			if not any(link in message.content for link in whitelisted_links):
-				await autodelete(message)
-	else:
-		if is_in_origin_server(message) and not is_origin_mod(message):
-			g_prefix = parser.__getitem__(message.channel.guild.id)
-			if message.content.startswith(g_prefix):
-				if message.content.lstrip(g_prefix).startswith(origin_commands):
-					await client.process_commands(message)
+	elif is_in_origin_server(message):
+		# Datapack check
+		if message.channel.id == 749571272635187342:
+			if message.author.bot:
+				await discord.Message.delete(message, delay=0)
+			if is_origin_mod(message):
+				pass
+			if len(message.attachments) != 0:
+				if any(link in message.content for link in whitelisted_links):
 					return
-				non_origin_commands = [cmd[:-4] for cmd in os.listdir("help_texts/specific_help")]
-				non_origin_commands.remove("help")
-				if message.content.lstrip(g_prefix).startswith(tuple(non_origin_commands)):
-					if message.channel.id == 843834879736283156:
-						await message.reply(
-							f"This Goldbot commands has been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1, 10))[0]}")
-					else:
-						await message.reply("This Goldbot command has been disabled in this server.")
+				elif message.attachments[0].content_type == 'application/zip':
+					url = await message.attachments[0].read()
+					zip_from_bytes = zipfile.ZipFile(io.BytesIO(url), "r")
+					if "pack.mcmeta" not in zip_from_bytes.namelist():
+						await autodelete(message)
+						return
+				else:
+					await autodelete(message)
+					return
+			else:
+				if not any(link in message.content for link in whitelisted_links):
+					await autodelete(message)
+					return
+		elif message.channel.id == 848428304003366912:
+			if message.author.bot:
+				await discord.Message.delete(message, delay=0)
+			if is_origin_mod(message):
+				pass
+			if len(message.attachments) != 0:
+				if any(link in message.content for link in whitelisted_links):
+					return
+				elif message.attachments[0].content_type != "application/java-archive":
+					await autodelete(message)
+					return
+			else:
+				if not any(link in message.content for link in whitelisted_links):
+					await autodelete(message)
+					return
+		elif message.guild.id == 734127708488859831 and ("@everyone" in message.content or "@here" in message.content):
+			await discord.Message.delete(message, delay=0)
+			await message.author.send("Please don't try to ping everyone. It doesn't work and it's annoying.")
 		else:
-			await client.process_commands(message)
+			if not is_origin_mod(message):
+				g_prefix = parser.__getitem__(message.channel.guild.id)
+				if message.content.startswith(g_prefix):
+					if message.content.lstrip(g_prefix).startswith(origin_commands):
+						await client.process_commands(message)
+						return
+					non_origin_commands = [cmd[:-4] for cmd in os.listdir("help_texts/specific_help")]
+					non_origin_commands.remove("help")
+					if message.content.lstrip(g_prefix).startswith(tuple(non_origin_commands)):
+						if message.channel.id == 843834879736283156:
+							await message.reply(
+								f"This Goldbot commands has been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1, 10))[0]}")
+						else:
+							await message.reply("This Goldbot command has been disabled in this server.")
+			else:
+				await client.process_commands(message)
+	else:
+		await client.process_commands(message)
 
 
 def embed_template(ctx, title=None, description=None, footer="", add_def_footer=True, image: str = "", icon: str = ""):
@@ -302,5 +311,8 @@ if __name__ == "__main__":
 		if filename.endswith('.py'):
 			client.load_extension(f'cogs.{filename[:-3]}')
 	TOKEN = os.getenv("GOLD_TOKEN")
+
+	if not TOKEN:
+		TOKEN = input("Goldbot's Token: ")
 
 	client.run(TOKEN)
