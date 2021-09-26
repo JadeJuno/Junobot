@@ -311,7 +311,6 @@ if __name__ == "__main__":
 		if filename.endswith('.py'):
 			client.load_extension(f'cogs.{filename[:-3]}')
 	TOKEN = os.getenv("GOLD_TOKEN")
-
 	if not TOKEN:
 		TOKEN = input("Goldbot's Token: ")
 
