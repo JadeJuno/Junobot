@@ -254,9 +254,9 @@ class Commands(commands.Cog):
 			source_language = self.translator.detect(translate_message).lang
 			if isinstance(source_language, list):
 				source_language = source_language[0]
-		translated_text = self.translator.translate(translate_message, src=source_language,
-													dest=destination_language).text.replace("`", "\`")
 		try:
+			translated_text = self.translator.translate(translate_message, src=source_language,
+													dest=destination_language).text.replace("`", "\`")
 			await ctx.send(
 				f'Translated from {self.lang_dict[source_language].capitalize()} to {self.lang_dict[destination_language].capitalize()}\n`{translated_text.capitalize()}`.')
 		except ValueError:
