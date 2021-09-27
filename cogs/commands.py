@@ -264,6 +264,7 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def wikipedia(self, ctx, *, search_request):
+		message = await ctx.send(f"Searching for {search_request}")
 		title = "Wikipedia"
 		description = ""
 		image = "https://i.imgur.com/7kT1Ydo.png"
@@ -284,7 +285,7 @@ class Commands(commands.Cog):
 		except wikipedia.exceptions.PageError:
 			description = "Page not found."
 		embed = bot.embed_template(ctx, title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
-		await ctx.send(embed=embed)
+		await message.edit(content=None, embed=embed)
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command()
