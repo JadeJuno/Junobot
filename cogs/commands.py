@@ -94,8 +94,10 @@ class Commands(commands.Cog):
 						 "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.",
 						 "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.",
 						 "Very doubtful.")
-		if "?" in question:
-			if "love" in question.lower():
+		if question.endswith("?"):
+			if question.strip() == "?":
+				prediction = "That's not a question, that's a question sign..."
+			elif "love" in question.lower():  # :tr:
 				prediction = random.choice(ball_predicts[-5:])
 			else:
 				prediction = random.choice(ball_predicts)
