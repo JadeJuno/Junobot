@@ -502,21 +502,6 @@ class Commands(commands.Cog):
 				return
 
 	@commands.check(bot.is_in_origin_server)
-	@commands.command()
-	async def transbee(self, ctx):
-		await ctx.send("https://images-ext-2.discordapp.net/external/ak_l1cuKUfVU-MUEGo57iF5_ELEZKbHFkdKUmpW1dEE/https/media.discordapp.net/attachments/756024207883894814/887514851356835880/886660055439650897.png")
-
-	@commands.check(bot.is_in_origin_server)
-	@commands.command()
-	async def bibee(self, ctx):
-		await ctx.send("https://media.discordapp.net/attachments/756024207883894814/890437677399294022/890437598634455071.png")
-
-	@commands.check(bot.is_in_origin_server)
-	@commands.command()
-	async def transratkid(self, ctx):
-		await ctx.send("https://images-ext-2.discordapp.net/external/dUqp-ElVCnlnw5w99kvaGmSM1Nc7j_pWBmvSAGC9Jjo/%3Fv%3D1/https/cdn.discordapp.com/emojis/858713027355607072.gif")
-
-	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=("whitelisted", "whitelist"))
 	async def whitelistedlinks(self, ctx):
 		s = "\n".join(bot.whitelisted_links[:len(bot.whitelisted_links) // 2])
