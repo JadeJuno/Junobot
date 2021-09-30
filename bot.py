@@ -130,7 +130,7 @@ async def on_message(message: discord.Message):
 			return
 		modmail = False
 		for guild in message.author.mutual_guilds:
-			if guild.id == 574480926189420555:
+			if guild.id == 734127708488859831:
 				modmail = True
 				break
 		if modmail:
