@@ -125,7 +125,7 @@ async def autodelete(message: discord.Message):
 
 @client.event
 async def on_message(message: discord.Message):
-	if message.guild is None:
+	if message.guild is None:  # Modmail
 		if message.author.bot:
 			return
 		modmail = False
@@ -157,6 +157,7 @@ async def on_message(message: discord.Message):
 					"If you want to contact the Origins Server's Modmail, you have to use `$` as a prefix to your message.")
 			return
 	elif is_in_origin_server(message):
+		origin_log = client.get_channel(838025060983767051)
 		# Datapack check
 		if message.channel.id == 749571272635187342:
 			if message.author.bot:
@@ -194,9 +195,11 @@ async def on_message(message: discord.Message):
 				if not any(link in message.content for link in whitelisted_links):
 					await autodelete(message)
 					return
-		elif message.guild.id == 734127708488859831 and ("@everyone" in message.content or "@here" in message.content):
+		elif "@everyone" in message.content or "@here" in message.content:
 			await discord.Message.delete(message, delay=0)
 			await message.author.send("Please don't try to ping everyone. It doesn't work and it's annoying.")
+			await origin_log.send(f"@everyone attempt by {message.author} ({message.author.id}) deleted in <#{message.channel.id}>:\n>>> {message.content}")
+		# elif message.channel.id == 749228091708014635:  # Server Announcements
 		else:
 			if not is_origin_mod(message):
 				g_prefix = parser.__getitem__(message.channel.guild.id)
