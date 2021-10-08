@@ -17,7 +17,7 @@ origin_commands = (
 	"whitelistedlinks", 'transbee', 'wiki', 'channelonly', 'avd', "addonsvsdatapacks", 'addonvsdatapack', 'tias', 'try-it-and-see', 'tryit', 'try-it', 'tryitandsee', 'transratkid', 'bibee', 'invite')
 
 whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/",
-					 "https://docs.google.com/", "https://curseforge.com/"]
+					 "https://docs.google.com/", "https://curseforge.com/", "https://modrinth.com"]
 temp_white = whitelisted_links[:]
 for _link in temp_white:
 	whitelisted_links.append(_link.replace("://", "://www."))
