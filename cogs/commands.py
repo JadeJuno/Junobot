@@ -204,7 +204,7 @@ class Commands(commands.Cog):
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command()
-	async def escape(self, ctx, string=None):
+	async def escape(self, ctx, *, string=None):
 		if string is not None:
 			escaping = string.replace('"', '\\"')
 			await ctx.send(f"Here's your escaped string:\n`{escaping}`")
