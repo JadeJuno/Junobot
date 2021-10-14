@@ -13,6 +13,7 @@ from iso639 import languages
 import bot
 import googlesearch
 from morsecode import MorseCode
+from oxforddict import get_definition
 
 status_list = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
 
@@ -186,6 +187,33 @@ class Commands(commands.Cog):
 			os.remove(".google-cookie")
 		except FileNotFoundError:
 			pass
+
+	"""
+	@commands.command()
+	async def dictionary(self, ctx, *, query):
+		results = get_definition(query)
+		lex_entries = results["lexicalEntries"]
+		entries = [lex_entry["entries"] for lex_entry in lex_entries]
+		entries = [x for y in entries for x in y]
+		senses = [entry["senses"] for entry in entries]
+		senses = [x for y in senses for x in y]
+		definitions = [definition['definitions'][0] for definition in senses]
+
+		return
+	"""
+
+	@commands.check(bot.is_in_origin_server)
+	@commands.command()
+	async def escape(self, ctx, string=None):
+		if string is not None:
+			escaping = string.replace('"', '\\"')
+			await ctx.send(f"Here's your escaped string:\n`{escaping}`")
+			return
+		elif ctx.reference and string is None:
+			escaping = ctx.reference.resolved.content.replace('"', '\\"')
+			await ctx.send(f"Here's your escaped string:\n`{escaping}`")
+		else:
+			await ctx.send("Error: No string to escape.")
 
 	@commands.command(aliases=("googleit", "googlesearch", "search"))
 	async def google(self, ctx, *, search_request):
@@ -544,6 +572,7 @@ class Commands(commands.Cog):
 
 		print()
 	"""
+
 
 def setup(client):
 	client.add_cog(Commands(client))
