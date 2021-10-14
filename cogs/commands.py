@@ -209,7 +209,7 @@ class Commands(commands.Cog):
 			escaping = string.replace('"', '\\"')
 			await ctx.send(f"Here's your escaped string:\n`{escaping}`")
 			return
-		elif ctx.reference and string is None:
+		elif ctx.message.reference and string is None:
 			escaping = ctx.message.reference.resolved.content.replace('"', '\\"')
 			await ctx.send(f"Here's your escaped string:\n`{escaping}`")
 		else:
