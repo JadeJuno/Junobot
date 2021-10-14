@@ -202,7 +202,6 @@ class Commands(commands.Cog):
 		return
 	"""
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def escape(self, ctx, *, string=None):
 		if string is not None:
