@@ -200,10 +200,10 @@ class Commands(commands.Cog):
 			senses = [x for y in senses for x in y]
 			definitions = [definition['definitions'][0] for definition in senses]
 
-			emb = bot.embed_template(ctx, title=f'Definition of "{query}":', description=f"{definitions[0].capitalize()}")
+			emb = bot.embed_template(ctx, title=f'Definition of "{query.title()}":', description=f"{definitions[0].capitalize()}")
 
 		else:
-			emb = bot.embed_template(ctx, title="Error:", description=f'Definition for "{query}" not found.')
+			emb = bot.embed_template(ctx, title="Error:", description=f'Definition for "{query.title()}" not found.')
 
 		await message.edit(content="", embed=emb)
 
