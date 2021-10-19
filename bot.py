@@ -227,7 +227,7 @@ def embed_template(ctx, title=None, description=None, footer="", add_def_footer=
 		embed.set_author(name=title, icon_url=icon)
 	else:
 		embed.set_author(name=title)
-	if footer():
+	if footer:
 		if add_def_footer:
 			embed.set_footer(
 				text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by Golder06#7041.",
