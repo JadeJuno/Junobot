@@ -199,7 +199,6 @@ async def on_message(message: discord.Message):
 			await discord.Message.delete(message, delay=0)
 			await message.author.send("Please don't try to ping everyone. It doesn't work and it's annoying.")
 			await origin_log.send(f"@everyone attempt by {message.author} ({message.author.id}) deleted in <#{message.channel.id}>:\n>>> {message.content}")
-		# elif message.channel.id == 749228091708014635:  # Server Announcements
 		else:
 			if not is_origin_mod(message):
 				g_prefix = parser.__getitem__(message.channel.guild.id)
