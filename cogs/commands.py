@@ -192,14 +192,19 @@ class Commands(commands.Cog):
 	async def dictionary(self, ctx, *, query):
 		message = await ctx.send("Getting definition...")
 		results = get_definition(query)
-		lex_entries = results["lexicalEntries"]
-		entries = [lex_entry["entries"] for lex_entry in lex_entries]
-		entries = [x for y in entries for x in y]
-		senses = [entry["senses"] for entry in entries]
-		senses = [x for y in senses for x in y]
-		definitions = [definition['definitions'][0] for definition in senses]
+		if results != "404 Error":
+			lex_entries = results["lexicalEntries"]
+			entries = [lex_entry["entries"] for lex_entry in lex_entries]
+			entries = [x for y in entries for x in y]
+			senses = [entry["senses"] for entry in entries]
+			senses = [x for y in senses for x in y]
+			definitions = [definition['definitions'][0] for definition in senses]
 
-		emb = bot.embed_template(ctx, title=f'Definition of "{query}":', description=f"{definitions[0].capitalize()}")
+			emb = bot.embed_template(ctx, title=f'Definition of "{query}":', description=f"{definitions[0].capitalize()}")
+
+		else:
+			emb = bot.embed_template(ctx, title="Error:", description=f'Definition for "{query}" not found.')
+
 		await message.edit(content="", embed=emb)
 
 	@commands.check(bot.is_in_origin_server)
