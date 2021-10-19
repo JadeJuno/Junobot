@@ -227,13 +227,14 @@ def embed_template(ctx, title=None, description=None, footer="", add_def_footer=
 		embed.set_author(name=title, icon_url=icon)
 	else:
 		embed.set_author(name=title)
-	if add_def_footer:
-		embed.set_footer(
-			text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by Golder06#7041.",
-			icon_url="https://i.imgur.com/ZgG8oJn.png")
-	else:
-		embed.set_footer(
-			text=footer, icon_url="https://i.imgur.com/ZgG8oJn.png")
+	if footer():
+		if add_def_footer:
+			embed.set_footer(
+				text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by Golder06#7041.",
+				icon_url="https://i.imgur.com/ZgG8oJn.png")
+		else:
+			embed.set_footer(
+				text=footer, icon_url="https://i.imgur.com/ZgG8oJn.png")
 	embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 	if image != "":
 		embed.set_image(url=image)

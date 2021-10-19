@@ -188,9 +188,9 @@ class Commands(commands.Cog):
 		except FileNotFoundError:
 			pass
 
-	"""
-	@commands.command()
+	@commands.command(aliases=('definition',))
 	async def dictionary(self, ctx, *, query):
+		message = await ctx.send("Getting definition...")
 		results = get_definition(query)
 		lex_entries = results["lexicalEntries"]
 		entries = [lex_entry["entries"] for lex_entry in lex_entries]
@@ -199,8 +199,8 @@ class Commands(commands.Cog):
 		senses = [x for y in senses for x in y]
 		definitions = [definition['definitions'][0] for definition in senses]
 
-		return
-	"""
+		emb = bot.embed_template(ctx, title=f'Definition of "{query}":', description=f"{definitions[0].capitalize()}")
+		await message.edit(content="", embed=emb)
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command()
