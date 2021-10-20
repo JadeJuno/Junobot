@@ -306,9 +306,8 @@ class Commands(commands.Cog):
 		image = "https://i.imgur.com/7kT1Ydo.png"
 		try:
 			result = wikipedia.page(search_request)
-			print([word for word in result.summary[:300]])  # this isn't gonna go well lol
-			summary = "".join([word for word in result.summary[:300]][:-1])
-			description = f"[{result.title}]({result.url})\n{summary}..."
+			# update: didn't go that bad, but it wasn't "well lol"
+			description = f"[{result.title}]({result.url})\n{result.summary[:300].strip()}..."
 			image = result.images[0]
 		except wikipedia.exceptions.DisambiguationError as e:
 			i = 1
