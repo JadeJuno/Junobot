@@ -4,8 +4,8 @@ import random
 from datetime import datetime, timedelta
 
 import discord
-import wikipedia
 import googletrans
+import wikipedia
 from discord.ext import commands, tasks
 from googletrans import Translator
 from iso639 import languages
@@ -200,7 +200,8 @@ class Commands(commands.Cog):
 			senses = [x for y in senses for x in y]
 			definitions = [definition['definitions'][0] for definition in senses]
 
-			emb = bot.embed_template(ctx, title=f'Definition of "{query.title()}":', description=f"{definitions[0].capitalize()}")
+			emb = bot.embed_template(ctx, title=f'Definition of "{query.title()}":',
+									 description=f"{definitions[0].capitalize()}")
 
 		else:
 			emb = bot.embed_template(ctx, title="Error:", description=f'Definition for "{query.title()}" not found.')
@@ -291,7 +292,7 @@ class Commands(commands.Cog):
 				source_language = source_language[0]
 		try:
 			translated_text = self.translator.translate(translate_message, src=source_language,
-													dest=destination_language).text.replace("`", "\`")
+														dest=destination_language).text.replace("`", "\`")
 			await ctx.send(
 				f'Translated from {self.lang_dict[source_language].capitalize()} to {self.lang_dict[destination_language].capitalize()}\n`{translated_text.capitalize()}`.')
 		except ValueError:
@@ -363,7 +364,8 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def invite(self, ctx):
-		await ctx.send("Here's the invite link for Goldbot:\nhttps://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot")
+		await ctx.send(
+			"Here's the invite link for Goldbot:\nhttps://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot")
 
 	@commands.command()
 	async def binary(self, ctx, encode_decode: str, *, sentence):
@@ -551,15 +553,16 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def wiki(self, ctx, *, search=None):
 		if search is None:
-			await bot.tryreply(ctx, "The Origins wiki has most of the information you'll need to create your own datapacks: https://origins.readthedocs.io/en/latest/\n\nIt is recommended you'll check out the \"Helpful\" Links at the bottom of the wiki page. Especially the video tutorial by CandyCaneCazoo is likely going to help you out!")
+			await bot.tryreply(ctx,
+							   "The Origins wiki has most of the information you'll need to create your own datapacks: https://origins.readthedocs.io/en/latest/\n\nIt is recommended you'll check out the \"Helpful\" Links at the bottom of the wiki page. Especially the video tutorial by CandyCaneCazoo is likely going to help you out!")
 		else:
-			await bot.tryreply(ctx, f"https://origins.readthedocs.io/en/latest/search.html?q={search.replace(' ', '+')}")
+			await bot.tryreply(ctx,
+							   f"https://origins.readthedocs.io/en/latest/search.html?q={search.replace(' ', '+')}")
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def transbee(self, ctx):
-		await ctx.send(
-			"https://images-ext-2.discordapp.net/external/ak_l1cuKUfVU-MUEGo57iF5_ELEZKbHFkdKUmpW1dEE/https/media.discordapp.net/attachments/756024207883894814/887514851356835880/886660055439650897.png")
+		await ctx.send(random.choice(("https://images-ext-2.discordapp.net/external/ak_l1cuKUfVU-MUEGo57iF5_ELEZKbHFkdKUmpW1dEE/https/media.discordapp.net/attachments/756024207883894814/887514851356835880/886660055439650897.png", "https://cdn.discordapp.com/emojis/899508099977719888.png")))
 
 	"""
 	@commands.check(bot.is_bot_owner)

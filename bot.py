@@ -14,7 +14,8 @@ config = parse_config("./config.toml")
 
 origin_commands = (
 	"datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help", "whitelisted", "whitelist",
-	"whitelistedlinks", 'transbee', 'wiki', 'channelonly', 'avd', "addonsvsdatapacks", 'addonvsdatapack', 'tias', 'try-it-and-see', 'tryit', 'try-it', 'tryitandsee', 'transratkid', 'bibee', 'invite', 'escape')
+	"whitelistedlinks", 'transbee', 'wiki', 'channelonly', 'avd', "addonsvsdatapacks", 'addonvsdatapack', 'tias',
+	'try-it-and-see', 'tryit', 'try-it', 'tryitandsee', 'transratkid', 'bibee', 'invite', 'escape')
 
 whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/",
 					 "https://docs.google.com/", "https://curseforge.com/", "https://modrinth.com"]
@@ -198,7 +199,8 @@ async def on_message(message: discord.Message):
 		elif "@everyone" in message.content or "@here" in message.content:
 			await discord.Message.delete(message, delay=0)
 			await message.author.send("Please don't try to ping everyone. It doesn't work and it's annoying.")
-			await origin_log.send(f"@everyone attempt by {message.author} ({message.author.id}) deleted in <#{message.channel.id}>:\n>>> {message.content}")
+			await origin_log.send(
+				f"@everyone attempt by {message.author} ({message.author.id}) deleted in <#{message.channel.id}>:\n>>> {message.content}")
 		else:
 			if not is_origin_mod(message):
 				g_prefix = parser.__getitem__(message.channel.guild.id)
