@@ -308,7 +308,10 @@ class Commands(commands.Cog):
 			result = wikipedia.page(search_request)
 			# update: didn't go that bad, but it wasn't "well lol"
 			description = f"[{result.title}]({result.url})\n{result.summary[:300].strip()}..."
-			image = result.images[0]
+			try:
+				image = result.images[0]
+			except IndexError:
+				pass
 		except wikipedia.exceptions.DisambiguationError as e:
 			i = 1
 			for option in e.options[:9]:
