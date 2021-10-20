@@ -205,7 +205,7 @@ async def on_message(message: discord.Message):
 			if not is_origin_mod(message):
 				g_prefix = parser.__getitem__(message.channel.guild.id)
 				if message.content.startswith(g_prefix):
-					if message.content.lstrip(g_prefix).startswith(origin_commands):
+					if message.content.lstrip(g_prefix).startswith(tuple(origin_commands)):  # Do not change the tuple() or I will decapitate your ass.
 						await client.process_commands(message)
 						return
 					non_origin_commands = [cmd[:-4] for cmd in os.listdir("help_texts/specific_help")]
