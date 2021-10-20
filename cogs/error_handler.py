@@ -1,6 +1,7 @@
 import difflib
-import discord
 import traceback
+
+import discord
 from discord.ext import commands
 
 from bot import config

@@ -306,7 +306,8 @@ class Commands(commands.Cog):
 		image = "https://i.imgur.com/7kT1Ydo.png"
 		try:
 			result = wikipedia.page(search_request)
-			description = f"[{result.title}]({result.url})\n{result.summary}"
+			summary = "".join([word for word in result.summary[:500]][:-1])
+			description = f"[{result.title}]({result.url})\n{summary} (...)"
 			image = result.images[0]
 		except wikipedia.exceptions.DisambiguationError as e:
 			i = 1
@@ -563,23 +564,6 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def transbee(self, ctx):
 		await ctx.send(random.choice(("https://images-ext-2.discordapp.net/external/ak_l1cuKUfVU-MUEGo57iF5_ELEZKbHFkdKUmpW1dEE/https/media.discordapp.net/attachments/756024207883894814/887514851356835880/886660055439650897.png", "https://cdn.discordapp.com/emojis/899508099977719888.png")))
-
-	"""
-	@commands.check(bot.is_bot_owner)
-	@commands.check(bot.is_in_origin_server)
-	@commands.command()
-	async def autodelete_rar(self, ctx):
-		origin_log = self.client.get_channel(838025060983767051)
-		datapacks_channel = self.client.get_channel(749571272635187342)
-		async for msg in datapacks_channel.history():
-			if msg.attachments[0].content_type == 'application/rar':
-				try:
-					await msg.author.send("Hello. Sorry for randomly DMing you, but in the Origins Server we've been trying to unclutter the <#749571272635187342> channel, and found that you have sent a datapack in a `.rar` file, which aren't easy to use for most people. Therefore, we have deleted it. If you wanna resend it as a `.zip` file instead, we have attached the original file for you to edit.")
-				except discord.Forbidden:
-					await origin_log.send(f"Could not send DM to user {msg.author.name}#{msg.author.discriminator}.")
-
-		print()
-	"""
 
 
 def setup(client):
