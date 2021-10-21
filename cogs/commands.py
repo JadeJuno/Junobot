@@ -524,7 +524,7 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def channelonly(self, ctx):
 		replies = {
-			825449766384828476: "This channel is only for posting powers that can be used by other people. For discussion about the powers listed in this channel, please go to <#802622603008409600>. If you need help related to the powers listed in here, please go to <#810587422303584286> or by making a thread.",
+			825449766384828476: "This channel is only for posting powers that can be used by other people. For discussion about the powers listed in this channel, please go to <#802622603008409600>. If you need help related to the powers listed in here, please go to <#810587422303584286> by making a thread.",
 			798545973554315304: "This channel is only for posting ideas for an origin. For discussion about the origins listed in this channel, please go to <#802622603008409600> or make a thread.",
 			813795300691017798: "This channel is for posting media of your Origins only! If you wanted to comment on a video you found interesting, then please do so in <#756024207883894814>, <#802622603008409600>, or by making a thread.",
 			734133482757816401: "This channel is only for posting suggestions for the Origins mod. If you want to suggest an idea for an origin, do so in <#798545973554315304>. If you wanna comment about a suggestion, create a thread for that.",
