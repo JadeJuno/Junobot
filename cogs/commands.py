@@ -521,7 +521,7 @@ class Commands(commands.Cog):
 		await bot.tryreply(ctx, output)
 
 	@commands.check(bot.is_in_origin_server)
-	@commands.command(aliases=("ideasonly", "mediaonly", "suggestionsonly", "suggestiononly", "powersonly",))
+	@commands.command(aliases=("ideasonly", "mediaonly", "suggestionsonly", "suggestiononly", "powersonly"))
 	async def channelonly(self, ctx):
 		replies = {
 			825449766384828476: "This channel is only for posting powers that can be used by other people. For discussion about the powers listed in this channel, please go to <#802622603008409600>. If you need help related to the powers listed in here, please go to <#810587422303584286> by making a thread.",
