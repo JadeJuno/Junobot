@@ -15,7 +15,8 @@ config = parse_config("./config.toml")
 origin_commands = (
 	"datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help", "whitelisted", "whitelist",
 	"whitelistedlinks", 'transbee', 'wiki', 'channelonly', 'avd', "addonsvsdatapacks", 'addonvsdatapack', 'tias',
-	'try-it-and-see', 'tryit', 'try-it', 'tryitandsee', 'transratkid', 'bibee', 'invite', 'escape')
+	'try-it-and-see', 'tryit', 'try-it', 'tryitandsee', 'transratkid', 'bibee', 'invite', 'escape')  # TO-DO: make a cog for all origin commands.
+dyno_commands =()
 
 whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/",
 					 "https://docs.google.com/", "https://curseforge.com/", "https://modrinth.com"]
@@ -93,7 +94,12 @@ async def autodelete(message: discord.Message):
 				f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
 		else:
 			await message.author.send(
-				f"Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'''.zip file, the zip file was zipped incorrectly or it didn't include a''' if message.channel.id == 749571272635187342 else '.jar file or a'} whitelisted link.\n\nPD: If your message got deleted yet you had a link or a {'zip file' if message.channel.id == 749571272635187342 else 'jar file'}, please DM the creator of the bot Golder06#7041\nPD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `?whitelisted` in <#843834879736283156>\nPD3: Also, please check if your datapack is zipped correctly (use `!zip-pack` on the channel mentioned on PD:2 lol)")
+				f"""Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'''.zip file, the zip file was zipped incorrectly or it didn't include a''' if message.channel.id == 749571272635187342 else '.jar file or a'} whitelisted link.
+				
+PD: If your message got deleted yet you had a link or a {'zip file' if message.channel.id == 749571272635187342 else 'jar file'}, please DM the creator of the bot Golder06#7041
+PD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `?whitelisted` in <#843834879736283156>
+PD3: Also, please check if your datapack is zipped correctly (use `!zip-pack` on <#843834879736283156>)"""
+			)
 		log_message += "\nDM sent: True"
 	except discord.errors.Forbidden:
 		log_message += "\nDM sent: False"
@@ -109,14 +115,11 @@ async def autodelete(message: discord.Message):
 	else:
 		with open('temp.txt', 'w') as f:
 			f.write(content)
-		with open('temp.txt', 'rb') as f:
-			temp = discord.File(f)
 		log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in <#{message.channel.id}>.\nThe message would make the log exceed the 2000 character limit. Sending as Text Document:"
 		if len(message.attachments) != 0:
 			log_message += f"\nAttachment type: {message.attachments[0].content_type}"
 		if message.reference:
 			log_message += f"\nReferenced Message: {message.reference.jump_url}"
-		await log.send(log_message, file=temp)
 		with open('temp.txt', 'rb') as f:
 			temp = discord.File(f)
 		await origin_log.send(log_message, file=temp)
@@ -159,13 +162,12 @@ async def on_message(message: discord.Message):
 			return
 	elif is_in_origin_server(message):
 		origin_log = client.get_channel(838025060983767051)
-		# Datapack check
-		if message.channel.id == 749571272635187342:
+		if message.channel.id == 749571272635187342:  # Datapack check
 			if message.author.bot:
 				await discord.Message.delete(message, delay=0)
 			if is_origin_mod(message):
 				pass
-			if len(message.attachments) != 0:
+			elif len(message.attachments) != 0:
 				if any(link in message.content for link in whitelisted_links):
 					return
 				elif message.attachments[0].content_type == 'application/zip':
@@ -181,7 +183,7 @@ async def on_message(message: discord.Message):
 				if not any(link in message.content for link in whitelisted_links):
 					await autodelete(message)
 					return
-		elif message.channel.id == 848428304003366912:
+		elif message.channel.id == 848428304003366912:  # Addon check
 			if message.author.bot:
 				await discord.Message.delete(message, delay=0)
 			if is_origin_mod(message):
