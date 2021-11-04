@@ -469,12 +469,7 @@ class Commands(commands.Cog):
 	async def ch_commands(self, ctx):
 		if ctx.channel.id != 843834879736283156:
 			serious = self.client.get_emoji(821796259333537813)
-			try:
-				await ctx.message.reference.resolved.reply(
-					f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
-			except AttributeError:
-				await ctx.send(
-					f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
+			await bot.tryreply(ctx, f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
 		else:
 			await ctx.reply("This message is already in <#843834879736283156>...")
 

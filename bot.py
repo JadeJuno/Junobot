@@ -16,7 +16,6 @@ origin_commands = (
 	"datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help", "whitelisted", "whitelist",
 	"whitelistedlinks", 'transbee', 'wiki', 'channelonly', 'avd', "addonsvsdatapacks", 'addonvsdatapack', 'tias',
 	'try-it-and-see', 'tryit', 'try-it', 'tryitandsee', 'transratkid', 'bibee', 'invite', 'escape')  # TO-DO: make a cog for all origin commands.
-dyno_commands =()
 
 whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/",
 					 "https://docs.google.com/", "https://curseforge.com/", "https://modrinth.com"]
@@ -52,11 +51,14 @@ def check_if_self_hosted():
 		return False
 
 
-async def tryreply(ctx, message):
+async def tryreply(ctx, message, reply=False, img=None):
 	try:
 		await ctx.message.reference.resolved.reply(message)
 	except AttributeError:
-		await ctx.send(message)
+		if reply:
+			await ctx.reply(message)
+		else:
+			await ctx.send(message)
 
 
 parser = prefix.PrefixParser(default="g!")
