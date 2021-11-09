@@ -451,7 +451,7 @@ class Commands(commands.Cog):
 			if len(ctx.message.reference.resolved.embeds) == 0:
 				output = io.StringIO()
 				output.write(ctx.message.reference.resolved.content)
-				await ctx.send("Here's the formatted message:", file=discord.File(fp=output, filename='Formatted.txt'))
+				await ctx.send("Here's the formatted message:", file=discord.File(fp=output.seek(0), filename='Formatted.txt'))
 			else:
 				await ctx.send(f"```\n{ctx.message.reference.resolved.embeds[0].description.replace('> ', '')}```")
 
