@@ -7,6 +7,7 @@ from config import parse_config
 
 config = parse_config("./config.toml")
 
+
 def is_in_command(ctx):
 	return ctx.channel.id == 843834879736283156 or ctx.author.id in config["origins_mods"]
 
