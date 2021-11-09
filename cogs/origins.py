@@ -154,5 +154,6 @@ class Commands(commands.Cog):
 			case ('block' | 'blocks'):
 				await ctx.send()
 
+
 def setup(client):
 	client.add_cog(Commands(client))
