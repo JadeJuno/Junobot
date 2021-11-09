@@ -77,7 +77,8 @@ class CommandErrorHandler(commands.Cog):
 				for line in tback:
 					str_tback += line
 				await self.log.send(
-					f'Unknown Exception in "{ctx.message.channel.guild.name}": ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`')
+					f'<@498606108836102164> Uncatched Exception in "{ctx.message.channel.guild.name}": ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`')
+				return await ctx.send("Error Message sent.")
 			elif str(reaction.emoji) == "\U0000274c":
 				return await ctx.send("Understood.")
 
