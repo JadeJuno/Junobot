@@ -53,7 +53,7 @@ class CommandErrorHandler(commands.Cog):
 
 		elif isinstance(error, commands.MissingRequiredArgument):
 			missing_param = error.param.name.replace("_", " ").capitalize().strip()
-			await ctx.send(f"Error: Missing argument `{missing_param}`.")
+			await ctx.reply(f"Error: Missing argument `{missing_param}`.")
 
 		elif isinstance(error, commands.MissingPermissions):
 			missing_perm = error.missing_perms[0].title()
