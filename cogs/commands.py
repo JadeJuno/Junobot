@@ -455,7 +455,7 @@ class Commands(commands.Cog):
 			with io.StringIO() as file:
 				file.write(output)
 				file.seek(0)
-			await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename='a.txt'))
+				await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename='a.txt'))
 
 
 def setup(client):
