@@ -449,12 +449,13 @@ class Commands(commands.Cog):
 	async def format(self, ctx):
 		if ctx.message.reference:
 			if len(ctx.message.reference.resolved.embeds) == 0:
-				with io.StringIO() as output:
-					output.write(ctx.message.reference.resolved.content)
-					output.seek(0)
-					await ctx.send("Here's the formatted message:", file=discord.File(fp=output, filename='Formatted.txt'))
+				output = ctx.message.reference.resolved.content
 			else:
-				await ctx.send(f"```\n{ctx.message.reference.resolved.embeds[0].description.replace('> ', '')}```")
+				output = ctx.message.reference.resolved.embeds[0].description
+			with io.StringIO() as file:
+				file.write(output)
+				file.seek(0)
+			await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename='a.txt'))
 
 
 def setup(client):

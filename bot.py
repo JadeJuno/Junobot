@@ -1,4 +1,3 @@
-import asyncio
 import io
 import os
 import random
@@ -115,18 +114,15 @@ PD3: Also, please check if your datapack is zipped correctly (use `!zip-pack` on
 		await log.send("", embed=embed)
 		await origin_log.send("", embed=embed)
 	else:
-		with open('temp.txt', 'w') as f:
-			f.write(content)
+		with io.StringIO() as file:
+			file.write(content)
+			file.seek(0)
 		log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in <#{message.channel.id}>.\nThe message would make the log exceed the 2000 character limit. Sending as Text Document:"
 		if len(message.attachments) != 0:
 			log_message += f"\nAttachment type: {message.attachments[0].content_type}"
 		if message.reference:
 			log_message += f"\nReferenced Message: {message.reference.jump_url}"
-		with open('temp.txt', 'rb') as f:
-			temp = discord.File(f)
-		await origin_log.send(log_message, file=temp)
-		await asyncio.sleep(1)
-		os.remove('temp.txt')
+		await origin_log.send(log_message, file=discord.File(fp=file, filename='Log.txt'))
 
 
 @client.event
