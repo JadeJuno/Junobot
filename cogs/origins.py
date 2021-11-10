@@ -147,8 +147,8 @@ class Commands(commands.Cog):
 
 	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('tag',))
-	async def tags(self, ctx, *, _type):
-		match _type.lower():
+	async def tags(self, ctx, *, tag_type):
+		match tag_type.lower():
 			case ('entity types' | 'entity_types' | 'entity type' | 'entity_type'):
 				await bot.tryreply(ctx, 'An entity type tag is a JSON file used for grouping entities. It\'s stored inside the `data/<namespace>/tags/entity_types` folder, where `<namespace>` is the folder you\'re using to store your advancements, functions, loot tables, powers, origins, etc.\n\nHere\'s an example of an entity type tag, named `undead.json`, stored inside the `data/example/tags/entity_types` folder:\n```json\n{\n    "values": [\n        "minecraft:drowned",\n        "minecraft:zombie",\n        "minecraft:husk",\n        "minecraft:zombie_villager",\n        "minecraft:skeleton",\n        "minecraft:stray",\n        "minecraft:wither",\n        "minecraft:phantom",\n        "minecraft:skeleton_horse",\n        "minecraft:zombified_piglin",\n        "minecraft:drowned"\n    ]\n}\n```\nYou can then reference the `example:undead` entity type tag inside an entity condition, like `origins:in_tag` or the `type` target selector argument, like so:\n```haskell\nexecute as @e[type = #example:undead] ...\n```\n```json\n"entity_condition": {\n    "type": "origins:in_tag",\n    "tag": "example:undead"\n}\n```', reply=True)
 			case ('block' | 'blocks'):
@@ -156,7 +156,7 @@ class Commands(commands.Cog):
 			case ('item' | 'items'):
 				await bot.tryreply(ctx, 'An item tag is a JSON file used for grouping items. It\'s stored inside the `data\\<namespace>\\tags\\items` folder, where `<namespace>` is the folder you\'re using to store your advancements, functions, loot tables, powers, origins, etc.\n\nHere\'s an example of an item tag, named `swords.json`, stored inside the `data\\example\\tags\\items` folder:\n```json\n{\n    "replace": false,\n    "values": [\n        "minecraft:wooden_sword",\n        "minecraft:stone_sword",\n        "minecraft:golden_sword",\n        "minecraft:iron_sword",\n        "minecraft:diamond_sword",\n        "minecraft:netherite_sword"   \n    ]\n}\n```\nYou can then reference the `example:swords` item tag inside an item condition, like `origins:ingredient`, like so:\n```json\n"item_condition": {\n    "type": "origins:ingredient",\n    "ingredient": {\n        "tag": "example:swords"\n    }\n}\n```', reply=True)
 			case _:
-				await ctx.reply(f'"{_type}" is not a type of Minecraft tag.')
+				await ctx.reply(f'"{tag_type}" is not a type of Minecraft tag.')
 
 
 def setup(client):
