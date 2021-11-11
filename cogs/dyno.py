@@ -49,4 +49,4 @@ class Dyno(commands.Cog):
 
 
 def setup(client):
-	client.override(Dyno(client))
+	client.add_cog(Dyno(client), override=True)

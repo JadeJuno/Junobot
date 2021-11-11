@@ -459,4 +459,4 @@ class Commands(commands.Cog):
 
 
 def setup(client):
-	client.override(Commands(client))
+	client.add_cog(Commands(client), override=True)

@@ -160,4 +160,4 @@ class Origins(commands.Cog):
 
 
 def setup(client):
-	client.override(Origins(client))
+	client.add_cog(Origins(client), override=True)
