@@ -316,7 +316,7 @@ async def prefix(ctx, new_prefix=None):
 
 if __name__ == "__main__":
 	with open('requirements.txt', 'r') as f:
-		f.read()
+		print(f.read())
 	for filename in os.listdir('./cogs'):
 		if filename.endswith('.py'):
 			client.load_extension(f'cogs.{filename[:-3]}')
