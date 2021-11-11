@@ -84,4 +84,4 @@ class CommandErrorHandler(commands.Cog):
 
 
 def setup(client):
-	client.add_cog(CommandErrorHandler(client))
+	client.override(CommandErrorHandler(client))

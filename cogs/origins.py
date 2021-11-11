@@ -15,7 +15,7 @@ def is_in_command(ctx):
 	return ctx.channel.id == 843834879736283156 or ctx.author.id in config["origins_mods"]
 
 
-class Commands(commands.Cog):
+class Origins(commands.Cog):
 	def __init__(self, client):
 		self.activity = None
 		self.client = client
@@ -160,4 +160,4 @@ class Commands(commands.Cog):
 
 
 def setup(client):
-	client.add_cog(Commands(client))
+	client.override(Origins(client))
