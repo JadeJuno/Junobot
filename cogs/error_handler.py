@@ -18,6 +18,7 @@ class CommandErrorHandler(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
+		print("Error Raised")
 		if hasattr(ctx.command, 'on_error'):
 			return
 
@@ -56,7 +57,7 @@ class CommandErrorHandler(commands.Cog):
 			await ctx.reply(f"Error: Missing argument `{missing_param}`.")
 
 		elif isinstance(error, commands.MissingPermissions):
-			print("No 2: Electric Bogaloo")
+			print("No 2: Electric Boogaloo")
 			missing_perm = error.missing_permissions[0].title()
 			await ctx.reply(f'Error: You are missing the `{missing_perm}` permission to run this command.')
 
