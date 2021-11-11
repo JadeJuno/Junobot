@@ -108,7 +108,7 @@ PD3: Also, please check if your datapack is zipped correctly (use `!zip-pack` on
 		embed = discord.Embed(description=log_message, color=random.randint(0, 0xffffff))
 		embed.set_author(
 			name=f"Message by {message.author.name}#{message.author.discriminator} deleted in #{message.channel.name}.",
-			icon_url=str(message.author.avatar_url))
+			icon_url=str(message.author.display_avatar.url))
 		embed.set_footer(text=f"{message.author.name}'s ID: {message.author.id}",
 						 icon_url="https://i.imgur.com/ZgG8oJn.png")
 		await log.send("", embed=embed)
@@ -139,7 +139,7 @@ async def on_message(message: discord.Message):
 			if message.content.startswith("$"):
 				channel = client.get_channel(814542424793153556)
 				embed = discord.Embed(title=f"{message.author.name}#{message.author.discriminator}")
-				embed.set_author(name=message.author.id, icon_url=str(message.author.avatar_url))
+				embed.set_author(name=message.author.id, icon_url=str(message.author.display_avatar_url))
 				embed.add_field(name="Description:", value=message.content.lstrip('$'))
 				mail_message = await channel.send(embed=embed)
 				await message.channel.send("Your message has been sent to the Origins Server's Mods.")

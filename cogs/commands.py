@@ -429,8 +429,8 @@ class Commands(commands.Cog):
 		print("TEST")
 		embed = discord.Embed(title="Title", description=f"{gold_emoji}[Test Link](https://www.youtube.com)",
 							  color=random.randint(0, 0xffffff), url="https://www.google.com/")
-		embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
-		embed.set_footer(text=f"*Requested by {ctx.author.name}.*", icon_url=ctx.author.avatar_url)
+		embed.set_author(name=self.client.user.name, icon_url=self.client.userdisplay_avatar.url)
+		embed.set_footer(text=f"*Requested by {ctx.author.name}.*", icon_url=ctx.author.display_avatar.url)
 		embed.set_image(url="https://discordpy.readthedocs.io/en/latest/_images/snake.png")
 		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 		embed.add_field(name="Field 1", value="value 1")

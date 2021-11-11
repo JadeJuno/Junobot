@@ -56,7 +56,7 @@ class CommandErrorHandler(commands.Cog):
 			await ctx.reply(f"Error: Missing argument `{missing_param}`.")
 
 		elif isinstance(error, commands.MissingPermissions):
-			missing_perm = error.missing_perms[0].title()
+			missing_perm = error.missing_permissions[0].title()
 			await ctx.send(f'Error: You are missing the `{missing_perm}` permission to run this command.')
 
 		else:
