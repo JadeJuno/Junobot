@@ -6,4 +6,4 @@ beautifulsoup4~=4.9.3
 discord~=1.0.1
 iso-639==0.4.5
 requests~=2.26.0
-https://github.com/Rapptz/discord.py
+git+https://github.com/Rapptz/discord.py
