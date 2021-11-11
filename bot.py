@@ -210,7 +210,7 @@ async def on_message(message: discord.Message):
 						return
 					non_origin_commands = [cmd[:-4] for cmd in os.listdir("help_texts/specific_help")]
 					non_origin_commands.remove("help")
-					if message.content.lstrip(g_prefix).startswith(non_origin_commands):
+					if message.content.lstrip(g_prefix).startswith(tuple(non_origin_commands)):
 						if message.channel.id == 843834879736283156:
 							await message.reply(
 								f"This Goldbot commands has been disabled in this server. {random.choices(('~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~', ''), (1, 10))[0]}")
@@ -311,6 +311,7 @@ async def prefix(ctx, new_prefix=None):
 					parser.update(str(ctx.guild.id), new_prefix)
 					await ctx.send(f"Prefix changed to `{new_prefix}`!")
 			else:
+				print("no.")
 				raise commands.MissingPermissions(missing_permissions=['administrator'])
 
 
