@@ -31,19 +31,19 @@ class CommandErrorHandler(commands.Cog):
 			cmds = [cmd.name for cmd in self.client.commands]
 			matches = difflib.get_close_matches(cmd, cmds, n=1)
 			if len(matches) > 0:
-				await ctx.send(f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
+				await ctx.reply(f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
 			return
 
 		error = getattr(error, 'original', error)
 
 		if isinstance(error, commands.DisabledCommand):
-			await ctx.send(f'`{ctx.prefix}{ctx.command}` has been disabled.')
+			await ctx.reply(f'`{ctx.prefix}{ctx.command}` has been disabled.')
 
 		elif isinstance(error, commands.CheckFailure):
 			cmd = ctx.command
 			for check in cmd.checks:
 				if "is_in_origin_server" in str(check):
-					await ctx.send(f'Error: Command "{cmd.name}" only works in the Origins server.')
+					await ctx.reply(f'Error: Command "{cmd.name}" only works in the Origins server.')
 
 		elif isinstance(error, commands.NoPrivateMessage):
 			try:
@@ -56,8 +56,9 @@ class CommandErrorHandler(commands.Cog):
 			await ctx.reply(f"Error: Missing argument `{missing_param}`.")
 
 		elif isinstance(error, commands.MissingPermissions):
+			print("No 2: Electric Bogaloo")
 			missing_perm = error.missing_permissions[0].title()
-			await ctx.send(f'Error: You are missing the `{missing_perm}` permission to run this command.')
+			await ctx.reply(f'Error: You are missing the `{missing_perm}` permission to run this command.')
 
 		else:
 			check_message = await ctx.send(
