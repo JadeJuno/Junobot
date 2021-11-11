@@ -311,10 +311,12 @@ async def prefix(ctx, new_prefix=None):
 					parser.update(str(ctx.guild.id), new_prefix)
 					await ctx.send(f"Prefix changed to `{new_prefix}`!")
 			else:
-				raise commands.MissingPermissions(missing_perms=('administrator',))
+				raise commands.MissingPermissions('administrator')
 
 
 if __name__ == "__main__":
+	with open('requirements.txt', 'r') as f:
+		f.read()
 	for filename in os.listdir('./cogs'):
 		if filename.endswith('.py'):
 			client.load_extension(f'cogs.{filename[:-3]}')
