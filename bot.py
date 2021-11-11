@@ -11,10 +11,10 @@ from config import parse_config
 
 config = parse_config("./config.toml")
 
-origin_commands = (
-	"datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help", "whitelisted", "whitelist",
-	"whitelistedlinks", 'transbee', 'wiki', 'channelonly', 'avd', "addonsvsdatapacks", 'addonvsdatapack', 'tias',
-	'try-it-and-see', 'tryit', 'try-it', 'tryitandsee', 'transratkid', 'bibee', 'invite', 'escape')  # TO-DO: make a cog for all origin commands.
+# origin_commands = (
+#	"datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help", "whitelisted", "whitelist",
+#	"whitelistedlinks", 'transbee', 'wiki', 'channelonly', 'avd', "addonsvsdatapacks", 'addonvsdatapack', 'tias',
+#	'try-it-and-see', 'tryit', 'try-it', 'tryitandsee', 'transratkid', 'bibee', 'invite', 'escape')  # TO-DO: make a cog for all origin commands.
 
 whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/",
 					 "https://docs.google.com/", "https://curseforge.com/", "https://modrinth.com"]
@@ -139,7 +139,7 @@ async def on_message(message: discord.Message):
 			if message.content.startswith("$"):
 				channel = client.get_channel(814542424793153556)
 				embed = discord.Embed(title=f"{message.author.name}#{message.author.discriminator}")
-				embed.set_author(name=message.author.id, icon_url=str(message.author.display_avatar_url))
+				embed.set_author(name=message.author.id, icon_url=str(message.author.display_avatar.url))
 				embed.add_field(name="Description:", value=message.content.lstrip('$'))
 				mail_message = await channel.send(embed=embed)
 				await message.channel.send("Your message has been sent to the Origins Server's Mods.")
@@ -205,6 +205,8 @@ async def on_message(message: discord.Message):
 			if not is_origin_mod(message):
 				g_prefix = parser.__getitem__(message.channel.guild.id)
 				if message.content.startswith(g_prefix):
+					origin_commands = [str(command) for command in client.get_cog('Origins').get_commands()]
+
 					if message.content.lstrip(g_prefix).startswith(tuple(origin_commands)):  # Do not change the tuple() or I will decapitate your ass.
 						await client.process_commands(message)
 						return
