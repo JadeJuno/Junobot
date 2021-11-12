@@ -52,7 +52,7 @@ class Commands(commands.Cog):
 		self.emoji_list = None
 
 	async def cog_check(self, ctx):
-		return ctx.channel.guild.id == 734127708488859831 or ctx.author.id in bot.config["owners_id"]
+		return ctx.channel.guild.id != 734127708488859831 or ctx.author.id in bot.config["origins_mods"]
 
 	async def reaction_decision(self, ctx, check_str):
 		check_message = await ctx.send(check_str)

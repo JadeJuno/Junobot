@@ -113,7 +113,6 @@ PD3: Also, please check if your datapack is zipped correctly (use `!zip-pack` on
 			icon_url=str(message.author.display_avatar.url))
 		embed.set_footer(text=f"{message.author.name}'s ID: {message.author.id}",
 						 icon_url="https://i.imgur.com/ZgG8oJn.png")
-		await log.send("", embed=embed)
 		await origin_log.send("", embed=embed)
 	else:
 		with io.StringIO() as file:
@@ -188,7 +187,7 @@ async def on_message(message: discord.Message):
 				await discord.Message.delete(message, delay=0)
 			if is_origin_mod(message):
 				pass
-			if len(message.attachments) != 0:
+			elif len(message.attachments) != 0:
 				if any(link in message.content for link in whitelisted_links):
 					return
 				elif message.attachments[0].content_type != "application/java-archive":
@@ -203,6 +202,7 @@ async def on_message(message: discord.Message):
 			await message.author.send("Please don't try to ping everyone. It doesn't work and it's annoying.")
 			await origin_log.send(
 				f"@everyone attempt by {message.author} ({message.author.id}) deleted in <#{message.channel.id}>:\n>>> {message.content}")
+			return
 		"""
 		else:
 			if not is_origin_mod(message):
@@ -227,8 +227,7 @@ async def on_message(message: discord.Message):
 				await client.process_commands(message)
 				return
 		"""
-	else:
-		await client.process_commands(message)
+	await client.process_commands(message)
 
 
 def embed_template(ctx, title=None, description=None, footer="", add_def_footer=True, image: str = "", icon: str = ""):
