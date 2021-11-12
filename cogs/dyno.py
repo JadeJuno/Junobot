@@ -1,6 +1,4 @@
-import googletrans
 from discord.ext import commands
-from googletrans import Translator
 
 import bot
 from config import parse_config
@@ -14,14 +12,7 @@ def is_in_command(ctx):
 
 class Dyno(commands.Cog):
 	def __init__(self, client):
-		self.activity = None
 		self.client = client
-		self.log = None
-		self.loop_interval = None
-		self.my_guild = None
-		self.translator = Translator()
-		self.lang_dict = googletrans.LANGUAGES
-		self.emoji_list = None
 
 	async def cog_check(self, ctx):
 		return ctx.channel.guild.id == 734127708488859831 or ctx.author.id in config["owners_id"]
@@ -45,6 +36,12 @@ class Dyno(commands.Cog):
 	@commands.command(aliases=('redirect-datapack-dev',))
 	async def rdd(self, ctx):
 		await bot.tryreply(ctx, "If you need help with a datapack-related issue, feel free to ask in <#810587422303584286> **by creating a thread**!\n\ne.g:", img='https://images-ext-2.discordapp.net/external/0q_wYRTA3vsAgb23pAWLJhX4qXS2KI_OjyNPtakr3bU/https/media.discordapp.net/attachments/901472574159077466/901472620820725810/creating-a-thread.gif')
+
+	@commands.command(aliases=('datapack-debugging-chart',))
+	async def rdd(self, ctx):
+		if ctx.channel.parent_id == 810587422303584286:
+			return await ctx.reply("This message is already in <#810587422303584286>...")
+		await bot.tryreply(ctx, 'https://media.discordapp.net/attachments/810587422303584286/867459174422020146/637612768361327151Datapack_Debugging_Chart_UPDATED.png')
 
 
 def setup(client):
