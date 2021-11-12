@@ -1,3 +1,4 @@
+import aiohttp
 import io
 import os
 import random
@@ -53,13 +54,20 @@ def check_if_self_hosted():
 
 
 async def tryreply(ctx, message, reply=False, img=None):
+	attach = None
+	if isinstance(img, str):
+		ext = img[-4:]
+		async with aiohttp.ClientSession() as session:
+			async with session.get(img) as resp:
+				data = io.BytesIO(await resp.read())
+				attach = discord.File(data, f'img{ext}')
 	try:
 		await ctx.message.reference.resolved.reply(message)
 	except AttributeError:
 		if reply:
-			await ctx.reply(message)
+			await ctx.reply(message, file=attach)
 		else:
-			await ctx.send(message)
+			await ctx.send(message, file=attach)
 
 
 parser = prefix.PrefixParser(default="g!")
