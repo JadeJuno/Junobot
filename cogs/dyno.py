@@ -39,9 +39,11 @@ class Dyno(commands.Cog):
 
 	@commands.command(aliases=('datapack-debugging-chart',))
 	async def rdd(self, ctx):
-		if ctx.channel.parent_id == 810587422303584286:
-			return await ctx.reply("This message is already in <#810587422303584286>...")
-		await bot.tryreply(ctx, 'https://media.discordapp.net/attachments/810587422303584286/867459174422020146/637612768361327151Datapack_Debugging_Chart_UPDATED.png')
+		try:
+			if ctx.channel.parent_id == 810587422303584286:
+				return await ctx.reply("This message is already in <#810587422303584286>...")
+		except AttributeError:
+			await bot.tryreply(ctx, 'https://media.discordapp.net/attachments/810587422303584286/867459174422020146/637612768361327151Datapack_Debugging_Chart_UPDATED.png')
 
 
 def setup(client):
