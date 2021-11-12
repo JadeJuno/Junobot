@@ -209,19 +209,20 @@ class Commands(commands.Cog):
 	@commands.command(aliases=("googleit", "googlesearch", "search"))
 	async def google(self, ctx, *, search_request):
 		message = await ctx.send(f"Searching for `{search_request}`...")
-		i = 1
-		output_str = ""
-		for url in googlesearch.search(search_request, stop=10):
-			if i < 10:
-				output_str += f"`{i}.`   **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**\n"
-			else:
-				output_str += f"`{i}.` **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**\n"
-			i += 1
-		if i == 1:
-			output_str = "**No results found.**"
-		embed = bot.embed_template(ctx, "Google", output_str[0:-1],
-								   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
-		await message.edit(content=None, embed=embed)
+		async with ctx.typing():
+			i = 1
+			output_str = ""
+			for url in googlesearch.search(search_request, stop=10):
+				if i < 10:
+					output_str += f"`{i}.`   **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**\n"
+				else:
+					output_str += f"`{i}.` **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**\n"
+				i += 1
+			if i == 1:
+				output_str = "**No results found.**"
+			embed = bot.embed_template(ctx, "Google", output_str[0:-1],
+									   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
+			await message.edit(content=None, embed=embed)
 
 	@commands.command(aliases=("detect", "language"))
 	async def lang_detect(self, ctx, *, user_message):
@@ -286,31 +287,32 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def wikipedia(self, ctx, *, search_request):
 		message = await ctx.send(f"Searching for {search_request}")
-		title = "Wikipedia"
-		description = ""
-		image = "https://i.imgur.com/7kT1Ydo.png"
-		try:
-			result = wikipedia.page(search_request)
-			# update: didn't go that bad, but it wasn't "well lol"
-			description = f"[{result.title}]({result.url})\n{result.summary[:300].strip()}..."
+		async with ctx.typing():
+			title = "Wikipedia"
+			description = ""
+			image = "https://i.imgur.com/7kT1Ydo.png"
 			try:
-				image = result.images[0]
-			except IndexError:
-				pass
-		except wikipedia.exceptions.DisambiguationError as e:
-			i = 1
-			for option in e.options[:9]:
-				i += 1
-				disamb_result = wikipedia.page(option, auto_suggest=False)
-				if disamb_result.url != "":
-					result_2 = f"[{disamb_result.title}]({disamb_result.url})"
-				else:
-					result_2 = f"{disamb_result} **URL Not Found**"
-				description += f"`{i}`: {result_2}\n"
-		except wikipedia.exceptions.PageError:
-			description = "Page not found."
-		embed = bot.embed_template(ctx, title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
-		await message.edit(content=None, embed=embed)
+				result = wikipedia.page(search_request)
+				# update: didn't go that bad, but it wasn't "well lol"
+				description = f"[{result.title}]({result.url})\n{result.summary[:300].strip()}..."
+				try:
+					image = result.images[0]
+				except IndexError:
+					pass
+			except wikipedia.exceptions.DisambiguationError as e:
+				i = 1
+				for option in e.options[:9]:
+					i += 1
+					disamb_result = wikipedia.page(option, auto_suggest=False)
+					if disamb_result.url != "":
+						result_2 = f"[{disamb_result.title}]({disamb_result.url})"
+					else:
+						result_2 = f"{disamb_result} **URL Not Found**"
+					description += f"`{i}`: {result_2}\n"
+			except wikipedia.exceptions.PageError:
+				description = "Page not found."
+			embed = bot.embed_template(ctx, title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
+			await message.edit(content=None, embed=embed)
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command()
