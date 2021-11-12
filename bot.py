@@ -11,10 +11,12 @@ from config import parse_config
 
 config = parse_config("./config.toml")
 
-# origin_commands = (
-#	"datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help", "whitelisted", "whitelist",
-#	"whitelistedlinks", 'transbee', 'wiki', 'channelonly', 'avd', "addonsvsdatapacks", 'addonvsdatapack', 'tias',
-#	'try-it-and-see', 'tryit', 'try-it', 'tryitandsee', 'transratkid', 'bibee', 'invite', 'escape')  # TO-DO: make a cog for all origin commands.
+"""
+origin_commands = (
+	"datapacks", "<#843834879736283156>", 'commands', "rule", "rules", "help", "whitelisted", "whitelist",
+	"whitelistedlinks", 'transbee', 'wiki', 'channelonly', 'avd', "addonsvsdatapacks", 'addonvsdatapack', 'tias',
+	'try-it-and-see', 'tryit', 'try-it', 'tryitandsee', 'transratkid', 'bibee', 'invite', 'escape')
+"""
 
 whitelisted_links = ["https://mediafire.com/", "https://github.com/", "https://planetminecraft.com/",
 					 "https://docs.google.com/", "https://curseforge.com/", "https://modrinth.com"]
@@ -30,11 +32,11 @@ def is_bot_owner(ctx):
 
 
 def is_in_origin_server(ctx):
-	return ctx.channel.guild.id == 734127708488859831
+	return ctx.channel.guild.id == 734127708488859831 or ctx.author.id in config["owners_id"]
 
 
 def isnt_in_origin_server(ctx):  # I hate that there's no way to inverse a command check...
-	return ctx.channel.guild.id != 734127708488859831
+	return ctx.channel.guild.id != 734127708488859831 or ctx.author.id in config["owners_id"]
 
 
 def is_origin_mod(ctx):
@@ -201,6 +203,7 @@ async def on_message(message: discord.Message):
 			await message.author.send("Please don't try to ping everyone. It doesn't work and it's annoying.")
 			await origin_log.send(
 				f"@everyone attempt by {message.author} ({message.author.id}) deleted in <#{message.channel.id}>:\n>>> {message.content}")
+		"""
 		else:
 			if not is_origin_mod(message):
 				g_prefix = parser.__getitem__(message.channel.guild.id)
@@ -223,6 +226,7 @@ async def on_message(message: discord.Message):
 			else:
 				await client.process_commands(message)
 				return
+		"""
 	else:
 		await client.process_commands(message)
 

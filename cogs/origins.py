@@ -26,6 +26,9 @@ class Origins(commands.Cog):
 		self.lang_dict = googletrans.LANGUAGES
 		self.emoji_list = None
 
+	async def cog_check(self, ctx):
+		return ctx.channel.guild.id == 734127708488859831 or ctx.author.id in config["owners_id"]
+
 	@commands.check(bot.is_origin_mod)
 	@commands.command()
 	async def sleep(self, ctx):
