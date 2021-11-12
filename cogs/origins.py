@@ -140,6 +140,18 @@ class Origins(commands.Cog):
 			case _:
 				await ctx.reply(f'"{tag_type}" is not a type of Minecraft tag.')
 
+	@commands.command()
+	async def escape(self, ctx, *, string=None):
+		if string is not None:
+			escaping = string.replace('"', '\\"')
+			await ctx.send(f"Here's your escaped string:\n`{escaping}`")
+			return
+		elif ctx.message.reference and string is None:
+			escaping = ctx.message.reference.resolved.content.replace('"', '\\"')
+			await ctx.send(f"Here's your escaped string:\n`{escaping}`")
+		else:
+			await ctx.send("Error: No string to escape.")
+
 
 def setup(client):
 	client.add_cog(Origins(client), override=True)

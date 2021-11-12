@@ -23,12 +23,13 @@ class Dyno(commands.Cog):
 		self.lang_dict = googletrans.LANGUAGES
 		self.emoji_list = None
 
-	@commands.check(bot.is_in_origin_server)
+	async def cog_check(self, ctx):
+		return ctx.channel.guild.id == 734127708488859831 or ctx.author.id in config["owners_id"]
+
 	@commands.command(aliases=("vanillaorigins",))
 	async def baseorigins(self, ctx):
 		await bot.tryreply(ctx, "https://discord.com/channels/734127708488859831/749571272635187342/894472367315759154")
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def template(self, ctx):
 		if is_in_command(ctx):
@@ -37,12 +38,10 @@ class Dyno(commands.Cog):
 			serious = self.client.get_emoji(821796259333537813)
 			await ctx.reply(f"Please use your commands in <#843834879736283156>, so the other channels don't get messy! {serious}")
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def namespace(self, ctx):
 		await bot.tryreply(ctx, "The namespace and the ID should only contain the following symbols:\n\n• `0123456789` Numbers\n• `abcdefghijklmnopqrstuvwxyz` Lowercase letters\n• `_` Underscore\n• `-` Hypen/minus\n• `.` Dot\n\n\nFor example:\n\n`data/Example namespace` is invalid because it has an uppercased letter and a space, whilst `data/example-namespace` is valid.\n\n\nFor more information, visit the official wiki page about namespaces: <https://minecraft.fandom.com/wiki/Namespaced_ID>")
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('redirect-datapack-dev',))
 	async def rdd(self, ctx):
 		await bot.tryreply(ctx, "If you need help with a datapack-related issue, feel free to ask in <#810587422303584286> **by creating a thread**!\n\ne.g:")
