@@ -35,13 +35,10 @@ class Origins(commands.Cog):
 		serious = self.client.get_emoji(821796259333537813)
 		await ctx.send(f"Golder!! Go to sleep! {serious}")
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def datapacks(self, ctx):
-		await bot.tryreply(ctx,
-						   'If you want to find datapacks with custom origins.py, balance changes, and recipes for the Orb of Origin to use, check out <#749571272635187342>.\n\nTo install a datapack, navigate to your world folder (found in `.minecraft/saves`) and drop the datapack as a ZIP file into the `datapacks` folder. The same process can be used on a server (the world folder would be on the root though), and if you are running a server. the datapack does *not* need to be installed by each user.\n\nWhen creating a single-player world, there is also a "Data Packs" button in the world creation screen. If you click this, you are able to drag datapacks directly into the Minecraft window to add them. Don\'t forget to move them from "available" to "selected" though. This allows you to install datapacks *before* a world is generated!\n\nIf you are looking for information on how to create datapacks yourself, type `!wiki` or `!tutorial` in <#843834879736283156>.')
+		await bot.tryreply(ctx, 'If you want to find datapacks with custom origins.py, balance changes, and recipes for the Orb of Origin to use, check out <#749571272635187342>.\n\nTo install a datapack, navigate to your world folder (found in `.minecraft/saves`) and drop the datapack as a ZIP file into the `datapacks` folder. The same process can be used on a server (the world folder would be on the root though), and if you are running a server. the datapack does *not* need to be installed by each user.\n\nWhen creating a single-player world, there is also a "Data Packs" button in the world creation screen. If you click this, you are able to drag datapacks directly into the Minecraft window to add them. Don\'t forget to move them from "available" to "selected" though. This allows you to install datapacks *before* a world is generated!\n\nIf you are looking for information on how to create datapacks yourself, type `!wiki` or `!tutorial` in <#843834879736283156>.')
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command(name="<#843834879736283156>", aliases=('commands',))
 	async def ch_commands(self, ctx):
 		if ctx.channel.id != 843834879736283156:
@@ -51,12 +48,10 @@ class Origins(commands.Cog):
 		else:
 			await ctx.reply("This message is already in <#843834879736283156>...")
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('tias', 'try-it-and-see', 'tryit', 'try-it'))
 	async def tryitandsee(self, ctx):
 		await bot.tryreply(ctx, "https://tryitands.ee")
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('rules',))
 	async def rule(self, ctx, rule_index: int):
 		if rule_index <= 0:
@@ -87,13 +82,11 @@ class Origins(commands.Cog):
 		if isinstance(error, commands.BadArgument):
 			await ctx.send("Error: the rule's index has to be a whole number.")
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=("avd", "addonsvsdatapacks"))
 	async def addonvsdatapack(self, ctx):
 		output = """When discussing datapacks and addons, it is important, for the sake of specificity, to understand the difference:\n\n**Addons**\nAddons are actual minecraft mods written in Java inside a .jar file\nThese add new features to the game and, in this case, the Origins Mod\nAdditionally, these are put into the `.minecraft/mods` folder\n\n**Datapacks**\n\nDatapacks are content packs that use existing features within minecraft\nThese are commonly written in JSON and using MCFunction files inside a zip folder\nAdditionally, these are localized to a specific minecraft world in the `.minecraft/saves/{worldname}/datapacks` folder\n\nMost Origins are Datapacks and can be located in #datapacks. Otherwise the origin may be an addon and can be found on curseforge."""
 		await bot.tryreply(ctx, output)
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=("ideasonly", "mediaonly", "suggestionsonly", "suggestiononly", "powersonly"))
 	async def channelonly(self, ctx):
 		replies = {
@@ -103,22 +96,11 @@ class Origins(commands.Cog):
 			734133482757816401: "This channel is only for posting suggestions for the Origins mod. If you want to suggest an idea for an origin, do so in <#798545973554315304>. If you wanna comment about a suggestion, create a thread for that.",
 			826144339041976321: "This channel is only for posting suggestions for the wiki of the Origins mod. If you want to suggest ideas for the Origins mod, do so in <#734133482757816401>, and if you wanna comment about a suggestion, create a thread for that."}
 
-		await bot.tryreply(ctx, replies[ctx.channel.id])
+		try:
+			await bot.tryreply(ctx, replies[ctx.channel.id])
+		except KeyError:
+			return
 
-		"""
-		if key is not None and ctx.channel.id not in replies.keys():
-			try:
-				await bot.tryreply(ctx, replies[key])
-			except KeyError:
-				return
-		else:
-			try:
-				await bot.tryreply(ctx, replies[ctx.channel.id])
-			except KeyError:
-				return
-		"""
-
-	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=("whitelisted", "whitelist"))
 	async def whitelistedlinks(self, ctx):
 		s = "\n".join(bot.whitelisted_links[:len(bot.whitelisted_links) // 2])
@@ -131,7 +113,6 @@ class Origins(commands.Cog):
 				await ctx.reply(
 					"Error: Due to the length of the list, it should be sent in DMs. So please enable DMs in this server or use this command in <#843834879736283156>.")
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def wiki(self, ctx, *, search=None):
 		if search is None:
@@ -141,14 +122,12 @@ class Origins(commands.Cog):
 			await bot.tryreply(ctx,
 							   f"https://origins.readthedocs.io/en/latest/search.html?q={search.replace(' ', '+')}")
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command()
 	async def transbee(self, ctx):
 		await ctx.send(random.choice((
 									 "https://images-ext-2.discordapp.net/external/ak_l1cuKUfVU-MUEGo57iF5_ELEZKbHFkdKUmpW1dEE/https/media.discordapp.net/attachments/756024207883894814/887514851356835880/886660055439650897.png",
 									 "https://cdn.discordapp.com/emojis/899508099977719888.png")))
 
-	@commands.check(bot.is_in_origin_server)
 	@commands.command(aliases=('tag',))
 	async def tags(self, ctx, *, tag_type):
 		match tag_type.lower():

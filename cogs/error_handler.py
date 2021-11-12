@@ -18,7 +18,6 @@ class CommandErrorHandler(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
-		print("Error Raised")
 		if hasattr(ctx.command, 'on_error'):
 			return
 
@@ -42,9 +41,10 @@ class CommandErrorHandler(commands.Cog):
 
 		elif isinstance(error, commands.CheckFailure):
 			cmd = ctx.command
-			for check in cmd.checks:
-				if "is_in_origin_server" in str(check):
-					await ctx.reply(f'Error: Command "{cmd.name}" only works in the Origins server.')
+			if (cmd.cog_name.lower() == "origins" or cmd.cog_name.lower() == "dyno") and ctx.channel.guild.id != 734127708488859831:
+				await ctx.reply(f'Error: Command "{cmd.name}" only works in the Origins server.')
+			elif cmd.cog_name.lower() == "commands" and ctx.channel.guild.id == 734127708488859831:
+				await ctx.reply(f'Error: The command "{cmd.name}" is disabled in this server server.')
 
 		elif isinstance(error, commands.NoPrivateMessage):
 			try:
@@ -57,7 +57,6 @@ class CommandErrorHandler(commands.Cog):
 			await ctx.reply(f"Error: Missing argument `{missing_param}`.")
 
 		elif isinstance(error, commands.MissingPermissions):
-			print("No 2: Electric Boogaloo")
 			missing_perm = error.missing_permissions[0].title()
 			await ctx.reply(f'Error: You are missing the `{missing_perm}` permission to run this command.')
 
