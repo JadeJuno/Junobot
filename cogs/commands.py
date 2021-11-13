@@ -222,7 +222,7 @@ class Commands(commands.Cog):
 				output_str = "**No results found.**"
 			embed = bot.embed_template(ctx, "Google", output_str[0:-1],
 									   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
-			await message.edit(content=None, embed=embed)
+			return await message.edit(content=None, embed=embed)
 
 	@commands.command(aliases=("detect", "language"))
 	async def lang_detect(self, ctx, *, user_message):

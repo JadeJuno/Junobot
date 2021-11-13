@@ -1,4 +1,3 @@
-import aiohttp
 import io
 import os
 import random
@@ -57,13 +56,11 @@ async def tryreply(ctx, message, reply=False, img=None):
 	attach = None
 	if isinstance(img, str):
 		async with ctx.typing():
-			ext = img[-4:]
-			async with aiohttp.ClientSession() as session:
-				async with session.get(img) as resp:
-					data = io.BytesIO(await resp.read())
-					attach = discord.File(data, f'img{ext}')
+			with open(f"assets/{img}.gif", 'rb') as f:
+				file = f.read()
+				attach = discord.File(file)
 	try:
-		await ctx.message.reference.resolved.reply(message)
+		await ctx.message.reference.resolved.reply(message, file=attach)
 	except AttributeError:
 		if reply:
 			await ctx.reply(message, file=attach)

@@ -42,9 +42,9 @@ class Dyno(commands.Cog):
 		try:
 			if ctx.channel.parent_id == 810587422303584286:
 				return await ctx.reply("This message is already in <#810587422303584286>...")
-			await bot.tryreply(ctx, "If you need help with a datapack-related issue, feel free to ask in <#810587422303584286> **by creating a thread**!\n\ne.g:", img='https://images-ext-2.discordapp.net/external/0q_wYRTA3vsAgb23pAWLJhX4qXS2KI_OjyNPtakr3bU/https/media.discordapp.net/attachments/901472574159077466/901472620820725810/creating-a-thread.gif')
+			await bot.tryreply(ctx, "If you need help with a datapack-related issue, feel free to ask in <#810587422303584286> **by creating a thread**!\n\ne.g:", img='creating-a-thread.gif')
 		except AttributeError:
-			await bot.tryreply(ctx, "If you need help with a datapack-related issue, feel free to ask in <#810587422303584286> **by creating a thread**!\n\ne.g:", img='https://images-ext-2.discordapp.net/external/0q_wYRTA3vsAgb23pAWLJhX4qXS2KI_OjyNPtakr3bU/https/media.discordapp.net/attachments/901472574159077466/901472620820725810/creating-a-thread.gif')
+			await bot.tryreply(ctx, "If you need help with a datapack-related issue, feel free to ask in <#810587422303584286> **by creating a thread**!\n\ne.g:", img='creating-a-thread.gif')
 
 
 def setup(client):
