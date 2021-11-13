@@ -58,12 +58,12 @@ async def tryreply(ctx, message, reply=False, img=None):
 		if isinstance(img, str):
 			attach = discord.File(fp=f"assets/{img}")
 		try:
-			await ctx.message.reference.resolved.reply(message, file=attach)
+			return await ctx.message.reference.resolved.reply(message, file=attach)
 		except AttributeError:
 			if reply:
-				await ctx.reply(message, file=attach)
+				return await ctx.reply(message, file=attach)
 			else:
-				await ctx.send(message, file=attach)
+				return await ctx.send(message, file=attach)
 
 
 parser = prefix.PrefixParser(default="g!")
