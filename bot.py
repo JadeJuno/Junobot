@@ -301,6 +301,12 @@ async def prefix(ctx, new_prefix=None):
 				raise commands.MissingPermissions(missing_permissions=['administrator'])
 
 
+@client.check(is_bot_owner)
+@client.command()
+async def print_type(ctx):
+	await ctx.send(ctx.channel.type)
+
+
 if __name__ == "__main__":
 	for filename in os.listdir('./cogs'):
 		if filename.endswith('.py'):
