@@ -53,19 +53,17 @@ def check_if_self_hosted():
 
 
 async def tryreply(ctx, message, reply=False, img=None):
-	attach = None
-	if isinstance(img, str):
-		async with ctx.typing():
-			with open(f"assets/{img}", 'rb') as f:
-				file = f.read()
-				attach = discord.File(fp=f"assets/{img}")
-	try:
-		await ctx.message.reference.resolved.reply(message, file=attach)
-	except AttributeError:
-		if reply:
-			await ctx.reply(message, file=attach)
-		else:
-			await ctx.send(message, file=attach)
+	async with ctx.typing():
+		attach = None
+		if isinstance(img, str):
+			attach = discord.File(fp=f"assets/{img}")
+		try:
+			await ctx.message.reference.resolved.reply(message, file=attach)
+		except AttributeError:
+			if reply:
+				await ctx.reply(message, file=attach)
+			else:
+				await ctx.send(message, file=attach)
 
 
 parser = prefix.PrefixParser(default="g!")
