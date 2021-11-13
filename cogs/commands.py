@@ -429,7 +429,7 @@ class Commands(commands.Cog):
 	async def auto_error(self, ctx):
 		await ctx.send(f"{int('A')}")
 
-	@commands.check(bot.is_origin_mod)
+	@commands.check(bot.is_bot_owner)
 	@commands.command()
 	async def format(self, ctx):
 		if ctx.message.reference:

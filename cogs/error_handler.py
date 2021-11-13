@@ -39,13 +39,6 @@ class CommandErrorHandler(commands.Cog):
 		if isinstance(error, commands.DisabledCommand):
 			await ctx.reply(f'`{ctx.prefix}{ctx.command}` has been disabled.')
 
-		elif isinstance(error, commands.CheckFailure):
-			cmd = ctx.command
-			if (cmd.cog_name.lower() == "origins" or cmd.cog_name.lower() == "dyno") and ctx.channel.guild.id != 734127708488859831:
-				await ctx.reply(f'Error: Command "{cmd.name}" only works in the Origins server.')
-			elif cmd.cog_name.lower() == "commands" and ctx.channel.guild.id == 734127708488859831:
-				await ctx.reply(f'Error: The command "{cmd.name}" is disabled in this server server.')
-
 		elif isinstance(error, commands.NoPrivateMessage):
 			try:
 				await ctx.author.send(f'`{ctx.prefix}{ctx.command}` can not be used in Private Messages.')

@@ -1,7 +1,5 @@
-import io
 import os
 import random
-import zipfile
 
 import discord
 from discord.ext import commands
@@ -29,18 +27,6 @@ whitelisted_links = tuple(whitelisted_links)
 
 def is_bot_owner(ctx):
 	return ctx.author.id in config["owners_id"]
-
-
-def is_in_origin_server(ctx):
-	return ctx.channel.guild.id == 734127708488859831 or ctx.author.id in config["owners_id"]
-
-
-def isnt_in_origin_server(ctx):  # I hate that there's no way to inverse a command check...
-	return ctx.channel.guild.id != 734127708488859831 or ctx.author.id in config["owners_id"]
-
-
-def is_origin_mod(ctx):
-	return ctx.author.id in config["origins_mods"]
 
 
 def check_if_self_hosted():
@@ -82,134 +68,6 @@ async def on_ready():
 	log = client.get_channel(config["log_channel"])
 
 
-async def autodelete(message: discord.Message):
-	origin_log = client.get_channel(838025060983767051)
-	content = message.content
-	log_message = f"**Message:** \n\n> {content}\n\nAttachment List Length: {len(message.attachments)}"
-	if len(message.attachments) != 0:
-		log_message += f"\nAttachment type: {message.attachments[0].content_type}"
-		if message.attachments[0].content_type == 'application/zip':
-			url = await message.attachments[0].read()
-			zip_from_bytes = zipfile.ZipFile(io.BytesIO(url), "r")
-			log_message += f"\n`pack.mcmeta` in zip: {'pack.mcmeta' in zip_from_bytes.namelist()}"
-	if message.reference:
-		log_message += f"\nReferenced Message: {message.reference.jump_url}"
-	await discord.Message.delete(message, delay=0)
-	try:
-		if message.content.startswith(("!", "?")):
-			await message.author.send(
-				f"Your message in <#{message.channel.id}> was automatically removed because it was a command. Please use commands in <#843834879736283156>.")
-		else:
-			await message.author.send(
-				f"""Your message in <#{message.channel.id}> was automatically removed because it did not contain a {'''.zip file, the zip file was zipped incorrectly or it didn't include a''' if message.channel.id == 749571272635187342 else '.jar file or a'} whitelisted link.
-				
-PD: If your message got deleted yet you had a link or a {'zip file' if message.channel.id == 749571272635187342 else 'jar file'}, please DM the creator of the bot, <@!498606108836102164>
-PD2: If you wanna suggest another link to whitelist, you are also allowed to DM Golder. If you wanna see the full commands list, use `?whitelisted` in <#843834879736283156>
-PD3: Also, please check if your datapack is zipped correctly (use `!zip-pack` on <#843834879736283156>). If you're using a Mac Computer it'll be incorrectly zipped anyways, so if you need help zipping it you can DM <@!498606108836102164> too."""
-			)
-		log_message += "\nDM sent: True"
-	except discord.errors.Forbidden:
-		log_message += "\nDM sent: False"
-	if len(log_message) <= 4096:
-		embed = discord.Embed(description=log_message, color=random.randint(0, 0xffffff))
-		embed.set_author(
-			name=f"Message by {message.author.name}#{message.author.discriminator} deleted in #{message.channel.name}.",
-			icon_url=str(message.author.display_avatar.url))
-		embed.set_footer(text=f"{message.author.name}'s ID: {message.author.id}",
-						 icon_url="https://i.imgur.com/ZgG8oJn.png")
-		await origin_log.send("", embed=embed)
-	else:
-		with io.StringIO() as file:
-			file.write(content)
-			file.seek(0)
-		log_message = f"Message by {message.author.name}#{message.author.discriminator} ({message.author.id}) deleted in <#{message.channel.id}>.\nThe message would make the log exceed the 2000 character limit. Sending as Text Document:"
-		if len(message.attachments) != 0:
-			log_message += f"\nAttachment type: {message.attachments[0].content_type}"
-		if message.reference:
-			log_message += f"\nReferenced Message: {message.reference.jump_url}"
-		await origin_log.send(log_message, file=discord.File(fp=file, filename='Log.txt'))
-
-
-@client.event
-async def on_message(message: discord.Message):
-	if message.guild is None:  # Modmail
-		if message.author.bot:
-			return
-		modmail = False
-		for guild in message.author.mutual_guilds:
-			if guild.id == 734127708488859831:
-				modmail = True
-				break
-		if modmail:
-			if message.content.startswith("$"):
-				channel = client.get_channel(814542424793153556)
-				embed = discord.Embed(title=f"{message.author.name}#{message.author.discriminator}")
-				embed.set_author(name=message.author.id, icon_url=str(message.author.display_avatar.url))
-				embed.add_field(name="Description:", value=message.content.lstrip('$'))
-				mail_message = await channel.send(embed=embed)
-				await message.channel.send("Your message has been sent to the Origins Server's Mods.")
-
-				def reply_check(msg):
-					try:
-						res = msg.reference.message_id == mail_message.id and msg.channel.id == 814542424793153556
-					except AttributeError:
-						res = False
-					return res
-
-				reply = await client.wait_for('message', check=reply_check)
-				await message.channel.send(f"{reply.content}")
-				await reply.add_reaction("\u2705")
-			else:
-				await message.channel.send(
-					"If you want to contact the Origins Server's Modmail, you have to use `$` as a prefix to your message.")
-			return
-	elif is_in_origin_server(message):
-		origin_log = client.get_channel(838025060983767051)
-		if message.channel.id == 749571272635187342:  # Datapack check
-			if message.author.bot:
-				await discord.Message.delete(message, delay=0)
-			if is_origin_mod(message):
-				pass
-			elif len(message.attachments) != 0:
-				if any(link in message.content for link in whitelisted_links):
-					return
-				elif message.attachments[0].content_type == 'application/zip':
-					url = await message.attachments[0].read()
-					zip_from_bytes = zipfile.ZipFile(io.BytesIO(url), "r")
-					if "pack.mcmeta" not in zip_from_bytes.namelist():
-						await autodelete(message)
-						return
-				else:
-					await autodelete(message)
-					return
-			else:
-				if not any(link in message.content for link in whitelisted_links):
-					await autodelete(message)
-					return
-		elif message.channel.id == 848428304003366912:  # Addon check
-			if message.author.bot:
-				await discord.Message.delete(message, delay=0)
-			if is_origin_mod(message):
-				pass
-			elif len(message.attachments) != 0:
-				if any(link in message.content for link in whitelisted_links):
-					return
-				elif message.attachments[0].content_type != "application/java-archive":
-					await autodelete(message)
-					return
-			else:
-				if not any(link in message.content for link in whitelisted_links):
-					await autodelete(message)
-					return
-		elif "@everyone" in message.content or "@here" in message.content:
-			await discord.Message.delete(message, delay=0)
-			await message.author.send("Please don't try to ping everyone. It doesn't work and it's annoying.")
-			await origin_log.send(
-				f"@everyone attempt by {message.author} ({message.author.id}) deleted in <#{message.channel.id}>:\n>>> {message.content}")
-			return
-	await client.process_commands(message)
-
-
 def embed_template(ctx, title=None, description=None, footer="", add_def_footer=True, image: str = "", icon: str = ""):
 	embed = discord.Embed(description=description, color=random.randint(0, 0xffffff))
 	if icon != "":
@@ -232,53 +90,38 @@ def embed_template(ctx, title=None, description=None, footer="", add_def_footer=
 
 @client.command(name="help")
 async def _help(ctx, command=None):
-	if isnt_in_origin_server(ctx) or is_origin_mod(ctx):
-		mod_commands = ("ban", "clear", "kick", "pin", "unban")
-		if command is None:
-			title = "Commands"
-			with open("help_texts/general_help.txt", "r", encoding='utf-8') as file:
-				help_text = file.read()
-			if ctx.author.guild_permissions.administrator:
-				with open("help_texts/mod_help.txt", "r", encoding='utf-8') as file:
-					help_text += file.read()
-			if is_in_origin_server(ctx):
-				with open("help_texts/origin_help.txt", "r", encoding='utf-8') as file:
-					origin_help = file.read().split('\n\n')[0]
-					help_text += f"\n\n**Origins Commands:**\n{origin_help}"
-			footer = "\n<>=Necessary, []=optional."
-		else:
-			command = command.lower()
-			if command in mod_commands:
-				if ctx.author.guild_permissions.administrator:
-					title = command.capitalize()
-					with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
-						help_text = file.read()
-					footer = "\n<>=Necessary, []=optional."
-				else:
-					title = "Error!"
-					help_text = f"You don't have permissions to use `{command}`"
-					footer = ""
-			else:
-				try:
-					title = command.capitalize()
-					with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
-						help_text = file.read()
-					footer = "\n<>=Necessary, []=optional."
-				except FileNotFoundError:
-					title = "Error!"
-					help_text = "Command not found."
-					footer = ""
-		embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix), footer, add_def_footer=True)
-	else:
+	mod_commands = ("ban", "clear", "kick", "pin", "unban")
+	if command is None:
 		title = "Commands"
-		with open("help_texts/origin_help.txt", "r", encoding='utf-8') as file:
+		with open("help_texts/general_help.txt", "r", encoding='utf-8') as file:
 			help_text = file.read()
-		footer = "\n<>=Necessary, []=optional.\nGøldbot was created by Golder06#7041."
-		shameless_promotion = random.choices((
-			'~~But you can always add me to your server with this link wink wink <https://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot>~~',
-			''), (1, 10))[0]
-		embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix, shameless_promotion=shameless_promotion),
-							   footer, add_def_footer=False)
+		if ctx.author.guild_permissions.administrator:
+			with open("help_texts/mod_help.txt", "r", encoding='utf-8') as file:
+				help_text += file.read()
+		footer = "\n<>=Necessary, []=optional."
+	else:
+		command = command.lower()
+		if command in mod_commands:
+			if ctx.author.guild_permissions.administrator:
+				title = command.capitalize()
+				with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
+					help_text = file.read()
+				footer = "\n<>=Necessary, []=optional."
+			else:
+				title = "Error!"
+				help_text = f"You don't have permissions to use `{command}`"
+				footer = ""
+		else:
+			try:
+				title = command.capitalize()
+				with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
+					help_text = file.read()
+				footer = "\n<>=Necessary, []=optional."
+			except FileNotFoundError:
+				title = "Error!"
+				help_text = "Command not found."
+				footer = ""
+	embed = embed_template(ctx, title, help_text.format(prefix=ctx.prefix), footer, add_def_footer=True)
 	await ctx.send(embed=embed)
 
 
@@ -297,12 +140,6 @@ async def prefix(ctx, new_prefix=None):
 					await ctx.send(f"Prefix changed to `{new_prefix}`!")
 			else:
 				raise commands.MissingPermissions(missing_permissions=['administrator'])
-
-
-@client.command()
-async def print_type(ctx):
-	if is_bot_owner(ctx):
-		await ctx.send(ctx.channel.type)
 
 
 if __name__ == "__main__":
