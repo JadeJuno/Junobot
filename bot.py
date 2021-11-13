@@ -56,7 +56,7 @@ async def tryreply(ctx, message, reply=False, img=None):
 	attach = None
 	if isinstance(img, str):
 		async with ctx.typing():
-			with open(f"assets/{img}, 'rb') as f:
+			with open(f"assets/{img}", 'rb') as f:
 				file = f.read()
 				attach = discord.File(file)
 	try:
