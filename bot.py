@@ -58,7 +58,7 @@ async def tryreply(ctx, message, reply=False, img=None):
 		async with ctx.typing():
 			with open(f"assets/{img}", 'rb') as f:
 				file = f.read()
-				attach = discord.File(file)
+				attach = discord.File(fp=f"assets/{img}")
 	try:
 		await ctx.message.reference.resolved.reply(message, file=attach)
 	except AttributeError:
