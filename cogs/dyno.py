@@ -39,12 +39,9 @@ class Dyno(commands.Cog):
 
 	@commands.command(aliases=('redirect-datapack-dev',))
 	async def rdd(self, ctx):
-		try:
-			if ctx.channel.parent_id == 810587422303584286:
-				return await ctx.reply("This message is already in <#810587422303584286>...")
-			await bot.tryreply(ctx, "If you need help with a datapack-related issue, feel free to ask in <#810587422303584286> **by creating a thread**!\n\ne.g:", img='creating-a-thread.gif')
-		except AttributeError:
-			await bot.tryreply(ctx, "If you need help with a datapack-related issue, feel free to ask in <#810587422303584286> **by creating a thread**!\n\ne.g:", img='creating-a-thread.gif')
+		if ctx.channel.type != 'text' and ctx.channel.parent_id == 810587422303584286:
+			return await ctx.reply("This message is already in <#810587422303584286>...")
+		await bot.tryreply(ctx, "If you need help with a datapack-related issue, feel free to ask in <#810587422303584286> **by creating a thread**!\n\ne.g:", img='creating-a-thread.gif')
 
 
 def setup(client):
