@@ -11,7 +11,7 @@ from discord.ext import commands, tasks
 from googletrans import Translator
 from iso639 import languages
 
-import bot
+import botutilities
 import googlesearch
 from morsecode import MorseCode
 from oxforddict import get_definition
@@ -38,6 +38,8 @@ def get_emoji_list(emojis):
 				return_list[i], return_list[j] = return_list[j], return_list[i]
 	return return_list
 
+# TODO: Move stuff from here to new cogs.
+
 
 class Commands(commands.Cog):
 	def __init__(self, client):
@@ -50,9 +52,6 @@ class Commands(commands.Cog):
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
 		self.emoji_list = None
-
-	async def cog_check(self, ctx):
-		return ctx.channel.guild.id != 734127708488859831 or ctx.author.id in bot.config["origins_mods"]
 
 	async def reaction_decision(self, ctx, check_str):
 		check_message = await ctx.send(check_str)
@@ -83,8 +82,8 @@ class Commands(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_ready(self):
-		self.log = self.client.get_channel(bot.config["log_channel"])
-		self.my_guild = self.client.get_guild(bot.config["guild_id"])
+		self.log = self.client.get_channel(botutilities.config["log_channel"])
+		self.my_guild = self.client.get_guild(botutilities.config["guild_id"])
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
 		print(f'Bot is ready.')
 		print(f"bot created by Golder06#7041.")
@@ -109,6 +108,11 @@ class Commands(commands.Cog):
 		else:
 			prediction = "That's not a question..."
 		await ctx.send(f'Question: {question}\nThe ***:8ball:BALL*** says: {prediction}')
+
+	@commands.check(botutilities.is_not_report_banned)
+	@commands.command(aliases=('bugreport', 'reportbug', 'bug-report', 'report-bug'))
+	async def report(self, message):
+		return
 
 	@commands.command()
 	async def choose(self, ctx, *, options):
@@ -198,11 +202,11 @@ class Commands(commands.Cog):
 			senses = [x for y in senses for x in y]
 			definitions = [definition['definitions'][0] for definition in senses]
 
-			emb = bot.embed_template(ctx, title=f'Definition of "{query.title()}":',
+			emb = botutilities.embed_template(ctx, title=f'Definition of "{query.title()}":',
 									 description=f"{definitions[0].capitalize()}")
 
 		else:
-			emb = bot.embed_template(ctx, title="Error:", description=f'Definition for "{query.title()}" not found.')
+			emb = botutilities.embed_template(ctx, title="Error:", description=f'Definition for "{query.title()}" not found.')
 
 		await message.edit(content="", embed=emb)
 
@@ -220,7 +224,7 @@ class Commands(commands.Cog):
 				i += 1
 			if i == 1:
 				output_str = "**No results found.**"
-			embed = bot.embed_template(ctx, "Google", output_str[0:-1],
+			embed = botutilities.embed_template(ctx, "Google", output_str[0:-1],
 									   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 			return await message.edit(content=None, embed=embed)
 
@@ -311,15 +315,15 @@ class Commands(commands.Cog):
 					description += f"`{i}`: {result_2}\n"
 			except wikipedia.exceptions.PageError:
 				description = "Page not found."
-			embed = bot.embed_template(ctx, title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
+			embed = botutilities.embed_template(ctx, title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
 			await message.edit(content=None, embed=embed)
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command()
 	async def clear(self, ctx, amount: int):
 		await ctx.message.delete()
-		await ctx.channel.purge(limit=amount)
-		clear_message = await ctx.send(f'Cleared {amount} messages.')
+		deleted_messages = await ctx.channel.purge(limit=amount)
+		clear_message = await ctx.send(f'Cleared {len(deleted_messages)} messages.')
 		await asyncio.sleep(2)
 		await clear_message.delete()
 
@@ -408,7 +412,7 @@ class Commands(commands.Cog):
 		await ctx.guild.me.edit(nick=nickname)
 		await ctx.send(f'Successfully changed my nickname to "{nickname}"')
 
-	@commands.check(bot.is_bot_owner)
+	@commands.check(botutilities.is_bot_owner)
 	@commands.command()
 	async def test(self, ctx):
 		print("TEST")
@@ -422,14 +426,19 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 2", value="value 2")
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
-		await ctx.send(f"`{bot.parser.__getitem__(str(ctx.guild.id))}`")
+		await ctx.send(f"`{botutilities.parser.__getitem__(str(ctx.guild.id))}`")
 
-	@commands.check(bot.is_bot_owner)
+	@commands.check(botutilities.is_bot_owner)
 	@commands.command(aliases=['autoerror'])
 	async def auto_error(self, ctx):
 		await ctx.send(f"{int('A')}")
 
-	@commands.check(bot.is_bot_owner)
+	@commands.check(botutilities.is_bot_owner)
+	@commands.command()
+	async def banreport(self, ctx, user):
+		return
+
+	@commands.check(botutilities.is_bot_owner)
 	@commands.command()
 	async def format(self, ctx):
 		if ctx.message.reference:
