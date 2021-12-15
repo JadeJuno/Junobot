@@ -15,7 +15,7 @@ def is_bot_owner(ctx):
 
 
 def is_not_report_banned(ctx):
-	return ctx.author.id not in get_report_banned()
+	return ctx.author.id not in await get_report_banned()
 
 
 def check_if_self_hosted():
