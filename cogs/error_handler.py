@@ -4,7 +4,7 @@ import traceback
 import discord
 from discord.ext import commands
 
-from bot import config
+import botutilities
 
 
 class CommandErrorHandler(commands.Cog):
@@ -14,7 +14,7 @@ class CommandErrorHandler(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_ready(self):
-		self.log = self.client.get_channel(config["log_channel"])
+		self.log = self.client.get_channel(botutilities.config["log_channel"])
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
@@ -60,7 +60,7 @@ class CommandErrorHandler(commands.Cog):
 			await check_message.add_reaction("\U0000274c")
 
 			def check(r, u):
-				user_check = (u.id == ctx.author.id or u.guild_permissions.administrator or u.id in config[
+				user_check = (u.id == ctx.author.id or u.guild_permissions.administrator or u.id in botutilities.config[
 					"owners_id"]) and not u.bot
 				return user_check and r.message == check_message and str(r.emoji) in ("\U00002705", "\U0000274c")
 
@@ -71,7 +71,7 @@ class CommandErrorHandler(commands.Cog):
 				for line in tback:
 					str_tback += line
 				await self.log.send(
-					f'<@498606108836102164> Uncatched Exception in "{ctx.message.channel.guild.name}": ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`')
+					f'{botutilities.ping_all_bot_owners()}\n Uncatched Exception in "{ctx.guild.name}": ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`')
 				return await ctx.send("Error Message sent.")
 			elif str(reaction.emoji) == "\U0000274c":
 				return await ctx.send("Understood.")

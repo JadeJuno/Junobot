@@ -138,7 +138,7 @@ class Commands(commands.Cog):
 		else:
 			attachments = None
 		embed = botutilities.embed_template(ctx, title=f"{ctx.author.name}#{ctx.author.discriminator}", description=f">>> {message}", footer=f"User ID: {ctx.author.id}", add_def_footer=False, icon=ctx.author.display_avatar.url)
-		await ctx.send(f"**Reported from {ctx.guild}:**", embed=embed, attachments=attachments)
+		await ctx.send(f"{botutilities.ping_all_bot_owners()}\n**Reported from {ctx.guild.name}:**", embed=embed, attachments=attachments)
 
 	@commands.command()
 	async def choose(self, ctx, *, options):
