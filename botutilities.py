@@ -1,18 +1,17 @@
-import os
 import random
 
 import discord
-from discord.ext import commands
 
-import prefix
+import bot
 from config import parse_config
 
+parser = bot.parser
+
 config = parse_config("./config.toml")
-parser = prefix.PrefixParser(default="g!")
 
 
 def is_bot_owner(ctx):
-	return ctx.author.id in config["owners_id"]
+	return get_report_banned(ctx.author.id)
 
 
 def is_not_report_banned(ctx):
@@ -21,8 +20,8 @@ def is_not_report_banned(ctx):
 
 def check_if_self_hosted():
 	try:
-		with open(r"C:\Users\cient\OneDrive\Escritorio\Don't delete this text file.txt", "r") as f:  # No, "cient" is not my real name, idk why my PC's username is "cient".
-			str(f.read())
+		with open(r"C:\Users\cient\OneDrive\Escritorio\Don't delete this text file.txt", "r"):  # No, "cient" is not my real name, idk why my PC's username is "cient".
+			pass
 		return True
 	except FileNotFoundError:
 		return False
@@ -60,3 +59,22 @@ async def tryreply(ctx, message, reply=False, img=None):
 				return await ctx.reply(message, file=attach)
 			else:
 				return await ctx.send(message, file=attach)
+
+
+async def get_report_banned(user_id: int):
+	ban_list = bot.client.get_channel(920775229008142356)
+	messages = []
+	async for msg in ban_list.history():
+		if msg.author == bot.client.user:
+			try:
+				messages.append(int(msg.content))
+			except ValueError:
+				continue
+	return user_id in messages
+
+
+def ping_all_bot_owners():
+	owners_pings = []
+	for snfk_id in config["owners_id"]:  # "snfk" = "snowflake".
+		owners_pings.append(f"<@{snfk_id}>")
+	return ', '.join(owners_pings)

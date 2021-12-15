@@ -7,3 +7,4 @@ discord~=1.0.1
 iso-639==0.4.5
 requests~=2.26.0
 git+https://github.com/Rapptz/discord.py
+Pillow~=8.4.0

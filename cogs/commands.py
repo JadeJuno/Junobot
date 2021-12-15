@@ -3,6 +3,7 @@ import io
 import os
 import random
 from datetime import datetime, timedelta
+from PIL import Image
 
 import discord
 import googletrans
@@ -38,7 +39,7 @@ def get_emoji_list(emojis):
 				return_list[i], return_list[j] = return_list[j], return_list[i]
 	return return_list
 
-# TODO: Move stuff from here to new cogs.
+# TODO: Move stuff from here to new separate cogs.
 
 
 class Commands(commands.Cog):
@@ -109,22 +110,47 @@ class Commands(commands.Cog):
 			prediction = "That's not a question..."
 		await ctx.send(f'Question: {question}\nThe ***:8ball:BALL*** says: {prediction}')
 
+	"""
+	@commands.command()
+	async def color(self, ctx, hex_code):
+		if not hex_code.startswith("#"):
+			hex_code = f"#{hex_code}"
+		try:
+			int(hex_code[1:], 16)
+		except ValueError:
+			await ctx.send(f"Error: `{hex_code}` is not a valid Hex Color")
+			return
+		if len(hex_code) > 7:
+			await ctx.send(f"Error: `{hex_code}` is not a valid Hex Color")
+			return
+		embed = botutilities.embed_template(ctx, footer=hex_code)
+		await ctx.send()
+	"""
+
 	@commands.check(botutilities.is_not_report_banned)
 	@commands.command(aliases=('bugreport', 'reportbug', 'bug-report', 'report-bug'))
-	async def report(self, message):
-		return
+	async def report(self, ctx, *, message):
+		if len(ctx.attachments) > 0:
+			attachments = []
+			for attachment in ctx.attachments:
+				spoiler = attachment.is_spoiler
+				attachments.append(attachment.to_file(spoiler=spoiler))
+		else:
+			attachments = None
+		embed = botutilities.embed_template(ctx, title=f"{ctx.author.name}#{ctx.author.discriminator}", description=f">>> {message}", footer=f"User ID: {ctx.author.id}", add_def_footer=False, icon=ctx.author.display_avatar.url)
+		await ctx.send(f"**Reported from {ctx.guild}:**", embed=embed, attachments=attachments)
 
 	@commands.command()
 	async def choose(self, ctx, *, options):
-		divided_options = options.split(",")
+		divided_options: list = options.split(",")
 		if len(divided_options) >= 2:
 			for option in divided_options:
 				if not option:
-					divided_options.pop(option)
-			await ctx.send(f'Gøldbot chooses: `{random.choice(divided_options).strip()}`.')
+					divided_options.remove(option)
+			await ctx.send(f"Gøldbot chooses: `{random.choice(divided_options).strip()}`.")
 		else:
 			await ctx.send(
-				f'I can\'t just choose between {len(divided_options)} choice. *(to divide the choices you should put a comma between them)*.')
+				f"I can't just choose between {len(divided_options)} choice. *(to divide the choices you should put a comma between them)*.")
 
 	@commands.command(aliases=("coinflip", "flipcoin"))
 	async def flip(self, ctx):
@@ -134,7 +160,7 @@ class Commands(commands.Cog):
 	async def roll(self, ctx, faces=6.0):
 		if type(faces) is float and faces != int(faces):
 			await ctx.send(
-				f"Error: You can't roll a die with a non-whole amout of faces, you {faces} dimensional being!")
+				f"Error: You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
 			return
 		if faces > 2:
 			try:
@@ -409,8 +435,64 @@ class Commands(commands.Cog):
 	@commands.has_permissions(manage_nicknames=True)
 	@commands.command(aliases=("rename",))
 	async def nickname(self, ctx, *, nickname):
+		if len(nickname) > 32:
+			await ctx.send(f'Error: "{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
+			return
 		await ctx.guild.me.edit(nick=nickname)
-		await ctx.send(f'Successfully changed my nickname to "{nickname}"')
+		await ctx.send(f'Successfully changed my nickname to "{nickname}".')
+
+	@commands.command()
+	async def prefix(self, ctx, new_prefix=None):
+		if not botutilities.check_if_self_hosted():
+			if new_prefix is None:
+				await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
+			else:
+				if ctx.author.guild_permissions.administrator:
+					if new_prefix.lower() == "reset":
+						botutilities.parser.update(str(ctx.guild.id), botutilities.parser.default)
+						await ctx.send(f"Prefix reset back to `{botutilities.parser.default}`!")
+					else:
+						botutilities.parser.update(str(ctx.guild.id), new_prefix)
+						await ctx.send(f"Prefix changed to `{new_prefix}`!")
+				else:
+					raise commands.MissingPermissions(missing_permissions=['administrator'])
+
+	@commands.command(name="help")
+	async def _help(self, ctx, command=None):
+		mod_commands = ("ban", "clear", "kick", "pin", "unban")
+		if command is None:
+			title = "Commands"
+			with open("help_texts/general_help.txt", "r", encoding='utf-8') as file:
+				help_text = file.read()
+			if ctx.author.guild_permissions.administrator:
+				with open("help_texts/mod_help.txt", "r", encoding='utf-8') as file:
+					help_text += file.read()
+			footer = "\n<>=Necessary, []=optional."
+		else:
+			command = command.lower()
+			if command in mod_commands:
+				if ctx.author.guild_permissions.administrator:
+					title = command.capitalize()
+					with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
+						help_text = file.read()
+					footer = "\n<>=Necessary, []=optional."
+				else:
+					title = "Error!"
+					help_text = f"You don't have permissions to use `{command}`"
+					footer = ""
+			else:
+				try:
+					title = command.capitalize()
+					with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
+						help_text = file.read()
+					footer = "\n<>=Necessary, []=optional."
+				except FileNotFoundError:
+					title = "Error!"
+					help_text = "Command not found."
+					footer = ""
+		embed = botutilities.embed_template(ctx, title, help_text.format(prefix=ctx.prefix), footer,
+											add_def_footer=True)
+		await ctx.send(embed=embed)
 
 	@commands.check(botutilities.is_bot_owner)
 	@commands.command()
@@ -436,7 +518,9 @@ class Commands(commands.Cog):
 	@commands.check(botutilities.is_bot_owner)
 	@commands.command()
 	async def banreport(self, ctx, user):
-		return
+		ban_list = self.client.get_channel(920775229008142356)
+		await ban_list.send(user.id)
+		await self.log.send(f"{ctx.user.displayname} banned {user.name}#{user.discriminator} from reporting bugs.")
 
 	@commands.check(botutilities.is_bot_owner)
 	@commands.command()

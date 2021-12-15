@@ -1,6 +1,6 @@
 **For Fun Commands:**
 `{prefix}8ball <question>`
-`{prefix}choose <option1|option2|option3|...>`
+`{prefix}choose <option 1, option 2, option 3, (...)>
 `{prefix}flip`
 `{prefix}roll [number of sides]`
 `{prefix}say "<message>" [channel]`
@@ -17,3 +17,10 @@
 **Ciphering Commands:**
 `{prefix}morse <encrypt/decrypt> <sentence>`
 `{prefix}binary <encode/decode> <sentence>`
+
+**Unclasses Commands:**
+`{prefix}bugreport <report>`
+
+
+
+__The Help command is under renovations, so some of this information might be wrong.__
