@@ -11,11 +11,11 @@ config = parse_config("./config.toml")
 
 
 def is_bot_owner(ctx):
-	return get_report_banned(ctx.author.id)
+	return ctx.author.id in config["owners_id"]
 
 
 def is_not_report_banned(ctx):
-	return ctx.author.id in config["report_banlist"]
+	return ctx.author.id not in get_report_banned()
 
 
 def check_if_self_hosted():
@@ -61,7 +61,7 @@ async def tryreply(ctx, message, reply=False, img=None):
 				return await ctx.send(message, file=attach)
 
 
-async def get_report_banned(user_id: int):
+async def get_report_banned():
 	ban_list = bot.client.get_channel(920775229008142356)
 	messages = []
 	async for msg in ban_list.history():
@@ -70,7 +70,7 @@ async def get_report_banned(user_id: int):
 				messages.append(int(msg.content))
 			except ValueError:
 				continue
-	return user_id in messages
+	return messages
 
 
 def ping_all_bot_owners():
