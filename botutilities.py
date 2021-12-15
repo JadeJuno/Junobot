@@ -14,7 +14,7 @@ def is_bot_owner(ctx):
 	return ctx.author.id in config["owners_id"]
 
 
-def is_not_report_banned(ctx):
+async def is_not_report_banned(ctx):
 	return ctx.author.id not in await get_report_banned()
 
 
