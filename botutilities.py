@@ -62,7 +62,7 @@ async def tryreply(ctx, message, reply=False, img=None):
 
 
 async def get_report_banned():
-	ban_list = bot.client.get_channel(920775229008142356)
+	ban_list = bot.client.fetch_channel(920775229008142356)
 	messages = []
 	async for msg in ban_list.history():
 		if msg.author == bot.client.user:
