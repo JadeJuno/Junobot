@@ -130,6 +130,7 @@ class Commands(commands.Cog):
 	@commands.check(botutilities.is_not_report_banned)
 	@commands.command(aliases=('bugreport', 'reportbug', 'bug-report', 'report-bug'))
 	async def report(self, ctx, *, message):
+		report_channel = self.client.get_channel(920770517424816179)
 		if len(ctx.attachments) > 0:
 			attachments = []
 			for attachment in ctx.attachments:
@@ -138,7 +139,8 @@ class Commands(commands.Cog):
 		else:
 			attachments = None
 		embed = botutilities.embed_template(ctx, title=f"{ctx.author.name}#{ctx.author.discriminator}", description=f">>> {message}", footer=f"User ID: {ctx.author.id}", add_def_footer=False, icon=ctx.author.display_avatar.url)
-		await ctx.send(f"{botutilities.ping_all_bot_owners()}\n**Reported from {ctx.guild.name}:**", embed=embed, attachments=attachments)
+		await report_channel.send(f"{botutilities.ping_all_bot_owners()}\n**Reported from {ctx.guild.name}:**", embed=embed, attachments=attachments)
+		await ctx.send(f"Bug Report sent successfully")
 
 	@commands.command()
 	async def choose(self, ctx, *, options):
