@@ -2,10 +2,10 @@ import random
 
 import discord
 
-import bot
+import main
 from config import parse_config
 
-parser = bot.parser
+parser = main.parser
 
 config = parse_config("./config.toml")
 
@@ -15,12 +15,14 @@ def is_bot_owner(ctx):
 
 
 async def is_not_report_banned(ctx):
-	return ctx.author.id not in await get_report_banned()
+	return True
+	# return ctx.author.id not in await get_report_banned()
 
 
 def check_if_self_hosted():
 	try:
-		with open(r"C:\Users\cient\OneDrive\Escritorio\Don't delete this text file.txt", "r"):  # No, "cient" is not my real name, idk why my PC's username is "cient".
+		with open(r"C:\Users\cient\OneDrive\Escritorio\Don't delete this text file.txt",
+				  "r"):  # No, "cient" is not my real name, idk why my PC's username is "cient".
 			pass
 		return True
 	except FileNotFoundError:
@@ -61,16 +63,17 @@ async def tryreply(ctx, message, reply=False, img=None):
 				return await ctx.send(message, file=attach)
 
 
+"""
 async def get_report_banned():
-	ban_list = bot.client.fetch_channel(920775229008142356)
 	messages = []
-	async for msg in ban_list.history():
-		if msg.author == bot.client.user:
+	async for msg in main.ban_list.history():
+		if msg.author == main.bot.user:
 			try:
 				messages.append(int(msg.content))
 			except ValueError:
 				continue
 	return messages
+"""
 
 
 def ping_all_bot_owners():

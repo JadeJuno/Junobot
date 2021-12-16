@@ -3,7 +3,6 @@ import io
 import os
 import random
 from datetime import datetime, timedelta
-from PIL import Image
 
 import discord
 import googletrans
@@ -16,6 +15,8 @@ import botutilities
 import googlesearch
 from morsecode import MorseCode
 from oxforddict import get_definition
+
+# from PIL import Image
 
 status_list = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
 
@@ -39,13 +40,13 @@ def get_emoji_list(emojis):
 				return_list[i], return_list[j] = return_list[j], return_list[i]
 	return return_list
 
+
 # TODO: Move stuff from here to new separate cogs.
 
-
 class Commands(commands.Cog):
-	def __init__(self, client):
+	def __init__(self, bot):
 		self.activity = None
-		self.client = client
+		self.bot = bot
 		self.log = None
 		self.loop_interval = None
 		self.morse = MorseCode()
@@ -64,7 +65,7 @@ class Commands(commands.Cog):
 			return user_check and reaction_checked.message == check_message and str(reaction_checked.emoji) in (
 				"\U00002705", "\U0000274c")
 
-		reaction, user = await self.client.wait_for('reaction_add', check=check)
+		reaction, user = await self.bot.wait_for('reaction_add', check=check)
 		if str(reaction.emoji) == "\U00002705":
 			return True
 		elif str(reaction.emoji) == "\U0000274c":
@@ -74,7 +75,7 @@ class Commands(commands.Cog):
 	async def change_status_task(self):
 		global change_loop_interval
 		self.activity = random.choice(status_list)
-		await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
+		await self.bot.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
 		time_now = datetime.now()
 		print(f'Status changed to "{self.activity}" ({time_now.strftime("%H:%M")}).')
 		change_loop_interval = random.randint(1, 90)
@@ -83,8 +84,8 @@ class Commands(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_ready(self):
-		self.log = self.client.get_channel(botutilities.config["log_channel"])
-		self.my_guild = self.client.get_guild(botutilities.config["guild_id"])
+		self.log = self.bot.get_channel(botutilities.config["log_channel"])
+		self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
 		print(f'Bot is ready.')
 		print(f"bot created by Golder06#7041.")
@@ -130,7 +131,9 @@ class Commands(commands.Cog):
 	@commands.check(botutilities.is_not_report_banned)
 	@commands.command(aliases=('bugreport', 'reportbug', 'bug-report', 'report-bug'))
 	async def report(self, ctx, *, message):
-		report_channel = self.client.get_channel(920770517424816179)
+		await ctx.send("```\nWIP.```")
+		"""
+		report_channel = self.bot.get_channel(920770517424816179)
 		if len(ctx.attachments) > 0:
 			attachments = []
 			for attachment in ctx.attachments:
@@ -141,6 +144,7 @@ class Commands(commands.Cog):
 		embed = botutilities.embed_template(ctx, title=f"{ctx.author.name}#{ctx.author.discriminator}", description=f">>> {message}", footer=f"User ID: {ctx.author.id}", add_def_footer=False, icon=ctx.author.display_avatar.url)
 		await report_channel.send(f"{botutilities.ping_all_bot_owners()}\n**Reported from {ctx.guild.name}:**", embed=embed, attachments=attachments)
 		await ctx.send(f"Bug Report sent successfully")
+		"""
 
 	@commands.command()
 	async def choose(self, ctx, *, options):
@@ -170,11 +174,10 @@ class Commands(commands.Cog):
 			except ValueError:
 				await ctx.send("Error: You can't roll a die with a non-numeric amount of faces...")
 			result = random.randint(1, faces)
+			print(result)
 			if faces <= 6:
-				emoji = self.emoji_list[result - 1]
-			else:
-				emoji = result
-			await ctx.send(f"Rolled a d{faces}.\nIt landed on **{emoji}**!")
+				result = discord.utils.get(self.my_guild.emojis, name=f"Dice{result}")
+			await ctx.send(f"Rolled a d{faces}.\nIt landed on **{result}**!")
 		elif faces == 2:
 			await ctx.send(f"... A 2 sided die is a coin... Use the `{ctx.prefix}flip` command.")
 		elif faces <= 1:
@@ -194,7 +197,7 @@ class Commands(commands.Cog):
 			channel = ctx.channel
 		else:
 			if channel.startswith("<#"):
-				channel = self.client.get_channel(int(channel.strip("<>")[1:]))
+				channel = self.bot.get_channel(int(channel.strip("<>")[1:]))
 			else:
 				channel = discord.utils.get(ctx.guild.text_channels, name=channel)
 		if channel is None:
@@ -231,10 +234,11 @@ class Commands(commands.Cog):
 			definitions = [definition['definitions'][0] for definition in senses]
 
 			emb = botutilities.embed_template(ctx, title=f'Definition of "{query.title()}":',
-									 description=f"{definitions[0].capitalize()}")
+											  description=f"{definitions[0].capitalize()}")
 
 		else:
-			emb = botutilities.embed_template(ctx, title="Error:", description=f'Definition for "{query.title()}" not found.')
+			emb = botutilities.embed_template(ctx, title="Error:",
+											  description=f'Definition for "{query.title()}" not found.')
 
 		await message.edit(content="", embed=emb)
 
@@ -253,7 +257,7 @@ class Commands(commands.Cog):
 			if i == 1:
 				output_str = "**No results found.**"
 			embed = botutilities.embed_template(ctx, "Google", output_str[0:-1],
-									   icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
+												icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 			return await message.edit(content=None, embed=embed)
 
 	@commands.command(aliases=("detect", "language"))
@@ -295,7 +299,7 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def ping(self, ctx):
-		await ctx.send(f':ping_pong: Pong! {self.client.latency * 1000:.0f}ms.')
+		await ctx.send(f':ping_pong: Pong! {self.bot.latency * 1000:.0f}ms.')
 
 	@commands.command()
 	async def translate(self, ctx, translate_message, destination_language='en', source_language=None):
@@ -343,7 +347,8 @@ class Commands(commands.Cog):
 					description += f"`{i}`: {result_2}\n"
 			except wikipedia.exceptions.PageError:
 				description = "Page not found."
-			embed = botutilities.embed_template(ctx, title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
+			embed = botutilities.embed_template(ctx, title, description, image=image,
+												icon="https://i.imgur.com/FD1pauH.png")
 			await message.edit(content=None, embed=embed)
 
 	@commands.has_permissions(manage_messages=True)
@@ -502,7 +507,7 @@ class Commands(commands.Cog):
 		print("TEST")
 		embed = discord.Embed(title="Title", description=f"[Test Link](https://www.youtube.com)",
 							  color=random.randint(0, 0xffffff), url="https://www.google.com/")
-		embed.set_author(name=self.client.user.name, icon_url=self.client.user.display_avatar.url)
+		embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.display_avatar.url)
 		embed.set_footer(text=f"*Requested by {ctx.author.name}.*", icon_url=ctx.author.display_avatar.url)
 		embed.set_image(url="https://discordpy.readthedocs.io/en/latest/_images/snake.png")
 		embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
@@ -520,7 +525,7 @@ class Commands(commands.Cog):
 	@commands.check(botutilities.is_bot_owner)
 	@commands.command()
 	async def banreport(self, ctx, user):
-		ban_list = self.client.get_channel(920775229008142356)
+		ban_list = self.bot.get_channel(920775229008142356)
 		await ban_list.send(user.id)
 		await self.log.send(f"{ctx.user.displayname} banned {user.name}#{user.discriminator} from reporting bugs.")
 
