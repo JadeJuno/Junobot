@@ -1,4 +1,5 @@
 import asyncio
+import calendar
 import io
 import os
 import random
@@ -87,8 +88,8 @@ class Commands(commands.Cog):
 		self.log = self.bot.get_channel(botutilities.config["log_channel"])
 		self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
 		self.emoji_list = get_emoji_list(self.my_guild.emojis)
-		print(f'Bot is ready.')
-		print(f"bot created by Golder06#7041.")
+		print(f'"{self.bot.user.display_name}" is ready.')
+		print(f"Created by Golder06#7041.")
 		await self.log.send("Bot Started.")
 		self.change_status_task.start()
 
@@ -131,20 +132,21 @@ class Commands(commands.Cog):
 	@commands.check(botutilities.is_not_report_banned)
 	@commands.command(aliases=('bugreport', 'reportbug', 'bug-report', 'report-bug'))
 	async def report(self, ctx, *, message):
-		await ctx.send("```\nWIP.```")
-		"""
 		report_channel = self.bot.get_channel(920770517424816179)
-		if len(ctx.attachments) > 0:
+		if len(ctx.message.attachments) > 0:
 			attachments = []
-			for attachment in ctx.attachments:
-				spoiler = attachment.is_spoiler
-				attachments.append(attachment.to_file(spoiler=spoiler))
+			for attachment in ctx.message.attachments:
+				spoiler = attachment.is_spoiler()
+				attachments.append(await attachment.to_file(spoiler=spoiler))
 		else:
 			attachments = None
-		embed = botutilities.embed_template(ctx, title=f"{ctx.author.name}#{ctx.author.discriminator}", description=f">>> {message}", footer=f"User ID: {ctx.author.id}", add_def_footer=False, icon=ctx.author.display_avatar.url)
-		await report_channel.send(f"{botutilities.ping_all_bot_owners()}\n**Reported from {ctx.guild.name}:**", embed=embed, attachments=attachments)
+		embed = botutilities.embed_template(ctx, title=f"{ctx.author.name}#{ctx.author.discriminator}",
+											description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
+											add_def_footer=False, icon=ctx.author.display_avatar.url)
+		await report_channel.send(
+			f'{botutilities.ping_all_bot_owners()}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed)
+		await report_channel.send(files=attachments)
 		await ctx.send(f"Bug Report sent successfully")
-		"""
 
 	@commands.command()
 	async def choose(self, ctx, *, options):
@@ -377,7 +379,7 @@ class Commands(commands.Cog):
 
 	@commands.has_permissions(manage_roles=True)
 	@commands.command()
-	async def mute(self, member: discord.Member, time="1m", *, reason=None):
+	async def mute(self, ctx, member: discord.Member, time="1m", *, reason=None):
 		return
 
 	@commands.has_permissions(manage_messages=True)
@@ -450,22 +452,22 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def prefix(self, ctx, new_prefix=None):
-		if not botutilities.check_if_self_hosted():
-			if new_prefix is None:
-				await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
-			else:
-				if ctx.author.guild_permissions.administrator:
-					if new_prefix.lower() == "reset":
-						botutilities.parser.update(str(ctx.guild.id), botutilities.parser.default)
-						await ctx.send(f"Prefix reset back to `{botutilities.parser.default}`!")
-					else:
-						botutilities.parser.update(str(ctx.guild.id), new_prefix)
-						await ctx.send(f"Prefix changed to `{new_prefix}`!")
+		if new_prefix is None:
+			await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
+		else:
+			if ctx.author.guild_permissions.administrator:
+				if new_prefix.lower() == "reset":
+					botutilities.parser.remove(str(ctx.guild.id))
+					await ctx.send(f"Prefix reset back to `{botutilities.parser.default}`!")
 				else:
-					raise commands.MissingPermissions(missing_permissions=['administrator'])
+					botutilities.parser.update(str(ctx.guild.id), new_prefix)
+					await ctx.send(f"Prefix changed to `{new_prefix}`!")
+			else:
+				raise commands.MissingPermissions(missing_permissions=['administrator'])
 
 	@commands.command(name="help")
 	async def _help(self, ctx, command=None):
+		footer = ""
 		mod_commands = ("ban", "clear", "kick", "pin", "unban")
 		if command is None:
 			title = "Commands"
@@ -486,7 +488,6 @@ class Commands(commands.Cog):
 				else:
 					title = "Error!"
 					help_text = f"You don't have permissions to use `{command}`"
-					footer = ""
 			else:
 				try:
 					title = command.capitalize()
@@ -496,7 +497,6 @@ class Commands(commands.Cog):
 				except FileNotFoundError:
 					title = "Error!"
 					help_text = "Command not found."
-					footer = ""
 		embed = botutilities.embed_template(ctx, title, help_text.format(prefix=ctx.prefix), footer,
 											add_def_footer=True)
 		await ctx.send(embed=embed)
@@ -515,7 +515,7 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 2", value="value 2")
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
-		await ctx.send(f"`{botutilities.parser.__getitem__(str(ctx.guild.id))}`")
+		await ctx.send(f"<t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>")
 
 	@commands.check(botutilities.is_bot_owner)
 	@commands.command(aliases=['autoerror'])

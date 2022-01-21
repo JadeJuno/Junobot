@@ -1,4 +1,6 @@
+import calendar
 import difflib
+import io
 import traceback
 
 import discord
@@ -70,8 +72,14 @@ class CommandErrorHandler(commands.Cog):
 				str_tback = ""
 				for line in tback:
 					str_tback += line
-				await self.log.send(
-					f'{botutilities.ping_all_bot_owners()}\n Uncatched Exception in "{ctx.guild.name}": ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`')
+				content = botutilities.make_bug_report_file(ctx)
+				with io.StringIO() as file:
+					file.write(content)
+					file.seek(0)
+					await self.log.send(
+						f'{botutilities.ping_all_bot_owners()}\n Uncatched Exception in "{ctx.guild.name}" at <t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`',
+						file=discord.File(fp=file,
+										  filename=f"bug_report_{calendar.timegm(ctx.message.created_at.utctimetuple())}.txt"))
 				return await ctx.send("Error Message sent.")
 			elif str(reaction.emoji) == "\U0000274c":
 				return await ctx.send("Understood.")

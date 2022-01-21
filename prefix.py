@@ -67,3 +67,8 @@ class Database:
 
 class NoSuchServerError(Exception):
     pass
+
+
+if __name__ == "__main__":
+    db = Database()
+    print(db.get_all())

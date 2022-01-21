@@ -1,4 +1,5 @@
 import random
+import re
 
 import discord
 
@@ -81,3 +82,23 @@ def ping_all_bot_owners():
 	for snfk_id in config["owners_id"]:  # "snfk" = "snowflake".
 		owners_pings.append(f"<@{snfk_id}>")
 	return ', '.join(owners_pings)
+
+
+def make_bug_report_file(ctx):
+	arguments = []
+	for arg in ctx.args[2:]:
+		_type = str(type(arg))
+		_type = re.search("'(.*?)'", _type).group(1)
+		arguments.append(f'"{_type} - {arg}"')
+	for kw_key, kw_val in ctx.kwargs.items():
+		_type = str(type(kw_val))
+		_type = re.search("'(.*?)'", _type).group(1)
+		arguments.append(f'"{_type.capitalize()} - {kw_key}: {kw_val}"')
+	if len(arguments) > 0:
+		args_str = ', '.join(arguments)
+	else:
+		args_str = '"None"'
+
+	content = f'Author: {ctx.author.name}#{ctx.author.discriminator} ({ctx.author.id})\nChannel: {ctx.channel.name} ({ctx.channel.id})\nGuild: {ctx.guild.name} ({ctx.guild.id})\nArguments: {args_str}\n\nMessage: "{ctx.message.content}"\n'
+
+	return content
