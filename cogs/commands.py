@@ -450,21 +450,6 @@ class Commands(commands.Cog):
 		await ctx.guild.me.edit(nick=nickname)
 		await ctx.send(f'Successfully changed my nickname to "{nickname}".')
 
-	@commands.command()
-	async def prefix(self, ctx, new_prefix=None):
-		if new_prefix is None:
-			await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
-		else:
-			if ctx.author.guild_permissions.administrator:
-				if new_prefix.lower() == "reset":
-					botutilities.parser.remove(str(ctx.guild.id))
-					await ctx.send(f"Prefix reset back to `{botutilities.parser.default}`!")
-				else:
-					botutilities.parser.update(str(ctx.guild.id), new_prefix)
-					await ctx.send(f"Prefix changed to `{new_prefix}`!")
-			else:
-				raise commands.MissingPermissions(missing_permissions=['administrator'])
-
 	@commands.command(name="help")
 	async def _help(self, ctx, command=None):
 		footer = ""

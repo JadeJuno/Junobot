@@ -3,10 +3,7 @@ import re
 
 import discord
 
-import main
 from config import parse_config
-
-parser = main.parser
 
 config = parse_config("./config.toml")
 

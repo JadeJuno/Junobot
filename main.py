@@ -9,13 +9,29 @@ from config import parse_config
 
 config = parse_config("./config.toml")
 
-
 parser = prefix.PrefixParser(default="g!")
 
 intents = discord.Intents.all()
 allowed_mentions = discord.AllowedMentions(everyone=False)
 bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=intents, allowed_mentions=allowed_mentions)
 bot.remove_command("help")
+
+
+@bot.command()
+async def prefix(ctx, new_prefix=None):
+	if new_prefix is None:
+		await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
+	else:
+		if ctx.author.guild_permissions.administrator:
+			if new_prefix.lower() == "reset":
+				parser.remove(str(ctx.guild.id))
+				await ctx.send(f"Prefix reset back to `{parser.default}`!")
+			else:
+				parser.update(str(ctx.guild.id), new_prefix)
+				await ctx.send(f"Prefix changed to `{new_prefix}`!")
+		else:
+			raise commands.MissingPermissions(missing_permissions=['administrator'])
+
 
 if __name__ == "__main__":
 	for filename in os.listdir('./cogs'):
