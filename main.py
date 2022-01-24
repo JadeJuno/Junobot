@@ -10,7 +10,7 @@ from config import parse_config
 config = parse_config("./config.toml")
 
 
-parser = prefix.PrefixParser(default="g.")
+parser = prefix.PrefixParser(default="g!")
 
 intents = discord.Intents.all()
 allowed_mentions = discord.AllowedMentions(everyone=False)
