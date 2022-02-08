@@ -1,8 +1,13 @@
 import asyncio
 import calendar
 import io
+import json
 import os
+import pathlib
 import random
+import re
+import shutil
+import zipfile
 from datetime import datetime, timedelta
 
 import discord
@@ -33,15 +38,6 @@ def get_dict_key(dictionary, value):
 	return value
 
 
-def get_emoji_list(emojis):
-	return_list = list(emojis)
-	for i in range(len(return_list)):
-		for j in range(i + 1, len(return_list)):
-			if return_list[i].name > return_list[j].name:
-				return_list[i], return_list[j] = return_list[j], return_list[i]
-	return return_list
-
-
 # TODO: Move stuff from here to new separate cogs.
 
 class Commands(commands.Cog):
@@ -54,7 +50,6 @@ class Commands(commands.Cog):
 		self.my_guild = None
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
-		self.emoji_list = None
 
 	async def reaction_decision(self, ctx, check_str):
 		check_message = await ctx.send(check_str)
@@ -87,7 +82,6 @@ class Commands(commands.Cog):
 	async def on_ready(self):
 		self.log = self.bot.get_channel(botutilities.config["log_channel"])
 		self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
-		self.emoji_list = get_emoji_list(self.my_guild.emojis)
 		print(f'"{self.bot.user.display_name}" is ready.')
 		print(f"Created by Golder06#7041.")
 		await self.log.send("Bot Started.")
@@ -260,7 +254,7 @@ class Commands(commands.Cog):
 				output_str = "**No results found.**"
 			embed = botutilities.embed_template(ctx, "Google", output_str[0:-1],
 												icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
-			return await message.edit(content=None, embed=embed)
+		return await message.edit(content=None, embed=embed)
 
 	@commands.command(aliases=("detect", "language"))
 	async def lang_detect(self, ctx, *, user_message):
@@ -332,6 +326,7 @@ class Commands(commands.Cog):
 			try:
 				result = wikipedia.page(search_request)
 				# update: didn't go that bad, but it wasn't "well lol"
+				# Future Golder here: WTF does this comment mean????
 				description = f"[{result.title}]({result.url})\n{result.summary[:300].strip()}..."
 				try:
 					image = result.images[0]
@@ -351,7 +346,7 @@ class Commands(commands.Cog):
 				description = "Page not found."
 			embed = botutilities.embed_template(ctx, title, description, image=image,
 												icon="https://i.imgur.com/FD1pauH.png")
-			await message.edit(content=None, embed=embed)
+		await message.edit(content=None, embed=embed)
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command()
@@ -452,6 +447,7 @@ class Commands(commands.Cog):
 
 	@commands.command(name="help")
 	async def _help(self, ctx, command=None):
+		# TODO: Remake this with the base Discord.py Help system
 		footer = ""
 		mod_commands = ("ban", "clear", "kick", "pin", "unban")
 		if command is None:
@@ -526,6 +522,40 @@ class Commands(commands.Cog):
 				file.write(output)
 				file.seek(0)
 				await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename='a.txt'))
+
+	@commands.check(botutilities.is_bot_owner)
+	@commands.command()
+	async def unchoosable(self, ctx, namespace, name):
+		pattern = re.compile('[^a-z0-9_.\-/]')
+		if re.search(pattern, namespace) or re.search(pattern, name):
+			await ctx.send(
+				"Error: Identifier has non [a-z0-9_.-] character in it (In layman's terms: *there's a character that isn't a lowercase leter, a number, an underscore, a hyphen or a period on the ID.*).")
+			return
+		unchoosable_obj = {
+			"unchoosable": True,
+			"loading_priority": 2147483647
+		}
+		directory = f'datapacks/Unchoosable_{name.title()}'
+		os.makedirs(f'{directory}/data/{namespace}/origins/')
+		with open(f'{directory}/data/{namespace}/origins/{name}.json', 'w') as f:
+			json.dump(unchoosable_obj, f, indent=4)
+		with open(f'{directory}/pack.mcmeta', 'w') as metadata:
+			meta_obj = {
+				"pack": {
+					"pack_format": 8,
+					"description": f"Disables {name.title()}."
+				}
+			}
+			json.dump(meta_obj, metadata, indent=4)
+
+		with pathlib.Path(directory) as root:
+			with zipfile.ZipFile(f'{directory}.zip', 'w') as z:
+				for child in root.rglob('*'):
+					z.write(child, arcname=str(child).replace(directory, ''))
+
+		await ctx.send(f'"Unchoosable_{name.title()}" is ready.', file=discord.File(fp=f'{directory}.zip'))
+		shutil.rmtree(directory)
+		os.remove(f'{directory}.zip')
 
 
 def setup(client):

@@ -1,9 +1,9 @@
+from typing import Any, MutableMapping
+
 import toml
 import typing
 
 
-def parse_config(path: str) -> typing.Dict:
+def parse_config(path: str) -> MutableMapping[str, Any]:
     with open(path) as f:
-        data = f.read()
-
-    return toml.loads(data)
+        return toml.load(f)

@@ -1,10 +1,17 @@
 # Dictionary representing the morse code chart
-MORSE_CODE_DICT = {'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----', ', ': '--..--', '.': '.-.-.-', '?': '..--..', '/': '-..-.', '-': '-....-', '(': '-.--.', ')': '-.--.-', ',': '--..--'}
+MORSE_CODE_DICT = {'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
+				   'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+				   'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+				   'Y': '-.--', 'Z': '--..', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+				   '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----', ', ': '--..--', '.': '.-.-.-',
+				   '?': '..--..', '/': '-..-.', '-': '-....-', '(': '-.--.', ')': '-.--.-', ',': '--..--'}
 letters = MORSE_CODE_DICT.keys()
 morse_letters = MORSE_CODE_DICT.values()
 
+
 class MorseCode:
-	def check_letter(self, message):
+	@staticmethod
+	def check_letter(message):
 		i = False
 		for letter in message:
 			for key in letters:
@@ -14,8 +21,9 @@ class MorseCode:
 				if letter == value:
 					i = True
 		return i
-	
-	def encrypt(self, message):
+
+	@staticmethod
+	def encrypt(message):
 		my_cipher = ''
 		for myletter in message:
 			if myletter != ' ':
@@ -24,10 +32,10 @@ class MorseCode:
 				my_cipher += '/ '
 		return my_cipher
 
-
 	# This function is used to decrypt
 	# Morse code to English
-	def decrypt(self, message):
+	@staticmethod
+	def decrypt(message):
 		i = None
 		decipher = ''
 		mycitext = ''
@@ -40,7 +48,7 @@ class MorseCode:
 				else:
 					mycitext += myletter
 					i = False
-			elif myletter == " " and i != True:
+			elif myletter == " " and i is not True:
 				decipher += list(MORSE_CODE_DICT.keys())[list(MORSE_CODE_DICT.values()).index(mycitext)]
 				mycitext = ''
 				i = False
@@ -48,6 +56,7 @@ class MorseCode:
 
 
 morse = MorseCode()
+
 
 def main():
 	my_message = '"'

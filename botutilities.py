@@ -12,17 +12,15 @@ def is_bot_owner(ctx):
 	return ctx.author.id in config["owners_id"]
 
 
-async def is_not_report_banned(ctx):
+async def is_not_report_banned():
 	return True
 	# return ctx.author.id not in await get_report_banned()
 
 
 def check_if_self_hosted():
 	try:
-		with open(r"C:\Users\cient\OneDrive\Escritorio\Don't delete this text file.txt",
-				  "r"):  # No, "cient" is not my real name, idk why my PC's username is "cient".
-			pass
-		return True
+		with open(r"C:\Users\cient\OneDrive\Escritorio\Don't delete this text file.txt"):  # No, "cient" is not my real name, idk why my PC's username is "cient".
+			return True
 	except FileNotFoundError:
 		return False
 

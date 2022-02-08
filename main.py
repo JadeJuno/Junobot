@@ -11,9 +11,7 @@ config = parse_config("./config.toml")
 
 parser = prefix.PrefixParser(default="g!")
 
-intents = discord.Intents.all()
-allowed_mentions = discord.AllowedMentions(everyone=False)
-bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=intents, allowed_mentions=allowed_mentions)
+bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord.Intents.all(), allowed_mentions=discord.AllowedMentions(everyone=False))
 bot.remove_command("help")
 
 
