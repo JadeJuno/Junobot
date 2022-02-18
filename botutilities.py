@@ -2,6 +2,7 @@ import random
 import re
 
 import discord
+from discord.ext import commands
 
 from config import parse_config
 
@@ -9,7 +10,11 @@ config = parse_config("./config.toml")
 
 
 def is_bot_owner(ctx):
-	return ctx.author.id in config["owners_id"]
+	if ctx.author.id not in config["owners_id"]:
+		print("Skill Issue")
+		raise IsNotBotOwner
+	else:
+		return True
 
 
 async def is_not_report_banned():
@@ -97,3 +102,7 @@ def make_bug_report_file(ctx):
 	content = f'Author: {ctx.author.name}#{ctx.author.discriminator} ({ctx.author.id})\nChannel: {ctx.channel.name} ({ctx.channel.id})\nGuild: {ctx.guild.name} ({ctx.guild.id})\nArguments: {args_str}\n\nMessage: "{ctx.message.content}"\n'
 
 	return content
+
+
+class IsNotBotOwner(commands.CheckFailure):
+	pass

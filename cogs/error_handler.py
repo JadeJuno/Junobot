@@ -55,6 +55,9 @@ class CommandErrorHandler(commands.Cog):
 			missing_perm = error.missing_permissions[0].title()
 			await ctx.reply(f'Error: You are missing the `{missing_perm}` permission to run this command.')
 
+		elif isinstance(error, botutilities.IsNotBotOwner):
+			await ctx.reply(f"Error: This command is restricted to the owner(s) of this bot.")
+
 		else:
 			check_message = await ctx.send(
 				"There was an unexpected error. Do you want to send the details to the bot owner?")
