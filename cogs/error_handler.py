@@ -6,7 +6,9 @@ import traceback
 import discord
 from discord.ext import commands
 
-import botutilities
+from botutilities import BotUtilities, IsNotBotOwner
+
+botutilities = BotUtilities()
 
 
 class CommandErrorHandler(commands.Cog):
@@ -55,7 +57,7 @@ class CommandErrorHandler(commands.Cog):
 			missing_perm = error.missing_permissions[0].title()
 			await ctx.reply(f'Error: You are missing the `{missing_perm}` permission to run this command.')
 
-		elif isinstance(error, botutilities.IsNotBotOwner):
+		elif isinstance(error, IsNotBotOwner):
 			await ctx.reply(f"Error: This command is restricted to the owner(s) of this bot.")
 
 		else:
@@ -65,8 +67,9 @@ class CommandErrorHandler(commands.Cog):
 			await check_message.add_reaction("\U0000274c")
 
 			def check(r, u):
-				user_check = (u.id == ctx.author.id or u.guild_permissions.administrator or u.id in botutilities.config[
-					"owners_id"]) and not u.bot
+				user_check = (u.id == ctx.author.id or u.guild_permissions.administrator or u.id in
+							  botutilities.config[
+								  "owners_id"]) and not u.bot
 				return user_check and r.message == check_message and str(r.emoji) in ("\U00002705", "\U0000274c")
 
 			reaction, user = await self.client.wait_for('reaction_add', check=check)
