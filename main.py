@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 import prefix
-from botutilities import BotUtilities
+import botutilities
 from config import parse_config
 
 config = parse_config("./config.toml")
@@ -13,8 +13,6 @@ parser = prefix.PrefixParser(default="g!")
 
 bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord.Intents.all(), allowed_mentions=discord.AllowedMentions(everyone=False))
 bot.remove_command("help")
-
-botutilities = BotUtilities()
 
 
 @bot.command()

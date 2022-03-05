@@ -6,19 +6,19 @@ import traceback
 import discord
 from discord.ext import commands
 
-from botutilities import BotUtilities, IsNotBotOwner
-
-botutilities = BotUtilities()
+import botutilities
 
 
 class CommandErrorHandler(commands.Cog):
-	def __init__(self, client):
-		self.client = client
+	def __init__(self, bot):
+		self.bot = bot
 		self.log = None
+		self.appinfo = None
 
 	@commands.Cog.listener()
 	async def on_ready(self):
-		self.log = self.client.get_channel(botutilities.config["log_channel"])
+		self.log = self.bot.get_channel(botutilities.config["log_channel"])
+		self.appinfo = await self.bot.application_info()
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
@@ -32,7 +32,7 @@ class CommandErrorHandler(commands.Cog):
 
 		if isinstance(error, commands.CommandNotFound):
 			cmd = ctx.invoked_with
-			cmds = [cmd.name for cmd in self.client.commands]
+			cmds = [cmd.name for cmd in self.bot.commands]
 			matches = difflib.get_close_matches(cmd, cmds, n=1)
 			if len(matches) > 0:
 				await ctx.reply(f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
@@ -57,7 +57,7 @@ class CommandErrorHandler(commands.Cog):
 			missing_perm = error.missing_permissions[0].title()
 			await ctx.reply(f'Error: You are missing the `{missing_perm}` permission to run this command.')
 
-		elif isinstance(error, IsNotBotOwner):
+		elif isinstance(error, commands.NotOwner):
 			await ctx.reply(f"Error: This command is restricted to the owner(s) of this bot.")
 
 		else:
@@ -72,7 +72,7 @@ class CommandErrorHandler(commands.Cog):
 								  "owners_id"]) and not u.bot
 				return user_check and r.message == check_message and str(r.emoji) in ("\U00002705", "\U0000274c")
 
-			reaction, user = await self.client.wait_for('reaction_add', check=check)
+			reaction, user = await self.bot.wait_for('reaction_add', check=check)
 			if str(reaction.emoji) == "\U00002705":
 				tback = traceback.format_exception(type(error), error, error.__traceback__)
 				str_tback = ""
@@ -82,8 +82,9 @@ class CommandErrorHandler(commands.Cog):
 				with io.StringIO() as file:
 					file.write(content)
 					file.seek(0)
+					owner_ping = self.appinfo.owner.mention
 					await self.log.send(
-						f'{botutilities.ping_all_bot_owners()}\n Uncatched Exception in "{ctx.guild.name}" at <t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`',
+						f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`',
 						file=discord.File(fp=file,
 										  filename=f"bug_report_{calendar.timegm(ctx.message.created_at.utctimetuple())}.txt"))
 				return await ctx.send("Error Message sent.")

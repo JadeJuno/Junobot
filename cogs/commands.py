@@ -479,7 +479,7 @@ class Commands(commands.Cog):
 											add_def_footer=True)
 		await ctx.send(embed=embed)
 
-	@commands.check(commands.is_owner)
+	@commands.check(commands.is_owner())
 	@commands.command()
 	async def test(self, ctx):
 		print("TEST")
@@ -494,7 +494,6 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
 		await ctx.send(f"<t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>")
-		await ctx.send(f"{self.bot.application_info()}")
 
 	@commands.check(commands.is_owner)
 	@commands.command(aliases=['autoerror'])
