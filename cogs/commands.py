@@ -17,18 +17,14 @@ from discord.ext import commands, tasks
 from googletrans import Translator
 from iso639 import languages
 
+import botutilities
 import googlesearch
 from morsecode import MorseCode
-from botutilities import BotUtilities
 from oxforddict import get_definition
-
-# from PIL import Image
 
 status_list = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
 
 change_loop_interval = random.randint(1, 90)
-
-botutilities = BotUtilities()
 
 
 def get_dict_key(dictionary, value):
@@ -84,7 +80,8 @@ class Commands(commands.Cog):
 		self.log = self.bot.get_channel(botutilities.config["log_channel"])
 		self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
 		print(f'"{self.bot.user.display_name}" is ready.')
-		print(f"Created by {botutilities.ping_all_bot_owners()}.")
+		appinfo = await self.bot.application_info()
+		print(f"Created by {appinfo.owner.name}#{appinfo.owner.discriminator}.")
 		await self.log.send("Bot Started.")
 		self.change_status_task.start()
 
@@ -107,24 +104,23 @@ class Commands(commands.Cog):
 			prediction = "That's not a question..."
 		await ctx.send(f'Question: {question}\nThe ***:8ball:BALL*** says: {prediction}')
 
-	"""
 	@commands.command()
 	async def color(self, ctx, hex_code):
-		if not hex_code.startswith("#"):
-			hex_code = f"#{hex_code}"
+		if hex_code.startswith("#"):
+			hex_code = hex_code.replace('#', '')
 		try:
-			int(hex_code[1:], 16)
+			int(hex_code, 16)
 		except ValueError:
-			await ctx.send(f"Error: `{hex_code}` is not a valid Hex Color")
+			await ctx.send(f"Error: `#{hex_code}` is not a valid Hex Color code.")
 			return
-		if len(hex_code) > 7:
-			await ctx.send(f"Error: `{hex_code}` is not a valid Hex Color")
+		if len(hex_code) != 6:
+			await ctx.send(f"Error: `#{hex_code}` is not a valid Hex Color code.")
 			return
-		embed = botutilities.embed_template(ctx, footer=hex_code)
-		await ctx.send()
-	"""
+		img = f"https://dummyimage.com/300/{hex_code}/&text=+"
+		embed = botutilities.embed_template(ctx, footer=f'#{hex_code}', add_def_footer=False, color=int(hex_code, 16), image=img)
+		await ctx.send(embed=embed)
 
-	@commands.check(BotUtilities.is_not_report_banned)
+	@commands.check(botutilities.is_not_report_banned)
 	@commands.command(aliases=('bugreport', 'reportbug', 'bug-report', 'report-bug'))
 	async def report(self, ctx, *, message):
 		report_channel = self.bot.get_channel(920770517424816179)
@@ -138,8 +134,8 @@ class Commands(commands.Cog):
 		embed = botutilities.embed_template(ctx, title=f"{ctx.author.name}#{ctx.author.discriminator}",
 											description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
 											add_def_footer=False, icon=ctx.author.display_avatar.url)
-		await report_channel.send(
-			f'{botutilities.ping_all_bot_owners()}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed)
+		owner_ping = await self.bot.application_info().owner.mention
+		await report_channel.send(f'{owner_ping}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed)
 		await report_channel.send(files=attachments)
 		await ctx.send(f"Bug Report sent successfully")
 
@@ -483,7 +479,7 @@ class Commands(commands.Cog):
 											add_def_footer=True)
 		await ctx.send(embed=embed)
 
-	@commands.check(botutilities.is_bot_owner)
+	@commands.check(commands.is_owner)
 	@commands.command()
 	async def test(self, ctx):
 		print("TEST")
@@ -498,20 +494,21 @@ class Commands(commands.Cog):
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
 		await ctx.send(f"<t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>")
+		await ctx.send(f"{self.bot.application_info()}")
 
-	@commands.check(BotUtilities.is_bot_owner)
+	@commands.check(commands.is_owner)
 	@commands.command(aliases=['autoerror'])
 	async def auto_error(self, ctx):
 		await ctx.send(f"{int('A')}")
 
-	@commands.check(BotUtilities.is_bot_owner)
+	@commands.check(commands.is_owner)
 	@commands.command()
 	async def banreport(self, ctx, user):
 		ban_list = self.bot.get_channel(920775229008142356)
 		await ban_list.send(user.id)
 		await self.log.send(f"{ctx.user.displayname} banned {user.name}#{user.discriminator} from reporting bugs.")
 
-	@commands.check(BotUtilities.is_bot_owner)
+	@commands.check(commands.is_owner)
 	@commands.command()
 	async def format(self, ctx):
 		if ctx.message.reference:
@@ -524,7 +521,7 @@ class Commands(commands.Cog):
 				file.seek(0)
 				await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename='a.txt'))
 
-	@commands.check(BotUtilities.is_bot_owner)
+	@commands.check(commands.is_owner)
 	@commands.command()
 	async def unchoosable(self, ctx, namespace, name):
 		pattern = re.compile('[^a-z0-9_.\-/]')
