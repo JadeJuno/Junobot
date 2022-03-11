@@ -104,7 +104,7 @@ class Commands(commands.Cog):
 			prediction = "That's not a question..."
 		await ctx.send(f'Question: {question}\nThe ***:8ball:BALL*** says: {prediction}')
 
-	@commands.command()
+	@commands.command(aliases=('colour',))
 	async def color(self, ctx, hex_code):
 		if hex_code.startswith("#"):
 			hex_code = hex_code.replace('#', '')
