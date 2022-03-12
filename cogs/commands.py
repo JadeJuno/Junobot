@@ -19,7 +19,7 @@ from iso639 import languages
 
 import botutilities
 import googlesearch
-from morsecode import MorseCode
+import morsecode
 from oxforddict import get_definition
 
 status_list = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
@@ -44,7 +44,6 @@ class Commands(commands.Cog):
 		self.bot = bot
 		self.log = None
 		self.loop_interval = None
-		self.morse = MorseCode()
 		self.my_guild = None
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
@@ -216,22 +215,25 @@ class Commands(commands.Cog):
 
 	@commands.command(aliases=('definition',))
 	async def dictionary(self, ctx, *, query):
+		error_embed = botutilities.embed_template(ctx, title="Error:", description=f'Definition for "{query.title()}" not found.')
 		message = await ctx.send("Getting definition...")
 		results = get_definition(query)
 		if results != "404 Error":
 			lex_entries = results["lexicalEntries"]
-			entries = [lex_entry["entries"] for lex_entry in lex_entries]
-			entries = [x for y in entries for x in y]
-			senses = [entry["senses"] for entry in entries]
-			senses = [x for y in senses for x in y]
-			definitions = [definition['definitions'][0] for definition in senses]
+			try:
+				entries = [lex_entry["entries"] for lex_entry in lex_entries]
+			except KeyError:
+				emb = error_embed
+			else:
+				entries = [x for y in entries for x in y]
+				senses = [entry["senses"] for entry in entries]
+				senses = [x for y in senses for x in y]
+				definitions = [definition['definitions'][0] for definition in senses]
 
-			emb = botutilities.embed_template(ctx, title=f'Definition of "{query.title()}":',
+				emb = botutilities.embed_template(ctx, title=f'Definition of "{query.title()}":',
 											  description=f"{definitions[0].capitalize()}")
-
 		else:
-			emb = botutilities.embed_template(ctx, title="Error:",
-											  description=f'Definition for "{query.title()}" not found.')
+			emb = error_embed
 
 		await message.edit(content="", embed=emb)
 
@@ -265,7 +267,7 @@ class Commands(commands.Cog):
 	@commands.command(name="morse", aliases=("morsecode",))
 	async def morse_code(self, ctx, encrypt_decrypt, *, sentence):
 		disc = encrypt_decrypt
-		var = self.morse.check_letter(sentence.upper())
+		var = morsecode.check_letter(sentence.upper())
 		if not var:
 			await ctx.send("Error: Invalid character detected.")
 			return
@@ -274,7 +276,7 @@ class Commands(commands.Cog):
 		if disc == "encrypt":
 			try:
 				code = code[0:-1]
-				output = self.morse.encrypt(code.upper())
+				output = morsecode.encrypt(code.upper())
 			except KeyError:
 				output = error_message
 			except Exception as e:
@@ -283,7 +285,7 @@ class Commands(commands.Cog):
 		elif disc == "decrypt":
 			code = code.replace('_', '-')
 			try:
-				output = self.morse.decrypt(code).lower()
+				output = morsecode.decrypt(code).lower()
 			except ValueError:
 				output = error_message
 		else:
