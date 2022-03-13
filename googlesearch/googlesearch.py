@@ -38,7 +38,7 @@ class GoogleSearch:
 				soup = BeautifulSoup(_response.read(), "lxml")
 			if total is None:
 				total_text = soup.select(GoogleSearch.TOTAL_SELECTOR)[0].children.next().encode('utf-8')
-				total = long(re.sub("[',. ]", "", re.search("(([0-9]+[',. ])*[0-9]+)", total_text).group(1)))
+				total = re.sub("[',. ]", "", re.search("(([0-9]+[',. ])*[0-9]+)", total_text).group(1))
 			results = self.parse_results(soup.select(GoogleSearch.RESULT_SELECTOR))
 			if len(search_results) + len(results) > num_results:
 				del results[num_results - len(search_results):]
@@ -53,7 +53,7 @@ class GoogleSearch:
 						if running < prefetch_threads:
 							break
 						sleep(1)
-					fetcher_thread = Thread(target=result.get_text)
+					fetcher_thread = Thread(target=_result.get_text)
 					fetcher_thread.start()
 					fetcher_threads.append(fetcher_thread)
 		for thread in fetcher_threads:
@@ -102,26 +102,23 @@ class SearchResult:
 	def __str__(self):
 		return str(self.__dict__)
 
-	def __unicode__(self):
-		return unicode(self.__str__())
-
 	def __repr__(self):
 		return self.__str__()
 
 
-if __name__ == "__main__":
-	import sys
-
-	search = GoogleSearch()
-	i = 1
-	query = " ".join(sys.argv[1:])
-	if len(query) == 0:
-		query = "python"
-	count = 10
-	print("Fetching first " + str(count) + " results for \"" + query + "\"...")
-	response = search.search(query, count)
-	print("TOTAL: " + str(response.total) + " RESULTS")
-	for result in response.results:
-		print("RESULT #" + str(i) + ": " + (
-			result._SearchResult__text if result._SearchResult__text is not None else "[None]") + "\n\n")
-		i += 1
+# if __name__ == "__main__":
+# 	import sys
+#
+# 	search = GoogleSearch()
+# 	i = 1
+# 	query = " ".join(sys.argv[1:])
+# 	if len(query) == 0:
+# 		query = "python"
+# 	count = 10
+# 	print("Fetching first " + str(count) + " results for \"" + query + "\"...")
+# 	response = search.search(query, count)
+# 	print("TOTAL: " + str(response.total) + " RESULTS")
+# 	for result in response.results:
+# 		print("RESULT #" + str(i) + ": " + (
+# 			result._SearchResult__text if result._SearchResult__text is not None else "[None]") + "\n\n")
+# 		i += 1

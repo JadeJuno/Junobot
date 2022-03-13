@@ -1,5 +1,5 @@
 **Description:**
-You can ask a yes or no question to the omniscient  Magic :8ball: Ball and it will answer it.
+You can ask a yes or no question to the omniscient  Magic :8ball: Ball, and it will answer.
 
 **Usage:**
 `{prefix}8ball <question>`

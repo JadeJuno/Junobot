@@ -196,6 +196,9 @@ class Commands(commands.Cog):
 		if channel is None:
 			await ctx.send("Error: Channel doesn't exist.")
 			return
+		if isinstance(channel, discord.VoiceChannel):
+			await ctx.send(f'Error: Channel "{channel.mention}" is a Voice Channel.')
+			return
 		if not channel.permissions_for(ctx.author).send_messages:
 			await ctx.send(f"Error: You don't have permissions to talk in {channel.mention}")
 			return
