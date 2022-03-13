@@ -182,13 +182,14 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def say(self, ctx, message, channel=None):
+		channe_pattern = re.compile("<#?([0-9])+>")
 		if len(message.strip()) == 0:
 			await ctx.send("Error: You can't send an empty message.")
 			return
 		if channel is None:
 			channel = ctx.channel
 		else:
-			if channel.startswith("<#"):
+			if re.search(channe_pattern, channel):
 				channel = self.bot.get_channel(int(channel.strip("<>")[1:]))
 			else:
 				channel = discord.utils.get(ctx.guild.text_channels, name=channel)
@@ -497,19 +498,19 @@ class Commands(commands.Cog):
 		await ctx.send(embed=embed)
 		await ctx.send(f"<t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>")
 
-	@commands.check(commands.is_owner)
+	@commands.check(commands.is_owner())
 	@commands.command(aliases=['autoerror'])
 	async def auto_error(self, ctx):
 		await ctx.send(f"{int('A')}")
 
-	@commands.check(commands.is_owner)
+	@commands.check(commands.is_owner())
 	@commands.command()
 	async def banreport(self, ctx, user):
 		ban_list = self.bot.get_channel(920775229008142356)
 		await ban_list.send(user.id)
 		await self.log.send(f"{ctx.user.displayname} banned {user.name}#{user.discriminator} from reporting bugs.")
 
-	@commands.check(commands.is_owner)
+	@commands.check(commands.is_owner())
 	@commands.command()
 	async def format(self, ctx):
 		if ctx.message.reference:
@@ -522,7 +523,7 @@ class Commands(commands.Cog):
 				file.seek(0)
 				await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename='a.txt'))
 
-	@commands.check(commands.is_owner)
+	@commands.check(commands.is_owner())
 	@commands.command()
 	async def unchoosable(self, ctx, namespace, name):
 		pattern = re.compile('[^a-z0-9_.\-/]')
