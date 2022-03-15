@@ -92,5 +92,5 @@ class CommandErrorHandler(commands.Cog):
 				return await ctx.send("Understood.")
 
 
-def setup(client):
-	client.add_cog(CommandErrorHandler(client), override=True)
+async def setup(client):
+	await client.add_cog(CommandErrorHandler(client), override=True)

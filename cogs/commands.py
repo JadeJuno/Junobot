@@ -22,7 +22,7 @@ import googlesearch
 import morsecode
 from oxforddict import get_definition
 
-status_list = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
+statuses = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
 
 change_loop_interval = random.randint(1, 90)
 
@@ -40,7 +40,7 @@ def get_dict_key(dictionary, value):
 
 class Commands(commands.Cog):
 	def __init__(self, bot):
-		self.activity = None
+		self.activity = random.choice(statuses)
 		self.bot = bot
 		self.log = None
 		self.loop_interval = None
@@ -66,7 +66,7 @@ class Commands(commands.Cog):
 	@tasks.loop(minutes=change_loop_interval)
 	async def change_status_task(self):
 		global change_loop_interval
-		self.activity = random.choice(status_list)
+		self.activity = random.choice(statuses)
 		await self.bot.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
 		time_now = datetime.now()
 		print(f'Status changed to "{self.activity}" ({time_now.strftime("%H:%M")}).')
@@ -76,13 +76,14 @@ class Commands(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_ready(self):
-		self.log = self.bot.get_channel(botutilities.config["log_channel"])
-		self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
-		print(f'"{self.bot.user.display_name}" is ready.')
-		appinfo = await self.bot.application_info()
-		print(f"Created by {appinfo.owner.name}#{appinfo.owner.discriminator}.")
-		await self.log.send("Bot Started.")
-		self.change_status_task.start()
+		async with self.bot:
+			self.log = self.bot.get_channel(botutilities.config["log_channel"])
+			self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
+			appinfo = await self.bot.application_info()
+			self.change_status_task.start()
+			print(f'"{self.bot.user.display_name}" is ready.')
+			print(f"Created by {appinfo.owner.name}#{appinfo.owner.discriminator}.")
+			await self.log.send("Bot Started.")
 
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
@@ -560,6 +561,11 @@ class Commands(commands.Cog):
 		shutil.rmtree(directory)
 		os.remove(f'{directory}.zip')
 
+	@commands.command()
+	async def test_permissions(self, ctx):
+		has_perms = ctx.author.guild_permissions.manage_guild
+		await ctx.send(f"Has Manage Guild permissions: {has_perms}")
 
-def setup(client):
-	client.add_cog(Commands(client), override=True)
+
+async def setup(client):
+	await client.add_cog(Commands(client), override=True)
