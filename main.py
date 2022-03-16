@@ -4,16 +4,25 @@ import os
 import discord
 from discord.ext import commands
 
-import prefix
 import botutilities
+import prefix
 from config import parse_config
 
 config = parse_config("./config.toml")
 
 parser = prefix.PrefixParser(default="g!")
 
-bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord.Intents.all(), allowed_mentions=discord.AllowedMentions(everyone=False))
+bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord.Intents.all(),
+				   allowed_mentions=discord.AllowedMentions(everyone=False))
 bot.remove_command("help")
+
+
+async def main():
+	async with bot:
+		for filename in os.listdir('./cogs'):
+			if filename.endswith('.py'):
+				await bot.load_extension(f'cogs.{filename[:-3]}')
+		await bot.start(TOKEN)
 
 
 @bot.command()
@@ -32,25 +41,16 @@ async def prefix(ctx, new_prefix=None):
 			raise commands.MissingPermissions(missing_permissions=['administrator'])
 
 
-async def main():
-	async with bot:
-		for filename in os.listdir('./cogs'):
-			if filename.endswith('.py'):
-				await bot.load_extension(f'cogs.{filename[:-3]}')
-
-		if botutilities.check_if_self_hosted():
-			_self = input("Self Host? (y/n)\n> ")
-			match _self.lower():
-				case 'n':
-					TOKEN = os.getenv("GOLD_TOKEN")
-				case _:
-					TOKEN = os.getenv("SELF_TOKEN")
-		else:
-			TOKEN = os.getenv("GOLD_TOKEN")
-		if not TOKEN:
-			TOKEN = input("Goldbot's Token: ")
-
-		await bot.start(TOKEN)
-
 if __name__ == "__main__":
+	if botutilities.check_if_self_hosted():
+		_self = input("Self Host? (y/n)\n> ")
+		match _self.lower():
+			case 'n':
+				TOKEN = os.getenv("GOLD_TOKEN")
+			case _:
+				TOKEN = os.getenv("SELF_TOKEN")
+	else:
+		TOKEN = os.getenv("GOLD_TOKEN")
+	if not TOKEN:
+		TOKEN = input("Goldbot's Token: ")
 	asyncio.run(main())
