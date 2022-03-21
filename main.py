@@ -1,8 +1,10 @@
 import asyncio
 import os
+import random
+from datetime import datetime, timedelta
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 import botutilities
 import prefix
@@ -16,12 +18,37 @@ bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord
 				   allowed_mentions=discord.AllowedMentions(everyone=False), owner_id=498606108836102164)
 bot.remove_command("help")
 
+change_loop_interval = random.randint(1, 90)
+
+
+@tasks.loop(minutes=change_loop_interval)
+async def change_status_task():
+	global change_loop_interval
+	statuses = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
+
+	activity = random.choice(statuses)
+	await bot.change_presence(status=discord.Status.online, activity=discord.Game(activity))
+	time_now = datetime.now()
+	print(f'Status changed to "{activity}" ({time_now.strftime("%H:%M")}).')
+	change_loop_interval = random.randint(1, 90)
+	print(f"Next status change in {change_loop_interval} minutes ({(time_now + timedelta(minutes=change_loop_interval)).strftime('%H:%M')}).")
+
+
+@bot.event
+async def on_ready():
+	log = bot.get_channel(botutilities.config["log_channel"])
+	appinfo = await bot.application_info()  # crashes here.
+	print(f'"{bot.user.display_name}" is ready.')
+	print(f"Created by {appinfo.owner}.")
+	await log.send("Bot Started.")
+
 
 async def main():
 	async with bot:
 		for filename in os.listdir('./cogs'):
 			if filename.endswith('.py'):
 				await bot.load_extension(f'cogs.{filename[:-3]}')
+		bot.loop.create_task(change_status_task())
 		await bot.start(TOKEN)
 
 

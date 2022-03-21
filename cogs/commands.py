@@ -8,12 +8,11 @@ import random
 import re
 import shutil
 import zipfile
-from datetime import datetime, timedelta
 
 import discord
 import googletrans
 import wikipedia
-from discord.ext import commands, tasks
+from discord.ext import commands
 from googletrans import Translator
 from iso639 import languages
 
@@ -21,10 +20,6 @@ import botutilities
 import googlesearch
 import morsecode
 from oxforddict import get_definition
-
-statuses = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
-
-change_loop_interval = random.randint(1, 90)
 
 
 def get_dict_key(dictionary, value):
@@ -40,11 +35,8 @@ def get_dict_key(dictionary, value):
 
 class Commands(commands.Cog):
 	def __init__(self, bot):
-		self.activity = random.choice(statuses)
 		self.bot = bot
-		self.appinfo = None
 		self.log = None
-		self.loop_interval = None
 		self.my_guild = None
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
@@ -64,26 +56,9 @@ class Commands(commands.Cog):
 		elif str(reaction.emoji) == "\U0000274c":
 			return False
 
-	@tasks.loop(minutes=change_loop_interval)
-	async def change_status_task(self):
-		global change_loop_interval
-		self.activity = random.choice(statuses)
-		await self.bot.change_presence(status=discord.Status.online, activity=discord.Game(self.activity))
-		time_now = datetime.now()
-		print(f'Status changed to "{self.activity}" ({time_now.strftime("%H:%M")}).')
-		change_loop_interval = random.randint(1, 90)
-		print(
-			f"Next status change in {change_loop_interval} minutes ({(time_now + timedelta(minutes=change_loop_interval)).strftime('%H:%M')}).")
-
 	async def cog_load(self):
-		async with self.bot:
-			self.log = self.bot.get_channel(botutilities.config["log_channel"])
-			self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
-			self.appinfo = await self.bot.application_info()  # crashes here.
-			print(f'"{self.bot.user.display_name}" is ready.')
-			print(f"Created by {self.appinfo.owner.name}#{self.appinfo.owner.discriminator}.")
-			await self.log.send("Bot Started.")
-			self.change_status_task.start()
+		self.log = self.bot.get_channel(botutilities.config["log_channel"])
+		self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
 
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
