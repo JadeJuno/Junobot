@@ -79,7 +79,7 @@ class Commands(commands.Cog):
 		async with self.bot:
 			self.log = self.bot.get_channel(botutilities.config["log_channel"])
 			self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
-			self.appinfo = await self.bot.application_info()
+			self.appinfo = await self.bot.application_info()  # crashes here.
 			print(f'"{self.bot.user.display_name}" is ready.')
 			print(f"Created by {self.appinfo.owner.name}#{self.appinfo.owner.discriminator}.")
 			await self.log.send("Bot Started.")
@@ -96,7 +96,7 @@ class Commands(commands.Cog):
 		if question.endswith("?"):
 			if question.strip() == "?":
 				prediction = "That's not a question, that's a question sign..."
-			elif "love" in question.lower():  # :tr:
+			elif "love" in question.lower():  # lol
 				prediction = random.choice(ball_predicts[-5:])
 			else:
 				prediction = random.choice(ball_predicts)
