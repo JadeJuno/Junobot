@@ -42,6 +42,7 @@ class Commands(commands.Cog):
 	def __init__(self, bot):
 		self.activity = random.choice(statuses)
 		self.bot = bot
+		self.appinfo = None
 		self.log = None
 		self.loop_interval = None
 		self.my_guild = None
@@ -74,16 +75,15 @@ class Commands(commands.Cog):
 		print(
 			f"Next status change in {change_loop_interval} minutes ({(time_now + timedelta(minutes=change_loop_interval)).strftime('%H:%M')}).")
 
-	@commands.Cog.listener()
-	async def on_ready(self):
+	async def cog_load(self):
 		async with self.bot:
 			self.log = self.bot.get_channel(botutilities.config["log_channel"])
 			self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
-			appinfo = await self.bot.application_info()
-			self.change_status_task.start()
+			self.appinfo = await self.bot.application_info()
 			print(f'"{self.bot.user.display_name}" is ready.')
-			print(f"Created by {appinfo.owner.name}#{appinfo.owner.discriminator}.")
+			print(f"Created by {self.appinfo.owner.name}#{self.appinfo.owner.discriminator}.")
 			await self.log.send("Bot Started.")
+			self.change_status_task.start()
 
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
@@ -117,7 +117,8 @@ class Commands(commands.Cog):
 			await ctx.send(f"Error: `#{hex_code}` is not a valid Hex Color code.")
 			return
 		img = f"https://dummyimage.com/300/{hex_code}/&text=+"
-		embed = botutilities.embed_template(ctx, footer=f'#{hex_code}', add_def_footer=False, color=int(hex_code, 16), image=img)
+		embed = botutilities.embed_template(ctx, footer=f'#{hex_code}', add_def_footer=False, color=int(hex_code, 16),
+											image=img)
 		await ctx.send(embed=embed)
 
 	@commands.check(botutilities.is_not_report_banned)
@@ -217,7 +218,8 @@ class Commands(commands.Cog):
 
 	@commands.command(aliases=('definition',))
 	async def dictionary(self, ctx, *, query):
-		error_embed = botutilities.embed_template(ctx, title="Error:", description=f'Definition for "{query.title()}" not found.')
+		error_embed = botutilities.embed_template(ctx, title="Error:",
+												  description=f'Definition for "{query.title()}" not found.')
 		message = await ctx.send("Getting definition...")
 		results = get_definition(query)
 		if results != "404 Error":
@@ -233,7 +235,7 @@ class Commands(commands.Cog):
 				definitions = [definition['definitions'][0] for definition in senses]
 
 				emb = botutilities.embed_template(ctx, title=f'Definition of "{query.title()}":',
-											  description=f"{definitions[0].capitalize()}")
+												  description=f"{definitions[0].capitalize()}")
 		else:
 			emb = error_embed
 
@@ -564,5 +566,5 @@ class Commands(commands.Cog):
 		await ctx.send(f"Has Manage Guild permissions: {has_perms}")
 
 
-async def setup(client):
-	await client.add_cog(Commands(client), override=True)
+async def setup(bot):
+	await bot.add_cog(Commands(bot))

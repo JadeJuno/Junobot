@@ -13,7 +13,7 @@ config = parse_config("./config.toml")
 parser = prefix.PrefixParser(default="g!")
 
 bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord.Intents.all(),
-				   allowed_mentions=discord.AllowedMentions(everyone=False))
+				   allowed_mentions=discord.AllowedMentions(everyone=False), owner_id=498606108836102164)
 bot.remove_command("help")
 
 
