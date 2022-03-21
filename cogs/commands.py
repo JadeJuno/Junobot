@@ -59,6 +59,7 @@ class Commands(commands.Cog):
 	async def cog_load(self):
 		self.log = self.bot.get_channel(botutilities.config["log_channel"])
 		self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
+		print("Commands ready!")
 
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):

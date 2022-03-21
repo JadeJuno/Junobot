@@ -18,7 +18,7 @@ class CommandErrorHandler(commands.Cog):
 	async def cog_load(self):
 		self.log = self.bot.get_channel(botutilities.config["log_channel"])
 		self.bot_owner = self.bot.get_user(self.bot.owner_id)
-		print("Error Handler Ready.")
+		print("Error Handler Ready!")
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):

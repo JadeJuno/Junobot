@@ -48,7 +48,7 @@ async def main():
 		for filename in os.listdir('./cogs'):
 			if filename.endswith('.py'):
 				await bot.load_extension(f'cogs.{filename[:-3]}')
-		bot.loop.create_task(change_status_task())
+		# bot.loop.create_task(change_status_task())  # I've chosen to ignore this.
 		await bot.start(TOKEN)
 
 
