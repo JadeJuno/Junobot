@@ -159,21 +159,12 @@ class Commands(commands.Cog):
 			await ctx.send("Error: You can't roll a die with a non-numeric amount of faces...")
 
 	@commands.command()
-	async def say(self, ctx, message, channel=None):
-		channe_pattern = re.compile("<#?([0-9])+>")
+	async def say(self, ctx, message, channel: discord.TextChannel = None):
 		if len(message.strip()) == 0:
 			await ctx.send("Error: You can't send an empty message.")
 			return
 		if channel is None:
 			channel = ctx.channel
-		else:
-			if re.search(channe_pattern, channel):
-				channel = self.bot.get_channel(int(channel.strip("<>")[1:]))
-			else:
-				channel = discord.utils.get(ctx.guild.text_channels, name=channel)
-		if channel is None:
-			await ctx.send("Error: Channel doesn't exist.")
-			return
 		if not channel.permissions_for(ctx.author).send_messages:
 			await ctx.send(f"Error: You don't have permissions to talk in {channel.mention}")
 			return
@@ -187,10 +178,6 @@ class Commands(commands.Cog):
 				message = f"{ctx.author.mention} is dumb."
 		await discord.Message.delete(ctx.message, delay=0)
 		await channel.send(message)
-		try:
-			os.remove(".google-cookie")
-		except FileNotFoundError:
-			pass
 
 	@commands.command(aliases=('definition',))
 	async def dictionary(self, ctx, *, query):

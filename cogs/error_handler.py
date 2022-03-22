@@ -17,7 +17,6 @@ class CommandErrorHandler(commands.Cog):
 
 	async def cog_load(self):
 		self.log = self.bot.get_channel(botutilities.config["log_channel"])
-		self.bot_owner = self.bot.get_user(self.bot.owner_id)
 		print("Error Handler Ready!")
 
 	@commands.Cog.listener()
@@ -82,6 +81,7 @@ class CommandErrorHandler(commands.Cog):
 				with io.StringIO() as file:
 					file.write(content)
 					file.seek(0)
+					self.bot_owner = self.bot.get_user(self.bot.owner_id)
 					owner_ping = self.bot_owner.mention
 					await self.log.send(
 						f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`',
