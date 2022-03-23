@@ -12,15 +12,15 @@ import botutilities
 class CommandErrorHandler(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		self.log = None
-		self.bot_owner = None
 
 	async def cog_load(self):
-		self.log = self.bot.get_channel(botutilities.config["log_channel"])
 		print("Error Handler Ready!")
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
+		log = self.bot.get_channel(botutilities.config["log_channel"])
+		bot_owner = self.bot.get_user(self.bot.owner_id)
+
 		if hasattr(ctx.command, 'on_error'):
 			return
 
@@ -66,9 +66,7 @@ class CommandErrorHandler(commands.Cog):
 			await check_message.add_reaction("\U0000274c")
 
 			def check(r, u):
-				user_check = (u.id == ctx.author.id or u.guild_permissions.administrator or u.id in
-							  botutilities.config[
-								  "owners_id"]) and not u.bot
+				user_check = (u.id == ctx.author.id or u.guild_permissions.administrator or u.id == bot_owner.id) and not u.bot
 				return user_check and r.message == check_message and str(r.emoji) in ("\U00002705", "\U0000274c")
 
 			reaction, user = await self.bot.wait_for('reaction_add', check=check)
@@ -81,9 +79,8 @@ class CommandErrorHandler(commands.Cog):
 				with io.StringIO() as file:
 					file.write(content)
 					file.seek(0)
-					self.bot_owner = self.bot.get_user(self.bot.owner_id)
-					owner_ping = self.bot_owner.mention
-					await self.log.send(
+					owner_ping = bot_owner.mention
+					await log.send(
 						f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`',
 						file=discord.File(fp=file,
 										  filename=f"bug_report_{calendar.timegm(ctx.message.created_at.utctimetuple())}.txt"))
