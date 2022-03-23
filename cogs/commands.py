@@ -96,8 +96,7 @@ class Commands(commands.Cog):
 			await ctx.send(f"Error: `#{hex_code}` is not a valid Hex Color code.")
 			return
 		img = f"https://dummyimage.com/300/{hex_code}/&text=+"
-		embed = botutilities.embed_template(ctx, footer=f'#{hex_code}', add_def_footer=False, color=int(hex_code, 16),
-											image=img)
+		embed = botutilities.embed_template(ctx, footer=f'#{hex_code}', add_def_footer=False, color=int(hex_code, 16), image=img)
 		await ctx.send(embed=embed)
 
 	@commands.check(botutilities.is_not_report_banned)
@@ -105,10 +104,7 @@ class Commands(commands.Cog):
 	async def report(self, ctx, *, message):
 		report_channel = self.bot.get_channel(920770517424816179)
 		if len(ctx.message.attachments) > 0:
-			attachments = []
-			for attachment in ctx.message.attachments:
-				spoiler = attachment.is_spoiler()
-				attachments.append(await attachment.to_file(spoiler=spoiler))
+			attachments = [await attachment.to_file(spoiler=attachment.is_spoiler()) for attachment in ctx.message.attachments]
 		else:
 			attachments = None
 		embed = botutilities.embed_template(ctx, title=f"{ctx.author.name}#{ctx.author.discriminator}",
