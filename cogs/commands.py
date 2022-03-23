@@ -57,9 +57,12 @@ class Commands(commands.Cog):
 			return False
 
 	async def cog_load(self):
+		print("Commands ready!")
+
+	@commands.Cog.listener()
+	async def on_ready(self):
 		self.log = self.bot.get_channel(botutilities.config["log_channel"])
 		self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
-		print("Commands ready!")
 
 	@commands.command(name='8ball')
 	async def _8ball(self, ctx, *, question):
@@ -135,8 +138,7 @@ class Commands(commands.Cog):
 	@commands.command(aliases=("rolldice", "diceroll", "dice"))
 	async def roll(self, ctx, faces=6.0):
 		if type(faces) is float and faces != int(faces):
-			await ctx.send(
-				f"Error: You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
+			await ctx.send(f"Error: You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
 			return
 		if faces > 2:
 			try:
@@ -355,8 +357,7 @@ class Commands(commands.Cog):
 
 	@commands.command()
 	async def invite(self, ctx):
-		await ctx.send(
-			"Here's the invite link for Goldbot:\nhttps://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot")
+		await ctx.send("Here's the invite link for Goldbot:\nhttps://discord.com/api/oauth2/authorize?client_id=573680244213678081&permissions=8&scope=bot")
 
 	@commands.command()
 	async def binary(self, ctx, encode_decode: str, *, sentence):
@@ -383,7 +384,7 @@ class Commands(commands.Cog):
 			output = ''
 			for _bin in bin_list:
 				output += chr(int(_bin, 2))
-			await ctx.send(f"Here\'s your decoded binary code: \n`{output}`")
+			await ctx.send(f"Here's your decoded binary code: \n`{output}`")
 			return
 		else:
 			await ctx.send('ERROR: Invalid discriminator.')
