@@ -17,7 +17,7 @@ class CommandErrorHandler(commands.Cog):
 		print("Error Handler Ready!")
 
 	@commands.Cog.listener()
-	async def on_command_error(self, ctx, error):
+	async def on_command_error(self, ctx: commands.Context, error):
 		log = self.bot.get_channel(botutilities.config["log_channel"])
 		bot_owner = self.bot.get_user(self.bot.owner_id)
 
@@ -53,7 +53,7 @@ class CommandErrorHandler(commands.Cog):
 			await ctx.reply(f"Error: Missing argument `{missing_param}`.")
 
 		elif isinstance(error, commands.MissingPermissions):
-			missing_perm = error.missing_permissions[0].title()
+			missing_perm = error.missing_permissions[0].replace('_', ' ').title()
 			await ctx.reply(f'Error: You are missing the `{missing_perm}` permission to run this command.')
 
 		elif isinstance(error, commands.NotOwner):

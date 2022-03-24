@@ -1,5 +1,6 @@
 import asyncio
 import calendar
+import datetime
 import io
 import json
 import os
@@ -22,15 +23,6 @@ import morsecode
 from oxforddict import get_definition
 
 
-def get_dict_key(dictionary, value):
-	key_list = list(dictionary.keys())
-	value_list = list(dictionary.values())
-	for listed_value in value_list:
-		if listed_value == value:
-			return key_list[value_list.index(value)]
-	return value
-
-
 # TODO: Move stuff from here to new separate cogs.
 
 class Commands(commands.Cog):
@@ -40,6 +32,15 @@ class Commands(commands.Cog):
 		self.my_guild = None
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
+
+	@staticmethod
+	def get_dict_key(dictionary, value):
+		key_list = list(dictionary.keys())
+		value_list = list(dictionary.values())
+		for listed_value in value_list:
+			if listed_value == value:
+				return key_list[value_list.index(value)]
+		return value
 
 	async def reaction_decision(self, ctx, check_str):
 		check_message = await ctx.send(check_str)
@@ -264,10 +265,10 @@ class Commands(commands.Cog):
 	@commands.command()
 	async def translate(self, ctx, translate_message, destination_language='en', source_language=None):
 		destination_language = destination_language.lower()
-		destination_language = get_dict_key(self.lang_dict, destination_language)
+		destination_language = self.get_dict_key(self.lang_dict, destination_language)
 		if source_language is not None:
 			source_language = source_language.lower()
-			source_language = get_dict_key(self.lang_dict, source_language)
+			source_language = self.get_dict_key(self.lang_dict, source_language)
 		else:
 			source_language = self.translator.detect(translate_message).lang
 			if isinstance(source_language, list):
@@ -336,11 +337,6 @@ class Commands(commands.Cog):
 		await member.kick(reason=reason)
 		await ctx.send(f'{member} kicked via `{ctx.prefix}kick` command. Reason: {reason}.')
 
-	@commands.has_permissions(manage_roles=True)
-	@commands.command()
-	async def mute(self, ctx, member: discord.Member, time="1m", *, reason=None):
-		return
-
 	@commands.has_permissions(manage_messages=True)
 	@commands.command()
 	async def pin(self, ctx):
@@ -407,6 +403,37 @@ class Commands(commands.Cog):
 			return
 		await ctx.guild.me.edit(nick=nickname)
 		await ctx.send(f'Successfully changed my nickname to "{nickname}".')
+
+	@commands.has_permissions(moderate_members=True)
+	@commands.command(aliases=("timeout", ))
+	async def mute(self, ctx, member: discord.Member, duration, timescale, *, reason=None):
+		timescale = timescale.lower()
+		timescales = {
+			's': 'seconds', 'second': 'seconds',
+			'm': 'minutes', 'minute': 'minutes',
+			'd': 'days',    'day': 'days',
+			'w': 'weeks',   'week': 'weeks'
+		}
+
+		if member.is_timed_out():
+			await ctx.send(f"Error: {member} is already timed out.")
+			return
+		if timescale not in timescales and timescale not in timescales.values():
+			await ctx.send(f'Error: "{timescale}" is not a valid Time Scale')
+			return
+
+		try:
+			timescale = timescales[timescale]
+		except KeyError:
+			pass
+
+		time_data = {timescale: int(duration)}
+		delta = datetime.timedelta(**time_data)
+		try:
+			await member.timeout(delta, reason=reason)
+			await ctx.send(f"Muted {member} for {duration} {timescale}.")
+		except discord.errors.HTTPException:
+			await ctx.send("Error: Invalid amount of time to time them out for.")
 
 	@commands.command(name="help")
 	async def _help(self, ctx, command=None):
@@ -519,11 +546,6 @@ class Commands(commands.Cog):
 		await ctx.send(f'"Unchoosable_{name.title()}" is ready.', file=discord.File(fp=f'{directory}.zip'))
 		shutil.rmtree(directory)
 		os.remove(f'{directory}.zip')
-
-	@commands.command()
-	async def test_permissions(self, ctx):
-		has_perms = ctx.author.guild_permissions.manage_guild
-		await ctx.send(f"Has Manage Guild permissions: {has_perms}")
 
 
 async def setup(bot):
