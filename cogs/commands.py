@@ -438,7 +438,7 @@ class Commands(commands.Cog):
 	@commands.command(name="help")
 	async def _help(self, ctx, command=None):
 		# TODO: Remake this with the base Discord.py Help system
-		await ctx.send("The Help command is being rewritten. Please wait.")
+		await ctx.send("The Help command is being rewritten due to dumb security issues. Please wait.")
 		return
 		footer = ""
 		mod_commands = ("ban", "clear", "kick", "pin", "unban")
