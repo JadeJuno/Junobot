@@ -10,15 +10,9 @@ import botutilities
 class Fun(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		self.log = None
-		self.my_guild = None
 
 	async def cog_load(self):
 		print("Fun Cog ready!")
-
-	@commands.Cog.listener()
-	async def on_ready(self):
-		self.my_guild = self.bot.get_guild(botutilities.config["guild_id"])
 
 	@commands.command(
 		name='8ball',
@@ -92,6 +86,7 @@ class Fun(commands.Cog):
 		}
 	)
 	async def roll(self, ctx, faces=6.0):
+		emojis = self.bot.get_guild(botutilities.config["guild_id"]).emojis
 		if type(faces) is float and faces != int(faces):
 			await ctx.send(
 				f"Error: You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
@@ -104,7 +99,7 @@ class Fun(commands.Cog):
 			result = random.randint(1, faces)
 			print(result)
 			if faces <= 6:
-				result = discord.utils.get(self.my_guild.emojis, name=f"Dice{result}")
+				result = discord.utils.get(emojis, name=f"Dice{result}")
 			await ctx.send(f"Rolled a d{faces}.\nIt landed on **{result}**!")
 		elif faces == 2:
 			await ctx.send(f"... A 2 sided die is a coin... Use the `{ctx.prefix}flip` command.")

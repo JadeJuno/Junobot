@@ -22,9 +22,6 @@ class CommandErrorHandler(commands.Cog):
 		log = self.bot.get_channel(botutilities.config["log_channel"])
 		bot_owner = self.bot.get_user(self.bot.owner_id)
 
-		if hasattr(ctx.command, 'on_error'):
-			return
-
 		cog = ctx.cog
 		if cog:
 			if cog._get_overridden_method(cog.cog_command_error) is not None:
@@ -59,6 +56,9 @@ class CommandErrorHandler(commands.Cog):
 
 		elif isinstance(error, commands.NotOwner):
 			await ctx.reply(f"Error: This command is restricted to the owner of this bot.")
+
+		elif isinstance(error, commands.BadArgument) and hasattr(ctx.command, 'on_error'):
+			pass
 
 		else:
 			check = await self.botutilities.reaction_decision(ctx, "There was an unexpected error. Do you want to send the details to the bot owner?")
