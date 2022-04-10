@@ -2,9 +2,9 @@
 
 # Gøldbot
 
-This repo is no longer private, *but I still don't know what to say lol-*
+Goldbot, officially known as Gøldbot, is a simple, multi-purpose bot built in Python that I made for a school project and that just built around afterwards.
 
-TODO:
+## TODO:
 - [x] Separate all commands in different cogs
 - [x] Use Discord.py's `HelpCommand` system
 - [ ] Add subcommands for `g!translate`
