@@ -29,7 +29,7 @@ class Information(commands.Cog):
 		return value
 
 	@commands.command(
-		aliases=('definition',),
+		aliases=('definition', 'define'),
 		description='G',
 		extras={
 			'example': 'auric'
