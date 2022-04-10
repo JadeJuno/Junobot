@@ -1,12 +1,7 @@
 import calendar
 import io
-import json
 import os
-import pathlib
 import random
-import re
-import shutil
-import zipfile
 
 import discord
 from discord.ext import commands
@@ -124,39 +119,6 @@ class DevCog(commands.Cog):
 				if command.description.lower() == "wip":
 					await ctx.send(f"{command.cog.qualified_name} - {command.qualified_name}: WIP description")
 		await ctx.send("**Done!**")
-
-	@commands.command()
-	async def unchoosable(self, ctx, namespace, name):
-		pattern = re.compile('[^a-z0-9_.\-/]')
-		if re.search(pattern, namespace) or re.search(pattern, name):
-			await ctx.send(
-				"Error: Identifier has non [a-z0-9_.-] character in it (In layman's terms: *there's a character that isn't a lowercase leter, a number, an underscore, a hyphen or a period on the ID.*).")
-			return
-		unchoosable_obj = {
-			"unchoosable": True,
-			"loading_priority": 2147483647
-		}
-		directory = f'datapacks/Unchoosable_{name.title()}'
-		os.makedirs(f'{directory}/data/{namespace}/origins/')
-		with open(f'{directory}/data/{namespace}/origins/{name}.json', 'w') as f:
-			json.dump(unchoosable_obj, f, indent=4)
-		with open(f'{directory}/pack.mcmeta', 'w') as metadata:
-			meta_obj = {
-				"pack": {
-					"pack_format": 8,
-					"description": f"Disables {name.title()}."
-				}
-			}
-			json.dump(meta_obj, metadata, indent=4)
-
-		with pathlib.Path(directory) as root:
-			with zipfile.ZipFile(f'{directory}.zip', 'w') as z:
-				for child in root.rglob('*'):
-					z.write(child, arcname=str(child).replace(directory, ''))
-
-		await ctx.send(f'"Unchoosable_{name.title()}" is ready.', file=discord.File(fp=f'{directory}.zip'))
-		shutil.rmtree(directory)
-		os.remove(f'{directory}.zip')
 
 
 async def setup(bot):
