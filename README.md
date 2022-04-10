@@ -11,4 +11,4 @@ TODO:
 - [ ] Add subcommands for `g!morse`
 - [ ] Add subcommands for `g!binary`
 - [ ] Overhaul `g!translate` to get it to actually work.
-- [ ] Overhaul `g!translate` to get it to actually work.
+- [ ] Overhaul `g!language` to get it to actually work.
