@@ -1,6 +1,6 @@
 **For Fun Commands:**
 `{prefix}8ball <question>`
-`{prefix}choose <option 1, option 2, option 3, (...)>
+`{prefix}choose <option 1, option 2, option 3, (...)>`
 `{prefix}flip`
 `{prefix}roll [number of sides]`
 `{prefix}say "<message>" [channel]`

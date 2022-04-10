@@ -12,6 +12,7 @@ import botutilities
 class CommandErrorHandler(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
+		self.botutilities = botutilities.BotUtilities(bot)
 
 	async def cog_load(self):
 		print("Error Handler Ready!")
@@ -57,20 +58,12 @@ class CommandErrorHandler(commands.Cog):
 			await ctx.reply(f'Error: You are missing the `{missing_perm}` permission to run this command.')
 
 		elif isinstance(error, commands.NotOwner):
-			await ctx.reply(f"Error: This command is restricted to the owner(s) of this bot.")
+			await ctx.reply(f"Error: This command is restricted to the owner of this bot.")
 
 		else:
-			check_message = await ctx.send(
-				"There was an unexpected error. Do you want to send the details to the bot owner?")
-			await check_message.add_reaction("\U00002705")
-			await check_message.add_reaction("\U0000274c")
+			check = await self.botutilities.reaction_decision(ctx, "There was an unexpected error. Do you want to send the details to the bot owner?")
 
-			def check(r, u):
-				user_check = (u.id == ctx.author.id or u.guild_permissions.administrator or u.id == bot_owner.id) and not u.bot
-				return user_check and r.message == check_message and str(r.emoji) in ("\U00002705", "\U0000274c")
-
-			reaction, user = await self.bot.wait_for('reaction_add', check=check)
-			if str(reaction.emoji) == "\U00002705":
+			if check:
 				tback = traceback.format_exception(type(error), error, error.__traceback__)
 				str_tback = ""
 				for line in tback:
@@ -82,10 +75,10 @@ class CommandErrorHandler(commands.Cog):
 					owner_ping = bot_owner.mention
 					await log.send(
 						f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`',
-						file=discord.File(fp=file,
-										  filename=f"bug_report_{calendar.timegm(ctx.message.created_at.utctimetuple())}.txt"))
+						file=discord.File(fp=file, filename=f"bug_report_{calendar.timegm(ctx.message.created_at.utctimetuple())}.txt"))
 				return await ctx.send("Error Message sent.")
-			elif str(reaction.emoji) == "\U0000274c":
+
+			else:
 				return await ctx.send("Understood.")
 
 

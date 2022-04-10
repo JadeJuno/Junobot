@@ -8,6 +8,27 @@ from config import parse_config
 config = parse_config("./config.toml")
 
 
+class BotUtilities:
+	def __init__(self, bot):
+		self.bot = bot
+
+	async def reaction_decision(self, ctx, check_str):
+		check_message = await ctx.send(check_str)
+		await check_message.add_reaction("\U00002705")
+		await check_message.add_reaction("\U0000274c")
+
+		def check(reaction_checked, reaction_user):
+			user_check = reaction_user.id == ctx.author.id or reaction_user.guild_permissions.administrator and ctx.author.bot
+			return user_check and reaction_checked.message == check_message and str(reaction_checked.emoji) in (
+				"\U00002705", "\U0000274c")
+
+		reaction, user = await self.bot.wait_for('reaction_add', check=check)
+		if str(reaction.emoji) == "\U00002705":
+			return True
+		elif str(reaction.emoji) == "\U0000274c":
+			return False
+
+
 async def is_not_report_banned(ctx):
 	return bool(ctx)  # Just to avoid PyCharm's warning temporarily :p
 
@@ -20,7 +41,8 @@ def check_if_self_hosted():
 		return False
 
 
-def embed_template(ctx, title=None, description=None, footer="", add_def_footer=True, image: str = "", icon: str = "", color=None):
+def embed_template(title=None, description=None, footer="", image: str = "", icon: str = "",
+				   color=None):
 	if not color:
 		color = random.randint(0, 0xffffff)
 	if description:
@@ -33,12 +55,7 @@ def embed_template(ctx, title=None, description=None, footer="", add_def_footer=
 		else:
 			embed.set_author(name=title)
 	if footer:
-		if add_def_footer:
-			embed.set_footer(
-				text=f"{footer}\nTo see more information about a specific command, type {ctx.prefix}help <command>.\nGøldbot was created by Golder06#7041.",
-				icon_url="https://i.imgur.com/ZgG8oJn.png")
-		else:
-			embed.set_footer(text=footer, icon_url="https://i.imgur.com/ZgG8oJn.png")
+		embed.set_footer(text=footer, icon_url="https://i.imgur.com/ZgG8oJn.png")
 	embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
 	if image:
 		embed.set_image(url=image)
@@ -60,7 +77,6 @@ async def tryreply(ctx, message, reply=False, img=None):
 
 
 """
-
 async def get_report_banned():
 	messages = []
 	async for msg in main.ban_list.history():
