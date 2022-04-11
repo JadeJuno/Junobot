@@ -62,16 +62,21 @@ def embed_template(title=None, description=None, footer="", image: str = "", ico
 	return embed
 
 
-async def tryreply(ctx, message, reply=False, img=None):
+async def error_template(ctx, message):
+	embed = embed_template("ERROR", description=message, color=0xFF0000)
+	await ctx.reply(embed=embed)
+
+
+async def tryreply(ctx, message, reply=False, img=None, mention=True):
 	async with ctx.typing():
 		attach = None
 		if isinstance(img, str):
 			attach = discord.File(fp=f"assets/{img}")
 		try:
-			return await ctx.message.reference.resolved.reply(message, file=attach)
+			return await ctx.message.reference.resolved.reply(message, file=attach, mention_author=mention)
 		except AttributeError:
 			if reply:
-				return await ctx.reply(message, file=attach)
+				return await ctx.reply(message, file=attach, mention_author=mention)
 			else:
 				return await ctx.send(message, file=attach)
 

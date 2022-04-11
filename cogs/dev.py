@@ -6,6 +6,8 @@ import random
 import discord
 from discord.ext import commands
 
+import botutilities
+
 
 class DevCog(commands.Cog):
 	def __init__(self, bot: commands.Bot):
@@ -89,6 +91,7 @@ class DevCog(commands.Cog):
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
 		await ctx.send(f"<t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>")
+		await botutilities.tryreply(ctx, "Test")
 
 	@commands.command(aliases=('autoerror',))
 	async def auto_error(self, ctx):

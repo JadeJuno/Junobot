@@ -126,7 +126,7 @@ class Information(commands.Cog):
 			await ctx.send(
 				f'Translated from {self.lang_dict[source_language].capitalize()} to {self.lang_dict[destination_language].capitalize()}\n`{translated_text.capitalize()}`.')
 		except ValueError:
-			await ctx.send(f"Error: Invalid language.")
+			await botutilities.error_template(ctx, "Invalid language.")
 
 	@commands.command(
 		description="Searches a Wikipedia page with your search request.",

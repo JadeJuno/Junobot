@@ -48,14 +48,14 @@ class CommandErrorHandler(commands.Cog):
 
 		elif isinstance(error, commands.MissingRequiredArgument):
 			missing_param = error.param.name.replace("_", " ").capitalize().strip()
-			await ctx.reply(f"Error: Missing argument `{missing_param}`.")
+			await botutilities.error_template(ctx, f"Missing argument `{missing_param}`.")
 
 		elif isinstance(error, commands.MissingPermissions):
 			missing_perm = error.missing_permissions[0].replace('_', ' ').title()
-			await ctx.reply(f'Error: You are missing the `{missing_perm}` permission to run this command.')
+			await botutilities.error_template(ctx, f'You are missing the `{missing_perm}` permission to run this command.')
 
 		elif isinstance(error, commands.NotOwner):
-			await ctx.reply(f"Error: This command is restricted to the owner of this bot.")
+			await botutilities.error_template(ctx, f"This command is restricted to the owner of this bot.")
 
 		elif isinstance(error, commands.BadArgument) and hasattr(ctx.command, 'on_error'):
 			pass

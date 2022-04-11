@@ -1,3 +1,4 @@
+import json
 import random
 
 import discord
@@ -11,35 +12,12 @@ class GoldHelp(commands.MinimalHelpCommand):
 		self.command_name = None
 		self.needed_perms = None
 		self.description = "Shows a list of all the commands of the bot or the details of said commands."
-		self.perms_dict = {
-			"read_messages": "View Channel", "view_channel": "View Channel",
-			"send_messages": "Send Messages", "send_tts_messages": "Send Text-to-Speech Messages",
-			"manage_messages": "Manage Messages", "embed_links": "Embed Links",
-			"attach_files": "Attach Files", "read_message_history": "Read Message History",
-			"mention_everyone": "Mention @everyone, @here and All Roles",
-			"external_emojis": "Use External Emoji", "use_external_emojis": "Use External Emoji",
-			"view_guild_insights": "View Server Insights", "conect": "Connect", "speak": "Speak",
-			"mute_members": "Mute Members", "deafen_members": "Deafen Members",
-			"move_members": "Move Members", "use_voice_activation": "Use Voice Activity",
-			"change_nickname": "Change Nickname", "manage_nicknames": "Manage Nicknames",
-			"manage_roles": "Manage Roles", "manage_permissions": "Manage Roles",
-			"manage_webhooks": "Manage Webhooks", "manage_emojis": "Manage Emojis and Stickers",
-			"manage_emojis_and_stickers": "Manage Emojis and Stickers",
-			"use_slash_commands": "Use Application Commands", "request_to_speak": "Request to Speak",
-			"manage_events": "Manage Events", "manage_threads": "Manage Threads",
-			"create_public_threads": "Create Public Threads",
-			"create_private_threads": "Create Private Threads",
-			"external_stickers": "Use External Stickers",
-			"use_external_stickers": "Use External Stickers",
-			"send_messages_in_threads": "Send Messages in Threads",
-			"use_embedded_activities": "Use Activities", "moderate_members": "Timeout Members",
-			"create_instant_invite": "Create Invite", "kick_members": "Kick Members",
-			"ban_members": "Ban Members", "administrator": "Administrator"
-		}
+		with open('assets/perms.json') as f:
+			self.perms_dict = json.load(f)
 		super().__init__(**options)
 
 	def command_not_found(self, string: str) -> str:
-		return f'Error: Command "{string}" not found.'
+		return f'Command "{string}" not found.'
 
 	async def prepare_help_command(self, ctx, command):
 		self.command_name = command
@@ -97,7 +75,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 
 	async def send_cog_help(self, cog):
 		channel = self.get_destination()
-		await channel.send(self.command_not_found(cog.qualified_name))
+		await botutilities.error_template(channel, self.command_not_found(cog.qualified_name))
 
 
 class GoldHelpCog(commands.Cog):

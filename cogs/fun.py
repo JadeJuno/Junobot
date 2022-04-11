@@ -46,7 +46,7 @@ class Fun(commands.Cog):
 		hex_color = hex_color.upper().replace('#', '')
 
 		if re.search(re.compile("([^0123456789abcdef])+", re.IGNORECASE), hex_color) or len(hex_color) != 6:
-			await ctx.send(f"Error: `#{hex_color}` is not a valid Hex Color code.")
+			await botutilities.error_template(ctx, f"`#{hex_color}` is not a valid Hex Color code.")
 			return
 		img = f"https://dummyimage.com/300/{hex_color}/&text=+"
 		embed = botutilities.embed_template(footer=f'#{hex_color}', color=int(hex_color, 16), image=img)
@@ -88,14 +88,13 @@ class Fun(commands.Cog):
 	async def roll(self, ctx, faces=6.0):
 		emojis = self.bot.get_guild(botutilities.config["guild_id"]).emojis
 		if type(faces) is float and faces != int(faces):
-			await ctx.send(
-				f"Error: You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
+			await botutilities.error_template(ctx, f"You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
 			return
 		if faces > 2:
 			try:
 				faces = int(faces)
 			except ValueError:
-				await ctx.send("Error: You can't roll a die with a non-numeric amount of faces...")
+				await botutilities.error_template(ctx, "You can't roll a die with a non-numeric amount of faces...")
 			result = random.randint(1, faces)
 			print(result)
 			if faces <= 6:
@@ -109,7 +108,7 @@ class Fun(commands.Cog):
 	@roll.error
 	async def roll_error(self, ctx, error):
 		if isinstance(error, commands.BadArgument):
-			await ctx.send("Error: You can't roll a die with a non-numeric amount of faces...")
+			await botutilities.error_template(ctx, "You can't roll a die with a non-numeric amount of faces...")
 
 	@commands.command(
 		description="Send a message with the text you wrote **in quotation marks** and deletes your message. If the channel is defined, it'll send the message to said channel.",
@@ -120,15 +119,15 @@ class Fun(commands.Cog):
 	)
 	async def say(self, ctx, message, channel: discord.TextChannel = None):
 		if len(message.strip()) == 0:
-			await ctx.send("Error: You can't send an empty message.")
+			await botutilities.error_template(ctx, "You can't send an empty message.")
 			return
 		if channel is None:
 			channel = ctx.channel
 		if not channel.permissions_for(ctx.author).send_messages:
-			await ctx.send(f"Error: You don't have permissions to talk in {channel.mention}")
+			await botutilities.error_template(ctx, f"You don't have permissions to talk in {channel.mention}")
 			return
 		if channel.guild.id != ctx.guild.id:
-			await ctx.send(f"Error: {channel.mention} is not in {ctx.guild.name}")
+			await botutilities.error_template(ctx, f"{channel.mention} is not in {ctx.guild.name}")
 			return
 		if message.lower().startswith("i am") or message.lower().startswith("i'm"):
 			if "stupid" in message.lower():

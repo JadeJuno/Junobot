@@ -2,6 +2,7 @@ import re
 
 from discord.ext import commands
 
+import botutilities
 import morsecode
 
 
@@ -24,27 +25,26 @@ class Ciphering(commands.Cog):
 	async def morse_code(self, ctx, encrypt_decrypt, *, sentence):
 		var = morsecode.check_letter(sentence.upper())
 		if not var:
-			await ctx.send("Error: Invalid character detected.")
+			await botutilities.error_template(ctx, "Invalid character detected.")
 			return
 		sentence += " "
-		error_message = f"Error: You tried to {encrypt_decrypt} an already {encrypt_decrypt}ed message or you entered an invalid character."
 		if encrypt_decrypt == "encrypt":
 			try:
 				sentence = sentence[0:-1]
 				output = morsecode.encrypt(sentence.upper())
 			except KeyError:
-				output = error_message
-			except Exception as e:
-				print(e)
+				await botutilities.error_template(ctx, "You tried to {encrypt_decrypt} an already {encrypt_decrypt}ed message or you entered an invalid character.")
 				return
 		elif encrypt_decrypt == "decrypt":
 			sentence = sentence.replace('_', '-')
 			try:
 				output = morsecode.decrypt(sentence).lower()
 			except ValueError:
-				output = error_message
+				await botutilities.error_template(ctx, "You tried to {encrypt_decrypt} an already {encrypt_decrypt}ed message or you entered an invalid character.")
+				return
 		else:
-			output = "Error: Invalid discriminator."
+			await botutilities.error_template(ctx, "Invalid discriminator.")
+			return
 		await ctx.send(output.capitalize())
 
 	# Long-ass example :weary:
@@ -79,9 +79,8 @@ class Ciphering(commands.Cog):
 			for _bin in bin_list:
 				output += chr(int(_bin, 2))
 			await ctx.send(f"Here's your decoded binary code: \n`{output}`")
-			return
 		else:
-			await ctx.send('ERROR: Invalid discriminator.')
+			await botutilities.error_template(ctx, 'Invalid discriminator.')
 			return
 
 
