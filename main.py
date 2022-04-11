@@ -1,10 +1,8 @@
 import asyncio
 import os
-import random
-from datetime import datetime, timedelta
 
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 
 import botutilities
 import prefix
@@ -12,18 +10,18 @@ from config import parse_config
 
 config = parse_config("./config.toml")
 
-parser = prefix.PrefixParser(default="g!")
+parser = prefix.PrefixParser(default=config['default_prefix'])
 
 bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord.Intents.all(),
-				   allowed_mentions=discord.AllowedMentions(everyone=False), owner_id=498606108836102164)
+				   allowed_mentions=discord.AllowedMentions(everyone=False), owner_id=config['owner_id'])
 
+"""
 change_loop_interval = random.randint(1, 90)
-
 
 @tasks.loop(minutes=change_loop_interval)
 async def change_status_task():
 	global change_loop_interval
-	statuses = ('My default prefix is g!.', "If I break, contact Golder06#7041.", 'To see my commands, type g!help.')
+	statuses = (f'My default prefix is {config['default_prefix']}.', "If I break, contact Golder06#7041.", f'To see my commands, type {config['default_prefix']}help.')
 
 	activity = random.choice(statuses)
 	await bot.change_presence(status=discord.Status.online, activity=discord.Game(activity))
@@ -31,6 +29,7 @@ async def change_status_task():
 	print(f'Status changed to "{activity}" ({time_now.strftime("%H:%M")}).')
 	change_loop_interval = random.randint(1, 90)
 	print(f"Next status change in {change_loop_interval} minutes ({(time_now + timedelta(minutes=change_loop_interval)).strftime('%H:%M')}).")
+"""
 
 
 @bot.event
