@@ -43,9 +43,9 @@ class Fun(commands.Cog):
 		extras={"example": "#32A852"}
 	)
 	async def color(self, ctx, hex_color):
-		hex_color = hex_color.replace('#', '')
+		hex_color = hex_color.upper().replace('#', '')
 
-		if re.search(re.compile("([0123456789abcdef])+", re.I), hex_color) or len(hex_color) != 6:
+		if re.search(re.compile("([^0123456789abcdef])+", re.IGNORECASE), hex_color) or len(hex_color) != 6:
 			await ctx.send(f"Error: `#{hex_color}` is not a valid Hex Color code.")
 			return
 		img = f"https://dummyimage.com/300/{hex_color}/&text=+"
