@@ -1,3 +1,4 @@
+import sys
 import random
 import re
 
@@ -34,11 +35,7 @@ async def is_not_report_banned(ctx):
 
 
 def check_if_self_hosted():
-	try:
-		with open(r"C:\Users\cient\OneDrive\Escritorio\Don't delete this text file.txt"):
-			return True
-	except FileNotFoundError:
-		return False
+	return sys.platform == "win32"
 
 
 def embed_template(title=None, description=None, footer="", image: str = "", icon: str = "",
