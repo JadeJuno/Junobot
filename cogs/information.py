@@ -136,7 +136,7 @@ class Information(commands.Cog):
 				result = wikipedia.page(search_request)
 				# update: didn't go that bad, but it wasn't "well lol"
 				# Future Golder here: WTF does this comment mean????
-				description = f"[{result.title}]({result.url})\n{result.summary[:300].strip()}..."
+				description = f"**[{result.title}]({result.url})**\n{result.summary[:300].strip()}..."
 				try:
 					image = result.images[0]
 				except IndexError:
@@ -144,17 +144,19 @@ class Information(commands.Cog):
 			except wikipedia.exceptions.DisambiguationError as e:
 				i = 1
 				for option in e.options[:9]:
+					try:
+						disamb_result = wikipedia.page(option, auto_suggest=False)
+						if disamb_result.url != "":
+							result_2 = f"[{disamb_result.title}]({disamb_result.url})"
+						else:
+							result_2 = f"{disamb_result} **URL Not Found**"
+					except wikipedia.exceptions.PageError:
+						continue
 					i += 1
-					disamb_result = wikipedia.page(option, auto_suggest=False)
-					if disamb_result.url != "":
-						result_2 = f"[{disamb_result.title}]({disamb_result.url})"
-					else:
-						result_2 = f"{disamb_result} **URL Not Found**"
 					description += f"`{i}`: {result_2}\n"
 			except wikipedia.exceptions.PageError:
 				description = "Page not found."
-			embed = botutilities.embed_template(title, description, image=image,
-												icon="https://i.imgur.com/FD1pauH.png")
+			embed = botutilities.embed_template(title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
 		await message.edit(content=None, embed=embed)
 
 

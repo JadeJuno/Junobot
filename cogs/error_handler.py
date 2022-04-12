@@ -19,6 +19,7 @@ class CommandErrorHandler(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx: commands.Context, error):
+		timestamp = calendar.timegm(ctx.message.created_at.utctimetuple())
 		log = self.bot.get_channel(botutilities.config["log_channel"])
 		bot_owner = self.bot.get_user(self.bot.owner_id)
 
@@ -73,10 +74,16 @@ class CommandErrorHandler(commands.Cog):
 					file.write(content)
 					file.seek(0)
 					owner_ping = bot_owner.mention
-					print(str_tback)
-					await log.send(
-						f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`',
-						file=discord.File(fp=file, filename=f"bug_report_{calendar.timegm(ctx.message.created_at.utctimetuple())}.txt"))
+					attachs = [discord.File(fp=file, filename=f"bug_report_{timestamp}.txt")]
+				log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`'
+				if len(log_message) > 2000:
+					log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>. Error message too long.\nMessage that caused the error: `{ctx.message.content}`'
+					with io.StringIO() as file2:
+						file2.write(str_tback)
+						file2.seek(0)
+						attachs.append(discord.File(file2, filename=f"error_message_{timestamp}.txt"))
+				await log.send(log_message, files=attachs)
+
 				return await ctx.send("Error Message sent.")
 
 			else:
