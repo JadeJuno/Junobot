@@ -36,8 +36,7 @@ class Information(commands.Cog):
 		}
 	)
 	async def dictionary(self, ctx, *, query):
-		error_embed = botutilities.embed_template(title="Error:", description=f'Definition for "{query.title()}" not found.')
-
+		error_embed = botutilities.error_template(ctx, f'Definition for "{query.title()}" not found.', send=False)
 		message = await ctx.send("Getting definition...")
 		results = get_definition(query)
 		if results != "404 Error":
@@ -83,7 +82,7 @@ class Information(commands.Cog):
 				i += 1
 			if i == 1:
 				output_str = "**No results found.**"
-			embed = botutilities.embed_template(ctx, "Google", output_str[0:-1],
+			embed = botutilities.embed_template("Google", output_str[0:-1],
 												icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		return await message.edit(content=None, embed=embed)
 
@@ -161,7 +160,7 @@ class Information(commands.Cog):
 					description += f"`{i}`: {result_2}\n"
 			except wikipedia.exceptions.PageError:
 				description = "Page not found."
-			embed = botutilities.embed_template(ctx, title, description, image=image,
+			embed = botutilities.embed_template(title, description, image=image,
 												icon="https://i.imgur.com/FD1pauH.png")
 		await message.edit(content=None, embed=embed)
 
