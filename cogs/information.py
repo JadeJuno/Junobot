@@ -84,7 +84,7 @@ class Information(commands.Cog):
 		aliases=("detect",),
 		description='Detects the language of a quoted sentence.',
 		extras={
-			"example": "Hola, mi nombre es Gøldbot y soy español"
+			"example": "Hola, mi nombre es Gøldbot y hablo español"
 		}
 	)
 	async def lang_detect(self, ctx, *, sentence):
