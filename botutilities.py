@@ -59,9 +59,12 @@ def embed_template(title=None, description=None, footer="", image: str = "", ico
 	return embed
 
 
-async def error_template(ctx, message):
+async def error_template(ctx, message, send=True):
 	embed = embed_template("ERROR", description=message, color=0xFF0000)
-	await ctx.reply(embed=embed)
+	if send:
+		await ctx.reply(embed=embed)
+	else:
+		return embed
 
 
 async def tryreply(ctx, message, reply=False, img=None, mention=True):
