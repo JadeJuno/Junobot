@@ -36,11 +36,11 @@ class Information(commands.Cog):
 			'example': 'auric'
 		}
 	)
-	async def dictionary(self, ctx, lang="en-gb", *, query):
+	async def dictionary(self, ctx, *, query):
 		error_embed = botutilities.error_template(ctx, f'Definition for "{query.title()}" not found.', send=False)
 		message = await ctx.send("Getting definition...")
 
-		oxford = SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'), lang)
+		oxford = SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'), "en-gb")
 		definitions = oxford.define(query)
 
 		if definitions:
