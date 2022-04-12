@@ -1,1 +1,8 @@
-WIP, please wait until I'm not lazy to do this.
+**Description**
+Fetches the first definition of a word from the Oxford Dictionary.
+
+**Aliases**
+`{prefix}define`, `{prefix}definition`
+
+**Usage**
+`{prefix}define (language, defaults to en-gb) [word]`
