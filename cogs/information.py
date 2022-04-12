@@ -1,13 +1,14 @@
 import discord
 import googletrans
 import wikipedia
+import os
 from discord.ext import commands
 from googletrans import Translator
 from iso639 import languages
 
 import botutilities
 import googlesearch
-from oxforddict import get_definition
+from oxford import SyncClient
 
 
 class Information(commands.Cog):
@@ -30,32 +31,24 @@ class Information(commands.Cog):
 
 	@commands.command(
 		aliases=('definition', 'define'),
-		description='G',
+		description='Get the definition of a word.',
 		extras={
 			'example': 'auric'
 		}
 	)
-	async def dictionary(self, ctx, *, query):
+	async def dictionary(self, ctx, lang="en-gb", *, query):
 		error_embed = botutilities.error_template(ctx, f'Definition for "{query.title()}" not found.', send=False)
 		message = await ctx.send("Getting definition...")
-		results = get_definition(query)
-		if results != "404 Error":
-			lex_entries = results["lexicalEntries"]
-			try:
-				entries = [lex_entry["entries"] for lex_entry in lex_entries]
-			except KeyError:
-				emb = error_embed
-			else:
-				entries = [x for y in entries for x in y]
-				senses = [entry["senses"] for entry in entries]
-				senses = [x for y in senses for x in y]
-				definitions = [definition['definitions'][0] for definition in senses]
 
-				emb = botutilities.embed_template(
-					title=f'Definition of "{query.title()}":',
-					description=f"{definitions[0].capitalize()}",
-					footer='Powered by Oxford Dictionary'
-				)
+		oxford = SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'), lang)
+		definitions = oxford.define(query)
+
+		if definitions:
+			emb = botutilities.embed_template(
+				title=f'Definition of "{query.title()}":',
+				description=f"{definitions[0].capitalize()}",
+				footer='Powered by Oxford Dictionary'
+			)
 		else:
 			emb = error_embed
 
