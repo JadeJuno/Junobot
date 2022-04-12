@@ -73,6 +73,7 @@ class CommandErrorHandler(commands.Cog):
 					file.write(content)
 					file.seek(0)
 					owner_ping = bot_owner.mention
+					print(str_tback)
 					await log.send(
 						f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`',
 						file=discord.File(fp=file, filename=f"bug_report_{calendar.timegm(ctx.message.created_at.utctimetuple())}.txt"))
