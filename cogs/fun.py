@@ -80,15 +80,17 @@ class Fun(commands.Cog):
 		}
 	)
 	async def roll(self, ctx, faces=6.0):
-		emojis = self.bot.get_guild(botutilities.config["guild_id"]).emojis
-		if type(faces) is float and faces != int(faces):
+		if faces != int(faces):
 			await botutilities.error_template(ctx, f"You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
 			return
+
+		emojis = self.bot.get_guild(botutilities.config["guild_id"]).emojis
 		if faces > 2:
 			try:
 				faces = int(faces)
 			except ValueError:
 				await botutilities.error_template(ctx, "You can't roll a die with a non-numeric amount of faces...")
+				return
 			result = random.randint(1, faces)
 			print(result)
 			if faces <= 6:
@@ -96,7 +98,7 @@ class Fun(commands.Cog):
 			await ctx.send(f"Rolled a d{faces}.\nIt landed on **{result}**!")
 		elif faces == 2:
 			await ctx.send(f"... A 2 sided die is a coin... Use the `{ctx.prefix}flip` command.")
-		elif faces <= 1:
+		else:
 			await ctx.send("... You serious?")
 
 	@roll.error
