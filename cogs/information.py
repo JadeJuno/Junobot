@@ -1,14 +1,15 @@
+import os
+
 import discord
 import googletrans
 import wikipedia
-import os
 from discord.ext import commands
 from googletrans import Translator
 from iso639 import languages
+from oxford import SyncClient
 
 import botutilities
 import googlesearch
-from oxford import SyncClient
 
 
 class Information(commands.Cog):
@@ -17,7 +18,6 @@ class Information(commands.Cog):
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
 		print("Information Cog ready!")
-
 
 	@staticmethod
 	def get_dict_key(dictionary, value):
@@ -36,16 +36,15 @@ class Information(commands.Cog):
 		}
 	)
 	async def dictionary(self, ctx, *, query):
-		error_embed = botutilities.error_template(ctx, f'Definition for "{query.title()}" not found.', send=False)
-		message = await ctx.send("Getting definition...")
+		error_embed = await botutilities.error_template(ctx, f'Definition for "{query.title()}" not found.', send=False)
 
-		oxford = SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'), "en-gb")
+		message = await ctx.send("Getting definition...")
+		oxford = SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'), "en-gb", debug=True)
 		definitions = oxford.define(query)
 
 		if definitions:
 			emb = botutilities.embed_template(
-				title=f'Definition of "{query.title()}":',
-				description=f"{definitions[0].capitalize()}",
+				title=f'Definition of "{query.title()}":', description=f"{definitions[0].capitalize()}",
 				footer='Powered by Oxford Dictionary'
 			)
 		else:
