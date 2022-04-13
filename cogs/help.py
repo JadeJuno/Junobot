@@ -84,9 +84,8 @@ class GoldHelpCog(commands.Cog):
 		self._original_help_command = bot.help_command
 		bot.help_command = GoldHelp()
 		bot.help_command.cog = self
-
-	def cog_load(self):
 		print("Help Command Ready.")
+
 
 	def cog_unload(self):
 		self.bot.help_command = self._original_help_command

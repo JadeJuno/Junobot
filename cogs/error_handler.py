@@ -13,8 +13,6 @@ class CommandErrorHandler(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.botutilities = botutilities.BotUtilities(bot)
-
-	async def cog_load(self):
 		print("Error Handler Ready!")
 
 	@commands.Cog.listener()

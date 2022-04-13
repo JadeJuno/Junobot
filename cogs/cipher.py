@@ -9,8 +9,6 @@ import morsecode
 class Ciphering(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-
-	async def cog_load(self):
 		print("Ciphering Cog ready!")
 
 	@commands.command(

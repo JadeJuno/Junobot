@@ -7,8 +7,6 @@ import botutilities
 class Utility(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
-
-	async def cog_load(self):
 		print("Utility Cog ready!")
 
 	@commands.command(description="Sends a link to invite Gøldbot to another server.")

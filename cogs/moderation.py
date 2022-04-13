@@ -10,8 +10,6 @@ import botutilities
 class Moderation(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-
-	async def cog_load(self):
 		print("Moderation Cog ready!")
 
 	@commands.has_permissions(ban_members=True)

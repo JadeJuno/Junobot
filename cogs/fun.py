@@ -10,8 +10,6 @@ import botutilities
 class Fun(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-
-	async def cog_load(self):
 		print("Fun Cog ready!")
 
 	@commands.command(
@@ -55,20 +53,18 @@ class Fun(commands.Cog):
 	@commands.command(
 		description="Give the bot some options *(More than 1)* and it will randomly choose between them.",
 		extras={
-			"signature": "<option 1, option 2, option 3, (...)>",
+			"signature": "<option 1 option 2 option 3 (...)>",
 			"example": "Yes, No, Perhaps"
 		}
 	)
-	async def choose(self, ctx, *, options):
-		divided_options: list = options.split(",")
-		if len(divided_options) >= 2:
-			for option in divided_options:
+	async def choose(self, ctx, options: commands.Greedy[str]):
+		if len(options) >= 2:
+			for option in options:
 				if not option:
-					divided_options.remove(option)
-			await ctx.send(f"Gøldbot chooses: `{random.choice(divided_options).strip()}`.")
+					options.remove(option)
+			await ctx.send(f"Gøldbot chooses: `{random.choice(options).strip()}`.")
 		else:
-			await ctx.send(
-				f"I can't just choose between {len(divided_options)} choice. *(to divide the choices you should put a comma between them)*.")
+			await ctx.send(f"I can't just choose between 1 choice. *(to divide the choices you should put a comma between them)*.")
 
 	@commands.command(
 		aliases=("coinflip", "flipcoin", "coin"),

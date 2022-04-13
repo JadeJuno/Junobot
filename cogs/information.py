@@ -16,9 +16,8 @@ class Information(commands.Cog):
 		self.bot = bot
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
-
-	async def cog_load(self):
 		print("Information Cog ready!")
+
 
 	@staticmethod
 	def get_dict_key(dictionary, value):
