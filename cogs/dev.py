@@ -13,8 +13,6 @@ class DevCog(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 		self.log = None
-
-	async def cog_load(self):
 		print("DevCog ready!")
 
 	async def cog_check(self, ctx):
