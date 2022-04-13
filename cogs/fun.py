@@ -1,5 +1,6 @@
 import random
 import re
+import typing
 
 import discord
 from discord.ext import commands
@@ -54,17 +55,14 @@ class Fun(commands.Cog):
 		description="Give the bot some options *(More than 1)* and it will randomly choose between them.",
 		extras={
 			"signature": "<option 1 option 2 option 3 (...)>",
-			"example": "Yes, No, Perhaps"
+			"example": "Yes No Perhaps"
 		}
 	)
-	async def choose(self, ctx, options: commands.Greedy[str]):
-		if len(options) >= 2:
-			for option in options:
-				if not option:
-					options.remove(option)
-			await ctx.send(f"Gøldbot chooses: `{random.choice(options).strip()}`.")
-		else:
-			await ctx.send(f"I can't just choose between 1 choice. *(to divide the choices you should put a comma between them)*.")
+	async def choose(self, ctx, *options):
+		if len(options) < 2:
+			await ctx.send(f"I can't just choose between 1 choice.")
+			return
+		await ctx.send(f"Gøldbot chooses: `{random.choice(options).strip()}`.")
 
 	@commands.command(
 		aliases=("coinflip", "flipcoin", "coin"),
