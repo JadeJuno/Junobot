@@ -109,21 +109,14 @@ class Fun(commands.Cog):
 	@commands.command(
 		description="Send a message with the text you wrote **in quotation marks** and deletes your message. If the channel is defined, it'll send the message to said channel.",
 		extras={
-			"signature": '[channel] <message>',
 			"example": '#general Hi, my name is Gøldbot and I\'m sentient.'
 		}
 	)
 	async def say(self, ctx, channel: typing.Optional[discord.TextChannel], *, message):
-		if len(message.strip()) == 0:
-			await botutilities.error_template(ctx, "You can't send an empty message.")
-			return
 		if channel is None:
 			channel = ctx.channel
 		if not channel.permissions_for(ctx.author).send_messages:
 			await botutilities.error_template(ctx, f"You don't have permissions to talk in {channel.mention}")
-			return
-		if channel.guild.id != ctx.guild.id:
-			await botutilities.error_template(ctx, f"{channel.mention} is not in {ctx.guild.name}")
 			return
 		if message.lower().startswith("i am") or message.lower().startswith("i'm"):
 			if "stupid" in message.lower():
