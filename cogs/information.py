@@ -2,11 +2,11 @@ import os
 
 import discord
 import googletrans
+import oxford
 import wikipedia
 from discord.ext import commands
 from googletrans import Translator
 from iso639 import languages
-from oxford import SyncClient
 
 import botutilities
 import googlesearch
@@ -39,15 +39,14 @@ class Information(commands.Cog):
 		error_embed = await botutilities.error_template(ctx, f'Definition for "{query.title()}" not found.', send=False)
 
 		message = await ctx.send("Getting definition...")
-		oxford = SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'), "en-gb", debug=True)
-		definitions = oxford.define(query)
-
-		if definitions:
+		definitions = oxford.SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'), "en-gb", debug=True)
+		try:
+			definitions = definitions.define(query)
 			emb = botutilities.embed_template(
 				title=f'Definition of "{query.title()}":', description=f"{definitions[0].capitalize()}",
 				footer='Powered by Oxford Dictionary'
 			)
-		else:
+		except oxford.Exceptions.WordNotFound:
 			emb = error_embed
 
 		await message.edit(content="", embed=emb)
