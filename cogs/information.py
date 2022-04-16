@@ -84,7 +84,9 @@ class Information(commands.Cog):
 			"example": "Hola, mi nombre es Gøldbot y hablo español"
 		}
 	)
-	async def lang_detect(self, ctx, *, sentence):
+	async def lang_detect(self, ctx: commands.Context, *, sentence):
+		await botutilities.error_template(ctx, f'"{ctx.invoked_with}" is currently fully broken. Please wait.')
+		return
 		detected_lang = self.translator.detect(sentence).lang
 		if isinstance(detected_lang, list):
 			detected_lang = detected_lang[self.translator.detect(sentence).confidence.index(
