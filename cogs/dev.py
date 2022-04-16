@@ -107,7 +107,7 @@ class DevCog(commands.Cog):
 			if len(ctx.message.reference.resolved.embeds) == 0:
 				output = ctx.message.reference.resolved.content
 			else:
-				output = ctx.message.reference.resolved.embeds[0].description
+				output = ctx.message.reference.resolved.embeds[0].DESCRIPTION
 			with io.StringIO() as file:
 				file.write(output)
 				file.seek(0)

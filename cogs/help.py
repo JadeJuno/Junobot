@@ -8,15 +8,16 @@ import botutilities
 
 
 class GoldHelp(commands.MinimalHelpCommand):
+
+	DESCRIPTION = "Shows a list of all the commands of the bot or the details of said commands."
+	with open('assets/perms.json') as f:
+		PERMS = json.load(f)
+
 	def __init__(self, **options):
 		self.command_name = None
-		self.needed_perms = None
-		self.description = "Shows a list of all the commands of the bot or the details of said commands."
-		with open('assets/perms.json') as f:
-			self.perms_dict = json.load(f)
 		super().__init__(**options)
 
-	def command_not_found(self, string: str) -> str:
+	def command_not_found(self, string: str):
 		return f'Command "{string}" not found.'
 
 	async def prepare_help_command(self, ctx, command):
@@ -64,7 +65,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 
 		if 'permission' in command.extras:
 			embed.add_field(name="**Permissions**",
-							value=f'You require "{self.perms_dict[command.extras["permission"]]}" permissions to use this command.')
+							value=f'You require "{self.PERMS[command.extras["permission"]]}" permissions to use this command.')
 
 		embed.add_field(name="**Usage**",
 						value=f"{self.get_command_signature(command)}\nE.G.: `{self.context.clean_prefix}{self.command_name}{' ' if example else ''}{example}`",
@@ -85,7 +86,6 @@ class GoldHelpCog(commands.Cog):
 		bot.help_command = GoldHelp()
 		bot.help_command.cog = self
 		print("Help Command Ready.")
-
 
 	def cog_unload(self):
 		self.bot.help_command = self._original_help_command
