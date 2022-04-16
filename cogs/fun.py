@@ -88,8 +88,8 @@ class Fun(commands.Cog):
 		if faces > 2:
 			try:
 				faces = int(faces)
-			except ValueError:
-				await botutilities.error_template(ctx, "You can't roll a die with a non-numeric amount of faces...")
+			except OverflowError:
+				await botutilities.error_template(ctx, "You can't roll an infinite dice!")
 				return
 			result = random.randint(1, faces)
 			print(result)
