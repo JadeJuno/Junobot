@@ -5,6 +5,6 @@ wikipedia~=1.4.0
 beautifulsoup4~=4.9.3
 discord~=1.0.1
 requests~=2.26.0
-git+https://github.com/Rapptz/discord.py
+git+https://github.com/Rapptz/discord.py.git
 urllib3~=1.26.7
-git+https://github.com/Golder06/Oxford.py
+git+https://github.com/Golder06/Oxford.py.git
