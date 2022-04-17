@@ -35,8 +35,7 @@ class Utility(commands.Cog):
 											description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
 											icon=ctx.author.display_avatar.url)
 		owner_ping = self.bot.get_user(self.bot.owner_id).mention
-		await report_channel.send(f'{owner_ping}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed)
-		await report_channel.send(files=attachments)
+		await report_channel.send(f'{owner_ping}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed, files=attachments)
 		await ctx.send(f"Bug Report sent successfully")
 
 	@commands.command(description='Sends "Pong!" and the latency of the bot.')
