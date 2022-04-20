@@ -9,7 +9,7 @@ import botutilities
 
 class GoldHelp(commands.MinimalHelpCommand):
 
-	DESCRIPTION = "Shows a list of all the commands of the bot or the details of said commands."
+	description = "Shows a list of all the commands of the bot or the details of said commands."
 	with open('assets/perms.json') as f:
 		PERMS = json.load(f)
 

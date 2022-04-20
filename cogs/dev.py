@@ -1,17 +1,12 @@
-import asyncio
 import calendar
 import io
 import os
 import random
 
-from pynput.keyboard import Key, Controller
-
 import discord
 from discord.ext import commands
 
 import botutilities
-
-keyboard = Controller()
 
 
 class DevCog(commands.Cog):
@@ -120,11 +115,10 @@ class DevCog(commands.Cog):
 
 	@commands.command()
 	async def help_test(self, ctx):
-		for command in self.bot.commands:
-			keyboard.type(f"g!help {command}")
-			keyboard.press(Key.enter)
-			keyboard.release(Key.enter)
-			await asyncio.sleep(3)
+		command_list = list(self.bot.commands)
+		for command in command_list:
+			if command.cog != self:
+				await ctx.send_help(command)
 		await ctx.send("**Done!**")
 
 

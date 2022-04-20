@@ -8,17 +8,25 @@ import zipfile
 import discord
 from discord.ext import commands
 
+import botutilities
+
 
 class Origins(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 
-	@commands.command()
+	async def cog_check(self, ctx):
+		check = await self.bot.is_owner(ctx.author)
+		if check:
+			return check
+		else:
+			raise commands.NotOwner
+
+	@commands.command(aliases=('disable',))
 	async def unchoosable(self, ctx, namespace, name, pack_format=8):
 		pattern = re.compile('[^a-z0-9_.\-/]')
 		if re.search(pattern, namespace) or re.search(pattern, name):
-			await ctx.send(
-				"Error: Identifier has non [a-z0-9_.-] character in it (In layman's terms: *there's a character that isn't a lowercase leter, a number, an underscore, a hyphen or a period on the ID.*).")
+			await botutilities.error_template(ctx, "Identifier has non [a-z0-9_.-] character in it (In layman's terms: *there's a character that isn't a lowercase leter, a number, an underscore, a hyphen or a period on the ID.*).")
 			return
 		unchoosable_obj = {
 			"unchoosable": True,
@@ -42,7 +50,7 @@ class Origins(commands.Cog):
 				for child in root.rglob('*'):
 					z.write(child, arcname=str(child).replace(directory, ''))
 
-		await ctx.send(f'"Unchoosable_{name.title()}" is ready.', file=discord.File(fp=f'{directory}.zip'))
+		await ctx.send(f'"Disable {name.title()}" is ready.', file=discord.File(fp=f'{directory}.zip'))
 		shutil.rmtree(directory)
 		os.remove(f'{directory}.zip')
 
