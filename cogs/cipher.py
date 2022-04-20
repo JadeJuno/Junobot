@@ -1,5 +1,4 @@
 import re
-import typing
 
 from discord.ext import commands
 
@@ -12,23 +11,13 @@ class Ciphering(commands.Cog):
 		self.bot = bot
 		print("Ciphering Cog ready!")
 
-	async def cog_command_error(self, ctx, error):
-		if isinstance(error, commands.BadLiteralArgument):
-			try:
-				param_name = ctx.command.extras[error.param.name]
-			except KeyError:
-				param_name = error.param.name
-
-			await botutilities.error_template(ctx, f"The argument '{param_name}', as the name suggests, can only take '{error.literals[0]}' or '{error.literals[1]}'")
-
 	@commands.command(
 		name="morse",
 		aliases=("morsecode",),
 		description="Encrypts a sentence to morse code or decrypts it to English.",
 		extras={
 			'signature': '<Encrypt/Decrypt> <sentence>',
-			'example': "decrypt .... . .-.. .-.. --- --..-- / - .... .. ... / .. ... / -- --- .-. ... . / -.-. --- -.. .",
-			'encrypt_decrypt': "Encrypt/Decrypt"
+			'example': "decrypt .... . .-.. .-.. --- --..-- / - .... .. ... / .. ... / -- --- .-. ... . / -.-. --- -.. ."
 		}
 	)
 	async def morse_code(self, ctx, encrypt_decrypt, *, sentence):
@@ -36,7 +25,9 @@ class Ciphering(commands.Cog):
 		sentence = sentence.upper()
 
 		if encrypt_decrypt not in ('encrypt', 'decrypt'):
-			raise commands.BadLiteralArgument
+			await botutilities.error_template(ctx,
+											  f"The argument 'Encrypt/Decrypt', as the name suggests, can only take 'encrypt' or 'decrypt'.")
+			return
 		if not morsecode.check_letter(sentence.upper()):
 			await botutilities.error_template(ctx, "Invalid character detected.")
 			return
@@ -47,7 +38,8 @@ class Ciphering(commands.Cog):
 				sentence = sentence[0:-1]
 				output = morsecode.encrypt(sentence.upper())
 			except KeyError:
-				await botutilities.error_template(ctx, f"You tried to {encrypt_decrypt} an already {encrypt_decrypt}ed message or you entered an invalid character.")
+				await botutilities.error_template(ctx,
+												  f"You tried to {encrypt_decrypt} an already {encrypt_decrypt}ed message or you entered an invalid character.")
 				return
 
 		else:
@@ -55,7 +47,8 @@ class Ciphering(commands.Cog):
 			try:
 				output = morsecode.decrypt(sentence).lower()
 			except ValueError:
-				await botutilities.error_template(ctx, f"You tried to {encrypt_decrypt} an already {encrypt_decrypt}ed message or you entered an invalid character.")
+				await botutilities.error_template(ctx,
+												  f"You tried to {encrypt_decrypt} an already {encrypt_decrypt}ed message or you entered an invalid character.")
 				return
 		await ctx.send(output.capitalize())
 
@@ -68,26 +61,31 @@ class Ciphering(commands.Cog):
 			'encode_decode': 'Encode/Decode'
 		}
 	)
-	async def binary(self, ctx, encode_decode: typing.Literal["encode", "decode"], *, sentence):
-		if encode_decode.lower() == "encode":
+	async def binary(self, ctx, encode_decode, *, sentence):
+		encode_decode = encode_decode.lower()
+
+		if encode_decode not in ('encode', 'decode'):
+			await botutilities.error_template(ctx,
+											  f"The argument 'Encode/Decode', as the name suggests, can only take 'encode' or 'decode'.")
+			return
+
+		if encode_decode == "encode":
 			s = ''.join(format(ord(i), '08b') for x, i in enumerate(sentence))
 			bin_list = [s[i:i + 8] for i in range(0, len(s), 8)]
-			output = ''
-			for _bin in bin_list:
-				output += f'{_bin} '
-			output = output[:-1]
+			output = ' '.join(bin_list)
 			await ctx.send(f"Here's your encoded string: \n`{output}`")
 
-		elif encode_decode.lower() == 'decode':
+		elif encode_decode == 'decode':
 			if re.search("[^01 ]", sentence):
 				await ctx.send("Please only use 1s and 0s.")
 				return
+
 			try:
 				int(sentence)
 			except ValueError:
 				bin_list = sentence.split()
 			else:
-				bin_list = [sentence[i:i + 8] for i in range(0, len(sentence), 8)]
+				bin_list = [sentence[i:i+8] for i in range(len(sentence), 8)]
 
 			output = ''
 			for _bin in bin_list:
