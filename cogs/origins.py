@@ -56,7 +56,7 @@ class Origins(commands.Cog):
 
 	@commands.command(
 		description="Automatically takes a Structure NBT file into a Block Condition object.",
-		extras={"example": ""}
+		extras={"example": "WIP"}
 	)
 	async def structure(self, ctx: commands.Context, x: int = 0, y: int = 0, z: int = 0):
 		center = (x, y, z)
