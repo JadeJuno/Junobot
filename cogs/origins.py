@@ -1,3 +1,4 @@
+import io
 import json
 import os
 import pathlib
@@ -7,26 +8,25 @@ import zipfile
 
 import discord
 from discord.ext import commands
+from nbt import nbt
 
-import botutilities
+import nbt_lib
+from botutilities import error_template
 
 
 class Origins(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 
-	async def cog_check(self, ctx):
-		check = await self.bot.is_owner(ctx.author)
-		if check:
-			return check
-		else:
-			raise commands.NotOwner
-
-	@commands.command(aliases=('disable',))
-	async def unchoosable(self, ctx, namespace, name, pack_format=8):
-		pattern = re.compile('[^a-z0-9_.\-/]')
+	@commands.command(
+		aliases=('disable',),
+		description="Generates a datapack that disables the origin with the specified ID.",
+		extras={"example": "extraorigins inchling 9"}
+	)
+	async def unchoosable(self, ctx, namespace, name, pack_format=9):
+		pattern = re.compile('[^a-z\d_.\-/]')
 		if re.search(pattern, namespace) or re.search(pattern, name):
-			await botutilities.error_template(ctx, "Identifier has non [a-z0-9_.-] character in it (In layman's terms: *there's a character that isn't a lowercase leter, a number, an underscore, a hyphen or a period on the ID.*).")
+			await error_template(ctx, "Identifier has non [a-z0-9_.-] character in it (In layman's terms: *there's a character that isn't a lowercase leter, a number, an underscore, a hyphen or a period on the ID.*).")
 			return
 		unchoosable_obj = {
 			"unchoosable": True,
@@ -53,6 +53,38 @@ class Origins(commands.Cog):
 		await ctx.send(f'"Disable {name.title()}" is ready.', file=discord.File(fp=f'{directory}.zip'))
 		shutil.rmtree(directory)
 		os.remove(f'{directory}.zip')
+
+	@commands.command(
+		description="Automatically takes a Structure NBT file into a Block Condition object.",
+		extras={"example": ""}
+	)
+	async def structure(self, ctx: commands.Context, x: int = 0, y: int = 0, z: int = 0):
+		center = (x, y, z)
+
+		if len(ctx.message.attachments) == 0:
+			await error_template(ctx, "No file was attached.")
+			return
+		file = await ctx.message.attachments[0].to_file()
+		if not file.filename.endswith('.nbt'):
+			await error_template(ctx, "Attached file is not an NBT file.")
+			return
+
+		center = center[:3]
+		structure = nbt.NBTFile(fileobj=file.fp)
+
+		size = [val.value for val in structure['size']]
+		for size_val, center_coord in zip(size, center):
+			if center_coord > size_val:
+				await error_template(ctx, "The center's coordinates are outside of the scructure.")
+				return
+
+		condition = nbt_lib.main(center, structure)
+
+		with io.StringIO() as f:
+			json.dump(condition, f, indent='\t')
+			f.seek(0)
+			attachment = discord.File(f, filename=f"{file.filename}.json")
+		await ctx.send("Done! Remember that the result is **not a power nor an entity condition, but a block condition!** You'll have to put this condition yourself on whatever ower you want.", file=attachment)
 
 
 async def setup(bot):
