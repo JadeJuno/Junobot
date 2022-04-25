@@ -2,6 +2,7 @@ import calendar
 import io
 import os
 import random
+import typing
 
 import discord
 from discord.ext import commands
@@ -111,7 +112,7 @@ class DevCog(commands.Cog):
 			with io.StringIO() as file:
 				file.write(output)
 				file.seek(0)
-				await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename='a.txt'))
+				await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename=f'{ctx.message.id}.txt'))
 
 	@commands.command()
 	async def help_test(self, ctx):
@@ -120,6 +121,17 @@ class DevCog(commands.Cog):
 			if command.cog != self:
 				await ctx.send_help(command)
 		await ctx.send("**Done!**")
+
+	@commands.command()
+	async def sync(self, ctx, guild: typing.Optional[int]):
+		if guild:
+			o = discord.Object(id=guild)
+			self.bot.tree.copy_global_to(guild=o)
+			await self.bot.tree.sync(guild=o)
+			await ctx.send(f"Synced App Commands from {guild}")
+		else:
+			await self.bot.tree.sync()
+			await ctx.send("Synced App Commands")
 
 
 async def setup(bot):
