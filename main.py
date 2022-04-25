@@ -15,22 +15,6 @@ parser = prefix.PrefixParser(default=config['default_prefix'])
 bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord.Intents.all(),
 				   allowed_mentions=discord.AllowedMentions(everyone=False), owner_id=config['owner_id'])
 
-"""
-change_loop_interval = random.randint(1, 90)
-
-@tasks.loop(minutes=change_loop_interval)
-async def change_status_task():
-	global change_loop_interval
-	statuses = (f'My default prefix is {config['default_prefix']}.', "If I break, contact Golder06#7041.", f'To see my commands, type {config['default_prefix']}help.')
-
-	activity = random.choice(statuses)
-	await bot.change_presence(status=discord.Status.online, activity=discord.Game(activity))
-	time_now = datetime.now()
-	print(f'Status changed to "{activity}" ({time_now.strftime("%H:%M")}).')
-	change_loop_interval = random.randint(1, 90)
-	print(f"Next status change in {change_loop_interval} minutes ({(time_now + timedelta(minutes=change_loop_interval)).strftime('%H:%M')}).")
-"""
-
 
 @bot.event
 async def on_ready():
