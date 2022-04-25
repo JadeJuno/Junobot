@@ -16,7 +16,7 @@ class Ciphering(commands.Cog):
 		aliases=("morsecode",),
 		description="Encrypts a sentence to morse code or decrypts it to English.",
 		extras={
-			'signature': '<Encrypt/Decrypt> <sentence>',
+			'signature': '<Encrypt/Decrypt> <Sentence>',
 			'example': "decrypt .... . .-.. .-.. --- --..-- / - .... .. ... / .. ... / -- --- .-. ... . / -.-. --- -.. ."
 		}
 	)
