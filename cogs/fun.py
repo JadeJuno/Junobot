@@ -41,7 +41,7 @@ class Fun(commands.Cog):
 		description="Sends an image with a solic color specified in Hexadecimal Code.",
 		extras={"example": "#32A852"}
 	)
-	async def color(self, ctx, hex_color):
+	async def color(self, ctx, hex_color: str):
 		hex_color = hex_color.upper().replace('#', '')
 
 		if re.search(re.compile("([^0123456789abcdef])+", re.IGNORECASE), hex_color) or len(hex_color) != 6:
