@@ -9,7 +9,7 @@ class Utility(commands.Cog):
 		self.bot = bot
 		print("Utility Cog ready!")
 
-	@commands.command(description="Sends a link to invite Gøldbot to another server.")
+	@commands.command(description="Sends a link to invite me to another server.")
 	async def invite(self, ctx):
 		invite_url = discord.utils.oauth_url(str(self.bot.user.id))
 		emb = discord.Embed(title="Invite Link",
@@ -19,7 +19,7 @@ class Utility(commands.Cog):
 	@commands.check(botutilities.is_not_report_banned)
 	@commands.command(
 		aliases=('bugreport', 'reportbug', 'bug-report', 'report-bug'),
-		description="Let's you make a direct bug report to the creator of the bot if needed. Allows for sending images and other attachments as well",
+		description="Let's you make a direct bug report to my creator if needed. Allows for sending images and other attachments as well.",
 		extras={
 			'example': "The `g!translate` command is broken."
 		}

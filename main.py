@@ -38,7 +38,7 @@ async def main():
 		await bot.start(TOKEN)
 
 
-@bot.command(extras={'example': '{prefix}{name} gg'}, description="TEST")
+@bot.command(extras={'example': 'gg', 'signature': '[New Prefix/"reset"]'}, description="Changes the server's prefix to the specified prefix. If blank, it'll show the current server's prefix instead. If is \"reset\", it'll reset the prefix to the default (`g!`)")
 async def prefix(ctx, new_prefix=None):
 	if new_prefix:
 		if ctx.author.guild_permissions.administrator:

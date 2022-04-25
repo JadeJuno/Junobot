@@ -79,7 +79,7 @@ class Information(commands.Cog):
 	@commands.command(
 		name="language",
 		aliases=("detect",),
-		description='Detects the language of a quoted sentence.',
+		description='**NOT WORKING**\n\nDetects the language of a quoted sentence.',
 		extras={
 			"example": "Hola, mi nombre es Gøldbot y hablo español"
 		}

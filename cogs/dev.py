@@ -118,8 +118,9 @@ class DevCog(commands.Cog):
 	async def help_test(self, ctx):
 		command_list = list(self.bot.commands)
 		for command in command_list:
-			if command.cog != self:
-				await ctx.send_help(command)
+			if command.cog != self and command.description:
+				cog_name = command.cog.qualified_name if command.cog else "Main"
+				await ctx.send(f'{cog_name}: `g!{command.qualified_name}` - "{command.description}"')
 		await ctx.send("**Done!**")
 
 	@commands.command()

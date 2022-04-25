@@ -34,7 +34,7 @@ class Moderation(commands.Cog):
 	@commands.has_permissions(manage_nicknames=True)
 	@commands.command(
 		aliases=("rename",),
-		description="Renames me whatever name you want.",
+		description="Renames me to whatever name you want.",
 		extras={
 			'example': "Silverbot",
 			'permission': 'manage_nicknames'

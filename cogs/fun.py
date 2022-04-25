@@ -15,7 +15,7 @@ class Fun(commands.Cog):
 
 	@commands.command(
 		name='8ball',
-		description="You can ask a yes or no question to the omniscient  Magic :8ball: Ball, and it will answer it.",
+		description="You can ask a yes or no question to the Magic :8ball: Ball, and it will answer it.",
 		extras={'example': 'Am I loved?'}
 	)
 	async def _8ball(self, ctx, *, question):
@@ -38,7 +38,7 @@ class Fun(commands.Cog):
 
 	@commands.command(
 		aliases=('colour',),
-		description="Sends an image with a solic color specified in Hexadecimal Code.",
+		description="Sends an image with a solid color specified in Hexadecimal Code.",
 		extras={"example": "#32A852"}
 	)
 	async def color(self, ctx, hex_color: str):
@@ -52,7 +52,7 @@ class Fun(commands.Cog):
 		await ctx.send(embed=embed)
 
 	@commands.command(
-		description="Give the bot some options *(More than 1)* and it will randomly choose between them.",
+		description="Give me some options **(More than 1)** and I will randomly choose between them.",
 		extras={
 			"signature": "<option 1 option 2 option 3 (...)>",
 			"example": "Yes No Perhaps"
@@ -107,9 +107,9 @@ class Fun(commands.Cog):
 			await botutilities.error_template(ctx, "You can't roll a die with a non-numeric amount of faces...")
 
 	@commands.command(
-		description="Send a message with the text you wrote **in quotation marks** and deletes your message. If the channel is defined, it'll send the message to said channel.",
+		description="Send a message with the text you wrote and deletes your message. If the channel is set, it'll send the message to said channel.",
 		extras={
-			"example": '#general Hi, my name is Gøldbot and I\'m sentient.'
+			"example": "#general Hi, my name is Gøldbot and I'm sentient."
 		}
 	)
 	async def say(self, ctx, channel: typing.Optional[discord.TextChannel], *, message):
