@@ -51,7 +51,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 		try:
 			example = command.extras['example']
 		except KeyError:
-			example = command.signature
+			example = self.get_command_signature(command)
 
 		embed = discord.Embed(title=f"{self.context.clean_prefix}{self.command_name}", color=random.randint(0, 0xffffff))
 		command_description = command.description if command.description else "WIP"
