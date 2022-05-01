@@ -2,6 +2,7 @@
 __pycache__
 .google-cookie
 *.db
+Testing/
 
 ### https://github.com/github/gitignore/blob/main/Python.gitignore
 
