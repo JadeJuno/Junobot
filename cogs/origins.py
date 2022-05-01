@@ -55,8 +55,8 @@ class Origins(commands.Cog):
 		os.remove(f'{directory}.zip')
 
 	@commands.command(
-		description="Automatically takes a Structure NBT file into a Block Condition object.",
-		extras={"example": "WIP"}
+		description="Automatically takes a Structure NBT file into a Block Condition object.\n\nThe 'Center' argument is the coordinates of the center of the block condition in the structure. I recommend using the [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for Visual Studio Code to visualize that more easily.",
+		extras={"example": "5 4 5", "signature": "[Center=0 0 0]"}
 	)
 	async def structure(self, ctx: commands.Context, x: int = 0, y: int = 0, z: int = 0):
 		center = (x, y, z)
@@ -84,7 +84,7 @@ class Origins(commands.Cog):
 			json.dump(condition, f, indent='\t')
 			f.seek(0)
 			attachment = discord.File(f, filename=f"{file.filename}.json")
-		await ctx.send("Done! Remember that the result is **not a power nor an entity condition, but a block condition!** You'll have to put this condition yourself on whatever ower you want.", file=attachment)
+		await ctx.send("Done! Remember that the result is **not a power nor an entity condition, but a block condition!** You'll have to put this condition yourself on whatever power you want.", file=attachment)
 
 
 async def setup(bot):
