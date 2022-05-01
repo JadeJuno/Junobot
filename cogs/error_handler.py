@@ -54,7 +54,10 @@ class CommandErrorHandler(commands.Cog):
 			await botutilities.error_template(ctx, f'You are missing the `{missing_perm}` permission to run this command.')
 
 		elif isinstance(error, commands.NotOwner):
-			await botutilities.error_template(ctx, f"This command is restricted to the owner of this bot.")
+			await botutilities.error_template(ctx, "This command is restricted to the owner of this bot.")
+
+		elif isinstance(error, botutilities.WIPCommand):
+			await botutilities.error_template(ctx, "This command is a WIP. Please wait.")
 
 		elif isinstance(error, commands.BadArgument) and hasattr(ctx.command, 'on_error'):
 			pass

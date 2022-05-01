@@ -3,6 +3,7 @@ import random
 import re
 
 import discord
+from discord.ext import commands
 
 from config import parse_config
 
@@ -112,3 +113,15 @@ def make_bug_report_file(ctx):
 	content = f'Author: {ctx.author.name}#{ctx.author.discriminator} ({ctx.author.id})\nChannel: {ctx.channel.name} ({ctx.channel.id})\nGuild: {ctx.guild.name} ({ctx.guild.id})\nArguments: {args_str}\n\nMessage: "{ctx.message.content}"\n'
 
 	return content
+
+
+def wip_command():
+	async def predicate(ctx):
+		if not await ctx.bot.is_owner(ctx.author):
+			raise WIPCommand
+		return True
+	return commands.check(predicate)
+
+
+class WIPCommand(commands.errors.CheckFailure):
+	pass
