@@ -62,19 +62,19 @@ class Information(commands.Cog):
 	async def google(self, ctx, *, search_request):
 		message = await ctx.send(f"Searching for `{search_request}`...")
 		async with ctx.typing():
-			i = 1
 			output_str = ""
-			for url in googlesearch.search(search_request, stop=10):
+			for i, url in enumerate(googlesearch.search(search_request, stop=10), start=1):
 				if i < 10:
 					output_str += f"`{i}.`   **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**\n"
 				else:
-					output_str += f"`{i}.` **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**\n"
+					output_str += f"`{i}.` **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**"
 				i += 1
 			if i == 1:
-				output_str = "**No results found.**"
+				output_str = "**No results found.** "
 			embed = botutilities.embed_template("Google", output_str[0:-1],
 												icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
-		return await message.edit(content=None, embed=embed)
+		await message.edit(content=None, embed=embed)
+		os.remove("../.google-cookie")
 
 	@commands.command(
 		name="language",
@@ -85,7 +85,7 @@ class Information(commands.Cog):
 		}
 	)
 	async def lang_detect(self, ctx: commands.Context, *, sentence):
-		await botutilities.error_template(ctx, f'"{ctx.invoked_with}" is currently fully broken. Please wait.')
+		await botutilities.error_template(ctx, f'"{ctx.invoked_with}" is currently fully broken. Please wait until I decide to fix this mess of a code.')
 		return
 		detected_lang = self.translator.detect(sentence).lang
 		if isinstance(detected_lang, list):
