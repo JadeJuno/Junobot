@@ -133,8 +133,6 @@ class Information(commands.Cog):
 			image = "https://i.imgur.com/7kT1Ydo.png"
 			try:
 				result = wikipedia.page(search_request)
-				# update: didn't go that bad, but it wasn't "well lol"
-				# Future Golder here: WTF does this comment mean????
 				description = f"**[{result.title}]({result.url})**\n{result.summary[:300].strip()}..."
 				try:
 					image = result.images[0]
