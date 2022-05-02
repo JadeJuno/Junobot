@@ -11,5 +11,3 @@ Goldbot, officially known as Gøldbot, is a simple, multipurpose bot built in Py
 - [ ] Add subcommands for `g!translate`
 - [ ] Add subcommands for `g!morse`
 - [ ] Add subcommands for `g!binary`
-- [ ] Overhaul `g!translate` to get it to actually work.
-- [ ] Overhaul `g!language` to get it to actually work.

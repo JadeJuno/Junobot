@@ -19,6 +19,12 @@ class Information(commands.Cog):
 		self.lang_dict = googletrans.LANGUAGES
 		print("Information Cog ready!")
 
+	def get_text_language(self, sentence):
+		detected_lang = self.translator.detect(sentence)
+		if isinstance(detected_lang, list):
+			detected_lang = max(detected_lang, key=lambda lang: lang.confidence)
+		return detected_lang
+
 	@staticmethod
 	def get_dict_key(dictionary, value):
 		key_list = list(dictionary.keys())
@@ -85,14 +91,9 @@ class Information(commands.Cog):
 		}
 	)
 	async def lang_detect(self, ctx: commands.Context, *, sentence):
-		await botutilities.error_template(ctx, f'"{ctx.invoked_with}" is currently fully broken. Please wait until I decide to fix this mess of a code.')
-		return
-		detected_lang = self.translator.detect(sentence).lang
-		if isinstance(detected_lang, list):
-			detected_lang = detected_lang[self.translator.detect(sentence).confidence.index(
-				max(self.translator.detect(sentence).confidence))]
-		await ctx.send(
-			f'"{sentence}" is in {languages.get(alpha2=detected_lang).name} (Certainty: `{int(max(self.translator.detect(sentence).confidence) * 100)}%`).')
+		detected_lang = self.get_text_language(sentence)
+		lang_name = languages.get(alpha2=detected_lang.lang[:2]).name
+		await ctx.send(f'"{sentence}" is in {lang_name} (Certainty: `{int(detected_lang.confidence * 100)}%`).')
 
 	@commands.command(
 		description='Translates a sentence surrounded by quotation marks.',
