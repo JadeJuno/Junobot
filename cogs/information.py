@@ -17,6 +17,7 @@ class Information(commands.Cog):
 		self.bot = bot
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
+		self.oxford = oxford.SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'), debug=True)
 		print("Information Cog ready!")
 
 	def get_text_language(self, sentence):
@@ -45,14 +46,13 @@ class Information(commands.Cog):
 		error_embed = await botutilities.error_template(ctx, f'Definition for "{query.title()}" not found.', send=False)
 
 		message = await ctx.send("Getting definition...")
-		definitions = oxford.SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'), "en-gb", debug=True)
 		try:
-			definitions = definitions.define(query)
+			definitions = self.oxford.define(query)
 			emb = botutilities.embed_template(
 				title=f'Definition of "{query.title()}":', description=f"{definitions[0].capitalize()}",
 				footer='Powered by Oxford Dictionary'
 			)
-		except oxford.Exceptions.WordNotFound:
+		except oxford.Exceptions.WordNotFoundException:
 			emb = error_embed
 
 		await message.edit(content="", embed=emb)
