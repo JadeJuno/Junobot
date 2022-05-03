@@ -85,7 +85,7 @@ class Information(commands.Cog):
 	@commands.command(
 		name="language",
 		aliases=("detect",),
-		description='**NOT WORKING**\n\nDetects the language of a quoted sentence.',
+		description='Detects the language of a quoted sentence.',
 		extras={
 			"example": "Hola, mi nombre es Gøldbot y hablo español"
 		}
@@ -93,7 +93,10 @@ class Information(commands.Cog):
 	async def lang_detect(self, ctx: commands.Context, *, sentence):
 		detected_lang = self.get_text_language(sentence)
 		lang_name = languages.get(alpha2=detected_lang.lang[:2]).name
-		await ctx.send(f'"{sentence}" is in {lang_name} (Certainty: `{int(detected_lang.confidence * 100)}%`).')
+		if detected_lang.confidence:
+			await ctx.send(f'"{sentence}" is in {lang_name} (Certainty: `{int(detected_lang.confidence * 100)}%`).')
+		else:
+			await botutilities.error_template(ctx, "No correct language detected.")
 
 	@commands.command(
 		description='Translates a sentence surrounded by quotation marks.',
