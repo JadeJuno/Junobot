@@ -10,8 +10,8 @@ import discord
 from discord.ext import commands
 from nbt import nbt
 
-import nbt_lib
 from botutilities import error_template
+from nbt_lib import nbt_to_condition
 
 
 class Origins(commands.Cog):

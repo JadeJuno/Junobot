@@ -51,7 +51,8 @@ class CommandErrorHandler(commands.Cog):
 
 		elif isinstance(error, commands.MissingPermissions):
 			missing_perm = error.missing_permissions[0].replace('_', ' ').title()
-			await botutilities.error_template(ctx, f'You are missing the `{missing_perm}` permission to run this command.')
+			await botutilities.error_template(ctx,
+											  f'You are missing the `{missing_perm}` permission to run this command.')
 
 		elif isinstance(error, commands.NotOwner):
 			await botutilities.error_template(ctx, "This command is restricted to the owner of this bot.")
@@ -66,7 +67,8 @@ class CommandErrorHandler(commands.Cog):
 			pass
 
 		else:
-			check = await self.botutilities.reaction_decision(ctx, "There was an unexpected error. Do you want to send the details to the bot owner?")
+			check = await self.botutilities.reaction_decision(ctx,
+															  "There was an unexpected error. Do you want to send the details to the bot owner?")
 
 			if check:
 				tback = traceback.format_exception(type(error), error, error.__traceback__)
@@ -78,7 +80,7 @@ class CommandErrorHandler(commands.Cog):
 					file.write(content)
 					file.seek(0)
 					owner_ping = bot_owner.mention
-					attachs = [discord.File(fp=file, filename=f"bug_report_{timestamp}.txt")]
+					attachs = [discord.File(file, filename=f"bug_report_{timestamp}.txt")]
 				log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`'
 				if len(log_message) > 2000:
 					log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>. Error message too long.\nMessage that caused the error: `{ctx.message.content}`'
