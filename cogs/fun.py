@@ -54,7 +54,7 @@ class Fun(commands.Cog):
 	@commands.command(
 		description="Give me some options **(More than 1)** and I will randomly choose between them.",
 		extras={
-			"signature": "<option 1 option 2 option 3 (...)>",
+			"signature": "<Option1 Option2 Option3 (...)>",
 			"example": "Yes No Perhaps"
 		}
 	)

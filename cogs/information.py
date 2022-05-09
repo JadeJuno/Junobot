@@ -61,7 +61,7 @@ class Information(commands.Cog):
 		aliases=("googleit", "googlesearch", "search"),
 		description="Make a quick Google Search from Discord because you're too lazy to open your browser.",
 		extras={
-			"signature": "<search>",
+			"signature": "<Query>",
 			"example": 'How to perform a Google Search from Discord'
 		}
 	)

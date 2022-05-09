@@ -28,7 +28,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 			signature = f" {command.extras['signature']}"
 		except KeyError:
 			signature = f" {command.signature}" if len(command.signature) else ""
-		signature = signature.replace("_", " ").title()
+			signature = signature.replace("_", " ").title()
 		return f"`{self.context.clean_prefix}{command.qualified_name}{signature}`"
 
 	async def send_bot_help(self, mapping):
@@ -51,7 +51,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 		try:
 			example = command.extras['example']
 		except KeyError:
-			example = self.get_command_signature(command)
+			example = None
 
 		embed = discord.Embed(title=f"{self.context.clean_prefix}{self.command_name}", color=random.randint(0, 0xffffff))
 		command_description = command.description if command.description else "WIP"
@@ -66,10 +66,10 @@ class GoldHelp(commands.MinimalHelpCommand):
 		if 'permission' in command.extras:
 			embed.add_field(name="**Permissions**",
 							value=f'You require "{self.PERMS[command.extras["permission"]]}" permissions to use this command.')
-
-		embed.add_field(name="**Usage**",
-						value=f"{self.get_command_signature(command)}\nE.G.: `{self.context.clean_prefix}{self.command_name}{' ' if example else ''}{example}`",
-						inline=False)
+		usage_str = f"{self.get_command_signature(command)}"
+		if example:
+			usage_str += f"\nE.G.: `{self.context.clean_prefix}{self.command_name} {example}`"
+		embed.add_field(name="**Usage**", value=usage_str, inline=False)
 
 		channel = self.get_destination()
 		await channel.send(embed=embed)
