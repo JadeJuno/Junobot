@@ -75,10 +75,10 @@ class Origins(commands.Cog):
 		size = [val.value for val in structure['size']]
 		for size_val, center_coord in zip(size, center):
 			if center_coord > size_val:
-				await error_template(ctx, "The center's coordinates are outside of the scructure.")
+				await error_template(ctx, "The center's coordinates are outside of the structure.")
 				return
 
-		condition = nbt_lib.main(center, structure)
+		condition = nbt_to_condition(center, structure)
 
 		with io.StringIO() as f:
 			json.dump(condition, f, indent='\t')
