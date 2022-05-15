@@ -92,7 +92,7 @@ class Fun(commands.Cog):
 				await botutilities.error_template(ctx, "You can't roll an infinite dice!")
 				return
 			result = random.randint(1, faces)
-			print(result)
+			botutilities.log(result)
 			if faces <= 6:
 				result = discord.utils.get(emojis, name=f"Dice{result}")
 			await ctx.send(f"Rolled a d{faces}.\nIt landed on **{result}**!")
