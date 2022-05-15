@@ -52,6 +52,7 @@ class Fun(commands.Cog):
 		await ctx.send(embed=embed)
 
 	@commands.command(
+		alias=("choice",),
 		description="Give me some options **(More than 1)** and I will randomly choose between them.",
 		extras={
 			"signature": "<Option1 Option2 Option3 (...)>",
