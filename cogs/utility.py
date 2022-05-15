@@ -7,7 +7,7 @@ import botutilities
 class Utility(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
-		print("Utility Cog ready!")
+		botutilities.log("Utility Cog ready!")
 
 	@commands.command(description="Sends a link to invite me to another server.")
 	async def invite(self, ctx):

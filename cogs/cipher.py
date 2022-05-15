@@ -9,7 +9,7 @@ import morsecode
 class Ciphering(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		print("Ciphering Cog ready!")
+		botutilities.log("Ciphering Cog ready!")
 
 	@commands.command(
 		name="morse",

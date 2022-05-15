@@ -21,8 +21,8 @@ async def on_ready():
 	log = bot.get_channel(botutilities.config["log_channel"])
 	appinfo = await bot.application_info()
 	await bot.tree.sync()
-	print(f'"{bot.user.display_name}" is ready.')
-	print(f"Created by {appinfo.owner}.")
+	botutilities.log(f'"{bot.user.display_name}" is ready.')
+	botutilities.log(f"Created by {appinfo.owner}.")
 	await log.send("Bot Started.")
 
 
@@ -33,7 +33,7 @@ async def main():
 				try:
 					await bot.load_extension(f'cogs.{filename[:-3]}')
 				except commands.errors.NoEntryPointError:
-					print(f"{filename[:-3]} Failed to load...")
+					botutilities.log(f"{filename[:-3]} Failed to load...")
 		# bot.loop.create_task(change_status_task())  # I've chosen to ignore this.
 		await bot.start(TOKEN)
 

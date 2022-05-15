@@ -11,7 +11,7 @@ import botutilities
 class Fun(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		print("Fun Cog ready!")
+		botutilities.log("Fun Cog ready!")
 
 	@commands.command(
 		name='8ball',

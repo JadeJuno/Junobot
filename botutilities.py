@@ -1,6 +1,7 @@
 import sys
 import random
 import re
+from datetime import datetime
 
 import discord
 from discord.ext import commands
@@ -121,6 +122,11 @@ def wip_command():
 			raise WIPCommand
 		return True
 	return commands.check(predicate)
+
+
+def log(text):
+	now = datetime.now().strftime("%H:%M:%S")
+	print(f"[{now}]: {text}")
 
 
 class WIPCommand(commands.errors.CheckFailure):

@@ -17,8 +17,8 @@ class Information(commands.Cog):
 		self.bot = bot
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
-		self.oxford = oxford.SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'), debug=True)
-		print("Information Cog ready!")
+		self.oxford = oxford.SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'))
+		botutilities.log("Information Cog ready!")
 
 	def get_text_language(self, sentence):
 		detected_lang = self.translator.detect(sentence)

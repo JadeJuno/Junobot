@@ -13,7 +13,7 @@ class CommandErrorHandler(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.botutilities = botutilities.BotUtilities(bot)
-		print("Error Handler Ready!")
+		botutilities.log("Error Handler Ready!")
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx: commands.Context, error):
@@ -31,13 +31,13 @@ class CommandErrorHandler(commands.Cog):
 			cmds = [cmd.name for cmd in self.bot.commands]
 			matches = difflib.get_close_matches(cmd, cmds, n=1)
 			if len(matches) > 0:
-				await ctx.reply(f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
+				await botutilities.error_template(ctx, f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
 			return
 
 		error = getattr(error, 'original', error)
 
 		if isinstance(error, commands.DisabledCommand):
-			await ctx.reply(f'`{ctx.prefix}{ctx.command}` has been disabled.')
+			await botutilities.error_template(ctx, f'`{ctx.prefix}{ctx.command}` has been disabled.')
 
 		elif isinstance(error, commands.NoPrivateMessage):
 			try:
@@ -51,8 +51,7 @@ class CommandErrorHandler(commands.Cog):
 
 		elif isinstance(error, commands.MissingPermissions):
 			missing_perm = error.missing_permissions[0].replace('_', ' ').title()
-			await botutilities.error_template(ctx,
-											  f'You are missing the `{missing_perm}` permission to run this command.')
+			await botutilities.error_template(ctx, f'You are missing the `{missing_perm}` permission to run this command.')
 
 		elif isinstance(error, commands.NotOwner):
 			await botutilities.error_template(ctx, "This command is restricted to the owner of this bot.")
@@ -67,8 +66,7 @@ class CommandErrorHandler(commands.Cog):
 			pass
 
 		else:
-			check = await self.botutilities.reaction_decision(ctx,
-															  "There was an unexpected error. Do you want to send the details to the bot owner?")
+			check = await self.botutilities.reaction_decision(ctx, "There was an unexpected error. Do you want to send the details to the bot owner?")
 
 			if check:
 				tback = traceback.format_exception(type(error), error, error.__traceback__)

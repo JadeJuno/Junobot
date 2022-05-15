@@ -4,13 +4,13 @@ import datetime
 import discord
 from discord.ext import commands
 
-from botutilities import error_template
+import botutilities
 
 
 class Moderation(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		print("Moderation Cog ready!")
+		botutilities.log("Moderation Cog ready!")
 
 	@commands.has_permissions(ban_members=True)
 	@commands.command(
@@ -42,7 +42,7 @@ class Moderation(commands.Cog):
 	)
 	async def nickname(self, ctx, *, nickname):
 		if len(nickname) > 32:
-			await error_template(ctx, f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
+			await botutilities.error_template(ctx, f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
 			return
 		await ctx.guild.me.edit(nick=nickname)
 		await ctx.send(f'Successfully changed my nickname to "{nickname}".')
@@ -66,10 +66,10 @@ class Moderation(commands.Cog):
 		}
 
 		if timescale not in timescales and timescale not in timescales.values():
-			await error_template(ctx, f'"{timescale}" is not a valid Time Scale')
+			await botutilities.error_template(ctx, f'"{timescale}" is not a valid Time Scale')
 			return
 		if member.is_timed_out():
-			await error_template(ctx, f"{member} is already timed out.")
+			await botutilities.error_template(ctx, f"{member} is already timed out.")
 			return
 
 		try:
@@ -83,7 +83,7 @@ class Moderation(commands.Cog):
 			await member.timeout(delta, reason=reason)
 			await ctx.send(f"Muted {member} for {duration} {timescale}.")
 		except discord.errors.HTTPException:
-			await error_template(ctx, "Invalid amount of time to time them out for.")
+			await botutilities.error_template(ctx, "Invalid amount of time to time them out for.")
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command(
@@ -113,7 +113,7 @@ class Moderation(commands.Cog):
 			await member.ban(reason=reason)
 			await ctx.send(f'{member} banned via `{ctx.prefix}ban` command. Reason: {reason}.')
 		else:
-			await error_template(ctx, f"{member} has a higher permission level than {self.bot.user.name}.")
+			await botutilities.error_template(ctx, f"{member} has a higher permission level than {self.bot.user.name}.")
 
 	@commands.has_permissions(kick_members=True)
 	@commands.command(

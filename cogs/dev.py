@@ -14,7 +14,7 @@ class DevCog(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 		self.log = None
-		print("DevCog ready!")
+		botutilities.log("Dev Cog ready!")
 
 	async def cog_check(self, ctx):
 		check = await self.bot.is_owner(ctx.author)
@@ -37,7 +37,7 @@ class DevCog(commands.Cog):
 				for cog in cogs:
 					try:
 						await self.bot.load_extension(cog)
-						print(f'{cog} Loaded.')
+						botutilities.log(f'{cog} Loaded.')
 						done_cogs.append(cog)
 					except commands.errors.ExtensionAlreadyLoaded:
 						pass
@@ -51,7 +51,7 @@ class DevCog(commands.Cog):
 				for cog in cogs:
 					try:
 						await self.bot.unload_extension(cog)
-						print(f'{cog} Unloaded.')
+						botutilities.log(f'{cog} Unloaded.')
 						done_cogs.append(cog)
 					except commands.errors.ExtensionNotLoaded:
 						pass
@@ -65,10 +65,11 @@ class DevCog(commands.Cog):
 				for cog in cogs:
 					try:
 						await self.bot.reload_extension(cog)
-						print(f'{cog} Reloaded.')
-						done_cogs.append(cog)
 					except commands.errors.ExtensionNotLoaded:
 						pass
+					else:
+						botutilities.log(f'{cog} Reloaded.')
+						done_cogs.append(cog)
 				if len(done_cogs) > 0:
 					await msg.edit("Reloading complete!")
 				else:
