@@ -80,7 +80,7 @@ class DevCog(commands.Cog):
 	@commands.command()
 	async def test(self, ctx):
 		print("TEST")
-		embed = discord.Embed(title="Title", description=f"[Test Link](https://www.youtube.com)",
+		embed = discord.Embed(title="Title", description="[Test Link](https://www.youtube.com)",
 							  color=random.randint(0, 0xffffff), url="https://www.google.com/")
 		embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.display_avatar.url)
 		embed.set_footer(text=f"*Requested by {ctx.author.name}.*", icon_url=ctx.author.display_avatar.url)
