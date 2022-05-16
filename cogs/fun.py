@@ -81,19 +81,19 @@ class Fun(commands.Cog):
 		}
 	)
 	async def roll(self, ctx, faces=6.0):
-		if faces != int(faces):
-			await botutilities.error_template(ctx, f"You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
+		try:
+			if faces != int(faces):
+				await botutilities.error_template(ctx, f"You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
+				return
+		except OverflowError:
+			await botutilities.error_template(ctx, "You can't roll an infinite dice!")
 			return
 
 		emojis = self.bot.get_guild(botutilities.config["guild_id"]).emojis
 		if faces > 2:
-			try:
-				faces = int(faces)
-			except OverflowError:
-				await botutilities.error_template(ctx, "You can't roll an infinite dice!")
-				return
+			faces = int(faces)
+			
 			result = random.randint(1, faces)
-			botutilities.log(result)
 			if faces <= 6:
 				result = discord.utils.get(emojis, name=f"Dice{result}")
 			await ctx.send(f"Rolled a d{faces}.\nIt landed on **{result}**!")
