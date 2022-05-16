@@ -80,7 +80,10 @@ class Information(commands.Cog):
 			embed = botutilities.embed_template("Google", output_str[0:-1],
 												icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
-		os.remove("../.google-cookie")
+		try:
+			os.remove(".google-cookie")
+		except FileNotFoundError:
+			pass
 
 	@commands.command(
 		name="language",
