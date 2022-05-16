@@ -49,7 +49,7 @@ class Information(commands.Cog):
 		try:
 			definitions = self.oxford.define(query)
 			emb = botutilities.embed_template(
-				title=f'Definition of "{query.title()}":', description=f"{definitions[0].capitalize()}",
+				title=f'Definition of "{query.title()}":', description=definitions[0].capitalize(),
 				footer='Powered by Oxford Dictionary'
 			)
 		except oxford.Exceptions.WordNotFoundException:
