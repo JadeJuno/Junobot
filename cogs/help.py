@@ -15,6 +15,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 
 	def __init__(self, **options):
 		self.command_name = None
+		self.appinfo = None
 		super().__init__(**options)
 
 	def command_not_found(self, string: str):
@@ -32,6 +33,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 		return f"`{self.context.clean_prefix}{command.qualified_name}{signature}`"
 
 	async def send_bot_help(self, mapping):
+		self.appinfo = await self.context.bot.application_info()
 		embed = discord.Embed(title="Help", color=random.randint(0, 0xffffff))
 		for cog, _commands in mapping.items():
 			filtered = await self.filter_commands(_commands, sort=True)
@@ -41,7 +43,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 				if cog_name != "DevCog" and cog_name != "GoldHelpCog":
 					embed.add_field(name=cog_name, value="\n".join(command_signatures), inline=False)
 		embed.set_footer(
-			text=f"<>=Necessary, []=optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\nGøldbot was created by Golder06#7041.",
+			text=f"<>=Necessary, []=optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}.",
 			icon_url="https://i.imgur.com/ZgG8oJn.png"
 		)
 		channel = self.get_destination()
