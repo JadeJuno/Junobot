@@ -61,7 +61,7 @@ class Fun(commands.Cog):
 	)
 	async def choose(self, ctx, *options):
 		if len(options) < 2:
-			await ctx.send(f"I can't just choose between 1 choice.")
+			await ctx.send("I can't just choose between 1 choice.")
 			return
 		await ctx.send(f"Gøldbot chooses: `{random.choice(options).strip()}`.")
 
