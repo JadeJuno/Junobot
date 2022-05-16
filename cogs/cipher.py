@@ -25,8 +25,7 @@ class Ciphering(commands.Cog):
 		sentence = sentence.upper()
 
 		if encrypt_decrypt not in ('encrypt', 'decrypt'):
-			await botutilities.error_template(ctx,
-											  f"The argument 'Encrypt/Decrypt', as the name suggests, can only take 'encrypt' or 'decrypt'.")
+			await botutilities.error_template(ctx, "The argument 'Encrypt/Decrypt', as the name suggests, can only take 'encrypt' or 'decrypt'.")
 			return
 		if not morsecode.check_letter(sentence.upper()):
 			await botutilities.error_template(ctx, "Invalid character detected.")
@@ -38,8 +37,7 @@ class Ciphering(commands.Cog):
 				sentence = sentence[0:-1]
 				output = morsecode.encrypt(sentence.upper())
 			except KeyError:
-				await botutilities.error_template(ctx,
-												  f"You tried to {encrypt_decrypt} an already {encrypt_decrypt}ed message or you entered an invalid character.")
+				await botutilities.error_template(ctx, "You tried to encrypt an already encrypted message.")
 				return
 
 		else:
@@ -47,8 +45,7 @@ class Ciphering(commands.Cog):
 			try:
 				output = morsecode.decrypt(sentence).lower()
 			except ValueError:
-				await botutilities.error_template(ctx,
-												  f"You tried to {encrypt_decrypt} an already {encrypt_decrypt}ed message or you entered an invalid character.")
+				await botutilities.error_template(ctx, "You tried to decrypt an already decrypted message.")
 				return
 		await ctx.send(output.capitalize())
 
@@ -65,8 +62,7 @@ class Ciphering(commands.Cog):
 		encode_decode = encode_decode.lower()
 
 		if encode_decode not in ('encode', 'decode'):
-			await botutilities.error_template(ctx,
-											  f"The argument 'Encode/Decode', as the name suggests, can only take 'encode' or 'decode'.")
+			await botutilities.error_template(ctx, "The argument 'Encode/Decode', as the name suggests, can only take 'encode' or 'decode'.")
 			return
 
 		if encode_decode == "encode":
@@ -86,10 +82,13 @@ class Ciphering(commands.Cog):
 				bin_list = sentence.split()
 			else:
 				bin_list = [sentence[i:i+8] for i in range(len(sentence), 8)]
-
-			output = ''
 			for _bin in bin_list:
-				output += chr(int(_bin, 2))
+				if len(_bin) < 8:
+					await botutilities.error_template(ctx, "Unknown Error... If you can fix this mess, please contact my creator at Golder06#7041, or make a Pull Request at <https://github.com/Golder06/Goldbot>")
+					return
+			bin_list = [chr(int(_bin, 2)) for _bin in bin_list]
+
+			output = ''.join(bin_list)
 			await ctx.send(f"Here's your decoded binary code: \n`{output}`")
 
 
