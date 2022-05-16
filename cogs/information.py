@@ -148,13 +148,13 @@ class Information(commands.Cog):
 					try:
 						disamb_result = wikipedia.page(option, auto_suggest=False)
 						if disamb_result.url != "":
-							result_2 = f"[{disamb_result.title}]({disamb_result.url})"
+							result = f"[{disamb_result.title}]({disamb_result.url})"
 						else:
-							result_2 = f"{disamb_result} **URL Not Found**"
+							result = f"{disamb_result} **URL Not Found**"
 					except wikipedia.exceptions.PageError:
 						continue
 					i += 1
-					description += f"`{i}`: {result_2}\n"
+					description += f"`{i}`: {result}\n"
 			except wikipedia.exceptions.PageError:
 				description = "Page not found."
 			embed = botutilities.embed_template(title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
