@@ -12,8 +12,7 @@ class Utility(commands.Cog):
 	@commands.command(description="Sends a link to invite me to another server.")
 	async def invite(self, ctx):
 		invite_url = discord.utils.oauth_url(str(self.bot.user.id))
-		emb = discord.Embed(title="Invite Link",
-							description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
+		emb = discord.Embed(title="Invite Link", description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
 		await ctx.send(embed=emb)
 
 	@commands.check(botutilities.is_not_report_banned)
@@ -36,7 +35,7 @@ class Utility(commands.Cog):
 											icon=ctx.author.display_avatar.url)
 		owner_ping = self.bot.get_user(self.bot.owner_id).mention
 		await report_channel.send(f'{owner_ping}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed, files=attachments)
-		await ctx.send(f"Bug Report sent successfully")
+		await ctx.send("Bug Report sent successfully")
 
 	@commands.command(description='Sends "Pong!" and the latency of the bot.')
 	async def ping(self, ctx):
