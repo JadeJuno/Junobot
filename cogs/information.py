@@ -74,10 +74,9 @@ class Information(commands.Cog):
 					output_str += f"`{i}.`   **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**\n"
 				else:
 					output_str += f"`{i}.` **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**"
-				i += 1
-			if i == 1:
-				output_str = "**No results found.** "
-			embed = botutilities.embed_template("Google", output_str[0:-1],
+			if not output_str:
+				output_str = "**No results found.**"
+			embed = botutilities.embed_template("Google", output_str,
 												icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
 		try:
