@@ -29,7 +29,7 @@ class Moderation(commands.Cog):
 				await ctx.guild.unban(user)
 				await ctx.send(f'Unbanned {user.mention}.')
 				return
-			await ctx.send(f'{user.mention} is not banned.')
+			await botutilities.error_template(ctx, f'{user.mention} is not banned.')
 
 	@commands.has_permissions(manage_nicknames=True)
 	@commands.command(
@@ -83,7 +83,7 @@ class Moderation(commands.Cog):
 			await member.timeout(delta, reason=reason)
 			await ctx.send(f"Muted {member} for {duration} {timescale}.")
 		except discord.errors.HTTPException:
-			await botutilities.error_template(ctx, "Invalid amount of time to time them out for.")
+			await botutilities.error_template(ctx, f"Invalid amount of time to time {member} out for.")
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command(
@@ -111,9 +111,9 @@ class Moderation(commands.Cog):
 	async def ban(self, ctx, member: discord.Member, *, reason=None):
 		if not member.guild_permissions.administrator:
 			await member.ban(reason=reason)
-			await ctx.send(f'{member} banned via `{ctx.prefix}ban` command. Reason: {reason}.')
+			await ctx.send(f'Banned {member} with reason "{reason}".')
 		else:
-			await botutilities.error_template(ctx, f"{member} has a higher permission level than {self.bot.user.name}.")
+			await botutilities.error_template(ctx, f"{member} has a higher permission level than myself.")
 
 	@commands.has_permissions(kick_members=True)
 	@commands.command(
@@ -124,8 +124,11 @@ class Moderation(commands.Cog):
 		}
 	)
 	async def kick(self, ctx, member: discord.Member, *, reason=None):
-		await member.kick(reason=reason)
-		await ctx.send(f'{member} kicked via `{ctx.prefix}kick` command. Reason: {reason}.')
+		if not member.guild_permissions.administrator:
+			await member.kick(reason=reason)
+			await ctx.send(f'Kicked {member} with reason "{reason}".')
+		else:
+			await botutilities.error_template(ctx, f"{member} has a higher permission level than myself.")
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command(
