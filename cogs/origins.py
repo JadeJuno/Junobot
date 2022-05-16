@@ -59,13 +59,10 @@ class Origins(commands.Cog):
 		description="Automatically takes a Structure NBT file into a Block Condition object.\n\nThe 'Center' argument is the coordinates of the center of the block condition in the structure. I recommend using the [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for Visual Studio Code to visualize that more easily.",
 		extras={"example": "5 4 5", "signature": "[Center=0 0 0]"}
 	)
-	async def structure(self, ctx: commands.Context, x: int = 0, y: int = 0, z: int = 0):
+	async def structure(self, ctx: commands.Context, file: discord.Attachment, x: int = 0, y: int = 0, z: int = 0):
 		center = (x, y, z)
 
-		if len(ctx.message.attachments) == 0:
-			await error_template(ctx, "No file was attached.")
-			return
-		file = await ctx.message.attachments[0].to_file()
+		file = await file.to_file()
 		if not file.filename.endswith('.nbt'):
 			await error_template(ctx, "Attached file is not an NBT file.")
 			return
