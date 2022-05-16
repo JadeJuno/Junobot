@@ -28,11 +28,12 @@ class Origins(commands.Cog):
 		if re.search(pattern, namespace) or re.search(pattern, name):
 			await error_template(ctx, "Identifier has non [a-z0-9_.-] character in it (In layman's terms: *there's a character that isn't a lowercase leter, a number, an underscore, a hyphen or a period on the ID.*).")
 			return
+		filename = f"Disable_{name.title()}"
 		unchoosable_obj = {
 			"unchoosable": True,
 			"loading_priority": 2147483647
 		}
-		directory = f'datapacks/Disable_{name.title()}'
+		directory = f'datapacks/{filename}'
 		os.makedirs(f'{directory}/data/{namespace}/origins/')
 		with open(f'{directory}/data/{namespace}/origins/{name}.json', 'w') as f:
 			json.dump(unchoosable_obj, f, indent='\t')
@@ -50,7 +51,7 @@ class Origins(commands.Cog):
 				for child in root.rglob('*'):
 					z.write(child, arcname=str(child).replace(directory, ''))
 
-		await ctx.send(f'"Disable {name.title()}" is ready.', file=discord.File(fp=f'{directory}.zip'))
+		await ctx.send(f'"{filename}" is ready.', file=discord.File(fp=f'{directory}.zip'))
 		shutil.rmtree(directory)
 		os.remove(f'{directory}.zip')
 
