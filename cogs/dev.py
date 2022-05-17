@@ -117,12 +117,7 @@ class DevCog(commands.Cog):
 
 	@commands.command()
 	async def help_test(self, ctx):
-		command_list = list(self.bot.commands)
-		for command in command_list:
-			if command.cog != self and command.description:
-				cog_name = command.cog.qualified_name if command.cog else "Main"
-				await ctx.send(f'{cog_name}: `g!{command.qualified_name}` - "{command.description}"')
-		await ctx.send("**Done!**")
+		await ctx.send("Help Tested.")
 
 	@commands.command()
 	async def sync(self, ctx, guild: typing.Optional[int]):
