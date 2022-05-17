@@ -44,7 +44,7 @@ class Fun(commands.Cog):
 	async def color(self, ctx, hex_color: str):
 		hex_color = hex_color.upper().replace('#', '')
 
-		if re.search(re.compile("^(#|0x)[A-Fa-f\d]{6}$", re.ASCII), hex_color) or len(hex_color) != 6:
+		if not re.search(re.compile("^[A-Fa-f\d]{6}$", re.ASCII), hex_color):
 			await botutilities.error_template(ctx, f"`#{hex_color}` is not a valid Hex Color code.")
 			return
 		img = f"https://dummyimage.com/300/{hex_color}/&text=+"
