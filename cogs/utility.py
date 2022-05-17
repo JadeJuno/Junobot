@@ -41,6 +41,23 @@ class Utility(commands.Cog):
 	async def ping(self, ctx):
 		await ctx.send(f':ping_pong: Pong! {self.bot.latency * 1000:.0f}ms.')
 
+	@commands.command(extras={'example': 'gg', 'signature': '[New Prefix/"reset"]'},
+				 description="Changes the server's prefix to the specified prefix. If blank, it'll show the current server's prefix instead. If is \"reset\", it'll reset the prefix to the default (`g!`)")
+	async def prefix(self, ctx, new_prefix=None):
+		print(f"self.bot.command_prefix: {self.bot.command_prefix}")
+		if new_prefix:
+			if ctx.author.guild_permissions.administrator:
+				if new_prefix.lower() == "reset":
+					self.bot.command_prefix.remove(str(ctx.guild.id))
+					await ctx.send(f"Prefix reset back to `{self.bot.command_prefix.default}`.")
+				else:
+					self.bot.command_prefix.update(str(ctx.guild.id), new_prefix)
+					await ctx.send(f"Prefix changed to `{new_prefix}`.")
+			else:
+				raise commands.MissingPermissions(missing_permissions=['administrator'])
+		else:
+			await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
+
 
 async def setup(bot):
 	await bot.add_cog(Utility(bot), override=True)

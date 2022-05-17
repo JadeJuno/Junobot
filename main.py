@@ -38,22 +38,6 @@ async def main():
 		await bot.start(TOKEN)
 
 
-@bot.command(extras={'example': 'gg', 'signature': '[New Prefix/"reset"]'}, description="Changes the server's prefix to the specified prefix. If blank, it'll show the current server's prefix instead. If is \"reset\", it'll reset the prefix to the default (`g!`)")
-async def prefix(ctx, new_prefix=None):
-	if new_prefix:
-		if ctx.author.guild_permissions.administrator:
-			if new_prefix.lower() == "reset":
-				parser.remove(str(ctx.guild.id))
-				await ctx.send(f"Prefix reset back to `{parser.default}`.")
-			else:
-				parser.update(str(ctx.guild.id), new_prefix)
-				await ctx.send(f"Prefix changed to `{new_prefix}`.")
-		else:
-			raise commands.MissingPermissions(missing_permissions=['administrator'])
-	else:
-		await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
-
-
 if __name__ == "__main__":
 	if botutilities.check_if_self_hosted():
 		selfhost = input("Self Host? (y/n)\n> ")
