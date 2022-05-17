@@ -44,7 +44,6 @@ class Utility(commands.Cog):
 	@commands.command(extras={'example': 'gg', 'signature': '[New Prefix/"reset"]'},
 				 description="Changes the server's prefix to the specified prefix. If blank, it'll show the current server's prefix instead. If is \"reset\", it'll reset the prefix to the default (`g!`)")
 	async def prefix(self, ctx, new_prefix=None):
-		print(f"self.bot.command_prefix: {self.bot.command_prefix}")
 		if new_prefix:
 			if ctx.author.guild_permissions.administrator:
 				if new_prefix.lower() == "reset":

@@ -38,7 +38,8 @@ class PrefixParser:
 			del self.prefixes[server]
 
 	def update(self, sv, new_prefix):
-		self.remove(sv)
+		if sv in self.prefixes:
+			self.remove(sv)
 		self.add(sv, new_prefix)
 
 		self.prefixes[sv] = new_prefix
