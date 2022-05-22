@@ -10,13 +10,14 @@ import discord
 from discord.ext import commands
 from nbt import nbt
 
-from botutilities import error_template
+from botutilities import error_template, wip_command, log
 from nbt_lib import nbt_to_condition
 
 
 class Origins(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
+		log("Origins Cog Ready!")
 
 	@commands.command(
 		aliases=('disable',),
@@ -56,7 +57,7 @@ class Origins(commands.Cog):
 		os.remove(f'{directory}.zip')
 
 	@commands.command(
-		description="Automatically takes a Structure NBT file into a Block Condition object.\n\nThe 'Center' argument is the coordinates of the center of the block condition in the structure. I recommend using the [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for Visual Studio Code to visualize that more easily.",
+		description="Automatically turns a Structure NBT file into a Block Condition object.\n\nThe 'Center' argument is the coordinates of the center of the block condition in the structure. I recommend using the [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for Visual Studio Code to visualize that more easily.",
 		extras={"example": "5 4 5", "signature": "[Center=0 0 0]"}
 	)
 	async def structure(self, ctx: commands.Context, file: discord.Attachment, x: int = 0, y: int = 0, z: int = 0):
@@ -78,9 +79,7 @@ class Origins(commands.Cog):
 
 		condition = nbt_to_condition(center, structure)
 
-		with io.StringIO() as f:
-			json.dump(condition, f, indent='\t')
-			f.seek(0)
+		with io.StringIO(json.dumps(condition, indent='\t')) as f:
 			attachment = discord.File(f, filename=f"{file.filename}.json")
 		await ctx.send("Done! Remember that the result is **not a power nor an entity condition, but a block condition!** You'll have to put this condition yourself on whatever power you want.", file=attachment)
 

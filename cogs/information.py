@@ -55,7 +55,7 @@ class Information(commands.Cog):
 		except oxford.Exceptions.WordNotFoundException:
 			emb = error_embed
 
-		await message.edit(content="", embed=emb)
+		await message.edit(content=None, embed=emb)
 
 	@commands.command(
 		aliases=("googleit", "googlesearch", "search"),
