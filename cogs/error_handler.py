@@ -16,7 +16,7 @@ class CommandErrorHandler(commands.Cog):
 		botutilities.log("Error Handler Ready!")
 
 	@commands.Cog.listener()
-	async def on_command_error(self, ctx: commands.Context, error):
+	async def on_command_error(self, ctx: commands.Context, error: Exception):
 		timestamp = calendar.timegm(ctx.message.created_at.utctimetuple())
 		log = self.bot.get_channel(botutilities.config["log_channel"])
 		bot_owner = self.bot.get_user(self.bot.owner_id)
@@ -74,11 +74,9 @@ class CommandErrorHandler(commands.Cog):
 				for line in tback:
 					str_tback += line
 				content = botutilities.make_bug_report_file(ctx)
-				with io.StringIO() as file:
-					file.write(content)
-					file.seek(0)
-					owner_ping = bot_owner.mention
+				with io.StringIO(content) as file:
 					attachs = [discord.File(file, filename=f"bug_report_{timestamp}.txt")]
+				owner_ping = bot_owner.mention
 				log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`'
 				if len(log_message) > 2000:
 					log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>. Error message too long.\nMessage that caused the error: `{ctx.message.content}`'
