@@ -42,9 +42,9 @@ class DevCog(commands.Cog):
 					except commands.errors.ExtensionAlreadyLoaded:
 						pass
 				if len(done_cogs) > 0:
-					await msg.edit("Loading complete!")
+					await msg.edit(content="Loading complete!")
 				else:
-					await msg.edit("Error: Cog(s) already loaded.")
+					await msg.edit(content="Error: Cog(s) already loaded.")
 
 			case 'unload':
 				msg = await ctx.send(f'Unloading...')
@@ -56,9 +56,9 @@ class DevCog(commands.Cog):
 					except commands.errors.ExtensionNotLoaded:
 						pass
 				if len(done_cogs) > 0:
-					await msg.edit("Loading complete!")
+					await msg.edit(content="Loading complete!")
 				else:
-					await msg.edit("Error: Cog(s) already unloaded.")
+					await msg.edit(content="Error: Cog(s) already unloaded.")
 
 			case 'reload':
 				msg = await ctx.send(f'Reloading...')
@@ -71,9 +71,9 @@ class DevCog(commands.Cog):
 						botutilities.log(f'{cog} Reloaded.')
 						done_cogs.append(cog)
 				if len(done_cogs) > 0:
-					await msg.edit("Reloading complete!")
+					await msg.edit(content="Reloading complete!")
 				else:
-					await msg.edit("Error: Cog(s) was/were all unloaded.")
+					await msg.edit(content="Error: Cog(s) was/were all unloaded.")
 			case _:
 				await ctx.send("Error: Disc not valid.")
 
@@ -110,9 +110,7 @@ class DevCog(commands.Cog):
 				output = ctx.message.reference.resolved.content
 			else:
 				output = ctx.message.reference.resolved.embeds[0].DESCRIPTION
-			with io.StringIO() as file:
-				file.write(output)
-				file.seek(0)
+			with io.StringIO(output) as file:
 				await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename=f'{ctx.message.id}.txt'))
 
 	@commands.command()
