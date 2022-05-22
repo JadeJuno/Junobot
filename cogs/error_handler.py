@@ -59,6 +59,12 @@ class CommandErrorHandler(commands.Cog):
 		elif isinstance(error, botutilities.WIPCommand):
 			await botutilities.error_template(ctx, "This command is a WIP. Please wait.")
 
+		elif isinstance(error, discord.HTTPException) and error.code == 50035:
+			await botutilities.error_template(ctx, "The resulting message for this command is over the character limit.")
+
+		elif isinstance(error, commands.MissingRequiredAttachment):
+			await botutilities.error_template(ctx, "This command requires an attachment.")
+
 		elif isinstance(error, commands.BadArgument) and hasattr(ctx.command, 'on_error'):
 			pass
 
