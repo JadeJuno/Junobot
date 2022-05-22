@@ -23,9 +23,9 @@ class Utility(commands.Cog):
 			'example': "The `g!translate` command is broken."
 		}
 	)
-	async def report(self, ctx, *, message):
+	async def report(self, ctx, files: commands.Greedy[discord.Attachment], *, message):
 		report_channel = self.bot.get_channel(920770517424816179)
-		if len(ctx.message.attachments) > 0:
+		if len(files):
 			attachments = [await attachment.to_file(spoiler=attachment.is_spoiler()) for attachment in
 						   ctx.message.attachments]
 		else:
