@@ -67,9 +67,6 @@ class CommandErrorHandler(commands.Cog):
 		elif isinstance(error, commands.BadArgument) and hasattr(ctx.command, 'on_error'):
 			pass
 
-		elif isinstance(error, commands.BadLiteralArgument) and hasattr(ctx.command, 'on_error'):
-			pass
-
 		else:
 			check = await botutils.reaction_decision(self.bot, ctx, "There was an unexpected error. Do you want to send the details to the bot owner?")
 
