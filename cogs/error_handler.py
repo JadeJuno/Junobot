@@ -62,7 +62,7 @@ class CommandErrorHandler(commands.Cog):
 			await botutils.error_template(ctx, "The resulting message for this command is over the character limit.")
 
 		elif isinstance(error, commands.MissingRequiredAttachment):
-			await botutils.error_template(ctx, "This command requires an attachment.")
+			await botutils.error_template(ctx, "This command requires a file to be attached.")
 
 		elif isinstance(error, commands.BadArgument) and hasattr(ctx.command, 'on_error'):
 			pass
