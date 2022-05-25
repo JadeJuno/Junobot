@@ -26,7 +26,7 @@ class Fun(commands.Cog):
 						 "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.",
 						 "Very doubtful.")
 		if question.endswith("?"):
-			if question.strip() == "?":
+			if question == "?":
 				prediction = "That's not a question, that's a question sign..."
 			elif "love" in question.lower():  # lol
 				prediction = random.choice(ball_predicts[-5:])
