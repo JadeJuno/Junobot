@@ -89,4 +89,4 @@ class Cipher(commands.Cog):
 
 
 async def setup(bot: commands.Bot):
-	await bot.add_cog(Ciphering(bot), override=True)
+	await bot.add_cog(Cipher(bot), override=True)
