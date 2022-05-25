@@ -11,25 +11,21 @@ from config import parse_config
 config = parse_config("./config.toml")
 
 
-class BotUtilities:
-	def __init__(self, bot):
-		self.bot = bot
+async def reaction_decision(bot, ctx, check_str):
+	check_message = await ctx.send(check_str)
+	await check_message.add_reaction("\U00002705")
+	await check_message.add_reaction("\U0000274c")
 
-	async def reaction_decision(self, ctx, check_str):
-		check_message = await ctx.send(check_str)
-		await check_message.add_reaction("\U00002705")
-		await check_message.add_reaction("\U0000274c")
+	def check(reaction_checked, reaction_user):
+		user_check = reaction_user.id == ctx.author.id or reaction_user.guild_permissions.administrator and ctx.author.bot
+		return user_check and reaction_checked.message == check_message and str(reaction_checked.emoji) in (
+			"\U00002705", "\U0000274c")
 
-		def check(reaction_checked, reaction_user):
-			user_check = reaction_user.id == ctx.author.id or reaction_user.guild_permissions.administrator and ctx.author.bot
-			return user_check and reaction_checked.message == check_message and str(reaction_checked.emoji) in (
-				"\U00002705", "\U0000274c")
-
-		reaction, user = await self.bot.wait_for('reaction_add', check=check)
-		if str(reaction.emoji) == "\U00002705":
-			return True
-		elif str(reaction.emoji) == "\U0000274c":
-			return False
+	reaction, user = await bot.wait_for('reaction_add', check=check)
+	if str(reaction.emoji) == "\U00002705":
+		return True
+	elif str(reaction.emoji) == "\U0000274c":
+		return False
 
 
 async def is_not_report_banned(ctx):

@@ -12,7 +12,6 @@ import botutils
 class CommandErrorHandler(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		self.botutils = botutils.botutils(bot)
 		botutils.log("Error Handler Ready!")
 
 	@commands.Cog.listener()
@@ -72,7 +71,7 @@ class CommandErrorHandler(commands.Cog):
 			pass
 
 		else:
-			check = await self.botutils.reaction_decision(ctx, "There was an unexpected error. Do you want to send the details to the bot owner?")
+			check = await botutils.reaction_decision(self.bot, ctx, "There was an unexpected error. Do you want to send the details to the bot owner?")
 
 			if check:
 				tback = traceback.format_exception(type(error), error, error.__traceback__)
