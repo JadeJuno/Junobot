@@ -6,7 +6,7 @@ import botutils
 import morsecode
 
 
-class Ciphering(commands.Cog):
+class Cipher(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		botutils.log("Ciphering Cog ready!")
