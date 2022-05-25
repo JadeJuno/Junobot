@@ -21,9 +21,8 @@ class Ciphering(commands.Cog):
 		}
 	)
 	async def morse_code(self, ctx, encrypt_decrypt: typing.Annotated[str, lambda s: s.lower()], *, sentence: typing.Annotated[str, lambda s: s.upper()]):
-
 		if encrypt_decrypt not in ('encrypt', 'decrypt'):
-			await botutilities.error_template(ctx, "The argument 'Encrypt/Decrypt', as the name suggests, can only take 'encrypt' or 'decrypt'.")
+			await botutilities.error_template(ctx, "The argument 'Encrypt/Decrypt', as its name suggests, can only take 'encrypt' or 'decrypt'.")
 			return
 		if not morsecode.check_letter(sentence):
 			await botutilities.error_template(ctx, "Invalid character detected.")
@@ -32,9 +31,9 @@ class Ciphering(commands.Cog):
 		sentence += " "
 		if encrypt_decrypt == "encrypt":
 			try:
-				sentence = sentence[0:-1]
-				output = morsecode.encrypt(sentence)
-				await ctx.send(f"Here's your encrypted message: {output.capitalize()}")
+				sentence = sentence[:-1]
+				output = morsecode.encrypt(sentence).capitalize()
+				await ctx.send(f"Here's your encrypted message: {output}")
 			except KeyError:
 				await botutilities.error_template(ctx, "Your message has a character that isn't translatable to International Morse Code.")
 				return
@@ -42,10 +41,10 @@ class Ciphering(commands.Cog):
 		else:
 			sentence = sentence.replace('_', '-')
 			try:
-				output = morsecode.decrypt(sentence)
-				await ctx.send(f"Here's your decrypted Morse: {output.capitalize()}")
+				output = morsecode.decrypt(sentence).capitalize()
+				await ctx.send(f"Here's your decrypted Morse: {output}")
 			except ValueError:
-				await botutilities.error_template(ctx, f"You tried to decrypt normal text.\n*(If you believe this error message is wrong, please send a bug report to my creator via `{ctx.clean_prefix}report`.)*")
+				await botutilities.error_template(ctx, f"You tried to decrypt normal text as Morse Code.\n*(If you believe this error message is wrong, please send a bug report to my creator via `{ctx.clean_prefix}report`.)*")
 				return
 
 	# Long-ass example :weary:
@@ -59,7 +58,7 @@ class Ciphering(commands.Cog):
 	)
 	async def binary(self, ctx, encode_decode: typing.Annotated[str, lambda s: s.lower()], *, sentence):
 		if encode_decode not in ('encode', 'decode'):
-			await botutilities.error_template(ctx, "The argument 'Encode/Decode', as the name suggests, can only take 'encode' or 'decode'.")
+			await botutilities.error_template(ctx, "The argument 'Encode/Decode', as its name suggests, can only take 'encode' or 'decode'.")
 			return
 
 		if encode_decode == "encode":
