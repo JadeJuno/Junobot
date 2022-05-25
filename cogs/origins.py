@@ -10,14 +10,14 @@ import discord
 from discord.ext import commands
 from nbt import nbt
 
-from botutilities import error_template, wip_command, log
+import botutils
 from nbt_lib import nbt_to_condition
 
 
 class Origins(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
-		log("Origins Cog Ready!")
+		botutils.log("Origins Cog Ready!")
 
 	@commands.command(
 		aliases=('disable',),
@@ -27,7 +27,7 @@ class Origins(commands.Cog):
 	async def unchoosable(self, ctx, namespace, name, pack_format=9):
 		pattern = re.compile('[^a-z\d_.\-/]')
 		if re.search(pattern, namespace) or re.search(pattern, name):
-			await error_template(ctx, "Identifier has non [a-z0-9_.-] character in it (In layman's terms: *there's a character that isn't a lowercase leter, a number, an underscore, a hyphen or a period on the ID.*).")
+			await botutils.error_template(ctx, "Identifier has non [a-z0-9_.-] character in it (In layman's terms: *there's a character that isn't a lowercase leter, a number, an underscore, a hyphen or a period on the ID.*).")
 			return
 		filename = f"Disable_{name.title()}"
 		unchoosable_obj = {
@@ -65,7 +65,7 @@ class Origins(commands.Cog):
 
 		file = await file.to_file()
 		if not file.filename.endswith('.nbt'):
-			await error_template(ctx, "Attached file is not an NBT file.")
+			await botutils.error_template(ctx, "Attached file is not an NBT file.")
 			return
 
 		center = center[:3]
@@ -74,7 +74,7 @@ class Origins(commands.Cog):
 		size = [val.value for val in structure['size']]
 		for size_val, center_coord in zip(size, center):
 			if center_coord > size_val:
-				await error_template(ctx, "The center's coordinates are outside of the structure.")
+				await botutils.error_template(ctx, "The center's coordinates are outside of the structure.")
 				return
 
 		condition = nbt_to_condition(center, structure)

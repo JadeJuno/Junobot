@@ -7,14 +7,14 @@ import typing
 import discord
 from discord.ext import commands
 
-import botutilities
+import botutils
 
 
 class DevCog(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 		self.log = None
-		botutilities.log("Dev Cog ready!")
+		botutils.log("Dev Cog ready!")
 
 	async def cog_check(self, ctx):
 		check = await self.bot.is_owner(ctx.author)
@@ -37,7 +37,7 @@ class DevCog(commands.Cog):
 				for cog in cogs:
 					try:
 						await self.bot.load_extension(cog)
-						botutilities.log(f'{cog} Loaded.')
+						botutils.log(f'{cog} Loaded.')
 						done_cogs.append(cog)
 					except commands.errors.ExtensionAlreadyLoaded:
 						pass
@@ -51,7 +51,7 @@ class DevCog(commands.Cog):
 				for cog in cogs:
 					try:
 						await self.bot.unload_extension(cog)
-						botutilities.log(f'{cog} Unloaded.')
+						botutils.log(f'{cog} Unloaded.')
 						done_cogs.append(cog)
 					except commands.errors.ExtensionNotLoaded:
 						pass
@@ -68,7 +68,7 @@ class DevCog(commands.Cog):
 					except commands.errors.ExtensionNotLoaded:
 						pass
 					else:
-						botutilities.log(f'{cog} Reloaded.')
+						botutils.log(f'{cog} Reloaded.')
 						done_cogs.append(cog)
 				if len(done_cogs) > 0:
 					await msg.edit(content="Reloading complete!")
@@ -91,7 +91,7 @@ class DevCog(commands.Cog):
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
 		await ctx.send(f"<t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>")
-		await botutilities.tryreply(ctx, "Test")
+		await botutils.tryreply(ctx, "Test")
 
 	@commands.command(aliases=('autoerror',))
 	async def auto_error(self, ctx):

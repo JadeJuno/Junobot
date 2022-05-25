@@ -4,13 +4,13 @@ import datetime
 import discord
 from discord.ext import commands
 
-import botutilities
+import botutils
 
 
 class Moderation(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		botutilities.log("Moderation Cog ready!")
+		botutils.log("Moderation Cog ready!")
 
 	@commands.has_permissions(ban_members=True)
 	@commands.command(
@@ -29,7 +29,7 @@ class Moderation(commands.Cog):
 				await ctx.guild.unban(user)
 				await ctx.send(f'Unbanned {user.mention}.')
 				return
-			await botutilities.error_template(ctx, f'{user.mention} is not banned.')
+			await botutils.error_template(ctx, f'{user.mention} is not banned.')
 
 	@commands.has_permissions(manage_nicknames=True)
 	@commands.command(
@@ -42,7 +42,7 @@ class Moderation(commands.Cog):
 	)
 	async def nickname(self, ctx, *, nickname):
 		if len(nickname) > 32:
-			await botutilities.error_template(ctx, f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
+			await botutils.error_template(ctx, f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
 			return
 		await ctx.guild.me.edit(nick=nickname)
 		await ctx.send(f'Successfully changed my nickname to "{nickname}".')
@@ -66,10 +66,10 @@ class Moderation(commands.Cog):
 		}
 
 		if timescale not in timescales and timescale not in timescales.values():
-			await botutilities.error_template(ctx, f'"{timescale}" is not a valid Time Scale')
+			await botutils.error_template(ctx, f'"{timescale}" is not a valid Time Scale')
 			return
 		if member.is_timed_out():
-			await botutilities.error_template(ctx, f"{member} is already timed out.")
+			await botutils.error_template(ctx, f"{member} is already timed out.")
 			return
 
 		try:
@@ -83,7 +83,7 @@ class Moderation(commands.Cog):
 			await member.timeout(delta, reason=reason)
 			await ctx.send(f"Muted {member} for {duration} {timescale}.")
 		except discord.errors.HTTPException:
-			await botutilities.error_template(ctx, f"Invalid amount of time to time {member} out for.")
+			await botutils.error_template(ctx, f"Invalid amount of time to time {member} out for.")
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command(
@@ -113,7 +113,7 @@ class Moderation(commands.Cog):
 			await member.ban(reason=reason)
 			await ctx.send(f'Banned {member} with reason "{reason}".')
 		else:
-			await botutilities.error_template(ctx, f"{member} has a higher permission level than myself.")
+			await botutils.error_template(ctx, f"{member} has a higher permission level than myself.")
 
 	@commands.has_permissions(kick_members=True)
 	@commands.command(
@@ -128,7 +128,7 @@ class Moderation(commands.Cog):
 			await member.kick(reason=reason)
 			await ctx.send(f'Kicked {member} with reason "{reason}".')
 		else:
-			await botutilities.error_template(ctx, f"{member} has a higher permission level than myself.")
+			await botutils.error_template(ctx, f"{member} has a higher permission level than myself.")
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command(

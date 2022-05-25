@@ -4,7 +4,7 @@ import random
 import discord
 from discord.ext import commands
 
-import botutilities
+import botutils
 
 
 class GoldHelp(commands.MinimalHelpCommand):
@@ -78,7 +78,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 
 	async def send_cog_help(self, cog):
 		channel = self.get_destination()
-		await botutilities.error_template(channel, self.command_not_found(cog.qualified_name))
+		await botutils.error_template(channel, self.command_not_found(cog.qualified_name))
 
 
 class GoldHelpCog(commands.Cog):
@@ -87,7 +87,7 @@ class GoldHelpCog(commands.Cog):
 		self._original_help_command = bot.help_command
 		bot.help_command = GoldHelp()
 		bot.help_command.cog = self
-		botutilities.log("Help Command Ready.")
+		botutils.log("Help Command Ready.")
 
 	def cog_unload(self):
 		self.bot.help_command = self._original_help_command
@@ -131,5 +131,5 @@ async def _help(ctx, command=None):
 			except FileNotFoundError:
 				title = "Error!"
 				help_text = "Command not found."
-	embed = botutilities.embed_template(title, help_text.format(prefix=ctx.clean_prefix), footer)
+	embed = botutils.embed_template(title, help_text.format(prefix=ctx.clean_prefix), footer)
 	await ctx.send(embed=embed)

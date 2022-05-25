@@ -4,7 +4,7 @@ import os
 import discord
 from discord.ext import commands
 
-import botutilities
+import botutils
 import prefix
 from config import parse_config
 
@@ -18,11 +18,11 @@ bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord
 
 @bot.event
 async def on_ready():
-	log = bot.get_channel(botutilities.config["log_channel"])
+	log = bot.get_channel(botutils.config["log_channel"])
 	appinfo = await bot.application_info()
 	await bot.tree.sync()
-	botutilities.log(f'"{bot.user.display_name}" is ready.')
-	botutilities.log(f"Created by {appinfo.owner}.")
+	botutils.log(f'"{bot.user.display_name}" is ready.')
+	botutils.log(f"Created by {appinfo.owner}.")
 	await log.send("Bot Started.")
 
 
@@ -33,13 +33,13 @@ async def main():
 				try:
 					await bot.load_extension(f'cogs.{filename[:-3]}')
 				except commands.errors.NoEntryPointError:
-					botutilities.log(f"{filename[:-3]} Failed to load...")
+					botutils.log(f"{filename[:-3]} Failed to load...")
 		# bot.loop.create_task(change_status_task())  # I've chosen to ignore this.
 		await bot.start(TOKEN)
 
 
 if __name__ == "__main__":
-	if botutilities.check_if_self_hosted():
+	if botutils.check_if_self_hosted():
 		selfhost = input("Self Host? (y/n)\n> ")
 		match selfhost.lower():
 			case 'n':

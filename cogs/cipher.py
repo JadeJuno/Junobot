@@ -2,14 +2,14 @@ import re
 
 from discord.ext import commands
 
-import botutilities
+import botutils
 import morsecode
 
 
 class Ciphering(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		botutilities.log("Ciphering Cog ready!")
+		botutils.log("Ciphering Cog ready!")
 
 	@commands.command(
 		name="morse",
@@ -22,10 +22,10 @@ class Ciphering(commands.Cog):
 	)
 	async def morse_code(self, ctx, encrypt_decrypt: typing.Annotated[str, lambda s: s.lower()], *, sentence: typing.Annotated[str, lambda s: s.upper()]):
 		if encrypt_decrypt not in ('encrypt', 'decrypt'):
-			await botutilities.error_template(ctx, "The argument 'Encrypt/Decrypt', as its name suggests, can only take 'encrypt' or 'decrypt'.")
+			await botutils.error_template(ctx, "The argument 'Encrypt/Decrypt', as its name suggests, can only take 'encrypt' or 'decrypt'.")
 			return
 		if not morsecode.check_letter(sentence):
-			await botutilities.error_template(ctx, "Invalid character detected.")
+			await botutils.error_template(ctx, "Invalid character detected.")
 			return
 
 		sentence += " "
@@ -35,7 +35,7 @@ class Ciphering(commands.Cog):
 				output = morsecode.encrypt(sentence).capitalize()
 				await ctx.send(f"Here's your encrypted message: {output}")
 			except KeyError:
-				await botutilities.error_template(ctx, "Your message has a character that isn't translatable to International Morse Code.")
+				await botutils.error_template(ctx, "Your message has a character that isn't translatable to International Morse Code.")
 				return
 
 		else:
@@ -44,7 +44,7 @@ class Ciphering(commands.Cog):
 				output = morsecode.decrypt(sentence).capitalize()
 				await ctx.send(f"Here's your decrypted Morse: {output}")
 			except ValueError:
-				await botutilities.error_template(ctx, f"You tried to decrypt normal text as Morse Code.\n*(If you believe this error message is wrong, please send a bug report to my creator via `{ctx.clean_prefix}report`.)*")
+				await botutils.error_template(ctx, f"You tried to decrypt normal text as Morse Code.\n*(If you believe this error message is wrong, please send a bug report to my creator via `{ctx.clean_prefix}report`.)*")
 				return
 
 	# Long-ass example :weary:
@@ -58,7 +58,7 @@ class Ciphering(commands.Cog):
 	)
 	async def binary(self, ctx, encode_decode: typing.Annotated[str, lambda s: s.lower()], *, sentence):
 		if encode_decode not in ('encode', 'decode'):
-			await botutilities.error_template(ctx, "The argument 'Encode/Decode', as its name suggests, can only take 'encode' or 'decode'.")
+			await botutils.error_template(ctx, "The argument 'Encode/Decode', as its name suggests, can only take 'encode' or 'decode'.")
 			return
 
 		if encode_decode == "encode":
@@ -80,7 +80,7 @@ class Ciphering(commands.Cog):
 				bin_list = [sentence[i:i+8] for i in range(len(sentence), 8)]
 			for _bin in bin_list:
 				if len(_bin) < 8:
-					await botutilities.error_template(ctx, "Unknown Error... If you can fix this mess, please contact my creator at Golder06#7041, or make a Pull Request at <https://github.com/Golder06/Goldbot>")
+					await botutils.error_template(ctx, "Unknown Error... If you can fix this mess, please contact my creator at Golder06#7041, or make a Pull Request at <https://github.com/Golder06/Goldbot>")
 					return
 			bin_list = [chr(int(_bin, 2)) for _bin in bin_list]
 

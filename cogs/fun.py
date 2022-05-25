@@ -5,13 +5,13 @@ import typing
 import discord
 from discord.ext import commands
 
-import botutilities
+import botutils
 
 
 class Fun(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		botutilities.log("Fun Cog ready!")
+		botutils.log("Fun Cog ready!")
 
 	@commands.command(
 		name='8ball',
@@ -45,10 +45,10 @@ class Fun(commands.Cog):
 		hex_color = hex_color.upper().replace('#', '')
 
 		if not re.search(re.compile("^[A-Fa-f\d]{6}$", re.ASCII), hex_color):
-			await botutilities.error_template(ctx, f"`#{hex_color}` is not a valid Hex Color code.")
+			await botutils.error_template(ctx, f"`#{hex_color}` is not a valid Hex Color code.")
 			return
 		img = f"https://dummyimage.com/300/{hex_color}/&text=+"
-		embed = botutilities.embed_template(footer=f'#{hex_color}', color=int(hex_color, 16), image=img)
+		embed = botutils.embed_template(footer=f'#{hex_color}', color=int(hex_color, 16), image=img)
 		await ctx.send(embed=embed)
 
 	@commands.command(
@@ -83,13 +83,13 @@ class Fun(commands.Cog):
 	async def roll(self, ctx, faces=6.0):
 		try:
 			if faces != int(faces):
-				await botutilities.error_template(ctx, f"You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
+				await botutils.error_template(ctx, f"You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
 				return
 		except OverflowError:
-			await botutilities.error_template(ctx, "You can't roll an infinite dice!")
+			await botutils.error_template(ctx, "You can't roll an infinite dice!")
 			return
 
-		emojis = self.bot.get_guild(botutilities.config["guild_id"]).emojis
+		emojis = self.bot.get_guild(botutils.config["guild_id"]).emojis
 		if faces > 2:
 			faces = int(faces)
 			
@@ -105,7 +105,7 @@ class Fun(commands.Cog):
 	@roll.error
 	async def roll_error(self, ctx, error):
 		if isinstance(error, commands.BadArgument):
-			await botutilities.error_template(ctx, "You can't roll a die with a non-numeric amount of faces...")
+			await botutils.error_template(ctx, "You can't roll a die with a non-numeric amount of faces...")
 
 	@commands.command(
 		description="Send a message with the text you wrote and deletes your message. If the channel is set, it'll send the message to said channel.",
@@ -117,7 +117,7 @@ class Fun(commands.Cog):
 		if channel is None:
 			channel = ctx.channel
 		if not channel.permissions_for(ctx.author).send_messages:
-			await botutilities.error_template(ctx, f"You don't have permissions to talk in {channel.mention}")
+			await botutils.error_template(ctx, f"You don't have permissions to talk in {channel.mention}")
 			return
 		if message.lower().startswith("i am") or message.lower().startswith("i'm"):
 			if "stupid" in message.lower():

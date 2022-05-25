@@ -1,13 +1,13 @@
 import discord
 from discord.ext import commands
 
-import botutilities
+import botutils
 
 
 class Utility(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
-		botutilities.log("Utility Cog ready!")
+		botutils.log("Utility Cog ready!")
 
 	@commands.command(description="Sends a link to invite me to another server.")
 	async def invite(self, ctx):
@@ -15,7 +15,7 @@ class Utility(commands.Cog):
 		emb = discord.Embed(title="Invite Link", description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
 		await ctx.send(embed=emb)
 
-	@commands.check(botutilities.is_not_report_banned)
+	@commands.check(botutils.is_not_report_banned)
 	@commands.command(
 		aliases=('bugreport', 'reportbug', 'bug-report', 'report-bug'),
 		description="Let's you make a direct bug report to my creator if needed. Allows for sending images and other attachments as well.",
@@ -30,7 +30,7 @@ class Utility(commands.Cog):
 						   ctx.message.attachments]
 		else:
 			attachments = None
-		embed = botutilities.embed_template(title=f"{ctx.author.name}#{ctx.author.discriminator}",
+		embed = botutils.embed_template(title=f"{ctx.author.name}#{ctx.author.discriminator}",
 											description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
 											icon=ctx.author.display_avatar.url)
 		owner_ping = self.bot.get_user(self.bot.owner_id).mention

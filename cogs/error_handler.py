@@ -6,19 +6,19 @@ import traceback
 import discord
 from discord.ext import commands
 
-import botutilities
+import botutils
 
 
 class CommandErrorHandler(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		self.botutilities = botutilities.BotUtilities(bot)
-		botutilities.log("Error Handler Ready!")
+		self.botutils = botutils.botutils(bot)
+		botutils.log("Error Handler Ready!")
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx: commands.Context, error: Exception):
 		timestamp = calendar.timegm(ctx.message.created_at.utctimetuple())
-		log = self.bot.get_channel(botutilities.config["log_channel"])
+		log = self.bot.get_channel(botutils.config["log_channel"])
 		bot_owner = self.bot.get_user(self.bot.owner_id)
 
 		cog = ctx.cog
@@ -31,13 +31,13 @@ class CommandErrorHandler(commands.Cog):
 			cmds = [cmd.name for cmd in self.bot.commands]
 			matches = difflib.get_close_matches(cmd, cmds, n=1)
 			if len(matches) > 0:
-				await botutilities.error_template(ctx, f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
+				await botutils.error_template(ctx, f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
 			return
 
 		error = getattr(error, 'original', error)
 
 		if isinstance(error, commands.DisabledCommand):
-			await botutilities.error_template(ctx, f'`{ctx.prefix}{ctx.command}` has been disabled.')
+			await botutils.error_template(ctx, f'`{ctx.prefix}{ctx.command}` has been disabled.')
 
 		elif isinstance(error, commands.NoPrivateMessage):
 			try:
@@ -47,23 +47,23 @@ class CommandErrorHandler(commands.Cog):
 
 		elif isinstance(error, commands.MissingRequiredArgument):
 			missing_param = error.param.name.replace("_", " ").capitalize().strip()
-			await botutilities.error_template(ctx, f"Missing argument `{missing_param}`.")
+			await botutils.error_template(ctx, f"Missing argument `{missing_param}`.")
 
 		elif isinstance(error, commands.MissingPermissions):
 			missing_perm = error.missing_permissions[0].replace('_', ' ').title()
-			await botutilities.error_template(ctx, f'You are missing the `{missing_perm}` permission to run this command.')
+			await botutils.error_template(ctx, f'You are missing the `{missing_perm}` permission to run this command.')
 
 		elif isinstance(error, commands.NotOwner):
-			await botutilities.error_template(ctx, "This command is restricted to the owner of this bot.")
+			await botutils.error_template(ctx, "This command is restricted to the owner of this bot.")
 
-		elif isinstance(error, botutilities.WIPCommand):
-			await botutilities.error_template(ctx, "This command is a WIP. Please wait.")
+		elif isinstance(error, botutils.WIPCommand):
+			await botutils.error_template(ctx, "This command is a WIP. Please wait.")
 
 		elif isinstance(error, discord.HTTPException) and error.code == 50035:
-			await botutilities.error_template(ctx, "The resulting message for this command is over the character limit.")
+			await botutils.error_template(ctx, "The resulting message for this command is over the character limit.")
 
 		elif isinstance(error, commands.MissingRequiredAttachment):
-			await botutilities.error_template(ctx, "This command requires an attachment.")
+			await botutils.error_template(ctx, "This command requires an attachment.")
 
 		elif isinstance(error, commands.BadArgument) and hasattr(ctx.command, 'on_error'):
 			pass
@@ -72,14 +72,14 @@ class CommandErrorHandler(commands.Cog):
 			pass
 
 		else:
-			check = await self.botutilities.reaction_decision(ctx, "There was an unexpected error. Do you want to send the details to the bot owner?")
+			check = await self.botutils.reaction_decision(ctx, "There was an unexpected error. Do you want to send the details to the bot owner?")
 
 			if check:
 				tback = traceback.format_exception(type(error), error, error.__traceback__)
 				str_tback = ""
 				for line in tback:
 					str_tback += line
-				content = botutilities.make_bug_report_file(ctx)
+				content = botutils.make_bug_report_file(ctx)
 				with io.StringIO(content) as file:
 					attachs = [discord.File(file, filename=f"bug_report_{timestamp}.txt")]
 				owner_ping = bot_owner.mention

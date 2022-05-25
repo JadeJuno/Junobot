@@ -8,7 +8,7 @@ from discord.ext import commands
 from googletrans import Translator
 from iso639 import languages
 
-import botutilities
+import botutils
 import googlesearch
 
 
@@ -18,7 +18,7 @@ class Information(commands.Cog):
 		self.translator = Translator()
 		self.lang_dict = googletrans.LANGUAGES
 		self.oxford = oxford.SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'))
-		botutilities.log("Information Cog ready!")
+		botutils.log("Information Cog ready!")
 
 	def get_text_language(self, sentence):
 		detected_lang = self.translator.detect(sentence)
@@ -43,12 +43,12 @@ class Information(commands.Cog):
 		}
 	)
 	async def dictionary(self, ctx, *, query):
-		error_embed = await botutilities.error_template(ctx, f'Definition for "{query.title()}" not found.', send=False)
+		error_embed = await botutils.error_template(ctx, f'Definition for "{query.title()}" not found.', send=False)
 
 		message = await ctx.send("Getting definition...")
 		try:
 			definitions = self.oxford.define(query)
-			emb = botutilities.embed_template(
+			emb = botutils.embed_template(
 				title=f'Definition of "{query.title()}":', description=definitions[0].capitalize(),
 				footer='Powered by Oxford Dictionary'
 			)
@@ -76,7 +76,7 @@ class Information(commands.Cog):
 					output_str += f"`{i}.` **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**"
 			if not output_str:
 				output_str = "**No results found.**"
-			embed = botutilities.embed_template("Google", output_str,
+			embed = botutils.embed_template("Google", output_str,
 												icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
 		try:
@@ -98,7 +98,7 @@ class Information(commands.Cog):
 		if detected_lang.confidence:
 			await ctx.send(f'"{sentence}" is in {lang_name} (Certainty: `{int(detected_lang.confidence * 100)}%`).')
 		else:
-			await botutilities.error_template(ctx, "No correct language detected.")
+			await botutils.error_template(ctx, "No correct language detected.")
 
 	@commands.command(
 		description='Translates a sentence surrounded by quotation marks.',
@@ -123,7 +123,7 @@ class Information(commands.Cog):
 			await ctx.send(
 				f'Translated from {self.lang_dict[source_language].capitalize()} to {self.lang_dict[destination_language].capitalize()}\n`{translated_text.capitalize()}`.')
 		except ValueError:
-			await botutilities.error_template(ctx, "Invalid language.")
+			await botutils.error_template(ctx, "Invalid language.")
 
 	@commands.command(
 		description="Searches a Wikipedia page with your search request.",
@@ -159,7 +159,7 @@ class Information(commands.Cog):
 					description += f"`{i}`: {result}\n"
 			except wikipedia.exceptions.PageError:
 				description = "Page not found."
-			embed = botutilities.embed_template(title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
+			embed = botutils.embed_template(title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
 		await message.edit(content=None, embed=embed)
 
 
