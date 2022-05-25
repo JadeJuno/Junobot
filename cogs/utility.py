@@ -37,7 +37,7 @@ class Utility(commands.Cog):
 		await report_channel.send(f'{owner_ping}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed, files=attachments)
 		await ctx.send("Bug Report sent successfully")
 
-	@commands.command(description='Sends "Pong!" and the latency of the bot.')
+	@commands.command(description='Sends "Pong!" and my latency.')
 	async def ping(self, ctx):
 		await ctx.send(f':ping_pong: Pong! {self.bot.latency * 1000:.0f}ms.')
 
