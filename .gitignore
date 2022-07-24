@@ -3,6 +3,8 @@ __pycache__
 .google-cookie
 *.db
 Testing/
+logs/
+i18n.py
 
 ### https://github.com/github/gitignore/blob/main/Python.gitignore
 
