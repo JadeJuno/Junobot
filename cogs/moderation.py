@@ -146,6 +146,13 @@ class Moderation(commands.Cog):
 			messages.remove(ctx.message)
 			await messages[0].pin()
 
+	@ban.error
+	@kick.error
+	@mute.error
+	async def member_converter_error(self, ctx, error):
+		if isinstance(error, commands.errors.MemberNotFound):
+			await botutils.error_template(ctx, f'"`{ctx.current_argument}`" is not a valid member.')
+
 
 async def setup(client):
 	await client.add_cog(Moderation(client), override=True)
