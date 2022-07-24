@@ -109,7 +109,7 @@ def make_bug_report_file(ctx):
 	else:
 		args_str = '"None"'
 
-	content = f'Author: {ctx.author.name}#{ctx.author.discriminator} ({ctx.author.id})\nChannel: {ctx.channel.name} ({ctx.channel.id})\nGuild: {ctx.guild.name} ({ctx.guild.id})\nArguments: {args_str}\n\nMessage: "{ctx.message.content}"\n'
+	content = f'Author: @{ctx.author.name}#{ctx.author.discriminator} ({ctx.author.id})\nChannel: #{ctx.channel.name} ({ctx.channel.id})\nGuild: {ctx.guild.name} ({ctx.guild.id})\nArguments: {args_str}\n\nMessage: "{ctx.message.content}"\n'
 
 	return content
 
