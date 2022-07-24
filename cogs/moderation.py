@@ -98,7 +98,7 @@ class Moderation(commands.Cog):
 		await ctx.message.delete()
 		deleted_messages = await ctx.channel.purge(limit=amount)
 		clear_message = await ctx.send(f'Cleared {len(deleted_messages)} messages.')
-		await asyncio.sleep(2)
+		await asyncio.sleep(1)
 		await clear_message.delete()
 
 	@commands.has_permissions(ban_members=True)
