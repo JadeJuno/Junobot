@@ -78,7 +78,7 @@ class DevCog(commands.Cog):
 				await ctx.send("Error: Disc not valid.")
 
 	@commands.command()
-	async def test(self, ctx):
+	async def test(self, ctx: commands.Context):
 		print("TEST")
 		embed = discord.Embed(title="Title", description="[Test Link](https://www.youtube.com)",
 							  color=random.randint(0, 0xffffff), url="https://www.google.com/")
