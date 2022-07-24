@@ -52,7 +52,7 @@ class Moderation(commands.Cog):
 		aliases=("timeout",),
 		description='Times out ("mutes") a mentioned user for a set amount of time.',
 		extras={
-			'example': "@KoganeSirnight#9389 4 minutes Bitching.",
+			'example': "@KoganeSirnight#9389 10 minutes Bitching.",
 			'permission': 'moderate_members'
 		}
 	)
@@ -61,6 +61,7 @@ class Moderation(commands.Cog):
 		timescales = {
 			's': 'seconds', 'second': 'seconds',
 			'm': 'minutes', 'minute': 'minutes',
+			'h': 'hours', 'hour': 'hours',
 			'd': 'days', 'day': 'days',
 			'w': 'weeks', 'week': 'weeks'
 		}
@@ -81,7 +82,7 @@ class Moderation(commands.Cog):
 		delta = datetime.timedelta(**time_data)
 		try:
 			await member.timeout(delta, reason=reason)
-			await ctx.send(f"Muted {member} for {duration} {timescale}.")
+			await ctx.send(f'Muted {member} for {duration} {timescale} with reason "{reason}".')
 		except discord.errors.HTTPException:
 			await botutils.error_template(ctx, f"Invalid amount of time to time {member} out for.")
 
