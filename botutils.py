@@ -97,13 +97,13 @@ async def get_report_banned():
 def make_bug_report_file(ctx):
 	arguments = []
 	for arg in ctx.args[2:]:
-		_type = str(type(arg))
-		_type = re.search("'(.*?)'", _type).group(1)
-		arguments.append(f'"{_type} - {arg}"')
+		arg_type = str(type(arg))
+		arg_type = re.search("'(.*?)'", arg_type).group(1)
+		arguments.append(f'"{arg_type} - {arg}"')
 	for kw_key, kw_val in ctx.kwargs.items():
-		_type = str(type(kw_val))
-		_type = re.search("'(.*?)'", _type).group(1)
-		arguments.append(f'"{_type.capitalize()} - {kw_key}: {kw_val}"')
+		arg_type = str(type(kw_val))
+		arg_type = re.search("'(.*?)'", arg_type).group(1)
+		arguments.append(f'"[{arg_type.capitalize()}] - {kw_key}: {kw_val}"')
 	if len(arguments) > 0:
 		args_str = ', '.join(arguments)
 	else:
