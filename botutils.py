@@ -1,6 +1,7 @@
 import sys
 import random
 import re
+import typing
 from datetime import datetime
 
 import discord
@@ -36,7 +37,7 @@ def check_if_self_hosted():
 	return sys.platform == "win32"
 
 
-def embed_template(title=None, description=None, footer="", image: str = "", icon: str = "",
+def embed_template(title: typing.Optional[str], description: typing.Optional[str], footer="", image: str = "", icon: str = "",
 				   color=None):
 	if not color:
 		color = random.randint(0, 0xffffff)
