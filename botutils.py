@@ -58,8 +58,9 @@ def embed_template(title: typing.Optional[str], description: typing.Optional[str
 	return embed
 
 
-async def error_template(ctx, message, send=True):
-	embed = embed_template("ERROR", description=message, color=0xFF0000)
+async def error_template(ctx, message, error_type="ERROR", send=True):
+	error_types = {"ERROR": 0xFF0000, "WARNING": 0xFFFF00, "INFO": 0x00FF00}
+	embed = embed_template(error_type, description=message, color=error_types[error_type])
 	if send:
 		await ctx.reply(embed=embed)
 	else:
