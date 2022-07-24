@@ -68,12 +68,15 @@ class Information(commands.Cog):
 	async def google(self, ctx, *, search_request):
 		message = await ctx.send(f"Searching for `{search_request}`...")
 		async with ctx.typing():
-			output_str = ""
-			for i, url in enumerate(googlesearch.search(search_request, stop=10), start=1):
+			results = []
+			search_results = googlesearch.search(search_request, stop=10)
+			for i, result in enumerate(search_results, start=1):
 				if i < 10:
-					output_str += f"`{i}.`   **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**\n"
+					results.append(f"`{i}.`   **[{discord.utils.escape_markdown(result.title)}](<{result.link}>)**")
 				else:
-					output_str += f"`{i}.` **[{discord.utils.escape_markdown(url.title)}](<{url.link}>)**"
+					results.append(f"`{i}.` **[{discord.utils.escape_markdown(result.title)}](<{result.link}>)**")
+
+			output_str = "\n".join(results)
 			if not output_str:
 				output_str = "**No results found.**"
 			embed = botutils.embed_template("Google", output_str,
