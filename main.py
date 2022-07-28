@@ -42,10 +42,10 @@ if __name__ == "__main__":
 	if botutils.check_if_self_hosted():
 		selfhost = input("Self Host? (y/n)\n> ")
 		match selfhost.lower():
-			case 'n':
-				TOKEN = os.getenv("GOLD_TOKEN")
-			case _:
+			case 'y':
 				TOKEN = os.getenv("SELF_TOKEN")
+			case _:
+				TOKEN = os.getenv("GOLD_TOKEN")
 	else:
 		TOKEN = os.getenv("GOLD_TOKEN")
 	if not TOKEN:
