@@ -10,4 +10,3 @@ urllib3~=1.26.7
 Oxford.py-Rewrite~=1.0.1
 NBT~=1.5.1
 Pillow==9.2.0
-git+https://github.com/frostotron/wiidb.git
