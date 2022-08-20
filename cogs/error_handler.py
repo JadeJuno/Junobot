@@ -68,28 +68,24 @@ class CommandErrorHandler(commands.Cog):
 			pass
 
 		else:
-			check = await botutils.reaction_decision(self.bot, ctx, "There was an unexpected error. Do you want to send the details to the bot owner?")
+			tback = traceback.format_exception(type(error), error, error.__traceback__)
+			str_tback = ""
+			for line in tback:
+				str_tback += line
+			content = botutils.make_bug_report_file(ctx)
+			with io.StringIO(content) as f:
+				attachs = [discord.File(f, filename=f"bug_report_{timestamp}.txt")]
+			owner_ping = bot_owner.mention
+			log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`'
+			if len(log_message) > 2000:
+				log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>. Error message too long.\nMessage that caused the error: `{ctx.message.content}`'
+				with io.StringIO(str_tback) as f:
+					attachs.append(discord.File(f, filename=f"error_message_{timestamp}.txt"))
+			await log.send(log_message, files=attachs)
 
-			if check:
-				tback = traceback.format_exception(type(error), error, error.__traceback__)
-				str_tback = ""
-				for line in tback:
-					str_tback += line
-				content = botutils.make_bug_report_file(ctx)
-				with io.StringIO(content) as f:
-					attachs = [discord.File(f, filename=f"bug_report_{timestamp}.txt")]
-				owner_ping = bot_owner.mention
-				log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`'
-				if len(log_message) > 2000:
-					log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>. Error message too long.\nMessage that caused the error: `{ctx.message.content}`'
-					with io.StringIO(str_tback) as f:
-						attachs.append(discord.File(f, filename=f"error_message_{timestamp}.txt"))
-				await log.send(log_message, files=attachs)
+			await ctx.send("There was an unexpected error. An error report has been sent to my owner.")
 
-				return await ctx.send("Error Message sent.")
 
-			else:
-				return await ctx.send("Understood.")
 
 
 async def setup(client):
