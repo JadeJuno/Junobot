@@ -97,7 +97,7 @@ class Information(commands.Cog):
 	)
 	async def lang_detect(self, ctx: commands.Context, *, sentence):
 		await botutils.error_template(ctx,
-									  "This command is currently under mantainance. Please be patient until we find a fix.")
+									  "This command is currently under maintenance. Please be patient until we find a fix.")
 		return
 		detected_lang = self.get_text_language(sentence)
 		lang_name = languages.get(alpha2=detected_lang.lang[:2]).name
@@ -114,7 +114,7 @@ class Information(commands.Cog):
 		}
 	)
 	async def translate(self, ctx, translate_message, destination_language='en', source_language=None):
-		await botutils.error_template(ctx, "This command is currently under mantainance. Please be patient until we find a fix.")
+		await botutils.error_template(ctx, "This command is currently under maintenance. Please be patient until we find a fix.")
 		return
 
 		destination_language = destination_language.lower()
