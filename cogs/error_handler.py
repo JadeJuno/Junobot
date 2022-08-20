@@ -86,7 +86,5 @@ class CommandErrorHandler(commands.Cog):
 			await ctx.send("There was an unexpected error. An error report has been sent to my owner.")
 
 
-
-
 async def setup(client):
 	await client.add_cog(CommandErrorHandler(client), override=True)
