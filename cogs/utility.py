@@ -15,6 +15,11 @@ class Utility(commands.Cog):
 		emb = botutils.embed_template(title="Invite Link", description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
 		await ctx.send(embed=emb)
 
+	@commands.command(description="Sends a link to my Source Code")
+	async def source(self, ctx):
+		emb = botutils.embed_template(title="Source Code", description="My source code is public, and you can find it [here](https://github.com/Golder06/Goldbot)!")
+		await ctx.send(embed=emb)
+
 	@commands.check(botutils.is_not_report_banned)
 	@commands.command(
 		aliases=('bugreport', 'reportbug', 'bug-report', 'report-bug'),
