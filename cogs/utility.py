@@ -11,8 +11,8 @@ class Utility(commands.Cog):
 
 	@commands.command(description="Sends a link to invite me to another server.")
 	async def invite(self, ctx):
-		invite_url = discord.utils.oauth_url(str(self.bot.user.id))
-		emb = discord.Embed(title="Invite Link", description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
+		invite_url = discord.utils.oauth_url(self.bot.user.id)
+		emb = botutils.embed_template(title="Invite Link", description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
 		await ctx.send(embed=emb)
 
 	@commands.check(botutils.is_not_report_banned)
