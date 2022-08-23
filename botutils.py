@@ -121,10 +121,25 @@ def wip_command():
 	return commands.check(predicate)
 
 
+def under_maintenance(reason):
+	async def predicate(ctx):
+		if not await ctx.bot.is_owner(ctx.author):
+			raise CommandUnderMaintenance(reason)
+		return True
+	return commands.check(predicate)
+
+
 def log(text):
 	now = datetime.now().strftime("%H:%M:%S")
 	print(f"[{now}]: {text}")
 
 
 class WIPCommand(commands.errors.CheckFailure):
+	pass
+
+
+class CommandUnderMaintenance(commands.errors.CheckFailure):
+	def __init__(self, reason):
+		self.reason = reason
+
 	pass

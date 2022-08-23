@@ -87,6 +87,7 @@ class Information(commands.Cog):
 		except FileNotFoundError:
 			pass
 
+	@botutils.under_maintenance("Dependency Error")
 	@commands.command(
 		name="language",
 		aliases=("detect",),
@@ -96,9 +97,6 @@ class Information(commands.Cog):
 		}
 	)
 	async def lang_detect(self, ctx: commands.Context, *, sentence):
-		await botutils.error_template(ctx,
-									  "This command is currently under maintenance. Please be patient until we find a fix.")
-		return
 		detected_lang = self.get_text_language(sentence)
 		lang_name = languages.get(alpha2=detected_lang.lang[:2]).name
 		if detected_lang.confidence:
@@ -106,6 +104,7 @@ class Information(commands.Cog):
 		else:
 			await botutils.error_template(ctx, "No correct language detected.")
 
+	@botutils.under_maintenance("Dependency Error")
 	@commands.command(
 		description='Translates a sentence surrounded by quotation marks.',
 		extras={
@@ -114,9 +113,6 @@ class Information(commands.Cog):
 		}
 	)
 	async def translate(self, ctx, translate_message, destination_language='en', source_language=None):
-		await botutils.error_template(ctx, "This command is currently under maintenance. Please be patient until we find a fix.")
-		return
-
 		destination_language = destination_language.lower()
 		destination_language = self.get_dict_key(self.lang_dict, destination_language)
 		if source_language is not None:

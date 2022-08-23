@@ -58,6 +58,9 @@ class CommandErrorHandler(commands.Cog):
 		elif isinstance(error, botutils.WIPCommand):
 			await botutils.error_template(ctx, "This command is a WIP. Please wait.")
 
+		elif isinstance(error, botutils.CommandUnderMaintenance):
+			await botutils.error_template(ctx, f"This command is under maintenance because of `{error.reason}`. Sorry for the inconvenience.")
+
 		elif isinstance(error, discord.HTTPException) and error.code == 50035:
 			await botutils.error_template(ctx, "The resulting message for this command is over the character limit.")
 
