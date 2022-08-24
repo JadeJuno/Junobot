@@ -82,14 +82,13 @@ class Information(commands.Cog):
 			pass
 
 	@commands.command(
-		name="language",
 		aliases=("detect",),
 		description='Detects the language of a quoted sentence.',
 		extras={
 			"example": "Hola, mi nombre es Gøldbot y hablo español"
 		}
 	)
-	async def lang_detect(self, ctx: commands.Context, *, sentence):
+	async def language(self, ctx: commands.Context, *, sentence):
 		detected_lang = self.translator.detect(sentence)
 		if isinstance(detected_lang, list):
 			detected_lang = max(detected_lang, key=lambda lang: lang.confidence)
