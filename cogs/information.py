@@ -117,8 +117,7 @@ class Information(commands.Cog):
 			if isinstance(source_language, list):
 				source_language = source_language[0]
 		try:
-			translated_text = self.translator.translate(translate_message, src=source_language,
-														dest=destination_language).text.replace("`", "\`")
+			translated_text = discord.utils.escape_markdown(self.translator.translate(translate_message, src=source_language, dest=destination_language).text)
 			await ctx.send(
 				f'Translated from {self.lang_dict[source_language].capitalize()} to {self.lang_dict[destination_language].capitalize()}\n`{translated_text.capitalize()}`.')
 		except ValueError:
