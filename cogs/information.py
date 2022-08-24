@@ -100,7 +100,7 @@ class Information(commands.Cog):
 			await botutils.error_template(ctx, "No correct language detected.")
 
 	@commands.command(
-		description='Translates a sentence surrounded by quotation marks.',
+		description='Translates a sentence **surrounded by quotation marks.**',
 		extras={
 			'signature': '"<Sentence>" [Destination Language] [Source Language]',
 			'example': '"Hola, ¿como estás?" japanese spanish'
