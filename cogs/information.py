@@ -20,12 +20,6 @@ class Information(commands.Cog):
 		self.oxford = oxford.SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'))
 		botutils.log("Information Cog ready!")
 
-	def get_text_language(self, sentence):
-		detected_lang = self.translator.detect(sentence)
-		if isinstance(detected_lang, list):
-			detected_lang = max(detected_lang, key=lambda lang: lang.confidence)
-		return detected_lang
-
 	@staticmethod
 	def get_dict_key(dictionary, value):
 		key_list = list(dictionary.keys())
@@ -96,7 +90,10 @@ class Information(commands.Cog):
 		}
 	)
 	async def lang_detect(self, ctx: commands.Context, *, sentence):
-		detected_lang = self.get_text_language(sentence)
+		detected_lang = self.translator.detect(sentence)
+		if isinstance(detected_lang, list):
+			detected_lang = max(detected_lang, key=lambda lang: lang.confidence)
+
 		lang_name = languages.get(alpha2=detected_lang.lang[:2]).name
 		if detected_lang.confidence:
 			await ctx.send(f'"{sentence}" is in {lang_name} (Certainty: `{int(detected_lang.confidence * 100)}%`).')
