@@ -87,7 +87,6 @@ class Information(commands.Cog):
 		except FileNotFoundError:
 			pass
 
-	@botutils.under_maintenance("Dependency Error")
 	@commands.command(
 		name="language",
 		aliases=("detect",),
@@ -104,7 +103,6 @@ class Information(commands.Cog):
 		else:
 			await botutils.error_template(ctx, "No correct language detected.")
 
-	@botutils.under_maintenance("Dependency Error")
 	@commands.command(
 		description='Translates a sentence surrounded by quotation marks.',
 		extras={
