@@ -65,12 +65,9 @@ class Information(commands.Cog):
 			results = []
 			search_results = googlesearch.search(search_request, stop=10)
 			for i, result in enumerate(search_results, start=1):
-				if i < 10:
-					results.append(f"`{i}.`   **[{discord.utils.escape_markdown(result.title)}](<{result.link}>)**")
-				else:
-					results.append(f"`{i}.` **[{discord.utils.escape_markdown(result.title)}](<{result.link}>)**")
+				results.append(f"`{i}.`\t**[{discord.utils.escape_markdown(result.title)}](<{result.link}>)**")
 
-			output_str = "\n".join(results)
+			output_str = '\n'.join(results)
 			if not output_str:
 				output_str = "**No results found.**"
 			embed = botutils.embed_template("Google", output_str,
