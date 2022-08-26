@@ -5,7 +5,7 @@ import googletrans
 import oxford
 import wikipedia
 from discord.ext import commands
-from googletrans import Translator
+from googletrans.models import Detected  # Pain.
 from iso639 import languages
 
 import botutils
@@ -15,7 +15,7 @@ import googlesearch
 class Information(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
-		self.translator = Translator()
+		self.translator = googletrans.Translator()
 		self.lang_dict = googletrans.LANGUAGES
 		self.oxford = oxford.SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'))
 		botutils.log("Information Cog ready!")
@@ -28,6 +28,17 @@ class Information(commands.Cog):
 			if listed_value == value:
 				return key_list[value_list.index(value)]
 		return value
+
+	def detect_language(self, string):
+		detected_lang = self.translator.detect(string)
+		if isinstance(detected_lang, list):
+			detected_lang = max(detected_lang, key=lambda lang: lang.confidence)
+
+		elif isinstance(detected_lang.lang, list) and isinstance(detected_lang.confidence, list):
+			detected_lang_tuple = max(zip(detected_lang.lang, detected_lang.confidence))
+			detected_lang = Detected(lang=detected_lang_tuple[0], confidence=detected_lang_tuple[1])
+
+		return detected_lang
 
 	@commands.command(
 		aliases=('definition', 'define'),
@@ -86,13 +97,11 @@ class Information(commands.Cog):
 		}
 	)
 	async def language(self, ctx: commands.Context, *, sentence):
-		detected_lang = self.translator.detect(sentence)
-		if isinstance(detected_lang, list):
-			detected_lang = max(detected_lang, key=lambda lang: lang.confidence)
+		detected_lang = self.detect_language(sentence)
 
 		lang_name = languages.get(alpha2=detected_lang.lang[:2]).name
 		if detected_lang.confidence:
-			await ctx.send(f'"{sentence}" is in {lang_name} (Certainty: `{int(detected_lang.confidence * 100)}%`).')
+			await ctx.send(f'"{sentence}" is in {lang_name} (Certainty: `{round(detected_lang.confidence * 100)}%`).')
 		else:
 			await botutils.error_template(ctx, "No correct language detected.")
 
@@ -106,13 +115,14 @@ class Information(commands.Cog):
 	async def translate(self, ctx, translate_message, destination_language='en', source_language=None):
 		destination_language = destination_language.lower()
 		destination_language = self.get_dict_key(self.lang_dict, destination_language)
+
 		if source_language is not None:
 			source_language = source_language.lower()
 			source_language = self.get_dict_key(self.lang_dict, source_language)
 		else:
-			source_language = self.translator.detect(translate_message).lang
-			if isinstance(source_language, list):
-				source_language = source_language[0]
+			source_language = self.detect_language(translate_message).lang
+			source_language = source_language.lower()
+
 		try:
 			translated_text = discord.utils.escape_markdown(self.translator.translate(translate_message, src=source_language, dest=destination_language).text)
 			await ctx.send(
