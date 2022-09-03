@@ -113,19 +113,25 @@ class Fun(commands.Cog):
 			"example": "#general Hi, my name is Gøldbot and I'm sentient."
 		}
 	)
-	async def say(self, ctx, channel: typing.Optional[discord.TextChannel], *, message):
+	async def say(self, ctx, files: commands.Greedy[discord.Attachment], channel: typing.Optional[discord.TextChannel], *, message):
 		if channel is None:
 			channel = ctx.channel
+
+		if len(files):
+			files = [await file.to_file(spoiler=file.is_spoiler()) for file in files]
+
 		if not channel.permissions_for(ctx.author).send_messages:
 			await botutils.error_template(ctx, f"You don't have permissions to talk in {channel.mention}")
 			return
+
 		if message.lower().startswith("i am") or message.lower().startswith("i'm"):
 			if "stupid" in message.lower():
 				message = f"{ctx.author.mention} is stupid."
 			elif "dumb" in message.lower():
 				message = f"{ctx.author.mention} is dumb."
+
 		await discord.Message.delete(ctx.message, delay=0)
-		await channel.send(message)
+		await channel.send(message, files=files)
 
 
 async def setup(bot):
