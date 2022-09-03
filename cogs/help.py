@@ -9,14 +9,13 @@ import botutils
 
 class GoldHelp(commands.MinimalHelpCommand):
 
-	description = "Shows a list of all the commands of the bot or the details of said commands."
 	with open('assets/perms.json') as f:
 		PERMS = json.load(f)
 
 	def __init__(self, **options):
 		self.command_name = None
 		self.appinfo = None
-		super().__init__(**options)
+		super().__init__(**options, command_attrs={"description": "Shows a list of all the commands of the bot or the details of said commands.", "extras": {'example': 'help', 'signature': "[Command]"}})
 
 	def command_not_found(self, string: str):
 		return f'Command "{string}" not found.'
@@ -66,8 +65,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 			embed.add_field(name="**Aliases**", value=', '.join(aliases), inline=False)
 
 		if 'permission' in command.extras:
-			embed.add_field(name="**Permissions**",
-							value=f'You require "{self.PERMS[command.extras["permission"]]}" permissions to use this command.')
+			embed.add_field(name="**Permissions**", value=f'You require "{self.PERMS[command.extras["permission"]]}" permissions to use this command.')
 		usage_str = f"{self.get_command_signature(command)}"
 		if example:
 			usage_str += f"\nE.G.: `{self.context.clean_prefix}{self.command_name} {example}`"
@@ -97,10 +95,8 @@ async def setup(client):
 	await client.add_cog(GoldHelpCog(client), override=True)
 
 
+# UNUSED
 async def _help(ctx, command=None):
-	# UNUSED
-	await ctx.send("The Help command is being rewritten due to dumb security issues. Please wait.")
-
 	footer = ""
 	mod_commands = ("ban", "clear", "kick", "pin", "unban")
 	if command is None:

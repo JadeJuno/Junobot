@@ -111,6 +111,7 @@ class DevCog(commands.Cog):
 			else:
 				output = ctx.message.reference.resolved.embeds[0].DESCRIPTION
 			with io.StringIO(output) as file:
+				# noinspection PyTypeChecker
 				await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename=f'{ctx.message.id}.txt'))
 
 	@commands.command()
