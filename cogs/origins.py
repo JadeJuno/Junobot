@@ -5,6 +5,7 @@ import pathlib
 import re
 import shutil
 import zipfile
+from gzip import BadGzipFile
 
 import discord
 from discord.ext import commands
@@ -61,15 +62,25 @@ class Origins(commands.Cog):
 		extras={"example": "5 4 5", "signature": "[Center=0 0 0]"}
 	)
 	async def structure(self, ctx: commands.Context, file: discord.Attachment, x: int = 0, y: int = 0, z: int = 0):
+		valid_nbt = True
 		center = (x, y, z)
 
 		file = await file.to_file()
 		if not file.filename.endswith('.nbt'):
-			await botutils.error_template(ctx, "Attached file is not an NBT file.")
-			return
+			valid_nbt = False
 
 		center = center[:3]
-		structure = nbt.NBTFile(fileobj=file.fp)
+		try:
+			structure = nbt.NBTFile(fileobj=file.fp)
+		except BadGzipFile:
+			valid_nbt = False
+		else:
+			if 'size' not in structure:
+				valid_nbt = False
+
+		if not valid_nbt:
+			await botutils.error_template(ctx, "Attached file is not an NBT file.")
+			return
 
 		size = [val.value for val in structure['size']]
 		for size_val, center_coord in zip(size, center):
