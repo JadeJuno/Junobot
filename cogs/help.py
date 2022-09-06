@@ -49,6 +49,8 @@ class GoldHelp(commands.MinimalHelpCommand):
 		await channel.send(embed=embed)
 
 	async def send_command_help(self, command: commands):
+		await command.can_run(self.context)
+
 		try:
 			example = command.extras['example']
 		except KeyError:
