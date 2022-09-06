@@ -55,6 +55,12 @@ class GoldHelp(commands.MinimalHelpCommand):
 			example = None
 
 		embed = discord.Embed(title=f"{self.context.clean_prefix}{self.command_name}", color=random.randint(0, 0xffffff))
+
+		cog_name = command.cog_name
+		if cog_name == self.cog.qualified_name:
+			cog_name = "Help"
+		embed.add_field(name="**Category**", value=cog_name)
+
 		command_description = command.description if command.description else "WIP"
 		embed.add_field(name="**Description**", value=command_description, inline=False)
 
