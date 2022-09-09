@@ -39,7 +39,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 			command_signatures = [self.get_command_signature(c) for c in filtered]
 			if command_signatures:
 				cog_name = getattr(cog, "qualified_name", "No Category")
-				if cog_name != "DevCog" and cog_name != "GoldHelpCog":
+				if cog_name != "DevCog":
 					embed.add_field(name=cog_name, value="\n".join(command_signatures), inline=False)
 		embed.set_footer(
 			text=f"<>=Necessary, []=optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}.",
@@ -59,8 +59,6 @@ class GoldHelp(commands.MinimalHelpCommand):
 		embed = discord.Embed(title=f"{self.context.clean_prefix}{self.command_name}", color=random.randint(0, 0xffffff))
 
 		cog_name = command.cog_name
-		if cog_name == self.cog.qualified_name:
-			cog_name = "Help"
 		embed.add_field(name="**Category**", value=cog_name)
 
 		command_description = command.description if command.description else "WIP"
@@ -87,7 +85,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 		await botutils.error_template(channel, self.command_not_found(cog.qualified_name))
 
 
-class GoldHelpCog(commands.Cog):
+class Help(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self._original_help_command = bot.help_command
@@ -100,7 +98,7 @@ class GoldHelpCog(commands.Cog):
 
 
 async def setup(client):
-	await client.add_cog(GoldHelpCog(client), override=True)
+	await client.add_cog(Help(client), override=True)
 
 
 # UNUSED
