@@ -48,7 +48,7 @@ def embed_template(title: str = "", description: str = "", footer: str = "", ima
 		if icon:
 			embed.set_author(name=title, icon_url=icon)
 		else:
-			embed.set_author(name=title)
+			embed.title = title
 	if footer:
 		embed.set_footer(text=footer, icon_url="https://i.imgur.com/ZgG8oJn.png")
 	embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
