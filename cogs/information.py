@@ -155,9 +155,9 @@ class Information(commands.Cog):
 			except wikipedia.exceptions.DisambiguationError as e:
 				image = None
 				i = 1
-				for option in e.options[:9]:
+				for option in e.options:
 					try:
-						disamb_result = wikipedia.page(option, auto_suggest=False)
+						disamb_result = wikipedia.page(option)
 						if disamb_result.url != "":
 							result = f"[{disamb_result.title}]({disamb_result.url})"
 						else:
@@ -165,8 +165,12 @@ class Information(commands.Cog):
 
 					except wikipedia.exceptions.PageError:
 						continue
-					i += 1
+					except wikipedia.exceptions.DisambiguationError:
+						continue
 					description += f"`{i}`: {result}\n"
+					if i >= 10:
+						break
+					i += 1
 			except wikipedia.exceptions.PageError:
 				description = "Page not found."
 			embed = botutils.embed_template(TITLE, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
