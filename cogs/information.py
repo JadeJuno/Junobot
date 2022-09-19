@@ -139,17 +139,21 @@ class Information(commands.Cog):
 	async def wikipedia(self, ctx, *, search_request):
 		message = await ctx.send(f"Searching for {search_request}")
 		async with ctx.typing():
-			title = "Wikipedia"
+			TITLE = "Wikipedia"
 			description = ""
 			image = "https://i.imgur.com/7kT1Ydo.png"
+
 			try:
 				result = wikipedia.page(search_request)
 				description = f"**[{result.title}]({result.url})**\n{result.summary[:300].strip()}..."
+
 				try:
 					image = result.images[0]
 				except IndexError:
 					pass
+
 			except wikipedia.exceptions.DisambiguationError as e:
+				image = None
 				i = 1
 				for option in e.options[:9]:
 					try:
@@ -158,13 +162,14 @@ class Information(commands.Cog):
 							result = f"[{disamb_result.title}]({disamb_result.url})"
 						else:
 							result = f"~~{disamb_result}~~ **URL Not Found**"
+
 					except wikipedia.exceptions.PageError:
 						continue
 					i += 1
 					description += f"`{i}`: {result}\n"
 			except wikipedia.exceptions.PageError:
 				description = "Page not found."
-			embed = botutils.embed_template(title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
+			embed = botutils.embed_template(TITLE, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
 		await message.edit(content=None, embed=embed)
 
 	@commands.command(
