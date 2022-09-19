@@ -1,4 +1,5 @@
 import os
+import re
 
 import discord
 import googletrans
@@ -10,6 +11,7 @@ from iso639 import languages
 
 import botutils
 import googlesearch
+import urban
 
 
 class Information(commands.Cog):
@@ -166,6 +168,50 @@ class Information(commands.Cog):
 				description = "Page not found."
 			embed = botutils.embed_template(title, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
 		await message.edit(content=None, embed=embed)
+
+	@commands.command(
+		description="Makes a search on Urban Dictionary.",
+		aliases=("urbadictionary",),
+		extras={
+			"example": "Noob"
+		}
+	)
+	async def urban(self, ctx, *, query):
+		pattern = re.compile("\[(.*?)]")
+		async with ctx.typing():
+			urban_definition = urban.define(query)
+			try:
+				urban_definition = urban_definition[0]
+			except IndexError:
+				await botutils.error_template(ctx, f'No definition found for "{query}"')
+				return
+
+			definition = urban_definition.definition.split(" ")
+			if len(definition) > 70:
+				definition = " ".join(definition[:70]) + " (...)"
+			else:
+				definition = " ".join(definition)
+
+			example = urban_definition.example.split(" ")
+			if len(example) > 70:
+				example = " ".join(example[:70]) + " (...)"
+			else:
+				example = " ".join(example)
+
+			hypertexts = re.findall(pattern, definition)
+			hypertexts.extend(re.findall(pattern, example))
+			hypertexts = {text: urban.define(text)[0].permalink for text in hypertexts}
+
+			# Adds hypertexts to the definition and example strings.
+			definition = re.sub(pattern, lambda x: f"{x.group()}({hypertexts[x.group(1)]})", definition)
+			example = re.sub(pattern, lambda x: f"{x.group()}({hypertexts[x.group(1)]})", example)
+
+			embed = botutils.embed_template(title=f'Definition for "{urban_definition.word.title()}"',
+											description=f"{definition}\n\n**Example:**\n>>> {example}",
+											footer="Powered by Urban Dictionary.")
+			embed.url = urban_definition.permalink
+
+		await ctx.send(embed=embed)
 
 
 async def setup(bot):
