@@ -101,7 +101,7 @@ class Information(commands.Cog):
 
 		lang_name = languages.get(alpha2=detected_lang.lang[:2]).name
 		if detected_lang.confidence:
-			await ctx.send(f'"{sentence}" is in {lang_name} (Certainty: `{round(detected_lang.confidence * 100)}%`).')
+			await ctx.send(f'"{sentence}" is in **{lang_name}** (Certainty: `{round(detected_lang.confidence * 100)}%`).')
 		else:
 			await botutils.error_template(ctx, "No correct language detected.")
 
@@ -126,7 +126,7 @@ class Information(commands.Cog):
 		try:
 			translated_text = discord.utils.escape_markdown(self.translator.translate(translate_message, src=source_language, dest=destination_language).text)
 			await ctx.send(
-				f'Translated from {self.lang_dict[source_language].capitalize()} to {self.lang_dict[destination_language].capitalize()}\n`{translated_text.capitalize()}`.')
+				f'Translated from {self.lang_dict[source_language].capitalize()} to {self.lang_dict[destination_language].capitalize()}\n"{translated_text.capitalize()}".')
 		except ValueError:
 			await botutils.error_template(ctx, "Invalid language.")
 
