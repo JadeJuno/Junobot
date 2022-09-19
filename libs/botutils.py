@@ -6,9 +6,9 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 
-from config import parse_config
+from .config import parse_config
 
-config = parse_config("../config.toml")
+config = parse_config("config.toml")
 
 
 async def reaction_decision(bot, ctx, check_str):
