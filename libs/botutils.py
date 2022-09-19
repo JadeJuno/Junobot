@@ -1,3 +1,4 @@
+import os
 import sys
 import random
 import re
@@ -33,7 +34,7 @@ async def is_not_report_banned(ctx):
 
 
 def check_if_self_hosted():
-	return sys.platform == "win32"
+	return sys.platform == "win32" and "SELF_TOKEN" in os.environ
 
 
 def embed_template(title: str = "", description: str = "", footer: str = "", image: str = "", icon: str = "",
