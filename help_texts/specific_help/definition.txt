@@ -1,8 +1,0 @@
-**Description**
-Fetches the first definition of a word from the Oxford Dictionary.
-
-**Aliases**
-`{prefix}define`, `{prefix}definition`
-
-**Usage**
-`{prefix}define (language, defaults to en-gb) [word]`

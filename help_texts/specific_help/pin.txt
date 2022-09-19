@@ -1,8 +1,0 @@
-**Description**
-Pins the message you reply to. If you're not replying to a message, it'll pin the message right above yours.
-
-**Permissions**
-You need to have the `Manage Messages` permission to use this command.
-
-**Usage**
-`{prefix}pin`

@@ -1,8 +1,0 @@
-**Description**
-Sends you a list with all the languages {prefix}translate can use on a DM.
-
-**Aliases**
-`{prefix}langlist`, `{prefix}languagelist`
-
-**Usage**
-`{prefix}languagelist <sentence>`
