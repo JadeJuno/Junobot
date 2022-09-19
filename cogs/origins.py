@@ -11,8 +11,8 @@ import discord
 from discord.ext import commands
 from nbt import nbt
 
-import botutils
-from nbt_lib import nbt_to_condition
+from libs import botutils
+from libs.nbt_lib import nbt_to_condition
 
 
 class Origins(commands.Cog):

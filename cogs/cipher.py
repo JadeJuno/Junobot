@@ -2,8 +2,7 @@ import re
 
 from discord.ext import commands
 
-import botutils
-import morsecode
+from libs import morsecode, botutils
 
 
 class Cipher(commands.Cog):

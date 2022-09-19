@@ -4,9 +4,8 @@ import os
 import discord
 from discord.ext import commands
 
-import botutils
-import prefix
-from config import parse_config
+from libs import prefix, botutils
+from libs.config import parse_config
 
 config = parse_config("./config.toml")
 

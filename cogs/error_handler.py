@@ -6,7 +6,7 @@ import traceback
 import discord
 from discord.ext import commands
 
-import botutils
+from libs import botutils
 
 
 class CommandErrorHandler(commands.Cog):

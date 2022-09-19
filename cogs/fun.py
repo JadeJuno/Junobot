@@ -5,7 +5,7 @@ import typing
 import discord
 from discord.ext import commands
 
-import botutils
+from libs import botutils
 
 
 class Fun(commands.Cog):
