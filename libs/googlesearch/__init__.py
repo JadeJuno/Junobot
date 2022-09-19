@@ -33,7 +33,7 @@ import sys
 import time
 import ssl
 
-from googlesearch.result import GoogleResult
+from libs.googlesearch.result import GoogleResult
 
 if sys.version_info[0] > 2:
     from http.cookiejar import LWPCookieJar

@@ -9,8 +9,7 @@ from discord.ext import commands
 from googletrans.models import Detected  # Pain.
 from iso639 import languages
 
-from libs import botutils, urban
-import googlesearch
+from libs import botutils, urban, googlesearch
 
 
 class Information(commands.Cog):
