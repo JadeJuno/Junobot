@@ -1,10 +1,13 @@
 import asyncio
 import datetime
+import typing
+from typing import Optional
 
 import discord
 from discord.ext import commands
 
 from libs import botutils
+from libs.botutils import TimescaleConverter
 
 
 class Moderation(commands.Cog):
@@ -57,35 +60,24 @@ class Moderation(commands.Cog):
 			'permission': 'moderate_members'
 		}
 	)
-	async def mute(self, ctx, member: discord.Member, duration, timescale, *, reason=None):
-		timescale = timescale.lower()
-		timescales = {
-			's': 'seconds', 'second': 'seconds',
-			'm': 'minutes', 'minute': 'minutes',
-			'h': 'hours', 'hour': 'hours',
-			'd': 'days', 'day': 'days',
-			'w': 'weeks', 'week': 'weeks'
-		}
-
-		if timescale not in timescales and timescale not in timescales.values():
-			await botutils.error_template(ctx, f'"{timescale}" is not a valid Time Scale')
-			return
+	async def mute(self, ctx: commands.Context, member: discord.Member, duration: int, timescale: TimescaleConverter, *,
+	               reason: typing.Optional[str] = None):
 		if member.is_timed_out():
 			await botutils.error_template(ctx, f"{member} is already timed out.")
 			return
 
-		try:
-			timescale = timescales[timescale]
-		except KeyError:
-			pass
-
-		time_data = {timescale: int(duration)}
+		time_data = {timescale: duration}
 		delta = datetime.timedelta(**time_data)
 		try:
 			await member.timeout(delta, reason=reason)
-			await ctx.send(f'Muted {member} for {duration} {timescale} with reason "{reason}".')
+			await ctx.send(f'Muted {member} for `{duration}` {timescale} with reason "{reason}".')
 		except discord.errors.HTTPException:
 			await botutils.error_template(ctx, f"Invalid amount of time to time {member} out for.")
+
+	@mute.error
+	async def mute_error(self, ctx: commands.Context, error: Exception):
+		if isinstance(error, commands.BadArgument):
+			await botutils.error_template(ctx, f'"{ctx.current_argument}" is not a valid Time Scale')
 
 	@commands.has_permissions(manage_messages=True)
 	@commands.command(

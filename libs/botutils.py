@@ -144,4 +144,19 @@ class CommandUnderMaintenanceError(commands.errors.CheckFailure):
 	def __init__(self, reason: str):
 		self.reason = reason
 
-	pass
+
+class TimescaleConverter(commands.Converter):
+	TIMESCALES = {
+		's': 'seconds', 'second': 'seconds',
+		'm': 'minutes', 'minute': 'minutes',
+		'h': 'hours', 'hour': 'hours',
+		'd': 'days', 'day': 'days',
+		'w': 'weeks', 'week': 'weeks'
+	}
+
+	async def convert(self, _, argument) -> str:
+		argument = argument.lower()
+		try:
+			return self.TIMESCALES[argument]
+		except KeyError:
+			raise commands.BadArgument
