@@ -133,11 +133,16 @@ class Moderation(commands.Cog):
 	)
 	async def pin(self, ctx: commands.Context):
 		if ctx.message.reference:
-			await ctx.message.reference.resolved.pin()
+			message = ctx.message.reference.resolved
 		else:
-			messages = await ctx.history(limit=2).flatten()
+			messages = [message async for message in ctx.history(limit=2)]
 			messages.remove(ctx.message)
-			await messages[0].pin()
+			message = messages[0]
+
+		try:
+			await message.pin()
+		except discord.HTTPException:
+			await botutils.error_template(ctx, "Could not pin the specified message.")
 
 	@ban.error
 	@kick.error
