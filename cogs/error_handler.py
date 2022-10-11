@@ -77,12 +77,14 @@ class CommandErrorHandler(commands.Cog):
 				str_tback += line
 			content = botutils.make_bug_report_file(ctx)
 			with io.StringIO(content) as f:
+				# noinspection PyTypeChecker
 				attachs = [discord.File(f, filename=f"bug_report_{timestamp}.txt")]
 			owner_ping = bot_owner.mention
 			log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`'
 			if len(log_message) > 2000:
 				log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>. Error message too long.\nMessage that caused the error: `{ctx.message.content}`'
 				with io.StringIO(str_tback) as f:
+					# noinspection PyTypeChecker
 					attachs.append(discord.File(f, filename=f"error_message_{timestamp}.txt"))
 			await log.send(log_message, files=attachs)
 
