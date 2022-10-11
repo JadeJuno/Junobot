@@ -7,7 +7,7 @@ Goldbot, officially known as Gøldbot, is a simple, multipurpose bot built in Py
 ## TODO:
 - [x] Separate all commands in different cogs.
 - [x] Use Discord.py's `HelpCommand` system.
-- [x] Make all command descriptions use first person when referring to Gøldbot.
+- [ ] Make all command descriptions use first person when referring to Gøldbot.
 - [ ] Add subcommands for `g!translate`.
 - [ ] Add subcommands for `g!morse`.
 - [ ] Add subcommands for `g!binary`.
