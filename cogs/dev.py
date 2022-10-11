@@ -118,17 +118,6 @@ class DevCog(commands.Cog):
 	async def help_test(self, ctx: commands.Context):
 		await ctx.send("Help Tested.")
 
-	@commands.command()
-	async def sync(self, ctx, guild: typing.Optional[int]):
-		if guild:
-			o = discord.Object(id=guild)
-			self.bot.tree.copy_global_to(guild=o)
-			await self.bot.tree.sync(guild=o)
-			await ctx.send(f"Synced App Commands from {guild}")
-		else:
-			await self.bot.tree.sync()
-			await ctx.send("Synced App Commands")
-
 
 async def setup(bot):
 	await bot.add_cog(DevCog(bot), override=True)

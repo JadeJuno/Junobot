@@ -19,7 +19,6 @@ bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord
 async def on_ready():
 	log = bot.get_channel(botutils.config["log_channel"])
 	appinfo = await bot.application_info()
-	await bot.tree.sync()
 	botutils.log(f'"{bot.user.display_name}" is ready.')
 	botutils.log(f"Created by {appinfo.owner}.")
 	await log.send("Bot Started.")
