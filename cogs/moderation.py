@@ -48,7 +48,7 @@ class Moderation(commands.Cog):
 			await botutils.error_template(ctx,
 			                              f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
 			return
-		await ctx.guild.me.edit(nick=nickname)
+		await ctx.me.edit(nick=nickname)
 		await ctx.send(f'Successfully changed my nickname to "{nickname}".')
 
 	@commands.has_permissions(moderate_members=True)
