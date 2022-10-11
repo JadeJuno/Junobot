@@ -212,7 +212,7 @@ class Information(commands.Cog):
 			hypertexts.extend(re.findall(pattern, example))
 			hypertexts = {text: urban.define(text)[0].permalink for text in hypertexts}
 
-			# Adds hypertexts to the definition and example strings.
+			# Adds hypertexts to the definition and example strings. I.E. "[Text](http://notarealurldonotclick.hi)"
 			definition = re.sub(pattern, lambda x: f"{x.group()}({hypertexts[x.group(1)]})", definition)
 			example = re.sub(pattern, lambda x: f"{x.group()}({hypertexts[x.group(1)]})", example)
 
