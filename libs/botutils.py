@@ -1,6 +1,5 @@
 import os
 import sys
-import random
 import re
 import typing
 from datetime import datetime
