@@ -109,7 +109,7 @@ class DevCog(commands.Cog):
 			if len(ctx.message.reference.resolved.embeds) == 0:
 				output = ctx.message.reference.resolved.content
 			else:
-				output = ctx.message.reference.resolved.embeds[0].DESCRIPTION
+				output = ctx.message.reference.resolved.embeds[0].description
 			with io.StringIO(output) as file:
 				# noinspection PyTypeChecker
 				await ctx.send("Here's the formatted message:",
