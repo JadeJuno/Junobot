@@ -58,7 +58,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 		except KeyError:
 			example = None
 
-		embed = discord.Embed(title=f"{self.context.clean_prefix}{self.command_name}", color=random.randint(0, 0xffffff))
+		embed = discord.Embed(title=f"{self.context.clean_prefix}{self.command_name}", color=discord.Color.random())
 
 		cog_name = command.cog_name
 		embed.add_field(name="**Category**", value=cog_name)
