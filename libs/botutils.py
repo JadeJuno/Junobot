@@ -2,7 +2,9 @@ import os
 import sys
 import random
 import re
+import typing
 from datetime import datetime
+from typing import Optional
 
 import discord
 from discord.ext import commands
