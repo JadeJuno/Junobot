@@ -8,22 +8,24 @@ from libs import botutils
 
 
 class GoldHelp(commands.MinimalHelpCommand):
-
 	with open('assets/perms.json') as f:
 		PERMS = json.load(f)
 
 	def __init__(self, **options):
 		self.command_name = None
 		self.appinfo = None
-		super().__init__(**options, command_attrs={"description": "Shows a list of all the commands of the bot or the details of said commands.", "extras": {'example': 'help', 'signature': "[Command]"}})
+		super().__init__(**options, command_attrs={
+			"description": "Shows a list of all the commands of the bot or the details of said commands.",
+			"extras": {'example': 'help', 'signature': '[Command]'}}
+		                 )
 
-	def command_not_found(self, string: str):
-		return f'Command "{string}" not found.'
+	def command_not_found(self, command: str):
+		return f'Command "{command}" not found.'
 
-	async def prepare_help_command(self, ctx, command):
+	async def prepare_help_command(self, _, command: str):
 		self.command_name = command
 
-	def get_command_signature(self, command):
+	def get_command_signature(self, command: commands.Command):
 		try:
 			signature = f" {command.extras['signature']}"
 		except KeyError:
@@ -48,7 +50,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 		channel = self.get_destination()
 		await channel.send(embed=embed)
 
-	async def send_command_help(self, command: commands):
+	async def send_command_help(self, command: commands.Command):
 		await command.can_run(self.context)
 
 		try:
@@ -71,7 +73,8 @@ class GoldHelp(commands.MinimalHelpCommand):
 			embed.add_field(name="**Aliases**", value=', '.join(aliases), inline=False)
 
 		if 'permission' in command.extras:
-			embed.add_field(name="**Permissions**", value=f'You require "{self.PERMS[command.extras["permission"]]}" permissions to use this command.')
+			embed.add_field(name="**Permissions**",
+			                value=f'You require "{self.PERMS[command.extras["permission"]]}" permissions to use this command.')
 		usage_str = f"{self.get_command_signature(command)}"
 		if example:
 			usage_str += f"\nE.G.: `{self.context.clean_prefix}{self.command_name} {example}`"
@@ -86,7 +89,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 
 
 class Help(commands.Cog):
-	def __init__(self, bot):
+	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 		self._original_help_command = bot.help_command
 		bot.help_command = GoldHelp()
@@ -97,8 +100,8 @@ class Help(commands.Cog):
 		self.bot.help_command = self._original_help_command
 
 
-async def setup(client):
-	await client.add_cog(Help(client), override=True)
+async def setup(bot: commands.Bot):
+	await bot.add_cog(Help(bot), override=True)
 
 
 # UNUSED

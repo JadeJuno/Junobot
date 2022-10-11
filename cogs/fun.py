@@ -9,7 +9,7 @@ from libs import botutils
 
 
 class Fun(commands.Cog):
-	def __init__(self, bot):
+	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 		botutils.log("Fun Cog ready!")
 
@@ -18,13 +18,13 @@ class Fun(commands.Cog):
 		description="You can ask a yes or no question to the Magic :8ball: Ball, and it will answer it.",
 		extras={'example': 'Am I loved?'}
 	)
-	async def _8ball(self, ctx, *, question):
+	async def _8ball(self, ctx: commands.Context, *, question: str):
 		ball_predicts = ("It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
-						 "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
-						 "Signs point to yes.", "Reply hazy, try again.", "Ask again later.",
-						 "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.",
-						 "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.",
-						 "Very doubtful.")
+		                 "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
+		                 "Signs point to yes.", "Reply hazy, try again.", "Ask again later.",
+		                 "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.",
+		                 "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.",
+		                 "Very doubtful.")
 		if "love" in question.lower():  # lol
 			ball_predicts = ball_predicts[-5:]
 		if question.endswith("?"):
@@ -41,7 +41,7 @@ class Fun(commands.Cog):
 		description="Sends an image with a solid color specified in Hexadecimal Code.",
 		extras={"example": "#32A852"}
 	)
-	async def color(self, ctx, hex_color: str):
+	async def color(self, ctx: commands.Context, hex_color: str):
 		hex_color = hex_color.upper().replace('#', '')
 
 		if not re.search(re.compile("^[A-Fa-f\d]{6}$", re.ASCII), hex_color):
@@ -59,7 +59,7 @@ class Fun(commands.Cog):
 			"example": "Yes No Perhaps"
 		}
 	)
-	async def choose(self, ctx, *options):
+	async def choose(self, ctx: commands.Context, *options: str):
 		if len(options) < 2:
 			await ctx.send("I can't just choose between 1 choice.")
 			return
@@ -69,7 +69,7 @@ class Fun(commands.Cog):
 		aliases=("coinflip", "flipcoin", "coin"),
 		description="Flip a coin and see if it lands on heads or tails."
 	)
-	async def flip(self, ctx):
+	async def flip(self, ctx: commands.Context):
 		await ctx.send(f"-Flip!-\nIt landed on {random.choice(('heads', 'tails'))}!")
 
 	@commands.command(
@@ -80,10 +80,11 @@ class Fun(commands.Cog):
 			"signature": "[Number of Sides=6]"
 		}
 	)
-	async def roll(self, ctx, faces=6.0):
+	async def roll(self, ctx: commands.Context, faces: float = 6.0):
 		try:
 			if faces != int(faces):
-				await botutils.error_template(ctx, f"You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
+				await botutils.error_template(ctx,
+				                              f"You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
 				return
 		except OverflowError:
 			await botutils.error_template(ctx, "You can't roll an infinite dice!")
@@ -92,7 +93,7 @@ class Fun(commands.Cog):
 		emojis = self.bot.get_guild(botutils.config["guild_id"]).emojis
 		if faces > 2:
 			faces = int(faces)
-			
+
 			result = random.randint(1, faces)
 			if faces <= 6:
 				result = discord.utils.get(emojis, name=f"Dice{result}")
@@ -103,7 +104,7 @@ class Fun(commands.Cog):
 			await ctx.send("... You serious?")
 
 	@roll.error
-	async def roll_error(self, ctx, error):
+	async def roll_error(self, ctx: commands.Context, error: Exception):
 		if isinstance(error, commands.BadArgument):
 			await botutils.error_template(ctx, "You can't roll a die with a non-numeric amount of faces...")
 
@@ -113,7 +114,8 @@ class Fun(commands.Cog):
 			"example": "#general Hi, my name is Gøldbot and I'm sentient."
 		}
 	)
-	async def say(self, ctx, files: commands.Greedy[discord.Attachment], channel: typing.Optional[discord.TextChannel], *, message):
+	async def say(self, ctx: commands.Context, files: commands.Greedy[discord.Attachment],
+	              channel: typing.Optional[discord.TextChannel], *, message: str):
 		if channel is None:
 			channel = ctx.channel
 
@@ -134,5 +136,5 @@ class Fun(commands.Cog):
 		await channel.send(message, files=files)
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
 	await bot.add_cog(Fun(bot), override=True)

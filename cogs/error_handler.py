@@ -10,7 +10,7 @@ from libs import botutils
 
 
 class CommandErrorHandler(commands.Cog):
-	def __init__(self, bot):
+	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 		botutils.log("Error Handler Ready!")
 
@@ -89,5 +89,5 @@ class CommandErrorHandler(commands.Cog):
 			await ctx.send("There was an unexpected error. An error report has been sent to my owner.")
 
 
-async def setup(client):
-	await client.add_cog(CommandErrorHandler(client), override=True)
+async def setup(bot: commands.Bot):
+	await bot.add_cog(CommandErrorHandler(bot), override=True)

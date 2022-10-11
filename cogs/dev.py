@@ -16,7 +16,7 @@ class DevCog(commands.Cog):
 		self.log = None
 		botutils.log("Dev Cog ready!")
 
-	async def cog_check(self, ctx):
+	async def cog_check(self, ctx: commands.Context):
 		check = await self.bot.is_owner(ctx.author)
 		if check:
 			return check
@@ -24,11 +24,11 @@ class DevCog(commands.Cog):
 			raise commands.NotOwner
 
 	@commands.command(name='cog')
-	async def coghandle(self, ctx, disc, cog=None):
+	async def coghandle(self, ctx: commands.Context, disc: typing.Literal['load', 'unload', 'reload'], cog: typing.Optional[str]):
 		if cog:
 			cogs = [f'cogs.{cog}']
 		else:
-			cogs = [f'cogs.{cog[:-3]}' for cog in os.listdir('./cogs') if cog.endswith('.py')]
+			cogs = [f'cogs.{cog.removesuffix(".py")}' for cog in os.listdir('./cogs') if cog.endswith('.py')]
 
 		done_cogs = []
 		match disc.lower():
@@ -94,7 +94,7 @@ class DevCog(commands.Cog):
 		await botutils.tryreply(ctx, "Test")
 
 	@commands.command(aliases=('autoerror',))
-	async def auto_error(self, ctx):
+	async def auto_error(self, ctx: commands.Context):
 		await ctx.send(f"{int('A')}")
 
 	@commands.command()
@@ -104,7 +104,7 @@ class DevCog(commands.Cog):
 		await self.log.send(f"{ctx.user.displayname} banned {user.name}#{user.discriminator} from reporting bugs.")
 
 	@commands.command()
-	async def format(self, ctx):
+	async def format(self, ctx: commands.Context):
 		if ctx.message.reference:
 			if len(ctx.message.reference.resolved.embeds) == 0:
 				output = ctx.message.reference.resolved.content
@@ -115,7 +115,7 @@ class DevCog(commands.Cog):
 				await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename=f'{ctx.message.id}.txt'))
 
 	@commands.command()
-	async def help_test(self, ctx):
+	async def help_test(self, ctx: commands.Context):
 		await ctx.send("Help Tested.")
 
 	@commands.command()

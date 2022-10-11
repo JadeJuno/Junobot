@@ -1,3 +1,5 @@
+import typing
+
 import discord
 from discord.ext import commands
 
@@ -10,13 +12,13 @@ class Utility(commands.Cog):
 		botutils.log("Utility Cog ready!")
 
 	@commands.command(description="Sends a link to invite me to another server.")
-	async def invite(self, ctx):
+	async def invite(self, ctx: commands.Context):
 		invite_url = discord.utils.oauth_url(self.bot.user.id)
 		emb = botutils.embed_template(title="Invite Link", description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
 		await ctx.send(embed=emb)
 
 	@commands.command(description="Sends a link to my Source Code")
-	async def source(self, ctx):
+	async def source(self, ctx: commands.Context):
 		emb = botutils.embed_template(title="Source Code", description="My source code is public, and you can find it [here](https://github.com/Golder06/Goldbot)!")
 		await ctx.send(embed=emb)
 
@@ -28,7 +30,7 @@ class Utility(commands.Cog):
 			'example': "The `g!translate` command is broken."
 		}
 	)
-	async def report(self, ctx, files: commands.Greedy[discord.Attachment], *, message):
+	async def report(self, ctx: commands.Context, files: commands.Greedy[discord.Attachment], *, message: str):
 		report_channel = self.bot.get_channel(920770517424816179)
 		if len(files):
 			attachments = [await attachment.to_file(spoiler=attachment.is_spoiler()) for attachment in
@@ -43,12 +45,12 @@ class Utility(commands.Cog):
 		await ctx.send("Bug Report sent successfully")
 
 	@commands.command(description='Sends "Pong!" and my latency.')
-	async def ping(self, ctx):
+	async def ping(self, ctx: commands.Context):
 		await ctx.send(f':ping_pong: Pong! {self.bot.latency * 1000:.0f}ms.')
 
 	@commands.command(extras={'example': 'gg', 'signature': '[New Prefix/"reset"]'},
 				 description="Changes the server's prefix to the specified prefix. If blank, it'll show the current server's prefix instead. If is \"reset\", it'll reset the prefix to the default (`g!`)")
-	async def prefix(self, ctx, new_prefix=None):
+	async def prefix(self, ctx: commands.Context, new_prefix: typing.Optional[str]):
 		if new_prefix:
 			if ctx.author.guild_permissions.administrator:
 				if new_prefix.lower() == "reset":
@@ -63,5 +65,5 @@ class Utility(commands.Cog):
 			await ctx.send(f"Server's prefix currently set to `{ctx.prefix}`.")
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
 	await bot.add_cog(Utility(bot), override=True)

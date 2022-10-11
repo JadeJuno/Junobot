@@ -35,7 +35,7 @@ UD_RANDOM_URL = 'https://api.urbandictionary.com/v0/random'
 
 
 class UrbanDefinition(object):
-	def __init__(self, word, definition, example, upvotes, downvotes, permalink):
+	def __init__(self, word: str, definition: str, example: str, upvotes: int, downvotes: int, permalink: str):
 		self.word = word
 		self.definition = definition
 		self.example = example
@@ -53,14 +53,14 @@ class UrbanDefinition(object):
 		)
 
 
-def _get_urban_json(url):
+def _get_urban_json(url: str):
 	f = urlopen(url)
 	data = json.loads(f.read().decode('utf-8'))
 	f.close()
 	return data
 
 
-def _parse_urban_json(json_, check_result=True):
+def _parse_urban_json(json_: dict, check_result: bool = True) -> list[UrbanDefinition]:
 	result = []
 	if json_ is None or any(e in json_ for e in ('error', 'errors')):
 		raise ValueError('UD: Invalid input for Urban Dictionary API')
@@ -79,7 +79,7 @@ def _parse_urban_json(json_, check_result=True):
 	return result
 
 
-def define(term):
+def define(term: str) -> list[UrbanDefinition]:
 	"""Search for term/phrase and return list of UrbanDefinition objects.
 
 	Keyword arguments:

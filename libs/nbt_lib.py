@@ -1,9 +1,7 @@
-import typing
-
 from nbt import nbt
 
 
-def nbt_to_condition(center: typing.Iterable, structure: nbt.NBTFile):
+def nbt_to_condition(center: tuple[int, int, int], structure: nbt.NBTFile) -> dict:
 	final_condition = {"type": "origins:and", "conditions": []}
 
 	# Turn block pallete to conditions

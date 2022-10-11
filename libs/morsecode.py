@@ -9,7 +9,7 @@ letters = MORSE_CODE_DICT.keys()
 morse_letters = MORSE_CODE_DICT.values()
 
 
-def check_letter(message):
+def check_letter(message: str) -> bool:
 	i = False
 	for letter in message:
 		for key in letters:
@@ -21,7 +21,7 @@ def check_letter(message):
 	return i
 
 
-def encrypt(message):
+def encrypt(message: str) -> str:
 	my_cipher = ''
 	for myletter in message:
 		if myletter != ' ':
@@ -32,7 +32,7 @@ def encrypt(message):
 
 
 # This function is used to decrypt Morse code to English
-def decrypt(message):
+def decrypt(message: str) -> str:
 	i = None
 	decipher = ''
 	mycitext = ''

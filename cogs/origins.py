@@ -25,7 +25,7 @@ class Origins(commands.Cog):
 		description="Generates a datapack that disables the origin with the specified ID.",
 		extras={"example": "extraorigins inchling 9"}
 	)
-	async def unchoosable(self, ctx, namespace, name, pack_format=10):
+	async def unchoosable(self, ctx: commands.Context, namespace: str, name: str, pack_format: int = 10):
 		pattern = re.compile('[^a-z\d_.\-/]')
 		if re.search(pattern, namespace) or re.search(pattern, name):
 			await botutils.error_template(ctx, "Identifier has non `[a-z0-9_.-]` character in it (In layman's terms: there's a character that isn't a lowercase letter, a number, an underscore, a hyphen or a period on the ID.).")

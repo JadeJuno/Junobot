@@ -12,7 +12,7 @@ from .config import parse_config
 config = parse_config("config.toml")
 
 
-async def reaction_decision(bot, ctx, check_str):
+async def reaction_decision(bot: commands.Bot, ctx: commands.Context, check_str: str) -> bool:
 	check_message = await ctx.send(check_str)
 	await check_message.add_reaction("\U00002705")
 	await check_message.add_reaction("\U0000274c")
@@ -29,18 +29,18 @@ async def reaction_decision(bot, ctx, check_str):
 		return False
 
 
-async def is_not_report_banned(ctx):
+async def is_not_report_banned(ctx: commands.Context) -> bool:
 	return bool(ctx)  # Just to avoid PyCharm's warning temporarily :p
 
 
-def check_if_self_hosted():
+def check_if_self_hosted() -> bool:
 	return sys.platform == "win32" and "SELF_TOKEN" in os.environ
 
 
 def embed_template(title: str = "", description: str = "", footer: str = "", image: str = "", icon: str = "",
-				   color=None):
+                   color: Optional[discord.Color | int] = None) -> discord.Embed:
 	if not color:
-		color = random.randint(0, 0xffffff)
+		color = discord.Color.random()
 	if description:
 		embed = discord.Embed(description=description, color=color)
 	else:
@@ -58,7 +58,8 @@ def embed_template(title: str = "", description: str = "", footer: str = "", ima
 	return embed
 
 
-async def error_template(ctx, message, error_type="ERROR", send=True):
+async def error_template(ctx, message: str, error_type: typing.Literal['ERROR', 'WARNING', 'INFO'] = "ERROR",
+                         send: bool = True) -> discord.Embed | None:
 	error_types = {"ERROR": 0xFF0000, "WARNING": 0xFFFF00, "INFO": 0x00FF00}
 	embed = embed_template(error_type, description=message, color=error_types[error_type])
 	if send:
@@ -67,18 +68,15 @@ async def error_template(ctx, message, error_type="ERROR", send=True):
 		return embed
 
 
-async def tryreply(ctx, message, reply=False, img=None, mention=True):
+async def tryreply(ctx: commands.Context, message: str, reply: bool = False, mention: bool = True) -> discord.Message:
 	async with ctx.typing():
-		attach = None
-		if isinstance(img, str):
-			attach = discord.File(fp=f"assets/{img}")
 		try:
-			return await ctx.message.reference.resolved.reply(message, file=attach, mention_author=mention)
+			return await ctx.message.reference.resolved.reply(message, mention_author=mention)
 		except AttributeError:
 			if reply:
-				return await ctx.reply(message, file=attach, mention_author=mention)
+				return await ctx.reply(message, mention_author=mention)
 			else:
-				return await ctx.send(message, file=attach)
+				return await ctx.send(message)
 
 
 """
@@ -94,7 +92,7 @@ async def get_report_banned():
 """
 
 
-def make_bug_report_file(ctx):
+def make_bug_report_file(ctx: commands.Context):
 	arguments = []
 	for arg in ctx.args[2:]:
 		arg_type = str(type(arg))
@@ -115,22 +113,22 @@ def make_bug_report_file(ctx):
 
 
 def wip_command():
-	async def predicate(ctx):
+	async def predicate(ctx: commands.Context):
 		if not await ctx.bot.is_owner(ctx.author):
 			raise WIPCommand
 		return True
 	return commands.check(predicate)
 
 
-def under_maintenance(reason):
-	async def predicate(ctx):
+def under_maintenance(reason: str):
+	async def predicate(ctx: commands.Context) -> Optional[bool]:
 		if not await ctx.bot.is_owner(ctx.author):
 			raise CommandUnderMaintenance(reason)
 		return True
 	return commands.check(predicate)
 
 
-def log(text):
+def log(text: str):
 	now = datetime.now().strftime("%H:%M:%S")
 	print(f"[{now}]: {text}")
 

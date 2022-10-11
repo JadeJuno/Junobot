@@ -21,7 +21,7 @@ class Information(commands.Cog):
 		botutils.log("Information Cog ready!")
 
 	@staticmethod
-	def get_dict_key(dictionary, value):
+	def get_dict_key(dictionary: dict, value: typing.Any) -> typing.Any:
 		key_list = list(dictionary.keys())
 		value_list = list(dictionary.values())
 		for listed_value in value_list:
@@ -29,7 +29,7 @@ class Information(commands.Cog):
 				return key_list[value_list.index(value)]
 		return value
 
-	def detect_language(self, string):
+	def detect_language(self, string: str) -> Detected:
 		detected_lang = self.translator.detect(string)
 		if isinstance(detected_lang, list):
 			detected_lang = max(detected_lang, key=lambda lang: lang.confidence)
@@ -47,7 +47,7 @@ class Information(commands.Cog):
 			'example': 'auric'
 		}
 	)
-	async def dictionary(self, ctx, *, query):
+	async def dictionary(self, ctx: commands.Context, *, query: str):
 		error_embed = await botutils.error_template(ctx, f'Definition for "{query.title()}" not found.', send=False)
 
 		message = await ctx.send("Getting definition...")
@@ -70,7 +70,7 @@ class Information(commands.Cog):
 			"example": 'How to perform a Google Search from Discord'
 		}
 	)
-	async def google(self, ctx, *, search_request):
+	async def google(self, ctx: commands.Context, *, search_request: str):
 		message = await ctx.send(f"Searching for `{search_request}`...")
 		async with ctx.typing():
 			results = []
@@ -82,7 +82,7 @@ class Information(commands.Cog):
 			if not output_str:
 				output_str = "**No results found.**"
 			embed = botutils.embed_template("Google", output_str,
-												icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
+			                                icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
 		try:
 			os.remove(".google-cookie")
@@ -96,12 +96,13 @@ class Information(commands.Cog):
 			"example": "Hola, mi nombre es Gøldbot y hablo español"
 		}
 	)
-	async def language(self, ctx: commands.Context, *, sentence):
+	async def language(self, ctx: commands.Context, *, sentence: str):
 		detected_lang = self.detect_language(sentence)
 
 		lang_name = languages.get(alpha2=detected_lang.lang[:2]).name
 		if detected_lang.confidence:
-			await ctx.send(f'"{sentence}" is in **{lang_name}** (Certainty: `{round(detected_lang.confidence * 100)}%`).')
+			await ctx.send(
+				f'"{sentence}" is in **{lang_name}** (Certainty: `{round(detected_lang.confidence * 100)}%`).')
 		else:
 			await botutils.error_template(ctx, "No correct language detected.")
 
@@ -112,7 +113,8 @@ class Information(commands.Cog):
 			'example': '"Hola, ¿como estás?" japanese spanish'
 		}
 	)
-	async def translate(self, ctx, translate_message, destination_language='en', source_language=None):
+	async def translate(self, ctx, translate_message: str, destination_language: str = 'en',
+	                    source_language: typing.Optional[str] = None):
 		destination_language = destination_language.lower()
 		destination_language = self.get_dict_key(self.lang_dict, destination_language)
 
@@ -124,7 +126,8 @@ class Information(commands.Cog):
 			source_language = source_language.lower()
 
 		try:
-			translated_text = discord.utils.escape_markdown(self.translator.translate(translate_message, src=source_language, dest=destination_language).text)
+			translated_text = discord.utils.escape_markdown(
+				self.translator.translate(translate_message, src=source_language, dest=destination_language).text)
 			await ctx.send(
 				f'Translated from {self.lang_dict[source_language].capitalize()} to {self.lang_dict[destination_language].capitalize()}\n"{translated_text.capitalize()}".')
 		except ValueError:
@@ -136,7 +139,7 @@ class Information(commands.Cog):
 			'example': 'gold'
 		}
 	)
-	async def wikipedia(self, ctx, *, search_request):
+	async def wikipedia(self, ctx: commands.Context, *, search_request: str):
 		message = await ctx.send(f"Searching for {search_request}")
 		async with ctx.typing():
 			TITLE = "Wikipedia"
@@ -183,7 +186,7 @@ class Information(commands.Cog):
 			"example": "Noob"
 		}
 	)
-	async def urban(self, ctx, *, query):
+	async def urban(self, ctx: commands.Context, *, query: str):
 		pattern = re.compile("\[(.*?)]")
 		async with ctx.typing():
 			urban_definition = urban.define(query)

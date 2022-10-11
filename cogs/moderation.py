@@ -8,7 +8,7 @@ from libs import botutils
 
 
 class Moderation(commands.Cog):
-	def __init__(self, bot):
+	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 		botutils.log("Moderation Cog ready!")
 
@@ -40,9 +40,10 @@ class Moderation(commands.Cog):
 			'permission': 'manage_nicknames'
 		}
 	)
-	async def nickname(self, ctx, *, nickname):
+	async def nickname(self, ctx: commands.Context, *, nickname: str):
 		if len(nickname) > 32:
-			await botutils.error_template(ctx, f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
+			await botutils.error_template(ctx,
+			                              f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
 			return
 		await ctx.guild.me.edit(nick=nickname)
 		await ctx.send(f'Successfully changed my nickname to "{nickname}".')
@@ -94,7 +95,7 @@ class Moderation(commands.Cog):
 			'permission': 'manage_messages'
 		}
 	)
-	async def clear(self, ctx, amount: int):
+	async def clear(self, ctx: commands.Context, amount: int):
 		await ctx.message.delete()
 		deleted_messages = await ctx.channel.purge(limit=amount)
 		clear_message = await ctx.send(f'Cleared {len(deleted_messages)} messages.')
@@ -109,7 +110,7 @@ class Moderation(commands.Cog):
 			'permission': 'ban_members'
 		}
 	)
-	async def ban(self, ctx, member: discord.Member, *, reason=None):
+	async def ban(self, ctx: commands.Context, member: discord.Member, *, reason: Optional[str] = None):
 		if not member.guild_permissions.administrator:
 			await member.ban(reason=reason)
 			await ctx.send(f'Banned {member} with reason "{reason}".')
@@ -124,7 +125,7 @@ class Moderation(commands.Cog):
 			'permission': 'kick_members'
 		}
 	)
-	async def kick(self, ctx, member: discord.Member, *, reason=None):
+	async def kick(self, ctx: commands.Context, member: discord.Member, *, reason: Optional[str] = None):
 		if not member.guild_permissions.administrator:
 			await member.kick(reason=reason)
 			await ctx.send(f'Kicked {member} with reason "{reason}".')
@@ -138,7 +139,7 @@ class Moderation(commands.Cog):
 			'permission': 'manage_messages'
 		}
 	)
-	async def pin(self, ctx):
+	async def pin(self, ctx: commands.Context):
 		if ctx.message.reference:
 			await ctx.message.reference.resolved.pin()
 		else:
@@ -149,7 +150,7 @@ class Moderation(commands.Cog):
 	@ban.error
 	@kick.error
 	@mute.error
-	async def member_converter_error(self, ctx, error):
+	async def member_converter_error(self, ctx: commands.Context, error: Exception):
 		if isinstance(error, commands.errors.MemberNotFound):
 			await botutils.error_template(ctx, f'"`{ctx.current_argument}`" is not a valid member.')
 
