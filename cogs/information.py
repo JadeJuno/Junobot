@@ -4,6 +4,7 @@ import re
 import discord
 import googletrans
 import oxford
+import typing
 import wikipedia
 from discord.ext import commands
 from googletrans.models import Detected  # Pain.
