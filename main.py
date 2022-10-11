@@ -27,11 +27,11 @@ async def on_ready():
 async def main():
 	async with bot:
 		for filename in os.listdir('./cogs'):
-			if filename.endswith('.py'):
-				try:
-					await bot.load_extension(f'cogs.{filename[:-3]}')
-				except commands.errors.NoEntryPointError:
-					botutils.log(f"{filename[:-3]} Failed to load...")
+			cog = f'cogs.{filename.removesuffix(".py")}'
+			try:
+				await bot.load_extension(cog)
+			except commands.errors.NoEntryPointError:
+				botutils.log(f"{cog.removeprefix('cogs.')} Failed to load or isn't a Cog.")
 		# bot.loop.create_task(change_status_task())  # I've chosen to ignore this.
 		await bot.start(TOKEN)
 
