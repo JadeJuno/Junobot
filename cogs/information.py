@@ -216,9 +216,9 @@ class Information(commands.Cog):
 			definition = re.sub(pattern, lambda x: f"{x.group()}({hypertexts[x.group(1)]})", definition)
 			example = re.sub(pattern, lambda x: f"{x.group()}({hypertexts[x.group(1)]})", example)
 
-			embed = botutils.embed_template(title=f'Definition for "{urban_definition.word.title()}"',
-											description=f"{definition}\n\n**Example:**\n>>> {example}",
-											footer="Powered by Urban Dictionary.")
+			embed = botutils.embed_template(title=f'Definition for "{urban_definition.word}"',
+			                                description=f"{definition}\n\n**Example:**\n>>> {example}",
+			                                footer="Powered by Urban Dictionary.")
 			embed.url = urban_definition.permalink
 
 		await ctx.send(embed=embed)
