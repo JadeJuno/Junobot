@@ -97,11 +97,13 @@ class DevCog(commands.Cog):
 	async def auto_error(self, ctx: commands.Context):
 		await ctx.send(f"{int('A')}")
 
+	"""
 	@commands.command()
-	async def banreport(self, ctx, user):
+	async def banreport(self, _, user: discord.Member):
 		ban_list = self.bot.get_channel(920775229008142356)
-		await ban_list.send(user.id)
-		await self.log.send(f"{ctx.user.displayname} banned {user.name}#{user.discriminator} from reporting bugs.")
+		await ban_list.send(str(user.id))
+		await self.log.send(f"You've banned {user.name}#{user.discriminator} from reporting bugs.")
+	"""
 
 	@commands.command()
 	async def format(self, ctx: commands.Context):
