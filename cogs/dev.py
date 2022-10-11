@@ -81,7 +81,7 @@ class DevCog(commands.Cog):
 	async def test(self, ctx: commands.Context):
 		print("TEST")
 		embed = discord.Embed(title="Title", description="[Test Link](https://www.youtube.com)",
-							  color=random.randint(0, 0xffffff), url="https://www.google.com/")
+		                      color=random.randint(0, 0xffffff), url="https://www.google.com/")
 		embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.display_avatar.url)
 		embed.set_footer(text=f"*Requested by {ctx.author.name}.*", icon_url=ctx.author.display_avatar.url)
 		embed.set_image(url="https://discordpy.readthedocs.io/en/latest/_images/snake.png")
@@ -112,7 +112,8 @@ class DevCog(commands.Cog):
 				output = ctx.message.reference.resolved.embeds[0].DESCRIPTION
 			with io.StringIO(output) as file:
 				# noinspection PyTypeChecker
-				await ctx.send("Here's the formatted message:", file=discord.File(fp=file, filename=f'{ctx.message.id}.txt'))
+				await ctx.send("Here's the formatted message:",
+				               file=discord.File(fp=file, filename=f'{ctx.message.id}.txt'))
 
 	@commands.command()
 	async def help_test(self, ctx: commands.Context):
