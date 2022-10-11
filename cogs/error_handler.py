@@ -55,10 +55,10 @@ class CommandErrorHandler(commands.Cog):
 		elif isinstance(error, commands.NotOwner):
 			await botutils.error_template(ctx, "This command is restricted to my owner.")
 
-		elif isinstance(error, botutils.WIPCommand):
+		elif isinstance(error, botutils.WIPCommandError):
 			await botutils.error_template(ctx, "This command is a WIP. Please wait.")
 
-		elif isinstance(error, botutils.CommandUnderMaintenance):
+		elif isinstance(error, botutils.CommandUnderMaintenanceError):
 			await botutils.error_template(ctx, f"This command is under maintenance because of `{error.reason}`. Sorry for the inconvenience.")
 
 		elif isinstance(error, discord.HTTPException) and error.code == 50035:
