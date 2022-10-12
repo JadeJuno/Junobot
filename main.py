@@ -26,13 +26,12 @@ async def on_ready():
 
 async def main():
 	async with bot:
-		for filename in os.listdir('./cogs'):
-			cog = f'cogs.{filename.removesuffix(".py")}'
+		cogs = [f'cogs.{cog.removesuffix(".py")}' for cog in os.listdir('./cogs') if cog.endswith('.py')]
+		for cog in cogs:
 			try:
 				await bot.load_extension(cog)
 			except commands.errors.NoEntryPointError:
 				botutils.log(f"{cog.removeprefix('cogs.')} Failed to load or isn't a Cog.")
-		# bot.loop.create_task(change_status_task())  # I've chosen to ignore this.
 		await bot.start(TOKEN)
 
 
