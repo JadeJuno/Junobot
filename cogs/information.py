@@ -18,7 +18,7 @@ class Information(commands.Cog):
 		self.bot = bot
 		self.translator = googletrans.Translator()
 		self.lang_dict = googletrans.LANGUAGES
-		self.oxford = oxford.SyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'))
+		self.oxford = oxford.AsyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'))
 		botutils.log("Information Cog ready!")
 
 	@staticmethod
@@ -53,7 +53,7 @@ class Information(commands.Cog):
 
 		message = await ctx.send("Getting definition...")
 		try:
-			definitions = self.oxford.define(query)
+			definitions = await self.oxford.define(query)
 			emb = botutils.embed_template(
 				title=f'Definition of "{query.title()}":', description=definitions[0].capitalize(),
 				footer='Powered by Oxford Dictionary'
