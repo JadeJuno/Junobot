@@ -91,6 +91,7 @@ class Origins(commands.Cog):
 		condition = nbt_to_condition(center, structure)
 
 		with io.StringIO(json.dumps(condition, indent='\t')) as f:
+			# noinspection PyTypeChecker
 			attachment = discord.File(f, filename=f"{file.filename}.json")
 		await ctx.send("Done! Remember that the result is **not a power nor an entity condition, but a block condition!** You'll have to put this condition yourself on whatever power you want.", file=attachment)
 
