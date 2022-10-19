@@ -121,7 +121,7 @@ def make_bug_report_file(ctx: commands.Context) -> str:
 
 
 def wip_command():
-	async def predicate(ctx: commands.Context):
+	async def predicate(ctx: commands.Context) -> Optional[bool]:
 		if not await ctx.bot.is_owner(ctx.author):
 			raise WIPCommandError
 		return True
