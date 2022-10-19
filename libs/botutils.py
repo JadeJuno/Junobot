@@ -100,7 +100,7 @@ async def get_report_banned():
 """
 
 
-def make_bug_report_file(ctx: commands.Context):
+def make_bug_report_file(ctx: commands.Context) -> str:
 	arguments = []
 	for arg in ctx.args[2:]:
 		arg_type = str(type(arg))
