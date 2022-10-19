@@ -67,8 +67,9 @@ def embed_template(title: str = "", description: str = "", footer: str = "", ima
 
 async def error_template(ctx, message: str, error_type: typing.Literal['ERROR', 'WARNING', 'INFO'] = "ERROR",
                          send: bool = True) -> discord.Embed | None:
-	error_types = {"ERROR": 0xFF0000, "WARNING": 0xFFFF00, "INFO": 0x00FF00}
-	embed = embed_template(error_type, description=message, color=error_types[error_type])
+	ERROR_TYPES = {"ERROR": 0xFF0000, "WARNING": 0xFFFF00, "INFO": 0x00FF00}
+
+	embed = embed_template(error_type, description=message, color=ERROR_TYPES[error_type])
 	if send:
 		await ctx.reply(embed=embed)
 	else:
