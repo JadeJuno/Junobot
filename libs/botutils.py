@@ -139,6 +139,7 @@ def under_maintenance(reason: str):
 
 
 def log(text: str):
+	# TODO: Learn how real logging works.
 	now = datetime.now().strftime("%H:%M:%S")
 	print(f"[{now}]: {text}")
 
@@ -161,9 +162,12 @@ class TimescaleConverter(commands.Converter):
 		'w': 'weeks', 'week': 'weeks'
 	}
 
-	async def convert(self, _, argument) -> str:
+	async def convert(self, _, argument):
 		argument = argument.lower()
-		try:
-			return self.TIMESCALES[argument]
-		except KeyError:
-			raise commands.BadArgument
+		if argument in self.TIMESCALES.values():
+			return argument
+		else:
+			try:
+				return self.TIMESCALES[argument]
+			except KeyError:
+				raise commands.BadArgument
