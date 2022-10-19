@@ -40,22 +40,28 @@ def check_if_self_hosted() -> bool:
 
 def embed_template(title: str = "", description: str = "", footer: str = "", image: str = "", icon: str = "",
                    color: Optional[discord.Color | int] = None) -> discord.Embed:
-	if not color:
+	if color is None:
 		color = discord.Color.random()
+
 	if description:
 		embed = discord.Embed(description=description, color=color)
 	else:
 		embed = discord.Embed(color=color)
+
 	if title:
 		if icon:
 			embed.set_author(name=title, icon_url=icon)
 		else:
 			embed.title = title
+
 	if footer:
 		embed.set_footer(text=footer, icon_url="https://i.imgur.com/ZgG8oJn.png")
+
 	embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
+
 	if image:
 		embed.set_image(url=image)
+
 	return embed
 
 
