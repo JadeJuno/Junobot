@@ -88,7 +88,7 @@ class CommandErrorHandler(commands.Cog):
 					attachs.append(discord.File(f, filename=f"error_message_{timestamp}.txt"))
 			await log.send(log_message, files=attachs)
 
-			await ctx.send("There was an unexpected error. An error report has been sent to my owner.")
+			await ctx.reply("There was an unexpected error. An error report has been sent to my owner.")
 
 
 async def setup(bot: commands.Bot):
