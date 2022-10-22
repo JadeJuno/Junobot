@@ -38,7 +38,7 @@ def check_if_self_hosted() -> bool:
 	return sys.platform == "win32" and "SELF_TOKEN" in os.environ
 
 
-def embed_template(title: str = "", description: str = "", footer: str = "", image: str = "", icon: str = "",
+def embed_template(title: str = "", description: str = "", url: str = "", footer: str = "", image: str = "", icon: str = "",
                    color: Optional[discord.Color | int] = None) -> discord.Embed:
 	if color is None:
 		color = discord.Color.random()
@@ -50,9 +50,10 @@ def embed_template(title: str = "", description: str = "", footer: str = "", ima
 
 	if title:
 		if icon:
-			embed.set_author(name=title, icon_url=icon)
+			embed.set_author(name=title, icon_url=icon, url=url)
 		else:
 			embed.title = title
+			embed.url = url
 
 	if footer:
 		embed.set_footer(text=footer, icon_url="https://i.imgur.com/ZgG8oJn.png")
