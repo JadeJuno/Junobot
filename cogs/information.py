@@ -143,7 +143,6 @@ class Information(commands.Cog):
 	async def wikipedia(self, ctx: commands.Context, *, search_request: str):
 		message = await ctx.send(f"Searching for {search_request}")
 		async with ctx.typing():
-			TITLE = "Wikipedia"
 			description = ""
 			image = "https://i.imgur.com/7kT1Ydo.png"
 
@@ -177,7 +176,7 @@ class Information(commands.Cog):
 					i += 1
 			except wikipedia.exceptions.PageError:
 				description = "Page not found."
-			embed = botutils.embed_template(TITLE, description, image=image, icon="https://i.imgur.com/FD1pauH.png")
+			embed = botutils.embed_template("Wikipedia", description, image=image, icon="https://i.imgur.com/FD1pauH.png")
 		await message.edit(content=None, embed=embed)
 
 	@commands.command(
