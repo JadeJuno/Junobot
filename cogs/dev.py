@@ -24,7 +24,8 @@ class DevCog(commands.Cog):
 			raise commands.NotOwner
 
 	@commands.command(name='cog')
-	async def coghandle(self, ctx: commands.Context, disc: typing.Literal['load', 'unload', 'reload'], cog: typing.Optional[str]):
+	async def coghandle(self, ctx: commands.Context, disc: typing.Literal['load', 'unload', 'reload'],
+	                    cog: typing.Optional[str]):
 		if cog:
 			cogs = [f'cogs.{cog}']
 		else:
