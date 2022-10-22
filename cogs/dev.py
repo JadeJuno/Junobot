@@ -125,6 +125,18 @@ class DevCog(commands.Cog):
 	async def help_test(self, ctx: commands.Context):
 		await ctx.send("Help Tested.")
 
+	@commands.command()
+	async def get_embed(self, ctx: commands.Context):
+		try:
+			reply = ctx.message.reference.resolved
+		except AttributeError:
+			await botutils.tryreply(ctx, "You're not replying to anything")
+			return
+
+		if len(reply.embeds):
+			await ctx.send(
+				"\n\n".join([f"```json\n{json.dumps(embed.to_dict(), indent=4)}\n```" for embed in reply.embeds]))
+
 
 async def setup(bot):
 	await bot.add_cog(DevCog(bot), override=True)
