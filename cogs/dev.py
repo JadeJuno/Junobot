@@ -90,6 +90,8 @@ class DevCog(commands.Cog):
 		embed.add_field(name="Field 2", value="value 2")
 		embed.add_field(name="Field 3", value="value 3")
 		await ctx.send(embed=embed)
+		emb_json = json.dumps(embed.to_dict(), indent='\t')
+		await ctx.send(f"```json\n{emb_json}\n```")
 		await ctx.send(f"<t:{int(calendar.timegm(ctx.message.created_at.utctimetuple()))}>")
 		await botutils.tryreply(ctx, "Test")
 
