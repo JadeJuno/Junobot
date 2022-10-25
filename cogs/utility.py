@@ -53,7 +53,7 @@ class Utility(commands.Cog):
 	async def prefix(self, ctx: commands.Context, new_prefix: typing.Optional[str]):
 		if new_prefix:
 			if ctx.author.guild_permissions.administrator:
-				guild_id = str(ctx.guild.id)
+				guild_id = ctx.guild.id
 				if new_prefix.lower() == "reset":
 					self.bot.command_prefix.remove(guild_id)
 					await ctx.send(f"Prefix reset back to `{self.bot.command_prefix.default}`.")

@@ -4,6 +4,7 @@ import json
 import os
 import random
 import typing
+from copy import copy
 
 import discord
 from discord.ext import commands
@@ -136,6 +137,36 @@ class DevCog(commands.Cog):
 		if len(reply.embeds):
 			await ctx.send(
 				"\n\n".join([f"```json\n{json.dumps(embed.to_dict(), indent=4)}\n```" for embed in reply.embeds]))
+
+	@commands.group(invoke_without_command=True)
+	async def prefixes(self, ctx: commands.Context):
+		await ctx.send("You forgot the subcommand, dipshit.")
+
+	@prefixes.command()
+	async def get(self, ctx: commands.Context):
+		prefixes = self.bot.command_prefix.prefixes
+		servers = [self.bot.get_guild(int(server)) for server in prefixes.keys()]
+
+		s = "\n".join(
+			f"`{server} [{server_id}]` - `{prefix}`" for server, (server_id, prefix) in zip(servers, prefixes.items()))
+		await ctx.send(s)
+
+	@prefixes.command()
+	async def update(self, ctx: commands.Context):
+		prefix_handler = self.bot.command_prefix
+
+		# This should add a prefix to every guild, if it didn't have one already.
+		for guild in self.bot.guilds:
+			_ = prefix_handler[guild.id]
+
+		for guild_id, _ in copy(prefix_handler.prefixes).items():
+			guild_id = int(guild_id)
+			guild = self.bot.get_guild(guild_id)
+
+			if guild is None:
+				prefix_handler.remove(guild_id)
+
+		await ctx.send("Done!")
 
 
 async def setup(bot):
