@@ -18,7 +18,7 @@ class PrefixParser:
 		except KeyError:
 			if self.default:
 				self.add(i, self.default)
-				return self.__getitem__(i)
+				return self.default
 
 			raise NoSuchServerError
 
