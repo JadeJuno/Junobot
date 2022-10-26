@@ -103,20 +103,36 @@ async def get_report_banned():
 
 def make_bug_report_file(ctx: commands.Context) -> str:
 	arguments = []
+
 	for arg in ctx.args[2:]:
 		arg_type = str(type(arg))
 		arg_type = re.search("'(.*?)'", arg_type).group(1)
 		arguments.append(f'"{arg_type} - {arg}"')
+
 	for kw_key, kw_val in ctx.kwargs.items():
 		arg_type = str(type(kw_val))
 		arg_type = re.search("'(.*?)'", arg_type).group(1)
 		arguments.append(f'"[{arg_type.capitalize()}] - {kw_key}: {kw_val}"')
+
 	if len(arguments) > 0:
 		args_str = ', '.join(arguments)
 	else:
 		args_str = '"None"'
 
-	content = f'Author: @{ctx.author.name}#{ctx.author.discriminator} ({ctx.author.id})\nChannel: #{ctx.channel.name} ({ctx.channel.id})\nGuild: {ctx.guild.name} ({ctx.guild.id})\nArguments: {args_str}\n\nMessage: "{ctx.message.content}"\n'
+	if not isinstance(ctx.channel, discord.DMChannel):
+		channel = f"#{ctx.channel.name} ({ctx.channel.id})"
+		guild = f"{ctx.guild.name} ({ctx.guild.id})"
+	else:
+		channel = "None [DM]"
+		guild = channel
+
+	content = f'''Author: @{ctx.author.name}#{ctx.author.discriminator} ({ctx.author.id})
+	Channel: {channel}
+	Guild: {guild}
+	Arguments: {args_str}
+	
+	Message: "{ctx.message.content}"
+	'''
 
 	return content
 
