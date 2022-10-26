@@ -145,10 +145,10 @@ class DevCog(commands.Cog):
 	@prefixes.command()
 	async def get(self, ctx: commands.Context):
 		prefixes = self.bot.command_prefix.prefixes
-		servers = [self.bot.get_guild(int(server)) for server in prefixes.keys()]
+		servers = [self.bot.get_guild(server) for server in prefixes.keys()]
+		prefix_zip = zip(servers, prefixes.items())
 
-		s = "\n".join(
-			f"`{server} [{server_id}]` - `{prefix}`" for server, (server_id, prefix) in zip(servers, prefixes.items()))
+		s = "\n".join(f"`{server} [{server_id}]` - `{prefix}`" for server, (server_id, prefix) in prefix_zip)
 		await ctx.send(s)
 
 	@prefixes.command()
