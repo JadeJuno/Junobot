@@ -25,7 +25,7 @@ class PrefixParser:
 	async def __call__(self, bot: commands.Bot, msg: discord.Message) -> str:
 		try:
 			return self[msg.guild.id]
-		except AttributeError:
+		except AttributeError:  # If there's no guild attributed to the message (i.e. DMs)
 			return self.default
 
 	def add(self, server: int, prefix: str):
