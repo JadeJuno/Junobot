@@ -88,6 +88,10 @@ async def tryreply(ctx: commands.Context, message: str, reply: bool = False, men
 				return await ctx.send(message)
 
 
+def get_param(param: commands.Parameter) -> str:
+	return param.name.replace("_", " ").capitalize().strip()
+
+
 """
 async def get_report_banned():
 	messages = []

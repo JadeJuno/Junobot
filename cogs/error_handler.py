@@ -1,12 +1,13 @@
 import calendar
 import difflib
 import io
-import traceback
+from traceback import format_exception
 
 import discord
 from discord.ext import commands
 
 from libs import botutils
+from libs.botutils import error_template
 
 
 class CommandErrorHandler(commands.Cog):
@@ -18,7 +19,7 @@ class CommandErrorHandler(commands.Cog):
 	async def on_command_error(self, ctx: commands.Context, error: Exception):
 		timestamp = calendar.timegm(ctx.message.created_at.utctimetuple())
 		log = self.bot.get_channel(botutils.config["log_channel"])
-		bot_owner = self.bot.get_user(self.bot.owner_id)
+		owner_ping = self.bot.get_user(self.bot.owner_id).mention
 
 		cog = ctx.cog
 		if cog:
@@ -30,13 +31,13 @@ class CommandErrorHandler(commands.Cog):
 			cmds = [cmd.name for cmd in self.bot.commands]
 			matches = difflib.get_close_matches(cmd, cmds, n=1)
 			if len(matches) > 0:
-				await botutils.error_template(ctx, f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
+				await error_template(ctx, f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
 			return
 
 		error = getattr(error, 'original', error)
 
 		if isinstance(error, commands.DisabledCommand):
-			await botutils.error_template(ctx, f'`{ctx.prefix}{ctx.command}` has been disabled.')
+			await error_template(ctx, f'`{ctx.prefix}{ctx.command}` has been disabled.')
 
 		elif isinstance(error, commands.NoPrivateMessage):
 			try:
@@ -45,47 +46,69 @@ class CommandErrorHandler(commands.Cog):
 				pass
 
 		elif isinstance(error, commands.MissingRequiredArgument):
-			missing_param = error.param.name.replace("_", " ").capitalize().strip()
-			await botutils.error_template(ctx, f"Missing argument `{missing_param}`.")
+			missing_param = botutils.get_param(error.param)
+			await error_template(ctx, f"Missing argument `{missing_param}`.")
 
 		elif isinstance(error, commands.MissingPermissions):
 			missing_perm = error.missing_permissions[0].replace('_', ' ').title()
-			await botutils.error_template(ctx, f'You are missing the `{missing_perm}` permission to run this command.')
+			await error_template(ctx, f'You are missing the `{missing_perm}` permission to run this command.')
 
 		elif isinstance(error, commands.NotOwner):
-			await botutils.error_template(ctx, "This command is restricted to my owner.")
+			await error_template(ctx, "This command is restricted to my owner.")
 
 		elif isinstance(error, botutils.WIPCommandError):
-			await botutils.error_template(ctx, "This command is a WIP. Please wait.")
+			await error_template(ctx, "This command is a WIP. Please wait.")
 
 		elif isinstance(error, botutils.CommandUnderMaintenanceError):
-			await botutils.error_template(ctx, f"This command is under maintenance because of `{error.reason}`. Sorry for the inconvenience.")
+			await error_template(ctx,
+			                     f"This command is under maintenance because of `{error.reason}`. Sorry for the inconvenience.")
 
 		elif isinstance(error, discord.HTTPException) and error.code == 50035:
-			await botutils.error_template(ctx, "The resulting message for this command is over the character limit.")
+			await error_template(ctx, "The resulting message for this command is over the character limit.")
 
 		elif isinstance(error, commands.MissingRequiredAttachment):
-			await botutils.error_template(ctx, "This command requires a file to be attached.")
+			await error_template(ctx, "This command requires a file to be attached.")
+
+		elif isinstance(error, commands.BadLiteralArgument):
+			param = botutils.get_param(error.param)
+			literals = [f"`{literal}`" for literal in error.literals]
+			literals_join = ""  # Output should look like "`1`, `2`, `3`, `4`, (...) or `n`"
+			for i, literal in enumerate(literals, 1):
+				if i == 1:
+					literals_join += literal
+				elif i == len(literals):
+					literals_join += f" or {literal}"
+				else:
+					literals_join += f", {literal}"
+
+			await error_template(ctx, f'The "{param}" argument has to be either {literals_join}.')
 
 		elif isinstance(error, commands.BadArgument) and hasattr(ctx.command, 'on_error'):
 			pass
 
+		# Generic Error
 		else:
-			tback = traceback.format_exception(type(error), error, error.__traceback__)
-			str_tback = ""
-			for line in tback:
-				str_tback += line
+			str_tback = "".join(format_exception(type(error), error, error.__traceback__))
+
 			content = botutils.make_bug_report_file(ctx)
 			with io.StringIO(content) as f:
 				# noinspection PyTypeChecker
 				attachs = [discord.File(f, filename=f"bug_report_{timestamp}.txt")]
-			owner_ping = bot_owner.mention
-			log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>: ```python\n{str_tback}\n```\n\nMessage that caused the error: `{ctx.message.content}`'
-			if len(log_message) > 2000:
-				log_message = f'{owner_ping}\n Uncatched Exception in "{ctx.guild.name}" at <t:{timestamp}>. Error message too long.\nMessage that caused the error: `{ctx.message.content}`'
+
+			try:
+				guild_name = ctx.guild.name
+			except AttributeError:
+				guild_name = "A DM"
+
+			log_message = f'{owner_ping}\n Uncatched Exception in "{guild_name}" at <t:{timestamp}>: '
+			if len(log_message) + len(f"```python\n{str_tback}\n```") > 2000:
+				log_message += f'Error message too long.\nMessage that caused the error: `{ctx.message.content}`'
 				with io.StringIO(str_tback) as f:
 					# noinspection PyTypeChecker
-					attachs.append(discord.File(f, filename=f"error_message_{timestamp}.txt"))
+					attachs.append(discord.File(f, filename=f"error_message_{timestamp}.py"))
+			else:
+				log_message += f"```python\n{str_tback}\n```"
+
 			await log.send(log_message, files=attachs)
 
 			await ctx.reply("There was an unexpected error. An error report has been sent to my owner.")
