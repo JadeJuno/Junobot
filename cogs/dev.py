@@ -28,10 +28,14 @@ class DevCog(commands.Cog):
 	@commands.command(name='cog')
 	async def coghandle(self, ctx: commands.Context, disc: typing.Literal['load', 'unload', 'reload'],
 	                    cog: typing.Optional[str]):
+		AVAILABLE_COGS = (
+			'cogs.cipher', 'cogs.dev', 'cogs.error_handler', 'cogs.events', 'cogs.fun', 'cogs.help', 'cogs.information',
+			'cogs.moderation', 'cogs.origins', 'cogs.utility')
+
 		if cog:
-			cogs = [f'cogs.{cog}']
+			cogs = (f'cogs.{cog}',)
 		else:
-			cogs = [f'cogs.{cog.removesuffix(".py")}' for cog in os.listdir('./cogs') if cog.endswith('.py')]
+			cogs = AVAILABLE_COGS
 
 		done_cogs = []
 		match disc.lower():
