@@ -106,39 +106,3 @@ class Help(commands.Cog):
 
 async def setup(bot: commands.Bot):
 	await bot.add_cog(Help(bot), override=True)
-
-
-# UNUSED
-async def _help(ctx, command=None):
-	footer = ""
-	mod_commands = ("ban", "clear", "kick", "pin", "unban")
-	if command is None:
-		title = "Commands"
-		with open("help_texts/general_help.txt", encoding='utf-8') as file:
-			help_text = file.read()
-		if ctx.author.guild_permissions.administrator:
-			with open("help_texts/mod_help.txt", encoding='utf-8') as file:
-				help_text += file.read()
-		footer = "\n<>=Necessary, []=optional."
-	else:
-		command = command.lower()
-		if command in mod_commands:
-			if ctx.author.guild_permissions.administrator:
-				title = command.capitalize()
-				with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
-					help_text = file.read()
-				footer = "\n<>=Necessary, []=optional."
-			else:
-				title = "Error!"
-				help_text = f"You don't have permissions to use `{command}`"
-		else:
-			try:
-				title = command.capitalize()
-				with open(f"help_texts/specific_help/{command}.txt", encoding='utf-8') as file:
-					help_text = file.read()
-				footer = "\n<>=Necessary, []=optional."
-			except FileNotFoundError:
-				title = "Error!"
-				help_text = "Command not found."
-	embed = botutils.embed_template(title, help_text.format(prefix=ctx.clean_prefix), footer)
-	await ctx.send(embed=embed)
