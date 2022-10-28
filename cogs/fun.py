@@ -118,21 +118,24 @@ class Fun(commands.Cog):
 	              channel: typing.Optional[discord.TextChannel], *, message: str):
 		if channel is None:
 			channel = ctx.channel
+			author = ctx.author
+		else:
+			author = channel.guild.get_member(ctx.author.id)
 
 		if len(files):
 			files = [await file.to_file(spoiler=file.is_spoiler()) for file in files]
 
-		if not channel.permissions_for(ctx.author).send_messages:
+		if not channel.permissions_for(author).send_messages:
 			await botutils.error_template(ctx, f"You don't have permissions to talk in {channel.mention}")
 			return
 
 		if message.lower().startswith("i am") or message.lower().startswith("i'm"):
 			if "stupid" in message.lower():
-				message = f"{ctx.author.mention} is stupid."
+				message = f"{author.mention} is stupid."
 			elif "dumb" in message.lower():
-				message = f"{ctx.author.mention} is dumb."
+				message = f"{author.mention} is dumb."
 
-		await discord.Message.delete(ctx.message, delay=0)
+		await ctx.message.delete()
 		await channel.send(message, files=files)
 
 
