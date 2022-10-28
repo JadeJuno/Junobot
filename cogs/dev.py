@@ -1,7 +1,6 @@
 import calendar
 import io
 import json
-import os
 import random
 import typing
 from copy import copy
@@ -28,14 +27,11 @@ class DevCog(commands.Cog):
 	@commands.command(name='cog')
 	async def coghandle(self, ctx: commands.Context, disc: typing.Literal['load', 'unload', 'reload'],
 	                    cog: typing.Optional[str]):
-		AVAILABLE_COGS = (
-			'cogs.cipher', 'cogs.dev', 'cogs.error_handler', 'cogs.events', 'cogs.fun', 'cogs.help', 'cogs.information',
-			'cogs.moderation', 'cogs.origins', 'cogs.utility')
 
 		if cog:
 			cogs = (f'cogs.{cog}',)
 		else:
-			cogs = AVAILABLE_COGS
+			cogs = botutils.COGS
 
 		done_cogs = []
 		match disc.lower():

@@ -26,9 +26,7 @@ async def on_ready():
 
 async def main():
 	async with bot:
-		COGS = ('cogs.cipher', 'cogs.dev', 'cogs.error_handler', 'cogs.events', 'cogs.fun', 'cogs.help',
-		        'cogs.information', 'cogs.moderation', 'cogs.origins', 'cogs.utility')
-		for cog in COGS:
+		for cog in botutils.COGS:
 			try:
 				await bot.load_extension(cog)
 			except commands.errors.NoEntryPointError:
