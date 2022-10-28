@@ -1,4 +1,7 @@
 """
+## This code is a slightly modified version of bocong's urbandictionary-py library (https://github.com/bocong/urbandictionary-py).
+## All rights goes to them, and if they want me to remove this, do let me know. Here's the library's original License text, to avoid getting in legal issues.
+
 The MIT License (MIT)
 
 Copyright (c) 2016 bocong
@@ -20,8 +23,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-(Slightly modified by me (Golder06) to work as I want it to.)
 """
 
 import json
