@@ -32,11 +32,10 @@ class Utility(commands.Cog):
 	)
 	async def report(self, ctx: commands.Context, files: botutils.GreedyAttachments, *, message: str):
 		report_channel = self.bot.get_channel(920770517424816179)
-		if len(files):
-			attachments = [await attachment.to_file(spoiler=attachment.is_spoiler()) for attachment in
-						   ctx.message.attachments]
-		else:
-			attachments = None
+
+		attachments = [await attachment.to_file(spoiler=attachment.is_spoiler())
+		               for attachment in files]
+
 		embed = botutils.embed_template(title=f"{ctx.author.name}#{ctx.author.discriminator}",
 		                                description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
 		                                icon=ctx.author.display_avatar.url)
