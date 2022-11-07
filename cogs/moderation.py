@@ -7,7 +7,7 @@ import discord
 from discord.ext import commands
 
 from libs import botutils
-from libs.botutils import TimescaleConverter
+from libs.botutils import to_timescale
 
 
 class Moderation(commands.Cog):
@@ -41,7 +41,7 @@ class Moderation(commands.Cog):
 			'permission': 'moderate_members'
 		}
 	)
-	async def mute(self, ctx: commands.Context, member: discord.Member, duration: int, timescale: TimescaleConverter, *,
+	async def mute(self, ctx: commands.Context, member: discord.Member, duration: int, timescale: to_timescale, *,
 	               reason: typing.Optional[str] = None):
 		if member.is_timed_out():
 			await botutils.error_template(ctx, f"{member} is already timed out.")

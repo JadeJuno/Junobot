@@ -144,6 +144,25 @@ def make_bug_report_file(ctx: commands.Context) -> str:
 	return content
 
 
+def to_timescale(argument):
+	TIMESCALES = {
+		's': 'seconds', 'second': 'seconds',
+		'm': 'minutes', 'minute': 'minutes',
+		'h': 'hours', 'hour': 'hours',
+		'd': 'days', 'day': 'days',
+		'w': 'weeks', 'week': 'weeks'
+	}
+
+	argument = argument.lower()
+	if argument in TIMESCALES.values():
+		return argument
+	else:
+		try:
+			return TIMESCALES[argument]
+		except KeyError:
+			raise commands.BadArgument
+
+
 def wip_command():
 	async def predicate(ctx: commands.Context) -> Optional[bool]:
 		if not await ctx.bot.is_owner(ctx.author):
