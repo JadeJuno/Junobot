@@ -15,6 +15,8 @@ config = parse_config("config.toml")
 COGS = ('cogs.dev', 'cogs.error_handler', 'cogs.events', 'cogs.fun', 'cogs.help', 'cogs.information', 'cogs.moderation',
 		'cogs.origins', 'cogs.utility')
 
+GreedyAttachments = commands.Greedy[discord.Attachment]
+
 
 async def reaction_decision(bot: commands.Bot, ctx: commands.Context, check_str: str) -> bool:
 	check_message = await ctx.send(check_str)

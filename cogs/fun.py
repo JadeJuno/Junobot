@@ -114,7 +114,7 @@ class Fun(commands.Cog):
 			"example": "#general Hi, my name is Gøldbot and I'm sentient."
 		}
 	)
-	async def say(self, ctx: commands.Context, files: commands.Greedy[discord.Attachment],
+	async def say(self, ctx: commands.Context, files: botutils.GreedyAttachments,
 	              channel: typing.Optional[discord.TextChannel], *, message: str):
 		if channel is None:
 			channel = ctx.channel
