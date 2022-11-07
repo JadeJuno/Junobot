@@ -38,10 +38,12 @@ class Utility(commands.Cog):
 		else:
 			attachments = None
 		embed = botutils.embed_template(title=f"{ctx.author.name}#{ctx.author.discriminator}",
-											description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
-											icon=ctx.author.display_avatar.url)
+		                                description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
+		                                icon=ctx.author.display_avatar.url)
+
 		owner_ping = self.bot.get_user(self.bot.owner_id).mention
-		await report_channel.send(f'{owner_ping}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed, files=attachments)
+		await report_channel.send(f'{owner_ping}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed,
+		                          files=attachments)
 		await ctx.send("Bug Report sent successfully")
 
 	@commands.command(description='Sends "Pong!" and my latency.')
