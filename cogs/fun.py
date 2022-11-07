@@ -122,8 +122,7 @@ class Fun(commands.Cog):
 		else:
 			author = channel.guild.get_member(ctx.author.id)
 
-		if len(files):
-			files = [await file.to_file(spoiler=file.is_spoiler()) for file in files]
+		files = [await file.to_file(spoiler=file.is_spoiler()) for file in files]
 
 		if not channel.permissions_for(author).send_messages:
 			await botutils.error_template(ctx, f"You don't have permissions to talk in {channel.mention}")
