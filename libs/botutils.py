@@ -165,6 +165,17 @@ def to_timescale(argument):
 			raise commands.BadArgument
 
 
+def to_language(argument: str) -> Optional[str]:
+	argument = argument.lower()
+	if argument in googletrans.LANGCODES.values():
+		return argument
+	else:
+		try:
+			return googletrans.LANGCODES[argument]
+		except KeyError:
+			raise commands.BadArgument
+
+
 def wip_command():
 	async def predicate(ctx: commands.Context) -> Optional[bool]:
 		if not await ctx.bot.is_owner(ctx.author):
