@@ -18,15 +18,15 @@ def nbt_to_condition(center: tuple[int, int, int], structure: nbt.NBTFile) -> di
 				block_condition
 			]
 			for tag in properties.tags:
-				property_cond = {"type": "origins:block_state", "property": tag.name}
+				state_condition = {"type": "origins:block_state", "property": tag.name}
 				if tag.value.isdigit():
-					property_cond.update({"comparison": "==", "compare_to": int(tag.value)})
+					state_condition.update({"comparison": "==", "compare_to": int(tag.value)})
 				elif tag.value in ("true", "false"):
-					property_cond['value'] = tag.value == "true"
+					state_condition['value'] = tag.value == "true"
 				else:
-					property_cond['enum'] = tag.value
+					state_condition['enum'] = tag.value
 
-				main_condition['conditions'].append(property_cond)
+				main_condition['conditions'].append(state_condition)
 		else:
 			main_condition = block_condition
 		conditions_pallete.append(main_condition)
