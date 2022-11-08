@@ -41,7 +41,7 @@ class CommandErrorHandler(commands.Cog):
 
 		elif isinstance(error, commands.NoPrivateMessage):
 			try:
-				await ctx.author.send(f'`{ctx.prefix}{ctx.command}` can not be used in Private Messages.')
+				await error_template(ctx, f'`{ctx.prefix}{ctx.command}` can not be used in Private Messages.')
 			except discord.HTTPException:
 				pass
 

@@ -49,6 +49,7 @@ class Utility(commands.Cog):
 	async def ping(self, ctx: commands.Context):
 		await ctx.send(f':ping_pong: Pong! {self.bot.latency * 1000:.0f}ms.')
 
+	@commands.guild_only()
 	@commands.command(extras={'example': 'gg', 'signature': '[New Prefix/"reset"]'},
 				 description="Changes the server's prefix to the specified prefix. If blank, it'll show the current server's prefix instead. If is \"reset\", it'll reset the prefix to the default (`g!`)")
 	async def prefix(self, ctx: commands.Context, new_prefix: typing.Optional[str]):
