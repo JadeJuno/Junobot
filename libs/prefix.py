@@ -51,22 +51,27 @@ class Database:
 	def __init__(self):
 		self.conn = conn = sqlite3.connect('prefixes.db')
 		self.cursor = conn.cursor()
-		self.cursor.execute("CREATE TABLE IF NOT EXISTS prefixes ( server integer PRIMARY KEY, prefix text NOT NULL );")
+		self.cursor.execute("""
+		CREATE TABLE IF NOT EXISTS servers (
+			id integer PRIMARY KEY,
+			prefix text NOT NULL
+		);
+		""")
 
 	def get_all(self) -> dict:
-		self.cursor.execute("SELECT * FROM prefixes")
+		self.cursor.execute("SELECT * FROM servers")
 		res = self.cursor.fetchall()
 		return dict(res)
 
 	def add(self, server: int, prefix: str):
 		data = (server, prefix)
-		self.cursor.execute("INSERT INTO prefixes VALUES (?, ?)", data)
-		self.conn.commit()
+		with self.conn:
+			self.cursor.execute("INSERT INTO servers VALUES (?, ?)", data)
 
 	def remove(self, server: int):
 		data = (server,)
-		self.cursor.execute("DELETE FROM prefixes WHERE server=?", data)
-		self.conn.commit()
+		with self.conn:
+			self.cursor.execute("DELETE FROM servers WHERE id=?", data)
 
 
 class NoSuchServerError(Exception):
