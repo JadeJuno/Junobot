@@ -7,6 +7,7 @@ import googletrans
 import oxford
 import wikipedia
 from discord.ext import commands
+from discord.utils import escape_markdown
 from googletrans.models import Detected  # Pain.
 from iso639 import languages
 
@@ -77,7 +78,7 @@ class Information(commands.Cog):
 			results = []
 			search_results = googlesearch.search(search_request, stop=10)
 			for i, result in enumerate(search_results, start=1):
-				results.append(f"`{i}.`\t**[{discord.utils.escape_markdown(result.title)}](<{result.link}>)**")
+				results.append(f"`{i}.`\t**[{escape_markdown(result.title)}](<{result.link}>)**")
 
 			output_str = '\n'.join(results)
 			if not output_str:
