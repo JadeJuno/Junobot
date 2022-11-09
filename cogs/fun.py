@@ -137,6 +137,39 @@ class Fun(commands.Cog):
 		await ctx.message.delete()
 		await channel.send(message, files=files)
 
+	@staticmethod
+	async def get_mc_user(name: str) -> tuple[str, str]:
+		name = urlparse.quote(name)
+
+		async with aiohttp.ClientSession() as session:
+			async with session.get(f"https://api.mojang.com/users/profiles/minecraft/{name}") as mc_request:
+				if mc_request.status == 200:
+					d = await mc_request.json()
+					return d['name'], d['id']
+				else:
+					raise ValueError()
+
+	@commands.command(
+		aliases=('skin',),
+		description="Sends the Minecraft skin of a user you give.",
+		extras={
+			"example": "Notch"
+		}
+	)
+	async def namemc(self, ctx: commands.Context, username: str):
+		try:
+			name, uuid = await self.get_mc_user(username)
+		except ValueError:
+			await botutils.error_template(ctx, f'There\'s no Minecraft user called "{username}"')
+			return
+
+		embed = botutils.embed_template(title=name, url=f"https://namemc.com/profile/{name}",
+		                                image=f"https://crafatar.com/renders/body/{uuid}.png?overlay=true",
+		                                icon=f"https://crafatar.com/avatars/{uuid}.png?overlay=true",
+		                                footer="Powered by craftafar.com")
+
+		await ctx.send(embed=embed)
+
 
 async def setup(bot: commands.Bot):
 	await bot.add_cog(Fun(bot), override=True)
