@@ -146,7 +146,7 @@ def make_bug_report_file(ctx: commands.Context) -> str:
 	return content
 
 
-def to_timescale(argument):
+def to_timescale(argument: str) -> Optional[str]:
 	TIMESCALES = {
 		's': 'seconds', 'second': 'seconds',
 		'm': 'minutes', 'minute': 'minutes',
