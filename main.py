@@ -5,9 +5,8 @@ import discord
 from discord.ext import commands
 
 from libs import prefix, botutils
-from libs.config import parse_config
 
-config = parse_config("./config.toml")
+config = botutils.config
 
 parser = prefix.PrefixParser(default=config['default_prefix'])
 
@@ -17,7 +16,7 @@ bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord
 
 @bot.event
 async def on_ready():
-	log = bot.get_channel(botutils.config["log_channel"])
+	log = bot.get_channel(config["log_channel"])
 	appinfo = await bot.application_info()
 	botutils.log(f'"{bot.user.display_name}" is ready.')
 	botutils.log(f"Created by {appinfo.owner}.")
