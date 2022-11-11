@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 
 from libs import botutils
+from libs.botutils import embed_template
 
 
 class Utility(commands.Cog):
@@ -14,12 +15,14 @@ class Utility(commands.Cog):
 	@commands.command(description="Sends a link to invite me to another server.")
 	async def invite(self, ctx: commands.Context):
 		invite_url = discord.utils.oauth_url(self.bot.user.id)
-		emb = botutils.embed_template(title="Invite Link", description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
+		emb = embed_template(title="Invite Link",
+		                     description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
 		await ctx.send(embed=emb)
 
 	@commands.command(description="Sends a link to my Source Code")
 	async def source(self, ctx: commands.Context):
-		emb = botutils.embed_template(title="Source Code", description="My source code is public, and you can find it [here](https://github.com/Golder06/Goldbot)!")
+		emb = embed_template(title="Source Code",
+		                     description="My source code is public, and you can find it [here](https://github.com/Golder06/Goldbot)!")
 		await ctx.send(embed=emb)
 
 	@commands.check(botutils.is_not_report_banned)
@@ -36,9 +39,9 @@ class Utility(commands.Cog):
 		attachments = [await attachment.to_file(spoiler=attachment.is_spoiler())
 		               for attachment in files]
 
-		embed = botutils.embed_template(title=f"{ctx.author.name}#{ctx.author.discriminator}",
-		                                description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
-		                                icon=ctx.author.display_avatar.url)
+		embed = embed_template(title=f"{ctx.author.name}#{ctx.author.discriminator}",
+		                       description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
+		                       icon=ctx.author.display_avatar.url)
 
 		owner_ping = self.bot.get_user(self.bot.owner_id).mention
 		await report_channel.send(f'{owner_ping}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed,
@@ -50,8 +53,10 @@ class Utility(commands.Cog):
 		await ctx.send(f':ping_pong: Pong! {self.bot.latency * 1000:.0f}ms.')
 
 	@commands.guild_only()
-	@commands.command(extras={'example': 'gg', 'signature': '[New Prefix/"reset"]'},
-				 description="Changes the server's prefix to the specified prefix. If blank, it'll show the current server's prefix instead. If is \"reset\", it'll reset the prefix to the default (`g!`)")
+	@commands.command(
+		extras={'example': 'gg', 'signature': '[New Prefix/"reset"]'},
+		description="Changes the server's prefix to the specified prefix. If blank, it'll show the current server's prefix instead. If is \"reset\", it'll reset the prefix to the default (`g!`)"
+	)
 	async def prefix(self, ctx: commands.Context, new_prefix: typing.Optional[str]):
 		if new_prefix:
 			if ctx.author.guild_permissions.administrator:
