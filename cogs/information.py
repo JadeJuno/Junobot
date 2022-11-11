@@ -177,7 +177,8 @@ class Information(commands.Cog):
 					i += 1
 			except wikipedia.exceptions.PageError:
 				description = "Page not found."
-			embed = botutils.embed_template("Wikipedia", description, image=image, icon="https://i.imgur.com/FD1pauH.png")
+			embed = botutils.embed_template("Wikipedia", description, image=image,
+			                                icon="https://i.imgur.com/FD1pauH.png")
 		await message.edit(content=None, embed=embed)
 
 	@commands.command(
