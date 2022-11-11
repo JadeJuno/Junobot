@@ -24,6 +24,40 @@ class DevCog(commands.Cog):
 		else:
 			raise commands.NotOwner
 
+	# Credits to @Umbra#0009 on Discord.py's Discord Server.
+	@commands.command()
+	@commands.guild_only()
+	async def sync(self, ctx: commands.Context, guilds: commands.Greedy[discord.Object],
+	               spec: typing.Optional[typing.Literal["~", "*", "^"]] = None):
+		if not guilds:
+			if spec == "~":
+				synced = await ctx.bot.tree.sync(guild=ctx.guild)
+			elif spec == "*":
+				ctx.bot.tree.copy_global_to(guild=ctx.guild)
+				synced = await ctx.bot.tree.sync(guild=ctx.guild)
+			elif spec == "^":
+				ctx.bot.tree.clear_commands(guild=ctx.guild)
+				await ctx.bot.tree.sync(guild=ctx.guild)
+				synced = []
+			else:
+				synced = await ctx.bot.tree.sync()
+
+			await ctx.send(
+				f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
+			)
+			return
+
+		ret = 0
+		for guild in guilds:
+			try:
+				await ctx.bot.tree.sync(guild=guild)
+			except discord.HTTPException:
+				pass
+			else:
+				ret += 1
+
+		await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
+
 	@commands.command(name='cog')
 	async def coghandle(self, ctx: commands.Context, disc: typing.Literal['load', 'unload', 'reload'],
 	                    cog: typing.Optional[str]):
