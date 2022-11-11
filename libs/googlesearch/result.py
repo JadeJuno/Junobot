@@ -1,4 +1,4 @@
 class GoogleResult:
-    url: str
-    title: str
-    description: str
+	url: str
+	title: str
+	description: str
