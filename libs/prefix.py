@@ -5,7 +5,7 @@ from discord.ext import commands
 
 
 class PrefixParser:
-	prefixes: dict[int, str] = {}
+	prefixes: dict[int, str]
 
 	def __init__(self, default: str):
 		self.db: Database = Database()
