@@ -34,7 +34,7 @@ class GoogleSearch:
 			opener = urllib2.build_opener()
 			opener.addheaders = GoogleSearch.DEFAULT_HEADERS
 			with opener.open(GoogleSearch.SEARCH_URL + "?q=" + urllib2.quote(_query) + "&hl=" + language + (
-					"" if start == 0 else ("&start=" + str(start)))) as _response:
+				"" if start == 0 else ("&start=" + str(start)))) as _response:
 				soup = BeautifulSoup(_response.read(), "lxml")
 			if total is None:
 				total_text = soup.select(GoogleSearch.TOTAL_SELECTOR)[0].children.next().encode('utf-8')
