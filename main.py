@@ -10,8 +10,13 @@ config = botutils.config
 
 parser = prefix.PrefixParser(default=config['default_prefix'])
 
-bot = commands.Bot(command_prefix=parser, case_insensitive=True, intents=discord.Intents.all(),
-				   allowed_mentions=discord.AllowedMentions(everyone=False), owner_id=config['owner_id'])
+bot = commands.Bot(
+	command_prefix=parser,
+	case_insensitive=True,
+	intents=discord.Intents.all(),
+	allowed_mentions=discord.AllowedMentions(everyone=False),
+	owner_id=config['owner_id']
+)
 
 
 @bot.event
