@@ -12,8 +12,17 @@ from .config import parse_config
 
 config = parse_config("config.toml")
 
-COGS = ('cogs.dev', 'cogs.error_handler', 'cogs.events', 'cogs.fun', 'cogs.help', 'cogs.information', 'cogs.moderation',
-		'cogs.origins', 'cogs.utility')
+COGS = (
+	'cogs.dev',
+	'cogs.error_handler',
+	'cogs.events',
+	'cogs.fun',
+	'cogs.help',
+	'cogs.information',
+	'cogs.moderation',
+	'cogs.origins',
+	'cogs.utility'
+)
 
 GreedyAttachments = commands.Greedy[discord.Attachment]
 
