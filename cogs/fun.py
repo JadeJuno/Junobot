@@ -1,7 +1,9 @@
 import random
 import re
 import typing
+from urllib import parse as urlparse
 
+import aiohttp
 import discord
 from discord.ext import commands
 
