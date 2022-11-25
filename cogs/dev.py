@@ -9,6 +9,7 @@ import discord
 from discord.ext import commands
 
 from libs import botutils
+from libs.prefix import PrefixParser
 
 
 class DevCog(commands.Cog):
@@ -187,14 +188,14 @@ class DevCog(commands.Cog):
 
 	@prefixes.command()
 	async def update(self, ctx: commands.Context):
-		prefix_handler = self.bot.command_prefix
+		prefix_handler: PrefixParser = self.bot.command_prefix
 
 		# This should add a prefix to every guild, if it didn't have one already.
 		for guild in self.bot.guilds:
 			_ = prefix_handler[guild.id]
 
-		for guild_id, _ in copy(prefix_handler.prefixes).items():
-			guild_id = int(guild_id)
+		for guild_id in copy(prefix_handler.prefixes).keys():
+			guild_id = guild_id
 			guild = self.bot.get_guild(guild_id)
 
 			if guild is None:
