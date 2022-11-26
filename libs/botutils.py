@@ -1,3 +1,4 @@
+import difflib
 import os
 import sys
 import re
@@ -121,6 +122,21 @@ async def get_report_banned():
 
 def humanized_join(l: list, last: str = "or"):
 	return f'{", ".join(l[:-1])} {last} {l[-1]}'
+
+
+async def no_subcommand_error(ctx: commands.Context, failed_subcmd: typing.Optional[str] = None):
+	cmds = [cmd.name for cmd in ctx.command.commands]
+
+	if failed_subcmd is not None:
+		matches = difflib.get_close_matches(failed_subcmd, cmds, n=1)
+		try:
+			await error_template(ctx, f'Subcommand "{failed_subcmd}" not found, did you mean "{matches[0]}"?')
+		except IndexError:
+			await error_template(ctx, f'Subcommand "{failed_subcmd}" not found.')
+
+	else:
+		subcommands_str = humanized_join(list(map(lambda cmd: f'"{cmd}"', cmds)))
+		await error_template(ctx, f'Missing subcommand. Expected {subcommands_str}.')
 
 
 def make_bug_report_file(ctx: commands.Context) -> str:
