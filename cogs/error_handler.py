@@ -72,14 +72,7 @@ class CommandErrorHandler(commands.Cog):
 		elif isinstance(error, commands.BadLiteralArgument):
 			param = botutils.get_param(error.param)
 			literals = [f"`{literal}`" for literal in error.literals]
-			literals_join = ""  # Output should look like "`1`, `2`, `3`, `4`, (...) or `n`"
-			for i, literal in enumerate(literals, 1):
-				if i == 1:
-					literals_join += literal
-				elif i == len(literals):
-					literals_join += f" or {literal}"
-				else:
-					literals_join += f", {literal}"
+			literals_join = botutils.humanized_join(literals)
 
 			await error_template(ctx, f'The "{param}" argument has to be either {literals_join}.')
 

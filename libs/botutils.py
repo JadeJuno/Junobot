@@ -119,6 +119,10 @@ async def get_report_banned():
 """
 
 
+def humanized_join(l: list, last: str = "or"):
+	return f'{", ".join(l[:-1])} {last} {l[-1]}'
+
+
 def make_bug_report_file(ctx: commands.Context) -> str:
 	arguments = []
 
