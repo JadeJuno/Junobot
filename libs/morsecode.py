@@ -50,16 +50,21 @@ letters = MORSE_CODE_DICT.keys()
 morse_letters = MORSE_CODE_DICT.values()
 
 
-def check_letter(message: str) -> bool:
-	i = False
+def check_letter(message: str, *, cipher: bool) -> bool:
+	message = message.strip().upper()
+
+	res = True
+	if cipher:
+		check = list(letters)
+		check.append(' ')
+	else:
+		check = morse_letters
+		message = message.replace(' / ', ' ').split(' ')
+
 	for letter in message:
-		for key in letters:
-			if letter == key:
-				i = True
-		for value in morse_letters:
-			if letter == value:
-				i = True
-	return i
+		if letter not in check and letter != ' ':
+			res = False
+	return res
 
 
 def encrypt(message: str) -> str:
