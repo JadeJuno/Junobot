@@ -60,7 +60,7 @@ class DevCog(commands.Cog):
 		await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
 
 	@commands.command(name='cog')
-	async def coghandle(self, ctx: commands.Context, disc: typing.Literal['load', 'unload', 'reload'],
+	async def coghandle(self, ctx: commands.Context, disc: typing.Literal['load', 'unload', 'reload', 'list'],
 	                    cog: typing.Optional[str]):
 
 		if cog:
@@ -112,6 +112,9 @@ class DevCog(commands.Cog):
 					await msg.edit(content="Reloading complete!")
 				else:
 					await msg.edit(content="Error: Cog(s) was/were all unloaded.")
+			case 'list':
+				output = '\n'.join(self.bot.cogs.keys())
+				await ctx.send(f"Here's all the loaded cogs: \n{output}")
 			case _:
 				await ctx.send("Error: Disc not valid.")
 
@@ -174,8 +177,8 @@ class DevCog(commands.Cog):
 				"\n\n".join([f"```json\n{json.dumps(embed.to_dict(), indent=4)}\n```" for embed in reply.embeds]))
 
 	@commands.group(invoke_without_command=True)
-	async def prefixes(self, ctx: commands.Context):
-		await ctx.send("You forgot the subcommand, dipshit.")
+	async def prefixes(self, ctx: commands.Context, *, failed_subcmd):
+		await botutils.no_subcommand_error(ctx, failed_subcmd)
 
 	@prefixes.command()
 	async def get(self, ctx: commands.Context):
