@@ -93,6 +93,36 @@ class GoldHelp(commands.MinimalHelpCommand):
 		destination = self.get_destination()
 		await botutils.error_template(destination, self.command_not_found(cog.qualified_name))
 
+	async def send_group_help(self, group):
+		await group.can_run(self.context)
+		destination = self.get_destination()
+
+		embed = botutils.embed_template(
+			title=f"{self.context.clean_prefix}{self.command_name}",
+			footer=f"<>=Necessary, []=optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
+		)
+
+		if group.invoke_without_command:
+			cog_name = group.cog_name
+			embed.add_field(name="**Category**", value=cog_name, inline=False)
+
+			if group.description:
+				command_description = group.description
+				embed.add_field(name="**Description**", value=command_description, inline=False)
+
+			if len(group.aliases):
+				aliases = [group.qualified_name]
+				aliases.extend(group.aliases)
+				aliases = [f"`{self.context.clean_prefix}{alias}`" for alias in aliases]
+				embed.add_field(name="**Aliases**", value=', '.join(aliases), inline=False)
+
+			cmds = [self.get_command_signature(cmd) for cmd in group.all_commands.values()]
+			embed.add_field(name="**Commands**", value='\n'.join(cmds), inline=False)
+		else:
+			await destination.send("Uh...???")
+
+		await destination.send(embed=embed)
+
 
 class Help(commands.Cog):
 	def __init__(self, bot: commands.Bot):
