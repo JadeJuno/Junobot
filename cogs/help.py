@@ -19,13 +19,13 @@ class GoldHelp(commands.MinimalHelpCommand):
 				'example': 'help',
 				'signature': '[Command]'
 			}
-		}
-		                 )
+		})
 
 	def command_not_found(self, command: str):
 		return f'Command "{command}" not found.'
 
 	async def prepare_help_command(self, _, command: str):
+		self.appinfo = await self.context.bot.application_info()
 		self.command_name = command
 
 	def get_command_signature(self, command: commands.Command):
@@ -37,8 +37,6 @@ class GoldHelp(commands.MinimalHelpCommand):
 		return f"`{self.context.clean_prefix}{command.qualified_name}{signature}`"
 
 	async def send_bot_help(self, mapping):
-		self.appinfo = await self.context.bot.application_info()
-
 		embed = botutils.embed_template(
 			title="Help",
 			footer=f"<>=Necessary, []=optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
@@ -82,7 +80,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 			embed.add_field(name="**Permissions**",
 			                value=f'You require "{self.PERMS[command.extras["permission"]]}" permissions to use this command.')
 		usage_str = f"{self.get_command_signature(command)}"
-		if example:
+		if example is not None:
 			usage_str += f"\nE.G.: `{self.context.clean_prefix}{self.command_name} {example}`"
 		embed.add_field(name="**Usage**", value=usage_str, inline=False)
 
