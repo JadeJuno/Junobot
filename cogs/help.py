@@ -1,6 +1,5 @@
 import json
 
-import discord
 from discord.ext import commands
 
 from libs import botutils
@@ -61,7 +60,10 @@ class GoldHelp(commands.MinimalHelpCommand):
 		except KeyError:
 			example = None
 
-		embed = discord.Embed(title=f"{self.context.clean_prefix}{self.command_name}", color=discord.Color.random())
+		embed = botutils.embed_template(
+			title=f"{self.context.clean_prefix}{self.command_name}",
+			footer=f"<>=Necessary, []=optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
+		)
 
 		cog_name = command.cog_name
 		embed.add_field(name="**Category**", value=cog_name)
