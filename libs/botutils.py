@@ -107,21 +107,8 @@ def get_param(param: commands.Parameter) -> str:
 	return param.name.replace("_", " ").capitalize().strip()
 
 
-"""
-async def get_report_banned():
-	messages = []
-	async for msg in main.ban_list.history():
-		if msg.author == main.bot.user:
-			try:
-				messages.append(int(msg.content))
-			except ValueError:
-				continue
-	return messages
-"""
-
-
 def humanized_join(l: list, last: str = "or"):
-	return f'{", ".join(l[:-1])} {last} {l[-1]}'
+	return f"{', '.join(l[:-1])} {last} {l[-1]}"
 
 
 async def no_subcommand_error(ctx: commands.Context, failed_subcmd: typing.Optional[str] = None):
@@ -236,4 +223,3 @@ class WIPCommandError(commands.errors.CheckFailure):
 class CommandUnderMaintenanceError(commands.errors.CheckFailure):
 	def __init__(self, reason: str):
 		self.reason = reason
-
