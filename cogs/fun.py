@@ -58,7 +58,7 @@ class Fun(commands.Cog):
 		description="Give me some options **(More than 1)** and I will randomly choose between them.",
 		extras={
 			"signature": "<Option1 Option2 Option3 (...)>",
-			"example": "Yes No Perhaps"
+			"example":   "Yes No Perhaps"
 		}
 	)
 	async def choose(self, ctx: commands.Context, *options: str):
@@ -78,7 +78,7 @@ class Fun(commands.Cog):
 		aliases=("rolldice", "diceroll", "dice"),
 		description="Roll a die with X number of faces *(6 by default)*.",
 		extras={
-			'example': "20",
+			'example':   "20",
 			"signature": "[Number of Sides=6]"
 		}
 	)

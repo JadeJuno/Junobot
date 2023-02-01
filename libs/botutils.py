@@ -1,7 +1,7 @@
 import difflib
 import os
-import sys
 import re
+import sys
 import typing
 from datetime import datetime
 from typing import Optional

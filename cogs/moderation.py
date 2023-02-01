@@ -20,7 +20,7 @@ class Moderation(commands.Cog):
 		aliases=("rename",),
 		description="Renames me to whatever name you want.",
 		extras={
-			'example': "Silverbot",
+			'example':    "Silverbot",
 			'permission': 'manage_nicknames'
 		}
 	)
@@ -37,7 +37,7 @@ class Moderation(commands.Cog):
 		aliases=("timeout",),
 		description='Times out ("mutes") a mentioned user for a set amount of time.',
 		extras={
-			'example': "@KoganeSirnight#9389 10 minutes Bitching.",
+			'example':    "@KoganeSirnight#9389 10 minutes Bitching.",
 			'permission': 'moderate_members'
 		}
 	)
@@ -64,7 +64,7 @@ class Moderation(commands.Cog):
 	@commands.command(
 		description="Deletes a certain amount of messages on the channel it's used on.",
 		extras={
-			'example': 10,
+			'example':    10,
 			'permission': 'manage_messages'
 		}
 	)
@@ -79,7 +79,7 @@ class Moderation(commands.Cog):
 	@commands.command(
 		description="Bans a mentioned user.",
 		extras={
-			'example': '@KoganeSirnight#9389 Identity Theft',
+			'example':    '@KoganeSirnight#9389 Identity Theft',
 			'permission': 'ban_members'
 		}
 	)
@@ -94,7 +94,7 @@ class Moderation(commands.Cog):
 	@commands.command(
 		description="Kicks a mentioned user.",
 		extras={
-			'example': '@KoganeSirnight#9389 Identity Theft',
+			'example':    '@KoganeSirnight#9389 Identity Theft',
 			'permission': 'kick_members'
 		}
 	)

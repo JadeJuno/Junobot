@@ -14,8 +14,8 @@ class GoldHelp(commands.MinimalHelpCommand):
 		self.appinfo = None
 		super().__init__(**options, command_attrs={
 			"description": "Shows a list of all the commands of the bot or the details of said commands.",
-			"extras": {
-				'example': 'help',
+			"extras":      {
+				'example':   'help',
 				'signature': '[Command]'
 			}
 		})

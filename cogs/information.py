@@ -1,8 +1,8 @@
 import os
 import re
-import typing
 
 import discord
+import googlesearch
 import googletrans
 import oxford
 import wikipedia
@@ -12,7 +12,6 @@ from googletrans.models import Detected  # Pain.
 from iso639 import languages
 
 from libs import botutils, urban
-import googlesearch
 
 
 class Information(commands.Cog):
@@ -70,7 +69,7 @@ class Information(commands.Cog):
 		description="Make a quick Google Search from Discord because you're too lazy to open your browser.",
 		extras={
 			"signature": "<Query>",
-			"example": 'How to perform a Google Search from Discord'
+			"example":   'How to perform a Google Search from Discord'
 		}
 	)
 	async def google(self, ctx: commands.Context, *, search_request: str):
@@ -113,7 +112,7 @@ class Information(commands.Cog):
 		description='Translates a sentence **surrounded by quotation marks.**',
 		extras={
 			'signature': '"<Sentence>" [Destination Language] [Source Language]',
-			'example': '"Hola, ¿como estás?" japanese spanish'
+			'example':   '"Hola, ¿como estás?" japanese spanish'
 		}
 	)
 	async def translate(self, ctx, translate_message: str, destination_language: str = 'en',

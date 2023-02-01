@@ -4,7 +4,7 @@ import os
 import discord
 from discord.ext import commands
 
-from libs import prefix, botutils
+from libs import botutils, prefix
 
 config = botutils.config
 

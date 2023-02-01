@@ -26,9 +26,8 @@ SOFTWARE.
 """
 
 import json
-
-from urllib.request import urlopen
 from urllib.parse import quote as urlquote
+from urllib.request import urlopen
 
 UD_DEFID_URL = 'https://api.urbandictionary.com/v0/define?defid='
 UD_DEFINE_URL = 'https://api.urbandictionary.com/v0/define?term='
