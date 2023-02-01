@@ -77,9 +77,9 @@ class Information(commands.Cog):
 		message = await ctx.send(f"Searching for `{search_request}`...")
 		async with ctx.typing():
 			results = []
-			search_results = googlesearch.search(search_request, stop=10)
+			search_results = googlesearch.search(search_request, advanced=True)
 			for i, result in enumerate(search_results, start=1):
-				results.append(f"`{i}.`\t**[{escape_markdown(result.title)}](<{result.link}>)**")
+				results.append(f"`{i}.`\t**[{escape_markdown(result.title)}](<{result.url}>)**")
 
 			output_str = '\n'.join(results)
 			if not output_str:
