@@ -4,7 +4,7 @@ toml~=0.10.2
 googletrans~=3.1.0a0
 wikipedia~=1.4.0
 beautifulsoup4~=4.11.1
-discord==2.1.0
+discord~=2.1.0
 requests~=2.28.1
 discord.py==2.1.0
 urllib3==1.26.14
@@ -16,3 +16,4 @@ bs4~=0.0.1
 aiohttp~=3.8.3
 googlesearch-python~=1.1.0
 caesarcipher~=1.0
+DateTime==5.0
