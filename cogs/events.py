@@ -9,9 +9,11 @@ class Events(commands.Cog):
 		self.bot = bot
 		botutils.log("Events ready!")
 
+	@commands.Cog.listener()
 	async def on_guild_join(self, guild: discord.Guild):
 		_ = self.bot.command_prefix[guild.id]
 
+	@commands.Cog.listener()
 	async def on_guild_remove(self, guild: discord.Guild):
 		self.bot.command_prefix.remove(guild.id)
 
