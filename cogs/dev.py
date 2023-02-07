@@ -20,10 +20,9 @@ class DevCog(commands.Cog):
 
 	async def cog_check(self, ctx: commands.Context):
 		check = await self.bot.is_owner(ctx.author)
-		if check:
-			return check
-		else:
+		if not check:
 			raise commands.NotOwner
+		return check
 
 	# Credits to @Umbra#0009 on Discord.py's Discord Server.
 	@commands.command()
