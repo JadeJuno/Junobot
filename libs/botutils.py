@@ -210,10 +210,10 @@ def under_maintenance(reason: str):
 	return commands.check(predicate)
 
 
-def log(text: str):
+def log(*args, sep=' ', end='\n', file=None):
 	# TODO: Learn how real logging works.
 	now = datetime.now().strftime("%H:%M:%S")
-	print(f"[{now}]: {text}")
+	print(f"[{now}]:", *args, sep=sep, end=end, file=file)
 
 
 class WIPCommandError(commands.errors.CheckFailure):
