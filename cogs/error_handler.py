@@ -26,15 +26,15 @@ class CommandErrorHandler(commands.Cog):
 			if cog._get_overridden_method(cog.cog_command_error) is not None:
 				return
 
+		error = getattr(error, 'original', error)
+
 		if isinstance(error, commands.CommandNotFound):
 			cmd = ctx.invoked_with
-			cmds = [cmd.name for cmd in self.bot.commands]
+			cmds = [cmd.name for cmd in self.bot.commands] + [alias for cmd in self.bot.commands for alias in cmd.aliases]
 			matches = difflib.get_close_matches(cmd, cmds, n=1)
 			if len(matches) > 0:
 				await error_template(ctx, f'Command "{cmd}" not found, did you mean "{matches[0]}"?')
 			return
-
-		error = getattr(error, 'original', error)
 
 		if isinstance(error, commands.DisabledCommand):
 			await error_template(ctx, f'`{ctx.prefix}{ctx.command}` has been disabled.')
