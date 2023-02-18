@@ -32,7 +32,7 @@ class Origins(commands.Cog):
 			return
 		filename = f"Disable_{name.title()}"
 		unchoosable_obj = {
-			"unchoosable": True,
+			"unchoosable":      True,
 			"loading_priority": 2147483647
 		}
 		directory = f'datapacks/{filename}'
