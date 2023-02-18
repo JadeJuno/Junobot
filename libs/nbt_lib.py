@@ -14,9 +14,7 @@ def nbt_to_condition(center: tuple[int, int, int], structure: nbt.NBTFile) -> di
 		if "Properties" in state:
 			properties = state['Properties']
 			main_condition['type'] = "origins:and"
-			main_condition['conditions'] = [
-				block_condition
-			]
+			main_condition['conditions'] = [block_condition]
 			for tag in properties.tags:
 				state_condition = {"type": "origins:block_state", "property": tag.name}
 				if tag.value.isdigit():
@@ -35,7 +33,7 @@ def nbt_to_condition(center: tuple[int, int, int], structure: nbt.NBTFile) -> di
 	blocks = structure['blocks']
 	for block in blocks:
 		pos = tuple([tag.value for tag in block["pos"]])
-		offset = [_pos - _cent for _pos, _cent in zip(pos, center)]
+		offset = [pos_scalar - center_scalar for pos_scalar, center_scalar in zip(pos, center)]
 		if offset == [0, 0, 0]:
 			offset_condition = conditions_pallete[block['state'].value]
 		else:
