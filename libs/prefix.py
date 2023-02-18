@@ -1,4 +1,5 @@
 import sqlite3
+import typing
 
 import discord
 from discord.ext import commands
@@ -22,9 +23,11 @@ class PrefixParser:
 
 			raise NoSuchServerError
 
-	async def __call__(self, bot: commands.Bot, msg: discord.Message) -> str:
+	async def __call__(self, bot: commands.Bot, msg: discord.Message) -> typing.Iterable:
 		try:
-			return self[msg.guild.id]
+			prefix = self[msg.guild.id]
+			prefixes = {p for p in self.all_casings(prefix)}
+			return prefixes
 		except AttributeError:  # If there's no guild attributed to the message (i.e. DMs)
 			return self.default
 
@@ -45,6 +48,19 @@ class PrefixParser:
 		self.add(server, new_prefix)
 
 		self.prefixes[server] = new_prefix
+
+	def all_casings(self, input_string: str) -> str:
+		if not input_string:
+			yield ""
+		else:
+			first = input_string[:1]
+			if first.lower() == first.upper():
+				for sub_casing in self.all_casings(input_string[1:]):
+					yield first + sub_casing
+			else:
+				for sub_casing in self.all_casings(input_string[1:]):
+					yield first.lower() + sub_casing
+					yield first.upper() + sub_casing
 
 
 class Database:
