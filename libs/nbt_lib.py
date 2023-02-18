@@ -38,11 +38,11 @@ def nbt_to_condition(center: tuple[int, int, int], structure: nbt.NBTFile) -> di
 			offset_condition = conditions_pallete[block['state'].value]
 		else:
 			offset_condition = {
-				"type": "origins:offset",
+				"type":      "origins:offset",
 				"condition": conditions_pallete[block['state'].value],
-				"x": offset[0],
-				"y": offset[1],
-				"z": offset[2]
+				"x":         offset[0],
+				"y":         offset[1],
+				"z":         offset[2]
 			}
 		final_condition['conditions'].append(offset_condition)
 
