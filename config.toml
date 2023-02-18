@@ -3,3 +3,14 @@ log_channel = 751555878385221705
 ban_report_channel = 920775229008142356
 owner_id = 498606108836102164
 default_prefix = "g!"
+default_cogs = [
+    "cogs.dev",
+	"cogs.error_handler",
+	"cogs.events",
+	"cogs.fun",
+	"cogs.help",
+	"cogs.information",
+	"cogs.moderation",
+	"cogs.origins",
+	"cogs.utility"
+]

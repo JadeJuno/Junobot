@@ -65,7 +65,7 @@ class DevCog(commands.Cog):
 		if cog:
 			cogs = (f'cogs.{cog}',)
 		else:
-			cogs = botutils.COGS
+			cogs = botutils.config['default_cogs']
 
 		done_cogs = []
 		match disc.lower():
