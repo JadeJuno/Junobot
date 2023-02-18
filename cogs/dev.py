@@ -74,7 +74,6 @@ class DevCog(commands.Cog):
 				for cog in cogs:
 					try:
 						await self.bot.load_extension(cog)
-						botutils.log(f'{cog} Loaded.')
 						done_cogs.append(cog)
 					except commands.errors.ExtensionAlreadyLoaded:
 						pass
