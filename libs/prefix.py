@@ -12,12 +12,12 @@ class PrefixParser:
 		self.default: str = default
 		self.prefixes = self.db.get_all()
 
-	def __getitem__(self, i: int) -> str:
+	def __getitem__(self, guild_id: int) -> str:
 		try:
-			return self.prefixes[i]
+			return self.prefixes[guild_id]
 		except KeyError:
 			if self.default:
-				self.add(i, self.default)
+				self.add(guild_id, self.default)
 				return self.default
 
 			raise NoSuchServerError
