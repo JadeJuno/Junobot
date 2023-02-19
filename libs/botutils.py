@@ -108,7 +108,6 @@ async def no_subcommand_error(ctx: commands.Context, failed_subcmd: typing.Optio
 			await error_template(ctx, f'Subcommand "{failed_subcmd}" not found, did you mean "{matches[0]}"?')
 		except IndexError:
 			await error_template(ctx, f'Subcommand "{failed_subcmd}" not found.')
-
 	else:
 		subcommands_str = humanized_join(list(map(lambda cmd: f'"{cmd}"', cmds)))
 		await error_template(ctx, f'Missing subcommand. Expected {subcommands_str}.')
@@ -199,7 +198,7 @@ def under_maintenance(reason: str):
 
 
 def log(*args, sep=' ', end='\n', file=None):
-	# TODO: Learn how real logging works.
+	# TODO: Learn how real logging works. (It's getting later and later to do this by the minute...)
 	now = datetime.now().strftime("%H:%M:%S")
 	print(f"[{now}]:", *args, sep=sep, end=end, file=file)
 
