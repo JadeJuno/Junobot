@@ -119,7 +119,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 			cmds = [self.get_command_signature(cmd) for cmd in group.all_commands.values()]
 			embed.add_field(name="**Commands**", value='\n'.join(cmds), inline=False)
 		else:
-			await destination.send("Uh...???")
+			await destination.send("THIS MESSAGE SHOULD NOT APPEAR. IF IT DOES, PLEASE REPORT IT WITH THE `g!report` COMMAND!")
 
 		await destination.send(embed=embed)
 
