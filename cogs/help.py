@@ -38,7 +38,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 	async def send_bot_help(self, mapping):
 		embed = botutils.embed_template(
 			title="Help",
-			footer=f"<>=Necessary, []=optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
+			footer=f"<>=Necessary, []=Optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
 		)
 
 		for cog, _commands in mapping.items():
@@ -62,7 +62,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 
 		embed = botutils.embed_template(
 			title=f"{self.context.clean_prefix}{self.command_name}",
-			footer=f"<>=Necessary, []=optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
+			footer=f"<>=Necessary, []=Optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
 		)
 
 		cog_name = command.cog_name
@@ -99,7 +99,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 
 		embed = botutils.embed_template(
 			title=f"{self.context.clean_prefix}{self.command_name}",
-			footer=f"<>=Necessary, []=optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
+			footer=f"<>=Necessary, []=Optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
 		)
 
 		if group.invoke_without_command:
