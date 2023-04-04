@@ -22,7 +22,7 @@ async def reaction_decision(bot: commands.Bot, ctx: commands.Context, check_str:
 	await check_message.add_reaction("\U0000274c")
 
 	def check(reaction_checked, reaction_user):
-		user_check = reaction_user.id == ctx.author.id or reaction_user.guild_permissions.administrator and ctx.author.bot
+		user_check = reaction_user == ctx.author or reaction_user.guild_permissions.administrator and ctx.author.bot
 		return user_check and reaction_checked.message == check_message and str(reaction_checked.emoji) in (
 			"\U00002705", "\U0000274c")
 
