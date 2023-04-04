@@ -143,7 +143,7 @@ class DevCog(commands.Cog):
 	async def banreport(self, _, user: discord.Member):
 		ban_list = self.bot.get_channel(920775229008142356)
 		await ban_list.send(str(user.id))
-		await self.log.send(f"You've banned {user.name}#{user.discriminator} from reporting bugs.")
+		await self.log.send(f"You've banned {user} from reporting bugs.")
 	"""
 
 	@commands.command()

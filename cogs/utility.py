@@ -39,7 +39,7 @@ class Utility(commands.Cog):
 		attachments = [await attachment.to_file(spoiler=attachment.is_spoiler())
 		               for attachment in files]
 
-		embed = embed_template(title=f"{ctx.author.name}#{ctx.author.discriminator}",
+		embed = embed_template(title=f"{ctx.author}",
 		                       description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
 		                       icon=ctx.author.display_avatar.url)
 

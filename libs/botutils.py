@@ -138,7 +138,7 @@ def make_bug_report_file(ctx: commands.Context) -> str:
 		channel = "None [DM]"
 		guild = channel
 
-	content = f'''Author: @{ctx.author.name}#{ctx.author.discriminator} ({ctx.author.id})
+	content = f'''Author: @{ctx.author} ({ctx.author.id})
 	Channel: {channel}
 	Guild: {guild}
 	Arguments: {args_str}
