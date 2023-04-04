@@ -96,6 +96,7 @@ def get_param(param: commands.Parameter) -> str:
 
 
 def humanized_join(l: list, last: str = "or"):
+	last = last.strip()
 	return f"{', '.join(l[:-1])} {last} {l[-1]}"
 
 
