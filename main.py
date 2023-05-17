@@ -11,7 +11,7 @@ config = botutils.config
 parser = prefix.PrefixParser(default=config['default_prefix'])
 
 bot = commands.Bot(
-	command_prefix=parser,
+	command_prefix=parser,  # type: ignore
 	case_insensitive=True,
 	intents=discord.Intents.all(),
 	allowed_mentions=discord.AllowedMentions(everyone=False),
