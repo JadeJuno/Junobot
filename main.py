@@ -1,3 +1,4 @@
+import argparse
 import asyncio
 import os
 
@@ -39,7 +40,10 @@ async def main():
 
 
 if __name__ == "__main__":
-	if botutils.check_if_self_hosted():
+	argparser = argparse.ArgumentParser()
+	argparser.add_argument('-f', '--fullmode', action='store_true')
+
+	if botutils.check_if_self_hosted(argparser):
 		selfhost = input("Self Host? (y/n)\n> ")
 		match selfhost.lower():
 			case 'y':

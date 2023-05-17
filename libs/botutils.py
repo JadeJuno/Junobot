@@ -1,3 +1,4 @@
+import argparse
 import difflib
 import os
 import re
@@ -37,8 +38,8 @@ async def is_not_report_banned(ctx: commands.Context) -> bool:
 	return bool(ctx)  # Just to avoid PyCharm's warning temporarily :p
 
 
-def check_if_self_hosted() -> bool:
-	return sys.platform == "win32" and "SELF_TOKEN" in os.environ
+def check_if_self_hosted(argparser: argparse.ArgumentParser) -> bool:
+	return (sys.platform == "win32" and "SELF_TOKEN" in os.environ) and not argparser.parse_args().fullmode
 
 
 def embed_template(title: str = "", description: str = "", url: str = "", footer: str = "", image: str = "",
