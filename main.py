@@ -41,7 +41,7 @@ async def main():
 
 if __name__ == "__main__":
 	argparser = argparse.ArgumentParser()
-	argparser.add_argument('-f', '--fullmode', action='store_true')
+	argparser.add_argument('-m', '--mode', action='store')
 
 	if botutils.check_if_self_hosted(argparser):
 		selfhost = input("Self Host? (y/n)\n> ")
