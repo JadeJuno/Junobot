@@ -78,7 +78,8 @@ class Information(commands.Cog):
 			results = []
 			search_results = googlesearch.search(search_request, advanced=True)
 			for i, result in enumerate(search_results, start=1):
-				results.append(f"`{i}.`\t**[{escape_markdown(result.title)}](<{result.url}>)**")
+				if i <= 10:
+					results.append(f"`{i}.`\t**[{escape_markdown(result.title)}](<{result.url}>)**")
 
 			output_str = '\n'.join(results)
 			if not output_str:
