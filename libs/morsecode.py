@@ -92,17 +92,3 @@ def decrypt(message: str) -> str:
 		output += ' '
 
 	return output.strip()
-
-
-def main():
-	my_message = '"'
-	output = encrypt(my_message.upper())
-	print(output)
-	my_message = ".... . .-.. .-.. --- --..-- / - .... .. ... / .. ... / -- --- .-. ... . / -.-. --- -.. . "
-	output = decrypt(my_message)
-	print(output)
-
-
-# Executes the main function
-if __name__ == '__main__':
-	main()
