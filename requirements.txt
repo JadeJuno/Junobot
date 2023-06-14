@@ -3,7 +3,6 @@ iso_639==0.4.5
 toml~=0.10.2
 googletrans~=3.1.0a0
 wikipedia~=1.4.0
-beautifulsoup4==4.12.2
 discord==2.3.0
 requests==2.31.0
 discord.py==2.3.0
@@ -11,8 +10,6 @@ urllib3==2.0.3
 Oxford.py-Rewrite~=1.0.1
 NBT~=1.5.1
 Pillow==9.5.0
-iso4217~=1.11.20220401
-bs4~=0.0.1
 aiohttp~=3.8.4
 googlesearch-python==1.2.3
 caesarcipher~=1.0
