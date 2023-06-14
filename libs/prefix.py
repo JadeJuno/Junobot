@@ -49,7 +49,7 @@ class PrefixParser:
 
 		self.prefixes[server] = new_prefix
 
-	def all_casings(self, input_string: str) -> str:
+	def all_casings(self, input_string: str) -> typing.Generator[str, None, None]:
 		if not input_string:
 			yield ""
 		else:
