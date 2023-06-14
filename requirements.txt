@@ -4,10 +4,10 @@ toml~=0.10.2
 googletrans~=3.1.0a0
 wikipedia~=1.4.0
 beautifulsoup4==4.12.2
-discord==2.2.3
-requests==2.30.0
-discord.py==2.2.3
-urllib3==2.0.2
+discord==2.3.0
+requests==2.31.0
+discord.py==2.3.0
+urllib3==2.0.3
 Oxford.py-Rewrite~=1.0.1
 NBT~=1.5.1
 Pillow==9.5.0
