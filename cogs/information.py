@@ -1,15 +1,11 @@
 import os
 import re
 
-import discord
 import googlesearch
-import googletrans
 import oxford
 import wikipedia
 from discord.ext import commands
 from discord.utils import escape_markdown
-from googletrans.models import Detected  # Pain.
-from iso639 import languages
 
 from libs import botutils, urban
 
@@ -17,30 +13,8 @@ from libs import botutils, urban
 class Information(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
-		self.translator = googletrans.Translator()
-		self.lang_dict = googletrans.LANGUAGES
 		self.oxford = oxford.AsyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'))
 		botutils.log("Information Cog ready!")
-
-	@staticmethod
-	def get_dict_key(dictionary: dict, value: typing.Any) -> typing.Any:
-		key_list = list(dictionary.keys())
-		value_list = list(dictionary.values())
-		for listed_value in value_list:
-			if listed_value == value:
-				return key_list[value_list.index(value)]
-		return value
-
-	def detect_language(self, string: str) -> Detected:
-		detected_lang = self.translator.detect(string)
-		if isinstance(detected_lang, list):
-			detected_lang = max(detected_lang, key=lambda lang: lang.confidence)
-
-		elif isinstance(detected_lang.lang, list) and isinstance(detected_lang.confidence, list):
-			detected_lang_tuple = max(zip(detected_lang.lang, detected_lang.confidence))
-			detected_lang = Detected(lang=detected_lang_tuple[0], confidence=detected_lang_tuple[1])
-
-		return detected_lang
 
 	@commands.command(
 		aliases=('definition', 'define'),
@@ -91,50 +65,6 @@ class Information(commands.Cog):
 			os.remove(".google-cookie")
 		except FileNotFoundError:
 			pass
-
-	@commands.command(
-		aliases=("detect",),
-		description='Detects the language of a quoted sentence.',
-		extras={
-			"example": "Hola, mi nombre es Gøldbot y hablo español"
-		}
-	)
-	async def language(self, ctx: commands.Context, *, sentence: str):
-		detected_lang = self.detect_language(sentence)
-
-		lang_name = languages.get(alpha2=detected_lang.lang[:2]).name
-		if detected_lang.confidence:
-			await ctx.send(
-				f'"{sentence}" is in **{lang_name}** (Certainty: `{round(detected_lang.confidence * 100)}%`).')
-		else:
-			await botutils.error_template(ctx, "No correct language detected.")
-
-	@commands.command(
-		description='Translates a sentence **surrounded by quotation marks.**',
-		extras={
-			'signature': '"<Sentence>" [Destination Language] [Source Language]',
-			'example':   '"Hola, ¿como estás?" japanese spanish'
-		}
-	)
-	async def translate(self, ctx, translate_message: str, destination_language: str = 'en',
-	                    source_language: typing.Optional[str] = None):
-		destination_language = destination_language.lower()
-		destination_language = self.get_dict_key(self.lang_dict, destination_language)
-
-		if source_language is not None:
-			source_language = source_language.lower()
-			source_language = self.get_dict_key(self.lang_dict, source_language)
-		else:
-			source_language = self.detect_language(translate_message).lang
-			source_language = source_language.lower()
-
-		try:
-			translated_text = discord.utils.escape_markdown(
-				self.translator.translate(translate_message, src=source_language, dest=destination_language).text)
-			await ctx.send(
-				f'Translated from {self.lang_dict[source_language].capitalize()} to {self.lang_dict[destination_language].capitalize()}\n"{translated_text.capitalize()}".')
-		except ValueError:
-			await botutils.error_template(ctx, "Invalid language.")
 
 	@commands.command(
 		description="Searches a Wikipedia page with your search request.",
