@@ -114,7 +114,7 @@ class Information(commands.Cog):
 
 	@commands.command(
 		description="Makes a search on Urban Dictionary.",
-		aliases=("urbadictionary",),
+		aliases=("urbandictionary",),
 		extras={
 			"example": "Noob"
 		}
