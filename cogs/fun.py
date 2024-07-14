@@ -79,7 +79,7 @@ class Fun(commands.Cog):
 		description="Roll a die with X number of faces *(6 by default)*.",
 		extras={
 			'example':   "20",
-			"signature": "[Number of Sides=6]"
+			"signature": "[Sides=6]"
 		}
 	)
 	async def roll(self, ctx: commands.Context, faces: float = 6.0):
@@ -154,9 +154,9 @@ class Fun(commands.Cog):
 			return
 
 		embed = botutils.embed_template(title=name, url=f"https://namemc.com/profile/{name}",
-										image=f"https://crafatar.com/renders/body/{uuid}.png?overlay=true",
-										icon=f"https://crafatar.com/avatars/{uuid}.png?overlay=true",
-										footer="Powered by craftafar.com")
+										image=f"https://minotar.net/armor/body/{uuid}.png",
+										icon=f"https://minotar.net/avatar/{uuid}.png",
+										footer="Powered by https://minotar.net")
 
 		await ctx.send(embed=embed)
 
