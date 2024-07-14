@@ -49,7 +49,7 @@ if __name__ == "__main__":
 			case 'y':
 				TOKEN = os.getenv("SELF_TOKEN")
 			case _:
-				TOKEN = os.getenv("GOLD_TOKEN")
+				TOKEN = os.getenv("JUNO_TOKEN")
 	else:
 		TOKEN = os.getenv("JUNO_TOKEN")
 	if not TOKEN:
