@@ -11,11 +11,11 @@ from typing import Optional
 import discord
 from discord.ext import commands
 
-# from config import parse_config
 
 def parse_config(path: str):
 	with open(path, 'rb') as f:
 		return tomllib.load(f)
+
 
 config = parse_config("config.toml")
 
