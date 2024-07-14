@@ -2,10 +2,11 @@ import os
 import re
 
 import googlesearch
+import mediawiki.exceptions
 import oxford
-import wikipedia
 from discord.ext import commands
 from discord.utils import escape_markdown
+from mediawiki import MediaWiki
 
 from libs import botutils, urban
 
@@ -14,6 +15,7 @@ class Information(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 		self.oxford = oxford.AsyncClient(os.getenv('DICT_ID'), os.getenv('DICT_TOKEN'))
+		self.mediawiki = MediaWiki()
 		botutils.log("Information Cog ready!")
 
 	@commands.command(
@@ -72,44 +74,44 @@ class Information(commands.Cog):
 			'example': 'gold'
 		}
 	)
-	async def wikipedia(self, ctx: commands.Context, *, search_request: str):
-		message = await ctx.send(f"Searching for {search_request}")
+	async def wikipedia(self, ctx: commands.Context, *, query: str):
+		wikipedia_icon = "https://i.imgur.com/FD1pauH.png"
+		message = await ctx.send(f"Searching for `{query}`...")
 		async with ctx.typing():
-			description = ""
-			image = "https://i.imgur.com/7kT1Ydo.png"
-
+			page_name = self.mediawiki.suggest(query)
 			try:
-				result = wikipedia.page(search_request)
-				description = f"**[{result.title}]({result.url})**\n{result.summary[:300].strip()}..."
+				if not page_name:
+					raise mediawiki.exceptions.PageError(query)
 
+				page = self.mediawiki.page(page_name)
 				try:
-					image = result.images[0]
-				except IndexError:
-					pass
+					image = page.preview['thumbnail']['source']
+				except KeyError:
+					image = None
 
-			except wikipedia.exceptions.DisambiguationError as e:
-				image = None
-				i = 1
-				for option in e.options:
+				embed = botutils.embed_template(page.title, description=page.summarize(sentences=3, chars=300),
+												url=page.url, footer="Powered by WikiMedia", image=image)
+			except mediawiki.exceptions.PageError:
+				embed = botutils.embed_template("Wikipedia",
+												description=f"Could not find a page that fulfilled the query `{query}`...\nIf you believe this is an error, feel free to report it using `{ctx.clean_prefix}report`.",
+												footer="Powered by WikiMedia", image=wikipedia_icon)
+			except mediawiki.exceptions.DisambiguationError as e:
+				pages = []
+				for title in e.options:
 					try:
-						disamb_result = wikipedia.page(option)
-						if disamb_result.url != "":
-							result = f"[{disamb_result.title}]({disamb_result.url})"
-						else:
-							result = f"~~{disamb_result}~~ **URL Not Found**"
+						page = self.mediawiki.page(title, auto_suggest=False)
+						pages.append(page)
+					except (mediawiki.exceptions.PageError, mediawiki.exceptions.DisambiguationError):
+						continue
 
-					except wikipedia.exceptions.PageError:
-						continue
-					except wikipedia.exceptions.DisambiguationError:
-						continue
-					description += f"`{i}`: {result}\n"
-					if i >= 10:
-						break
-					i += 1
-			except wikipedia.exceptions.PageError:
-				description = "Page not found."
-			embed = botutils.embed_template("Wikipedia", description, image=image,
-			                                icon="https://i.imgur.com/FD1pauH.png")
+				desc = "\n".join(
+					f'`{i}`: [{page.title}]({page.url})'
+					for i, page in enumerate(pages, start=1)
+				)
+				print(e.options)
+				embed = botutils.embed_template("Wikipedia", description=desc, footer="Powered by WikiMedia",
+												image=wikipedia_icon)
+
 		await message.edit(content=None, embed=embed)
 
 	@commands.command(
