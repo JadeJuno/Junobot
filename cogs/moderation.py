@@ -37,7 +37,7 @@ class Moderation(commands.Cog):
 		aliases=("timeout",),
 		description='Times out ("mutes") a mentioned user for a set amount of time.',
 		extras={
-			'example':    "@KoganeSirnight#9389 10 minutes Bitching.",
+			'example':    "@koganesirnight 10 minutes Bitching.",
 			'permission': 'moderate_members'
 		}
 	)
@@ -79,7 +79,7 @@ class Moderation(commands.Cog):
 	@commands.command(
 		description="Bans a mentioned user.",
 		extras={
-			'example':    '@KoganeSirnight#9389 Identity Theft',
+			'example':    '@koganesirnight Identity Theft',
 			'permission': 'ban_members'
 		}
 	)
@@ -94,7 +94,7 @@ class Moderation(commands.Cog):
 	@commands.command(
 		description="Kicks a mentioned user.",
 		extras={
-			'example':    '@KoganeSirnight#9389 Identity Theft',
+			'example':    '@koganesirnight Identity Theft',
 			'permission': 'kick_members'
 		}
 	)
