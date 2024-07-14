@@ -122,7 +122,9 @@ class Information(commands.Cog):
 		}
 	)
 	async def urban(self, ctx: commands.Context, *, query: str):
-		pattern = re.compile("\[(.*?)]")
+		pattern = re.compile(r"\[(.*?)]")
+
+		message = await ctx.send(f"Searching for `{query}`...")
 		async with ctx.typing():
 			urban_definition = urban.define(query)
 			try:
@@ -132,10 +134,9 @@ class Information(commands.Cog):
 				return
 
 			definition = urban_definition.definition.split(" ")
+			definition = " ".join(definition[:70])
 			if len(definition) > 70:
-				definition = " ".join(definition[:70]) + " (...)"
-			else:
-				definition = " ".join(definition)
+				definition += " (...)"
 
 			example = urban_definition.example.split(" ")
 			if len(example) > 70:
