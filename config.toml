@@ -11,6 +11,5 @@ default_cogs = [
     "cogs.help",
     "cogs.information",
     "cogs.moderation",
-    "cogs.origins",
     "cogs.utility"
 ]
