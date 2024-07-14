@@ -32,7 +32,8 @@ class Information(commands.Cog):
 		try:
 			definitions = await self.oxford.define(query)
 			emb = botutils.embed_template(
-				title=f'Definition of "{query.title()}":', description=definitions[0].capitalize(),
+				title=f'Definition of "{query.title()}":',
+				description=definitions[0].capitalize(),
 				footer='Powered by Oxford Dictionary'
 			)
 		except oxford.Exceptions.WordNotFoundException:
@@ -61,7 +62,7 @@ class Information(commands.Cog):
 			if not output_str:
 				output_str = "**No results found.**"
 			embed = botutils.embed_template("Google", output_str,
-											icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
+											icon="https://file.garden/ZC2FWku7QDnuPZmT/Google_logo.svg")
 		await message.edit(content=None, embed=embed)
 		try:
 			os.remove(".google-cookie")
@@ -71,11 +72,12 @@ class Information(commands.Cog):
 	@commands.command(
 		description="Searches a Wikipedia page with your search request.",
 		extras={
-			'example': 'gold'
+			'example': 'jade'
 		}
 	)
 	async def wikipedia(self, ctx: commands.Context, *, query: str):
-		wikipedia_icon = "https://i.imgur.com/FD1pauH.png"
+		icon = "https://file.garden/ZC2FWku7QDnuPZmT/Wikipedia%2BJunobot_icon.png"
+		image = "https://file.garden/ZC2FWku7QDnuPZmT/Wikipedia%2BJunobot_image.png"
 		message = await ctx.send(f"Searching for `{query}`...")
 		async with ctx.typing():
 			page_name = self.mediawiki.suggest(query)
@@ -94,7 +96,7 @@ class Information(commands.Cog):
 			except mediawiki.exceptions.PageError:
 				embed = botutils.embed_template("Wikipedia",
 												description=f"Could not find a page that fulfilled the query `{query}`...\nIf you believe this is an error, feel free to report it using `{ctx.clean_prefix}report`.",
-												footer="Powered by WikiMedia", image=wikipedia_icon)
+												footer="Powered by WikiMedia", image=image, icon=icon)
 			except mediawiki.exceptions.DisambiguationError as e:
 				pages = []
 				for title in e.options:
@@ -109,7 +111,7 @@ class Information(commands.Cog):
 					for i, page in enumerate(pages, start=1)
 				)
 				embed = botutils.embed_template("Wikipedia", description=desc, footer="Powered by WikiMedia",
-												image=wikipedia_icon)
+												image=image, icon=icon)
 
 		await message.edit(content=None, embed=embed)
 

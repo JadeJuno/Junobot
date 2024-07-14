@@ -65,9 +65,9 @@ def embed_template(title: str = "", description: str = "", url: str = "", footer
 			embed.url = url
 
 	if footer:
-		embed.set_footer(text=footer, icon_url="https://i.imgur.com/ZgG8oJn.png")
+		embed.set_footer(text=footer, icon_url="https://file.garden/ZC2FWku7QDnuPZmT/Junobot%20Icon%20(No%20Text).png")
 
-	embed.set_thumbnail(url="https://i.imgur.com/8bOl5gU.png")
+	embed.set_thumbnail(url="https://file.garden/ZC2FWku7QDnuPZmT/Junobot%20Thumbnail.png")
 
 	if image:
 		embed.set_image(url=image)

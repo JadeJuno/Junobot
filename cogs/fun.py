@@ -46,7 +46,7 @@ class Fun(commands.Cog):
 	async def color(self, ctx: commands.Context, hex_color: str):
 		hex_color = hex_color.upper().replace('#', '')
 
-		if not re.search(re.compile("^[A-Fa-f\d]{6}$", re.ASCII), hex_color):
+		if not re.search(re.compile(r"^[A-Fa-f\d]{6}$", re.ASCII), hex_color):
 			await botutils.error_template(ctx, f"`#{hex_color}` is not a valid Hex Color code.")
 			return
 		img = f"https://dummyimage.com/300/{hex_color}/&text=+"
@@ -65,7 +65,7 @@ class Fun(commands.Cog):
 		if len(options) < 2:
 			await ctx.send("I can't just choose between 1 choice.")
 			return
-		await ctx.send(f"Gøldbot chooses: `{random.choice(options).strip()}`.")
+		await ctx.send(f"{self.bot.user.name} chooses: `{random.choice(options).strip()}`.")
 
 	@commands.command(
 		aliases=("coinflip", "flipcoin", "coin"),
@@ -113,7 +113,7 @@ class Fun(commands.Cog):
 	@commands.command(
 		description="Send a message with the text you wrote and deletes your message. If the channel is set, it'll send the message to said channel.",
 		extras={
-			"example": "#general Hi, my name is Gøldbot and I'm sentient."
+			"example": "#general Hi, my name is Junøbot and I'm sentient."
 		}
 	)
 	async def say(self, ctx: commands.Context, files: botutils.GreedyAttachments,

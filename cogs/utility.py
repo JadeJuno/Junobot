@@ -22,7 +22,7 @@ class Utility(commands.Cog):
 	@commands.command(description="Sends a link to my Source Code")
 	async def source(self, ctx: commands.Context):
 		emb = embed_template(title="Source Code",
-							 description="My source code is public, and you can find it [here](https://github.com/Golder06/Goldbot)!")
+							 description="My source code is public, and you can find it [here](https://github.com/JadeJuno/Junobot)!")
 		await ctx.send(embed=emb)
 
 	@commands.check(botutils.is_not_report_banned)

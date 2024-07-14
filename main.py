@@ -51,7 +51,7 @@ if __name__ == "__main__":
 			case _:
 				TOKEN = os.getenv("GOLD_TOKEN")
 	else:
-		TOKEN = os.getenv("GOLD_TOKEN")
+		TOKEN = os.getenv("JUNO_TOKEN")
 	if not TOKEN:
-		TOKEN = input("Gøldbot's Token: ")
+		TOKEN = input("Junøbot's Token: ")
 	asyncio.run(main())

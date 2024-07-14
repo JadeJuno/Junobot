@@ -1,14 +1,23 @@
-![Gøldbot Logo](https://i.imgur.com/8bOl5gU.png)
+![Junøbot Logo](https://file.garden/ZC2FWku7QDnuPZmT/Junobot%20Thumbnail.png)
 
-# Gøldbot
+# Junøbot
+
+Junobot, officially known as Junøbot, is a simple, multipurpose bot built in Python that I made for a school project and
+that just built around afterward.
 
 Goldbot, officially known as Gøldbot, is a simple, multipurpose bot built in Python that I made for a school project and that just built around afterwards.
 
 ## TODO:
+
 - [x] Separate all commands in different cogs.
 - [x] Use Discord.py's `HelpCommand` system.
-- [ ] Make all command descriptions use first person when referring to Gøldbot.
+- [ ] Make all command descriptions use first person when referring to Junøbot.
 - [ ] Add subcommands for `g!translate`.
 - [ ] Add subcommands for `g!morse`.
 - [ ] Add subcommands for `g!binary`.
 - [ ] Add setup instructions to this README file.
+
+
+## Credits:
+### __If any of the following want their work removed from this project, feel free to contact me.__
+- Icon and Discord Profile Picture made based on this [Pokémon Shuffle-styled image of Iron Valiant](https://www.deviantart.com/loran-hemlock/art/Iron-Valiant-Pokemon-Shuffle-Style-Icon-937562662), by [Loran-Hemlock](https://www.deviantart.com/loran-hemlock/gallery)

@@ -5,7 +5,7 @@ from discord.ext import commands
 from libs import botutils
 
 
-class GoldHelp(commands.MinimalHelpCommand):
+class JunoHelp(commands.MinimalHelpCommand):
 	with open('assets/perms.json') as f:
 		PERMS = json.load(f)
 
@@ -129,7 +129,7 @@ class Help(commands.Cog):
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 		self._original_help_command = bot.help_command
-		bot.help_command = GoldHelp()
+		bot.help_command = JunoHelp()
 		bot.help_command.cog = self
 		botutils.log("Help Command Ready.")
 
