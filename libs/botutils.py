@@ -10,7 +10,7 @@ from typing import Optional
 import discord
 from discord.ext import commands
 
-from .config import parse_config
+from config import parse_config
 
 config = parse_config("config.toml")
 
