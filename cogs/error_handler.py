@@ -30,7 +30,8 @@ class CommandErrorHandler(commands.Cog):
 
 		if isinstance(error, commands.CommandNotFound):
 			cmd = ctx.invoked_with
-			cmds = [cmd.name for cmd in self.bot.commands] + [alias for cmd in self.bot.commands for alias in cmd.aliases]
+			cmds = [cmd.name for cmd in self.bot.commands] + [alias for cmd in self.bot.commands for alias in
+															  cmd.aliases]
 			matches = difflib.get_close_matches(cmd, cmds, n=1)
 			if len(matches) > 0:
 				await error_template(ctx, f'Command "{cmd}" not found, did you mean "{matches[0]}"?')

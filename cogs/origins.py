@@ -28,7 +28,8 @@ class Origins(commands.Cog):
 	async def unchoosable(self, ctx: commands.Context, namespace: str, name: str, pack_format: int = 10):
 		pattern = re.compile('[^a-z\d_.\-/]')
 		if re.search(pattern, namespace) or re.search(pattern, name):
-			await botutils.error_template(ctx, "Identifier has non `[a-z0-9_.-]` character in it (In layman's terms: there's a character that isn't a lowercase letter, a number, an underscore, a hyphen or a period on the ID.).")
+			await botutils.error_template(ctx,
+										  "Identifier has non `[a-z0-9_.-]` character in it (In layman's terms: there's a character that isn't a lowercase letter, a number, an underscore, a hyphen or a period on the ID.).")
 			return
 		filename = f"Disable_{name.title()}"
 		unchoosable_obj = {

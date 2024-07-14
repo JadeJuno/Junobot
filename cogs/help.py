@@ -80,7 +80,7 @@ class GoldHelp(commands.MinimalHelpCommand):
 
 		if 'permission' in command.extras:
 			embed.add_field(name="**Permissions**",
-			                value=f'You require "{self.PERMS[command.extras["permission"]]}" permissions to use this command.')
+							value=f'You require "{self.PERMS[command.extras["permission"]]}" permissions to use this command.')
 		usage_str = f"{self.get_command_signature(command)}"
 		if example is not None:
 			usage_str += f"\nE.G.: `{self.context.clean_prefix}{self.command_name} {example}`"
@@ -119,7 +119,8 @@ class GoldHelp(commands.MinimalHelpCommand):
 			cmds = [self.get_command_signature(cmd) for cmd in group.all_commands.values()]
 			embed.add_field(name="**Commands**", value='\n'.join(cmds), inline=False)
 		else:
-			await destination.send("THIS MESSAGE SHOULD NOT APPEAR. IF IT DOES, PLEASE REPORT IT WITH THE `g!report` COMMAND!")
+			await destination.send(
+				"THIS MESSAGE SHOULD NOT APPEAR. IF IT DOES, PLEASE REPORT IT WITH THE `g!report` COMMAND!")
 
 		await destination.send(embed=embed)
 

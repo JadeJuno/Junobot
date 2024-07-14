@@ -27,7 +27,7 @@ class DevCog(commands.Cog):
 	@commands.command()
 	@commands.guild_only()
 	async def sync(self, ctx: commands.Context, guilds: commands.Greedy[discord.Object],
-	               spec: typing.Optional[typing.Literal["~", "*", "^"]] = None):
+				   spec: typing.Optional[typing.Literal["~", "*", "^"]] = None):
 		if not guilds:
 			if spec == "~":
 				synced = await ctx.bot.tree.sync(guild=ctx.guild)
@@ -59,7 +59,7 @@ class DevCog(commands.Cog):
 
 	@commands.command(name='cog')
 	async def coghandle(self, ctx: commands.Context, disc: typing.Literal['load', 'unload', 'reload', 'list'],
-	                    cog: typing.Optional[str]):
+						cog: typing.Optional[str]):
 
 		if cog:
 			cogs = (f'cogs.{cog}',)
@@ -119,7 +119,7 @@ class DevCog(commands.Cog):
 	async def test(self, ctx: commands.Context):
 		print("TEST")
 		embed = discord.Embed(title="Title", description="[Test Link](https://www.youtube.com)",
-		                      color=random.randint(0, 0xffffff), url="https://www.google.com/")
+							  color=random.randint(0, 0xffffff), url="https://www.google.com/")
 		embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.display_avatar.url)
 		embed.set_footer(text=f"*Requested by {ctx.author.name}.*", icon_url=ctx.author.display_avatar.url)
 		embed.set_image(url="https://discordpy.readthedocs.io/en/latest/_images/snake.png")
@@ -155,7 +155,7 @@ class DevCog(commands.Cog):
 			with io.StringIO(output) as file:
 				# noinspection PyTypeChecker
 				await ctx.send("Here's the formatted message:",
-				               file=discord.File(fp=file, filename=f'{ctx.message.id}.txt'))
+							   file=discord.File(fp=file, filename=f'{ctx.message.id}.txt'))
 
 	@commands.command()
 	async def help_test(self, ctx: commands.Context):

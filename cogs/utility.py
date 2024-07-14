@@ -16,13 +16,13 @@ class Utility(commands.Cog):
 	async def invite(self, ctx: commands.Context):
 		invite_url = discord.utils.oauth_url(self.bot.user.id)
 		emb = embed_template(title="Invite Link",
-		                     description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
+							 description=f"Here's the invite link for {self.bot.user.name}: [Invite]({invite_url})")
 		await ctx.send(embed=emb)
 
 	@commands.command(description="Sends a link to my Source Code")
 	async def source(self, ctx: commands.Context):
 		emb = embed_template(title="Source Code",
-		                     description="My source code is public, and you can find it [here](https://github.com/Golder06/Goldbot)!")
+							 description="My source code is public, and you can find it [here](https://github.com/Golder06/Goldbot)!")
 		await ctx.send(embed=emb)
 
 	@commands.check(botutils.is_not_report_banned)
@@ -37,15 +37,15 @@ class Utility(commands.Cog):
 		report_channel = self.bot.get_channel(920770517424816179)
 
 		attachments = [await attachment.to_file(spoiler=attachment.is_spoiler())
-		               for attachment in files]
+					   for attachment in files]
 
 		embed = embed_template(title=f"{ctx.author}",
-		                       description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
-		                       icon=ctx.author.display_avatar.url)
+							   description=f">>> {message}", footer=f"User ID: {ctx.author.id}",
+							   icon=ctx.author.display_avatar.url)
 
 		owner_ping = self.bot.get_user(self.bot.owner_id).mention
 		await report_channel.send(f'{owner_ping}\nReported from "{ctx.guild.name}" ({ctx.guild.id}):', embed=embed,
-		                          files=attachments)
+								  files=attachments)
 		await ctx.send("Bug Report sent successfully")
 
 	@commands.command(description='Sends "Pong!" and my latency.')

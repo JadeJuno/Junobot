@@ -43,7 +43,7 @@ def check_if_self_hosted(argparser: argparse.ArgumentParser) -> bool:
 
 
 def embed_template(title: str = "", description: str = "", url: str = "", footer: str = "", image: str = "",
-                   icon: str = "", color: Optional[discord.Color | int] = None) -> discord.Embed:
+				   icon: str = "", color: Optional[discord.Color | int] = None) -> discord.Embed:
 	if color is None:
 		color = discord.Color.random()
 
@@ -71,7 +71,7 @@ def embed_template(title: str = "", description: str = "", url: str = "", footer
 
 
 async def error_template(ctx, message: str, error_type: typing.Literal['ERROR', 'WARNING', 'INFO'] = "ERROR",
-                         send: bool = True) -> discord.Embed | None:
+						 send: bool = True) -> discord.Embed | None:
 	ERROR_TYPES = {"ERROR": 0xFF0000, "WARNING": 0xFFFF00, "INFO": 0x00FF00}
 
 	embed = embed_template(error_type, description=message, color=ERROR_TYPES[error_type])

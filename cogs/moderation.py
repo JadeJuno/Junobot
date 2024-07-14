@@ -27,7 +27,7 @@ class Moderation(commands.Cog):
 	async def nickname(self, ctx: commands.Context, *, nickname: str):
 		if len(nickname) > 32:
 			await botutils.error_template(ctx,
-			                              f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
+										  f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
 			return
 		await ctx.me.edit(nick=nickname)
 		await ctx.send(f'Successfully changed my nickname to "{nickname}".')
@@ -42,7 +42,7 @@ class Moderation(commands.Cog):
 		}
 	)
 	async def mute(self, ctx: commands.Context, member: discord.Member, duration: int, timescale: to_timescale, *,
-	               reason: typing.Optional[str] = None):
+				   reason: typing.Optional[str] = None):
 		if member.is_timed_out():
 			await botutils.error_template(ctx, f"{member} is already timed out.")
 			return

@@ -22,11 +22,11 @@ class Fun(commands.Cog):
 	)
 	async def _8ball(self, ctx: commands.Context, *, question: str):
 		ball_predicts = ("It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
-		                 "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
-		                 "Signs point to yes.", "Reply hazy, try again.", "Ask again later.",
-		                 "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.",
-		                 "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.",
-		                 "Very doubtful.")
+						 "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
+						 "Signs point to yes.", "Reply hazy, try again.", "Ask again later.",
+						 "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.",
+						 "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.",
+						 "Very doubtful.")
 		if "love" in question.lower():  # lol
 			ball_predicts = ball_predicts[-5:]
 		if question.endswith("?"):
@@ -86,7 +86,7 @@ class Fun(commands.Cog):
 		try:
 			if faces != int(faces):
 				await botutils.error_template(ctx,
-				                              f"You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
+											  f"You can't roll a die with a non-whole amout of faces, you {faces}-dimensional being!")
 				return
 		except OverflowError:
 			await botutils.error_template(ctx, "You can't roll an infinite dice!")
@@ -117,7 +117,7 @@ class Fun(commands.Cog):
 		}
 	)
 	async def say(self, ctx: commands.Context, files: botutils.GreedyAttachments,
-	              channel: typing.Optional[discord.TextChannel], *, message: str):
+				  channel: typing.Optional[discord.TextChannel], *, message: str):
 		if channel is None:
 			channel = ctx.channel
 			author = ctx.author
@@ -154,9 +154,9 @@ class Fun(commands.Cog):
 			return
 
 		embed = botutils.embed_template(title=name, url=f"https://namemc.com/profile/{name}",
-		                                image=f"https://crafatar.com/renders/body/{uuid}.png?overlay=true",
-		                                icon=f"https://crafatar.com/avatars/{uuid}.png?overlay=true",
-		                                footer="Powered by craftafar.com")
+										image=f"https://crafatar.com/renders/body/{uuid}.png?overlay=true",
+										icon=f"https://crafatar.com/avatars/{uuid}.png?overlay=true",
+										footer="Powered by craftafar.com")
 
 		await ctx.send(embed=embed)
 

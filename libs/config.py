@@ -1,5 +1,5 @@
-from typing import Any, MutableMapping
 import tomllib
+from typing import Any, MutableMapping
 
 
 def parse_config(path: str) -> MutableMapping[str, Any]:

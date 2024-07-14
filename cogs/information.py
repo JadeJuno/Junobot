@@ -59,7 +59,7 @@ class Information(commands.Cog):
 			if not output_str:
 				output_str = "**No results found.**"
 			embed = botutils.embed_template("Google", output_str,
-			                                icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
+											icon="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png")
 		await message.edit(content=None, embed=embed)
 		try:
 			os.remove(".google-cookie")
@@ -150,8 +150,8 @@ class Information(commands.Cog):
 			example = re.sub(pattern, lambda x: f"{x.group()}({hypertexts[x.group(1)]})", example)
 
 			embed = botutils.embed_template(title=f'Definition for "{urban_definition.word}"',
-			                                description=f"{definition}\n",
-			                                footer="Powered by Urban Dictionary")
+											description=f"{definition}\n",
+											footer="Powered by Urban Dictionary")
 			if example:
 				embed.add_field(name="Example:", value=f">>> {example}", inline=False)
 
