@@ -44,12 +44,7 @@ if __name__ == "__main__":
 	argparser.add_argument('-m', '--mode', action='store')
 
 	if botutils.check_if_self_hosted(argparser):
-		selfhost = input("Self Host? (y/n)\n> ")
-		match selfhost.lower():
-			case 'y':
-				TOKEN = os.getenv("SELF_TOKEN")
-			case _:
-				TOKEN = os.getenv("JUNO_TOKEN")
+		TOKEN = os.getenv("SELF_TOKEN")
 	else:
 		TOKEN = os.getenv("JUNO_TOKEN")
 	if not TOKEN:

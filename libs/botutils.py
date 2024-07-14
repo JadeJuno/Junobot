@@ -1,10 +1,9 @@
-import argparse
 import difflib
 import os
 import re
-import sys
 import tomllib
 import typing
+from argparse import ArgumentParser
 from datetime import datetime
 from typing import Optional
 
@@ -43,8 +42,17 @@ async def is_not_report_banned(ctx: commands.Context) -> bool:
 	return bool(ctx)  # Just to avoid PyCharm's warning temporarily :p
 
 
-def check_if_self_hosted(argparser: argparse.ArgumentParser) -> bool:
-	return (sys.platform == "win32" and "SELF_TOKEN" in os.environ) and not argparser.parse_args().fullmode
+def check_if_self_hosted(argparser: ArgumentParser) -> bool:
+	mode = argparser.parse_args().mode
+	self_host = False
+	if mode == 'full':
+		self_host = False
+	elif mode == 'dev':
+		self_host = True
+
+	self_host = "SELF_TOKEN" in os.environ and self_host
+
+	return self_host
 
 
 def embed_template(title: str = "", description: str = "", url: str = "", footer: str = "", image: str = "",
