@@ -108,7 +108,6 @@ class Information(commands.Cog):
 					f'`{i}`: [{page.title}]({page.url})'
 					for i, page in enumerate(pages, start=1)
 				)
-				print(e.options)
 				embed = botutils.embed_template("Wikipedia", description=desc, footer="Powered by WikiMedia",
 												image=wikipedia_icon)
 
