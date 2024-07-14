@@ -160,7 +160,7 @@ class Information(commands.Cog):
 
 			embed.url = urban_definition.permalink
 
-		await ctx.send(embed=embed)
+		await message.edit(content=None, embed=embed)
 
 
 async def setup(bot):
