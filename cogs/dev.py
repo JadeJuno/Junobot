@@ -24,7 +24,6 @@ class DevCog(commands.Cog):
 			raise commands.NotOwner
 		return check
 
-	# Credits to @Umbra#0009 on Discord.py's Discord Server.
 	@commands.command()
 	@commands.guild_only()
 	async def sync(self, ctx: commands.Context, guilds: commands.Greedy[discord.Object],
