@@ -1,10 +1,7 @@
 .idea
-.google-cookie
 *.db
 *.bat
-i18n.py
 Testing/
-logs/
 
 ### https://github.com/github/gitignore/blob/main/Python.gitignore
 
