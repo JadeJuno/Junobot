@@ -17,7 +17,10 @@ Goldbot, officially known as Gøldbot, is a simple, multipurpose bot built in Py
 - [ ] Add subcommands for `g!binary`.
 - [ ] Add setup instructions to this README file.
 
-
 ## Credits:
+
 ### __If any of the following want their work removed from this project, feel free to contact me.__
-- Icon and Discord Profile Picture made based on this [Pokémon Shuffle-styled image of Iron Valiant](https://www.deviantart.com/loran-hemlock/art/Iron-Valiant-Pokemon-Shuffle-Style-Icon-937562662), by [Loran-Hemlock](https://www.deviantart.com/loran-hemlock/gallery)
+
+- Icon and Discord Profile Picture made based on
+  this [Pokémon Shuffle-styled image of Iron Valiant](https://www.deviantart.com/loran-hemlock/art/Iron-Valiant-Pokemon-Shuffle-Style-Icon-937562662),
+  by [Loran-Hemlock](https://www.deviantart.com/loran-hemlock/gallery)
