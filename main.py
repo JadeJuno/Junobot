@@ -4,6 +4,7 @@ import os
 
 import discord
 from discord.ext import commands
+from dotenv import load_dotenv
 
 from libs import botutils, prefix
 
@@ -42,9 +43,10 @@ async def main():
 if __name__ == "__main__":
 	argparser = argparse.ArgumentParser()
 	argparser.add_argument('-m', '--mode', action='store')
+	load_dotenv()
 
 	if botutils.check_if_self_hosted(argparser):
-		TOKEN = os.getenv("SELF_TOKEN")
+		TOKEN = os.getenv("DEV_TOKEN")
 	else:
 		TOKEN = os.getenv("JUNO_TOKEN")
 	if not TOKEN:

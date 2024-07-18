@@ -9,6 +9,7 @@ from typing import Optional
 
 import discord
 from discord.ext import commands
+from dotenv import load_dotenv
 
 
 def parse_config(path: str):
@@ -43,6 +44,8 @@ async def is_not_report_banned(ctx: commands.Context) -> bool:
 
 
 def check_if_self_hosted(argparser: ArgumentParser) -> bool:
+	load_dotenv()
+
 	mode = argparser.parse_args().mode
 	self_host = False
 	if mode == 'full':
@@ -50,7 +53,7 @@ def check_if_self_hosted(argparser: ArgumentParser) -> bool:
 	elif mode == 'dev':
 		self_host = True
 
-	self_host = "SELF_TOKEN" in os.environ and self_host
+	self_host = "DEV_TOKEN" in os.environ and self_host
 
 	return self_host
 
