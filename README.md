@@ -5,8 +5,6 @@
 Junobot, officially known as Junøbot, is a simple, multipurpose bot built in Python that I made for a school project and
 that just built around afterward.
 
-Goldbot, officially known as Gøldbot, is a simple, multipurpose bot built in Python that I made for a school project and that just built around afterwards.
-
 ## TODO:
 
 - [x] Separate all commands in different cogs.
