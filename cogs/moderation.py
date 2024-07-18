@@ -20,7 +20,7 @@ class Moderation(commands.Cog):
 		aliases=("rename",),
 		description="Renames me to whatever name you want.",
 		extras={
-			'example':    "Silverbot",
+			'example':    "Jadebot",
 			'permission': 'manage_nicknames'
 		}
 	)
