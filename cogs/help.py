@@ -96,10 +96,11 @@ class JunoHelp(commands.MinimalHelpCommand):
 	async def send_group_help(self, group):
 		await group.can_run(self.context)
 		destination = self.get_destination()
+		prefix = self.context.clean_prefix
 
 		embed = botutils.embed_template(
-			title=f"{self.context.clean_prefix}{self.command_name}",
-			footer=f"<>=Necessary, []=Optional.\nTo see more information about a specific command, type {self.context.clean_prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
+			title=f"{prefix}{self.command_name}",
+			footer=f"<>=Necessary, []=Optional.\nTo see more information about a specific command, type {prefix}help <command>.\n{self.context.bot.user.display_name} was created by {self.appinfo.owner}."
 		)
 
 		if group.invoke_without_command:
@@ -113,14 +114,14 @@ class JunoHelp(commands.MinimalHelpCommand):
 			if len(group.aliases):
 				aliases = [group.qualified_name]
 				aliases.extend(group.aliases)
-				aliases = [f"`{self.context.clean_prefix}{alias}`" for alias in aliases]
+				aliases = [f"`{prefix}{alias}`" for alias in aliases]
 				embed.add_field(name="**Aliases**", value=', '.join(aliases), inline=False)
 
 			cmds = [self.get_command_signature(cmd) for cmd in group.all_commands.values()]
 			embed.add_field(name="**Commands**", value='\n'.join(cmds), inline=False)
 		else:
 			await destination.send(
-				"THIS MESSAGE SHOULD NOT APPEAR. IF IT DOES, PLEASE REPORT IT WITH THE `g!report` COMMAND!")
+				f"THIS MESSAGE SHOULD NOT APPEAR. IF IT DOES, PLEASE REPORT IT WITH THE `{prefix}report` COMMAND!")
 
 		await destination.send(embed=embed)
 

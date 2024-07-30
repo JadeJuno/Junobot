@@ -10,9 +10,9 @@ that just built around afterward.
 - [x] Separate all commands in different cogs.
 - [x] Use Discord.py's `HelpCommand` system.
 - [ ] Make all command descriptions use first person when referring to Junøbot.
-- [ ] Add subcommands for `g!translate`.
-- [ ] Add subcommands for `g!morse`.
-- [ ] Add subcommands for `g!binary`.
+- [ ] Add subcommands for `j!translate`.
+- [ ] Add subcommands for `j!morse`.
+- [ ] Add subcommands for `j!binary`.
 - [ ] Add setup instructions to this README file.
 
 ## Credits:

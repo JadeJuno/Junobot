@@ -26,7 +26,7 @@ async def on_ready():
 	log = bot.get_channel(config['log_channel'])
 	appinfo = await bot.application_info()
 	botutils.log(f"{bot.user} is ready.")
-	botutils.log(f"Created by {appinfo.owner}.")
+	botutils.log(f"Created/Owned by {appinfo.owner}.")
 	await log.send("Bot Started.")
 
 
