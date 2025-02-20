@@ -48,7 +48,7 @@ if __name__ == "__main__":
 	if botutils.check_if_self_hosted(argparser):
 		TOKEN = os.getenv("DEV_TOKEN")
 	else:
-		TOKEN = os.getenv("JUNO_TOKEN")
+		TOKEN = os.getenv("BOT_TOKEN")
 	if not TOKEN:
 		TOKEN = input("Junøbot's Token: ")
 	asyncio.run(main())
