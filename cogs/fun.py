@@ -130,12 +130,6 @@ class Fun(commands.Cog):
 			await botutils.error_template(ctx, f"You don't have permissions to talk in {channel.mention}")
 			return
 
-		if message.lower().startswith("i am") or message.lower().startswith("i'm"):
-			if "stupid" in message.lower():
-				message = f"{author.mention} is stupid."
-			elif "dumb" in message.lower():
-				message = f"{author.mention} is dumb."
-
 		await ctx.message.delete()
 		await channel.send(message, files=files)
 
