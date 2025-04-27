@@ -21,7 +21,7 @@ class PrefixParser:
 				self.add(guild_id, self.default)
 				return self.default
 
-			raise NoSuchServerError
+			raise ServerNotFoundError
 
 	async def __call__(self, bot: commands.Bot, msg: discord.Message) -> typing.Iterable:
 		try:
@@ -90,5 +90,5 @@ class Database:
 			self.cursor.execute("DELETE FROM servers WHERE id=?", data)
 
 
-class NoSuchServerError(Exception):
+class ServerNotFoundError(Exception):
 	pass
