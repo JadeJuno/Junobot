@@ -65,7 +65,7 @@ class PrefixParser:
 
 class Database:
 	def __init__(self):
-		self.conn = conn = sqlite3.connect('prefixes.db')
+		self.conn = conn = sqlite3.connect('database.db')
 		self.cursor = conn.cursor()
 		self.cursor.execute("""
 		CREATE TABLE IF NOT EXISTS servers (
