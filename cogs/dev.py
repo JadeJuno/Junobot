@@ -28,18 +28,20 @@ class DevCog(commands.Cog):
 	@commands.guild_only()
 	async def sync(self, ctx: commands.Context, guilds: commands.Greedy[discord.Object],
 				   spec: typing.Optional[typing.Literal["~", "*", "^"]] = None):
+		tree = self.bot.tree
+
 		if not guilds:
 			if spec == "~":
-				synced = await ctx.bot.tree.sync(guild=ctx.guild)
+				synced = await tree.sync(guild=ctx.guild)
 			elif spec == "*":
-				ctx.bot.tree.copy_global_to(guild=ctx.guild)
-				synced = await ctx.bot.tree.sync(guild=ctx.guild)
+				tree.copy_global_to(guild=ctx.guild)
+				synced = await tree.sync(guild=ctx.guild)
 			elif spec == "^":
-				ctx.bot.tree.clear_commands(guild=ctx.guild)
-				await ctx.bot.tree.sync(guild=ctx.guild)
+				tree.clear_commands(guild=ctx.guild)
+				await tree.sync(guild=ctx.guild)
 				synced = []
 			else:
-				synced = await ctx.bot.tree.sync()
+				synced = await tree.sync()
 
 			await ctx.send(
 				f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
@@ -49,7 +51,7 @@ class DevCog(commands.Cog):
 		ret = 0
 		for guild in guilds:
 			try:
-				await ctx.bot.tree.sync(guild=guild)
+				await tree.sync(guild=guild)
 			except discord.HTTPException:
 				pass
 			else:
