@@ -30,7 +30,7 @@ class Utility(commands.Cog):
 		aliases=('bugreport', 'reportbug', 'bug-report', 'report-bug'),
 		description="Let's you make a direct bug report to my creator if needed. Allows for sending images and other attachments as well.",
 		extras={
-			'example': "The `j!translate` command is broken."
+			'example': 'The "j!translate" command is broken.'
 		}
 	)
 	async def report(self, ctx: commands.Context, files: botutils.GreedyAttachments, *, message: str):
