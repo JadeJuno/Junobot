@@ -74,7 +74,8 @@ class JunoHelp(commands.MinimalHelpCommand):
 
 		if len(command.aliases):
 			aliases = [command.qualified_name]
-			aliases.extend(command.aliases)
+			if command.full_parent_name:  # If command is subcommand:
+				aliases.extend(f'{command.full_parent_name} {alias}' for alias in command.aliases)
 			aliases = [f"`{self.context.clean_prefix}{alias}`" for alias in aliases]
 			embed.add_field(name="**Aliases**", value=', '.join(aliases), inline=False)
 
