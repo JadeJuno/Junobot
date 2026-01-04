@@ -137,7 +137,7 @@ class Fun(commands.Cog):
 		aliases=('skin',),
 		description="Sends the Minecraft skin of a user you give.",
 		extras={
-			"example": "Notch"
+			"example": "Dinnerbone"
 		}
 	)
 	async def namemc(self, ctx: commands.Context, username: str):
