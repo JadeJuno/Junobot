@@ -26,8 +26,7 @@ class Moderation(commands.Cog):
 	)
 	async def nickname(self, ctx: commands.Context, *, nickname: str):
 		if len(nickname) > 32:
-			await botutils.error_template(ctx,
-										  f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
+			await botutils.error_template(ctx, f'"{nickname}" has more than 32 characters and therefore can\'t fit as my nickname.')
 			return
 		await ctx.me.edit(nick=nickname)
 		await ctx.send(f'Successfully changed my nickname to "{nickname}".')
