@@ -20,10 +20,9 @@ class PrefixParser:
 			if self.default:
 				self.add(guild_id, self.default)
 				return self.default
-
 			raise ServerNotFoundError
 
-	async def __call__(self, bot: commands.Bot, msg: discord.Message) -> typing.Iterable:
+	async def __call__(self, bot: commands.Bot, msg: discord.Message) -> str | set[str]:
 		try:
 			prefix = self[msg.guild.id]
 			prefixes = {p for p in self.all_casings(prefix)}
