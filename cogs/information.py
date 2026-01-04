@@ -61,8 +61,7 @@ class Information(commands.Cog):
 			output_str = '\n'.join(results)
 			if not output_str:
 				output_str = "**No results found.**"
-			embed = botutils.embed_template("Google", output_str,
-											icon="https://file.garden/ZC2FWku7QDnuPZmT/Google_logo.svg")
+			embed = botutils.embed_template("Google", output_str, icon="https://file.garden/ZC2FWku7QDnuPZmT/Google_logo.svg")
 		await message.edit(content=None, embed=embed)
 		try:
 			os.remove(".google-cookie")
@@ -91,12 +90,9 @@ class Information(commands.Cog):
 				except KeyError:
 					image = None
 
-				embed = botutils.embed_template(page.title, description=page.summarize(sentences=3, chars=300),
-												url=page.url, footer="Powered by WikiMedia", image=image)
+				embed = botutils.embed_template(page.title, description=page.summarize(sentences=3, chars=300), url=page.url, footer="Powered by WikiMedia", image=image)
 			except mediawiki.exceptions.PageError:
-				embed = botutils.embed_template("Wikipedia",
-												description=f"Could not find a page that fulfilled the query `{query}`...\nIf you believe this is an error, feel free to report it using `{ctx.clean_prefix}report`.",
-												footer="Powered by WikiMedia", image=image, icon=icon)
+				embed = botutils.embed_template("Wikipedia", description=f"Could not find a page that fulfilled the query `{query}`...\nIf you believe this is an error, feel free to report it using `{ctx.clean_prefix}report`.", footer="Powered by WikiMedia", image=image, icon=icon)
 			except mediawiki.exceptions.DisambiguationError as e:
 				pages = []
 				for title in e.options:
@@ -110,8 +106,7 @@ class Information(commands.Cog):
 					f'`{i}`: [{page.title}]({page.url})'
 					for i, page in enumerate(pages, start=1)
 				)
-				embed = botutils.embed_template("Wikipedia", description=desc, footer="Powered by WikiMedia",
-												image=image, icon=icon)
+				embed = botutils.embed_template("Wikipedia", description=desc, footer="Powered by WikiMedia", image=image, icon=icon)
 
 		await message.edit(content=None, embed=embed)
 
@@ -153,9 +148,7 @@ class Information(commands.Cog):
 			definition = re.sub(pattern, lambda x: f"{x.group()}({hypertexts[x.group(1)]})", definition)
 			example = re.sub(pattern, lambda x: f"{x.group()}({hypertexts[x.group(1)]})", example)
 
-			embed = botutils.embed_template(title=f'Definition for "{urban_definition.word}"',
-											description=f"{definition}\n",
-											footer="Powered by Urban Dictionary")
+			embed = botutils.embed_template(title=f'Definition for "{urban_definition.word}"', description=f"{definition}\n", footer="Powered by Urban Dictionary")
 			if example:
 				embed.add_field(name="Example:", value=f">>> {example}", inline=False)
 
