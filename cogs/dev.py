@@ -179,8 +179,8 @@ class DevCog(commands.Cog):
 	async def prefixes(self, ctx: commands.Context, *, failed_subcmd):
 		await botutils.no_subcommand_error(ctx, failed_subcmd)
 
-	@prefixes.command()
-	async def get(self, ctx: commands.Context):
+	@prefixes.command(name='get')
+	async def prefixes_get(self, ctx: commands.Context):
 		prefixes = self.bot.command_prefix.prefixes
 		servers = [self.bot.get_guild(server) for server in prefixes.keys()]
 		prefix_zip = zip(servers, prefixes.items())
@@ -188,8 +188,8 @@ class DevCog(commands.Cog):
 		s = "\n".join(f"`{server} [{server_id}]` - `{prefix}`" for server, (server_id, prefix) in prefix_zip)
 		await ctx.send(s)
 
-	@prefixes.command()
-	async def update(self, ctx: commands.Context):
+	@prefixes.command(name='update')
+	async def prefixes_update(self, ctx: commands.Context):
 		prefix_handler: PrefixParser = self.bot.command_prefix
 
 		# This should add a prefix to every guild, if it didn't have one already.
